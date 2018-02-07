@@ -1,1 +1,1 @@
-# GEP2018_Mouldy_Ghost
+# GEP-2018-Super-Smash-Potatoes
