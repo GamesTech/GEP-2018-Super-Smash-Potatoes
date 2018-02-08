@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>c0559ae9-2d1d-491b-ba10-6e2605b7bf17</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>ebebb1e8-0137-4211-9815-5f8df8e6909e</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{85494339-d3a0-4aab-8b45-f7e22cfda08d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D">
+      <UniqueIdentifier>{3851f7ce-c669-4c10-955a-e2aee4abf106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\3D">
+      <UniqueIdentifier>{6246de82-1015-4c3a-b8ad-f54b02ec128e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Headers">
+      <UniqueIdentifier>{bd593a7f-51ac-44ea-b3f9-f5ff331d7b53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Source">
+      <UniqueIdentifier>{7ad75a1f-e82c-4369-a4ed-92ab6af974da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\3D\Headers">
+      <UniqueIdentifier>{d5f5b073-7c5e-49a4-afa1-5af581eda6e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\3D\Source">
+      <UniqueIdentifier>{32b089ec-d6eb-4d4b-8588-e1678ceb5426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Sounds">
+      <UniqueIdentifier>{58dab2df-41ab-41d7-a757-ee03d066c55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Sounds\Headers">
+      <UniqueIdentifier>{476e8f58-4862-4ba4-8b81-b98f94a7b80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Sounds\Source">
+      <UniqueIdentifier>{961e8af5-86df-4189-a3b7-f30efdac3ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base">
+      <UniqueIdentifier>{b4a4bf75-3cb8-4a7b-9b5e-db4ff132aba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers">
+      <UniqueIdentifier>{6cc53fe2-9597-4029-87e9-f973aa967c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source">
+      <UniqueIdentifier>{c6145a56-6b6a-4cdf-aecf-c59fe5db8df0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectList.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageGO2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject3D.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PBGO3D.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPBGO3D.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GPGO3D.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKMeshGO3D.h">
+      <Filter>GameObjects\3D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>GameObjects\Sounds\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Loop.h">
+      <Filter>GameObjects\Sounds\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateData.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderData.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <Filter>GameObjects\Sounds\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameObject2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageGO2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Text2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject3D.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PBGO3D.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPBGO3D.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GPGO3D.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKMeshGO3D.cpp">
+      <Filter>GameObjects\3D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>GameObjects\Sounds\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Loop.cpp">
+      <Filter>GameObjects\Sounds\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSound.cpp">
+      <Filter>GameObjects\Sounds\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+</Project>
