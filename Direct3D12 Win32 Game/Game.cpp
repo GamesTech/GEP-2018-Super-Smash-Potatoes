@@ -6,7 +6,6 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
-#include "GameState.h"
 
 extern void ExitGame();
 
@@ -200,7 +199,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gamePad = std::make_unique<GamePad>();
 	
-	GameState::state = State::PLAY;
+	GameStateData::state = State::PLAY;
 }
 
 //GEP:: Executes the basic game loop.
@@ -265,7 +264,7 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 
 	//Debug: Displaying current gamestate
-	switch (GameState::state) 
+	switch (GameStateData::state) 
 	{
 		case PLAY:
 		stateText->SetText("PLAY");
