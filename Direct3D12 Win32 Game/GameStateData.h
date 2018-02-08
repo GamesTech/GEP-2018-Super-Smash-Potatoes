@@ -6,8 +6,8 @@
 enum GameState
 {
 	MENU,
-	PLAYING,
-	PAUSED,
+	INGAME,
+	INGAMEPAUSED,
 	GAMEOVER
 };
 

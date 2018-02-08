@@ -97,6 +97,9 @@ private:
 	RenderData* m_RD;
 	Camera* m_cam;
 
+	Player2D* player_one;
+	Text2D * title_text;
+
 	GameStateData* m_GSD;
 
 	//GEP:: Keyboard and Mouse Abstractions for basic input system
