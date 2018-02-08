@@ -15,31 +15,32 @@ Player2D::~Player2D()
 void Player2D::Tick(GameStateData * _GSD)
 {
 
-	//Push the guy around in the directions for the key presses
-	if (_GSD->m_keyboardState.W)
+//Push the guy around in the directions for the key presses
+	if (_GSD->m_keyboardState.W || _GSD->m_gamePadState.IsDPadUpPressed() || _GSD->m_gamePadState.IsLeftThumbStickUp())
 	{
 		AddForce(-m_jumpForce * Vector2::UnitY);
 	}
-	if (_GSD->m_keyboardState.S)
+	if (_GSD->m_keyboardState.S || _GSD->m_gamePadState.IsDPadDownPressed() || _GSD->m_gamePadState.IsLeftThumbStickDown())
 	{
 		AddForce(m_drive * Vector2::UnitY);
 	}
-	if (_GSD->m_keyboardState.A)
+	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 	}
-	if (_GSD->m_keyboardState.D)
+	if (_GSD->m_keyboardState.D || _GSD->m_gamePadState.IsDPadRightPressed() || _GSD->m_gamePadState.IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
 	}
 
-	if (m_pos.y < m_limit.y)
+	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
 	{
-		AddForce(m_gravity * Vector2::UnitY);
+		AddForce(-(m_drive * 10) * Vector2::UnitY);
 	}
 
-	//Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
 
+	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
+	
 	//AddForce(m_drive*mousePush);
 
 	//GEP:: Lets go up the inheritence and share our functionality
