@@ -176,11 +176,12 @@ void Game::Initialize(HWND window, int width, int height)
 	test->SetColour(Color(1, 0, 0, 1));
 	m_2DObjects.push_back(test);
 
-	Text2D * test2 = new Text2D("testing text");
-	m_2DObjects.push_back(test2);
+	//Text2D *test2 = new Text2D("testing text");
+	//m_2DObjects.push_back(test2);
 
 	Player2D* testPlay = new Player2D(m_RD,"gens");
-	testPlay->SetDrive(100.0f);
+	testPlay->SetPos(Vector2(300, 300));
+	testPlay->SetDrive(500.0f);
 	testPlay->SetDrag(0.5f);
 	m_2DObjects.push_back(testPlay);
 

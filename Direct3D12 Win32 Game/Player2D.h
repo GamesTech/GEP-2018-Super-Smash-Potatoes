@@ -22,6 +22,8 @@ public:
 
 protected:
 	float m_drive = 1.0f;
+	float m_gravity = 980;
+	float m_jumpForce = 5000;
 
 	Vector2 m_limit = Vector2(800, 600);
 };
