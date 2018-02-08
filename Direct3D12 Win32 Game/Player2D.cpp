@@ -33,6 +33,11 @@ void Player2D::Tick(GameStateData * _GSD)
 		AddForce(m_drive * Vector2::UnitX);
 	}
 
+	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
+	{
+		AddForce(-(m_drive * 10) * Vector2::UnitY);
+	}
+
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
 	
