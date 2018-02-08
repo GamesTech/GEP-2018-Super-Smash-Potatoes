@@ -176,8 +176,8 @@ void Game::Initialize(HWND window, int width, int height)
 	test->SetColour(Color(1, 0, 0, 1));
 	m_2DObjects.push_back(test);
 
-	//Text2D *test2 = new Text2D("testing text");
-	//m_2DObjects.push_back(test2);
+	
+	m_2DObjects.push_back(stateText);
 
 	Player2D* testPlay = new Player2D(m_RD,"gens");
 	testPlay->SetPos(Vector2(300, 300));
@@ -199,6 +199,8 @@ void Game::Initialize(HWND window, int width, int height)
 	m_sounds.push_back(TS);
 
 	m_gamePad = std::make_unique<GamePad>();
+	
+	GameStateData::state = State::PLAY;
 }
 
 //GEP:: Executes the basic game loop.
@@ -246,6 +248,37 @@ void Game::Update(DX::StepTimer const& timer)
 		(*it)->Tick(m_GSD);
 	}
 
+	// TODO: Gamepad
+	auto state = m_gamePad->GetState(0);
+
+	if (state.IsConnected())
+	{
+		// TODO: Read controller 0 here
+		if (state.IsViewPressed())
+		{
+			PostQuitMessage(0);
+		}
+		else
+		{
+			m_gamePad->SetVibration(0, state.triggers.left, state.triggers.right);
+		}
+	}
+
+	//Debug: Displaying current gamestate
+	switch (GameStateData::state) 
+	{
+		case PLAY:
+		stateText->SetText("PLAY");
+		break;
+
+		case PAUSE:
+		stateText->SetText("PAUSE");
+		break;
+
+		default:
+		stateText->SetText("STATE NOT ADDED TO DEBUG TEXT");
+		break;
+	}
 	
 }
 
