@@ -3,6 +3,7 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
+
 struct GameStateData
 {
 	Keyboard::State m_keyboardState;
@@ -13,3 +14,4 @@ struct GameStateData
 	//length of time since last frame
 	float m_dt;
 };
+

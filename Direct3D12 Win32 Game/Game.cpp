@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include "GameState.h"
 
 extern void ExitGame();
 
@@ -198,6 +199,8 @@ void Game::Initialize(HWND window, int width, int height)
 	m_sounds.push_back(TS);
 
 	m_gamePad = std::make_unique<GamePad>();
+	
+	GameState::state = State::PLAY;
 }
 
 //GEP:: Executes the basic game loop.
