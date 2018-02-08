@@ -81,6 +81,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_GSD = new GameStateData;
 
+	m_GSD->gameState = MENU;
+
 //GEP::set up keyboard & mouse input systems
 	m_keyboard = std::make_unique<Keyboard>();
 	m_mouse = std::make_unique<Mouse>();
