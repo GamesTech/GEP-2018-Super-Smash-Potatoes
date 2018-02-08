@@ -196,6 +196,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	TestSound* TS = new TestSound(m_audEngine.get(), "Explo1");
 	m_sounds.push_back(TS);
+
+	m_gamePad = std::make_unique<GamePad>();
 }
 
 //GEP:: Executes the basic game loop.
@@ -241,6 +243,22 @@ void Game::Update(DX::StepTimer const& timer)
 	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
 	{
 		(*it)->Tick(m_GSD);
+	}
+
+	// TODO: Gamepad
+	auto state = m_gamePad->GetState(0);
+
+	if (state.IsConnected())
+	{
+		// TODO: Read controller 0 here
+		if (state.IsViewPressed())
+		{
+			PostQuitMessage(0);
+		}
+		else
+		{
+			m_gamePad->SetVibration(0, state.triggers.left, state.triggers.right);
+		}
 	}
 }
 
@@ -361,17 +379,20 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
+	m_gamePad->Resume();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
+	m_gamePad->Suspend();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	m_audEngine->Suspend();
+	m_gamePad->Suspend();
 }
 
 void Game::OnResuming()
@@ -380,6 +401,7 @@ void Game::OnResuming()
 	m_audEngine->Resume();
 
     // TODO: Game is being power-resumed (or returning from minimize).
+	m_gamePad->Resume();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
@@ -766,6 +788,8 @@ void Game::ReadInput()
 
 //You'll also found similar stuff for Game Controllers here:
 //https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
+
+	
 
 //Note in both cases they are identical to the DirectXTK for DirectX 11
 

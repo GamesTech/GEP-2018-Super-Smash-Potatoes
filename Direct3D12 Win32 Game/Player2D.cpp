@@ -33,9 +33,14 @@ void Player2D::Tick(GameStateData * _GSD)
 		AddForce(m_drive * Vector2::UnitX);
 	}
 
+	if (_GSD->m_gamePadState.IsDPadDownPressed() == true)
+	{
+		AddForce(m_drive * Vector2::UnitY);
+	}
+
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
 	
-	AddForce(m_drive*mousePush);
+	//AddForce(m_drive*mousePush);
 	
 //GEP:: Lets go up the inheritence and share our functionality
 

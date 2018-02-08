@@ -8,6 +8,7 @@ struct GameStateData
 	Keyboard::State m_keyboardState;
 	Keyboard::State m_prevKeyboardState;
 	Mouse::State m_mouseState;
+	GamePad::State m_gamePadState;
 
 	//length of time since last frame
 	float m_dt;
