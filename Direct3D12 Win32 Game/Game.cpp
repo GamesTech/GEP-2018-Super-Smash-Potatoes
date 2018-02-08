@@ -177,8 +177,8 @@ void Game::Initialize(HWND window, int width, int height)
 	test->SetColour(Color(1, 0, 0, 1));
 	m_2DObjects.push_back(test);
 
-	Text2D * test2 = new Text2D("testing text");
-	m_2DObjects.push_back(test2);
+	
+	m_2DObjects.push_back(stateText);
 
 	Player2D* testPlay = new Player2D(m_RD,"gens");
 	testPlay->SetDrive(100.0f);
@@ -263,6 +263,23 @@ void Game::Update(DX::StepTimer const& timer)
 			m_gamePad->SetVibration(0, state.triggers.left, state.triggers.right);
 		}
 	}
+
+	//Debug: Displaying current gamestate
+	switch (GameState::state) 
+	{
+		case PLAY:
+		stateText->SetText("PLAY");
+		break;
+
+		case PAUSE:
+		stateText->SetText("PAUSE");
+		break;
+
+		default:
+		stateText->SetText("STATE NOT ADDED TO DEBUG TEXT");
+		break;
+	}
+	
 }
 
 //GEP:: Draws the scene.

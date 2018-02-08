@@ -108,4 +108,7 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
+	//Debug
+	Text2D * stateText = new Text2D("AH");
+
 };
