@@ -245,21 +245,7 @@ void Game::Update(DX::StepTimer const& timer)
 		(*it)->Tick(m_GSD);
 	}
 
-	// TODO: Gamepad
-	auto state = m_gamePad->GetState(0);
-
-	if (state.IsConnected())
-	{
-		// TODO: Read controller 0 here
-		if (state.IsViewPressed())
-		{
-			PostQuitMessage(0);
-		}
-		else
-		{
-			m_gamePad->SetVibration(0, state.triggers.left, state.triggers.right);
-		}
-	}
+	
 }
 
 //GEP:: Draws the scene.
@@ -380,6 +366,7 @@ void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
 	m_gamePad->Resume();
+	m_buttons.Reset();
 }
 
 void Game::OnDeactivated()
@@ -402,6 +389,7 @@ void Game::OnResuming()
 
     // TODO: Game is being power-resumed (or returning from minimize).
 	m_gamePad->Resume();
+	m_buttons.Reset();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
@@ -418,8 +406,8 @@ void Game::OnWindowSizeChanged(int width, int height)
 void Game::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = 800;
-    height = 600;
+    width = 1280;
+    height = 720;
 }
 
 // These are the resources that depend on the device.
@@ -801,4 +789,19 @@ void Game::ReadInput()
 		PostQuitMessage(0);
 
 	m_GSD->m_mouseState = m_mouse->GetState();
+
+	// TODO: Gamepad
+	m_GSD->m_gamePadState = m_gamePad->GetState(0);
+
+	if (m_GSD->m_gamePadState.IsConnected())
+	{
+		// TODO: Read controller 0 here
+		if (m_GSD->m_gamePadState.IsViewPressed())
+		{
+			PostQuitMessage(0);
+		}
+		m_buttons.Update(m_GSD->m_gamePadState);
+		
+	}
+
 }
