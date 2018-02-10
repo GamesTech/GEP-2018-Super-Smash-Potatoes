@@ -177,7 +177,7 @@ void Game::Initialize(HWND window, int width, int height)
 	m_2DObjects.push_back(test);
 
 	
-	m_2DObjects.push_back(stateText);
+	//m_2DObjects.push_back(stateText);
 
 	Player2D* testPlay = new Player2D(m_RD,"gens");
 	testPlay->SetPos(Vector2(300, 300));
@@ -264,21 +264,21 @@ void Game::Update(DX::StepTimer const& timer)
 		}
 	}
 
-	//Debug: Displaying current gamestate
-	switch (GameStateData::state) 
-	{
-		case PLAY:
-		stateText->SetText("PLAY");
-		break;
+	////Debug: Displaying current gamestate
+	//switch (GameStateData::state) 
+	//{
+	//	case PLAY:
+	//	stateText->SetText("PLAY");
+	//	break;
 
-		case PAUSE:
-		stateText->SetText("PAUSE");
-		break;
+	//	case PAUSE:
+	//	stateText->SetText("PAUSE");
+	//	break;
 
-		default:
-		stateText->SetText("STATE NOT ADDED TO DEBUG TEXT");
-		break;
-	}
+	//	default:
+	//	stateText->SetText("STATE NOT ADDED TO DEBUG TEXT");
+	//	break;
+	//}
 	
 }
 
