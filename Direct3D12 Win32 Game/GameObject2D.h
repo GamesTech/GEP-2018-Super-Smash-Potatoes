@@ -40,5 +40,7 @@ protected:
 	Color m_colour = Colors::White;
 	Vector2 m_scale = Vector2::One;
 
+	//bool m_grounded = false;
+
 };
 
