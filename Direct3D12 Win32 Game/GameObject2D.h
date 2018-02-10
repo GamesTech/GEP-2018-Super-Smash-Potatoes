@@ -15,6 +15,8 @@ public:
 	virtual ~GameObject2D();
 
 	Vector2 GetPos() { return m_pos; }
+	Vector2 CollMin() { return m_min; }
+	Vector2 CollMax() { return m_max; }
 	Vector2 GetOrigin() { return m_origin; }
 	float GetOri() { return m_orientation; }
 	Color GetColour() { return m_colour; }
@@ -39,6 +41,8 @@ protected:
 	float m_orientation = 0.0f;
 	Color m_colour = Colors::White;
 	Vector2 m_scale = Vector2::One;
+	Vector2 m_min = Vector2::Zero;
+	Vector2 m_max = Vector2::Zero;
 
 	//bool m_grounded = false;
 

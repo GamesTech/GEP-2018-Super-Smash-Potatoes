@@ -155,35 +155,38 @@ void Game::Initialize(HWND window, int width, int height)
 	m_RD->m_cam = m_cam;
 	m_3DObjects.push_back(m_cam);
 
-	TestPBGO3D* test3d = new TestPBGO3D();
-	test3d->SetScale(5.0f);
-	test3d->Init();
-	m_3DObjects.push_back(test3d);
+	//TestPBGO3D* test3d = new TestPBGO3D();
+	//test3d->SetScale(5.0f);
+	//test3d->Init();
+	//m_3DObjects.push_back(test3d);
 
-	GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
-	test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
-	test3d2->SetScale(5.0f);
-	m_3DObjects.push_back(test3d2);	
+	//GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
+	//test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
+	//test3d2->SetScale(5.0f);
+	//m_3DObjects.push_back(test3d2);	
 
-	ImageGO2D *test = new ImageGO2D(m_RD, "twist");
-	test->SetOri(45);
-	test->SetPos(Vector2(300, 300));
-	test->CentreOrigin();
-	m_2DObjects.push_back(test);
-	test = new ImageGO2D(m_RD,"guides_logo");
-	test->SetPos(Vector2(100, 100));
-	test->SetScale(Vector2(1.0f,0.5f));
-	test->SetColour(Color(1, 0, 0, 1));
-	m_2DObjects.push_back(test);
+	//ImageGO2D *test = new ImageGO2D(m_RD, "twist");
+	//test->SetOri(45);
+	//test->SetPos(Vector2(300, 300));
+	//test->CentreOrigin();
+	//m_2DObjects.push_back(test);
+	//test = new ImageGO2D(m_RD,"guides_logo");
+	//test->SetPos(Vector2(100, 100));
+	//test->SetScale(Vector2(1.0f,0.5f));
+	//test->SetColour(Color(1, 0, 0, 1));
+	//m_2DObjects.push_back(test);
 
 	
 	//m_2DObjects.push_back(stateText);
 
-	Player2D* testPlay = new Player2D(m_RD,"gens");
-	testPlay->SetPos(Vector2(300, 300));
-	testPlay->SetDrive(500.0f);
-	testPlay->SetDrag(0.5f);
-	m_2DObjects.push_back(testPlay);
+	m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(100, 300));
+	m_testPlatform->TestCollision();
+
+	m_player = new Player2D(m_RD,"gens");
+	m_player->SetPos(Vector2(300, 300));
+	m_player->SetDrive(500.0f);
+	m_player->SetDrag(0.5f);
 
 	SDKMeshGO3D *test3 = new SDKMeshGO3D(m_RD, "cup");
 	test3->SetPos(12.0f*Vector3::Forward + 5.0f*Vector3::Left + Vector3::Down);
@@ -247,6 +250,8 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		(*it)->Tick(m_GSD);
 	}
+
+	m_player->Tick(m_GSD, m_testPlatform);
 
 	// TODO: Gamepad
 	auto state = m_gamePad->GetState(0);
@@ -333,6 +338,9 @@ void Game::Render()
 	{
 		(*it)->Render(m_RD);
 	}
+
+	m_testPlatform->Render(m_RD);
+	m_player->Render(m_RD);
 
 	m_RD->m_spriteBatch->End();
 

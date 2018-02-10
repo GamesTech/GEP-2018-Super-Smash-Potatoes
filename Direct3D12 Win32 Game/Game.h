@@ -94,6 +94,8 @@ private:
 	vector<GameObject2D*> m_2DObjects;
 	vector<Sound*> m_sounds;
 
+	Player2D* m_testPlatform;
+	Player2D* m_player;
 	RenderData* m_RD;
 	Camera* m_cam;
 

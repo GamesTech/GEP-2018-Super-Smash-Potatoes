@@ -19,6 +19,7 @@ public:
 
 	void Render(RenderData* _RD);
 
+	void SetBoundingBoxes();
 	void CentreOrigin();
 	void BottomOrigin();
 
