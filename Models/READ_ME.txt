@@ -9,3 +9,20 @@ https://github.com/Microsoft/DirectXTK12/wiki/Rendering-a-model
 4. Change the Item Type to "Custom Build Tool"
 5. Reopen the Properties window for the file and you should now see options available for it
 6. Copy over the same values from the exaple model into the boxes for your new file for "All Configurations" "All Platforms"
+
+
+ADDITIONAL: The model loading system can only cope with a couple of different image formats for loading in the textures on models. 
+As set up for the cup._obj this assumes that the textures refered to in the .mtl file can be loaded, hence the -nodds in the command 
+line arguements.
+
+Note that .mtl files are usually human readable text and so it is possible to change the images that the material will load just 
+by editing the filenames in the file.
+
+If that term is removed the loader will assume that you will convert all the images for the model to dds yourself. You can set up this
+project to do that in the same way that the image project does by right clicking on the project. 
+
+Then select Build Dependencies -> Build Customizations.. 
+
+The click the check box for "Image Content Pipeline". 
+
+After that any images added to this project can be set to "Type : Image Content Pipeline" in their properties and will be converted to dds.
