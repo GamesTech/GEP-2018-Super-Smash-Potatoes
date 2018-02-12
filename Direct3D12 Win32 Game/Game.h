@@ -98,7 +98,10 @@ private:
 	Camera* m_cam;
 
 	Player2D* player_one;
-	Text2D * title_text;
+	Text2D* title_text;
+	ImageGO2D* start_game_button;
+	ImageGO2D* settings_button;
+	ImageGO2D* quit_button;
 
 	GameStateData* m_GSD;
 
@@ -110,6 +113,9 @@ private:
 
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
+
+	int menu_option_selected = 0;
+	void highlight_option_selected();
 
 	void loadMenu();
 	void loadGame();

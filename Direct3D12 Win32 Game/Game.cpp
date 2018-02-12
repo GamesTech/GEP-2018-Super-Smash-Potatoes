@@ -166,6 +166,22 @@ void Game::Initialize(HWND window, int width, int height)
 	m_2DObjects.push_back(title_text);
 
 
+	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
+	start_game_button->SetPos(Vector2(300, 200));
+	start_game_button->CentreOrigin();
+	m_2DObjects.push_back(start_game_button);
+
+	settings_button = new ImageGO2D(m_RD, "Settings_Button");
+	settings_button->SetPos(Vector2(300, 300));
+	settings_button->CentreOrigin();
+	m_2DObjects.push_back(settings_button);
+
+	quit_button = new ImageGO2D(m_RD, "Quit_Button");
+	quit_button->SetPos(Vector2(300, 400));
+	quit_button->CentreOrigin();
+	m_2DObjects.push_back(quit_button);
+
+
 	m_gamePad = std::make_unique<GamePad>();
 }
 
@@ -189,7 +205,7 @@ void Game::Update(DX::StepTimer const& timer)
 	switch (m_GSD->gameState)
 	{
 	case MENU:
-		//m_2DObjects.push_back(title_text);
+
 		break;
 	case INGAME:
 
@@ -778,8 +794,6 @@ void Game::ReadInput()
 	//You'll also found similar stuff for Game Controllers here:
 	//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
 
-
-
 	//Note in both cases they are identical to the DirectXTK for DirectX 11
 
 	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
@@ -791,36 +805,111 @@ void Game::ReadInput()
 	PostQuitMessage(0);
 	}
 
-
-	if ((m_GSD->m_keyboardState.P) && (m_GSD->gameState != MENU))
-	{
-		loadMenu();
-	}
-	if ((m_GSD->m_keyboardState.O) && (m_GSD->gameState != INGAME))
-	{
-		loadGame();
-	}
-
-
 	m_GSD->m_mouseState = m_mouse->GetState();
+
+	switch (m_GSD->gameState)
+	{
+	case MENU:
+		if (m_GSD->m_keyboardState.Down)
+		{
+			if (menu_option_selected < 3)
+			{
+				menu_option_selected++;
+				highlight_option_selected();
+			}
+		}
+		if (m_GSD->m_keyboardState.Up)
+		{
+			if (menu_option_selected > 1)
+			{
+				menu_option_selected--;
+				highlight_option_selected();
+			}
+		}
+		if (m_GSD->m_keyboardState.Enter)
+		{
+			switch (menu_option_selected)
+			{
+			case 1:
+				loadGame();
+				break;
+			case 2:
+				//settings
+				break;
+			case 3:
+				PostQuitMessage(0);
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case INGAME:
+		if (m_GSD->m_keyboardState.O)
+		{
+			loadMenu();
+		}
+		break;
+	case INGAMEPAUSED:
+		break;
+	case GAMEOVER:
+		break;
+	default:
+		//something has gone wrong
+		break;
+	}
+}
+
+void Game::highlight_option_selected()
+{
+	switch (menu_option_selected)
+	{
+	case 1:
+		start_game_button->SetColour(Color(1, 0, 0));
+		settings_button->SetColour(Color(1, 1, 1));
+		quit_button->SetColour(Color(1, 1, 1));
+		break;
+	case 2:
+		start_game_button->SetColour(Color(1, 1, 1));
+		settings_button->SetColour(Color(1, 0, 0));
+		quit_button->SetColour(Color(1, 1, 1));
+		break;
+	case 3:
+		start_game_button->SetColour(Color(1, 1, 1));
+		settings_button->SetColour(Color(1, 1, 1));
+		quit_button->SetColour(Color(1, 0, 0));
+		break;
+	default:
+		//something has gone wrong
+		break;
+	}
 }
 
 void Game::loadMenu()
 {
-	m_GSD->gameState = MENU;
+	if (m_GSD->gameState != MENU)
+	{
+		m_GSD->gameState = MENU;
 
-	m_2DObjects.clear();
-	m_2DObjects.push_back(title_text);
+		m_2DObjects.clear();
+		m_2DObjects.push_back(title_text);
+		m_2DObjects.push_back(start_game_button);
+		m_2DObjects.push_back(settings_button);
+		m_2DObjects.push_back(quit_button);
+	}
 }
 
 void Game::loadGame()
 {
-	m_GSD->gameState = INGAME;
-	//reset gamestate() exp:
-	player_one->SetPos(Vector2(0,0));
+	if (m_GSD->gameState != INGAME)
+	{
+		m_GSD->gameState = INGAME;
+		//reset gamestate() exp:
+		player_one->SetPos(Vector2(0, 0));
 
-	m_2DObjects.clear();
-	m_2DObjects.push_back(player_one);
+		m_2DObjects.clear();
+		m_2DObjects.push_back(player_one);
+	}
 }
 
 
@@ -836,11 +925,7 @@ test3d2->SetPos(10.0f*Vector3::Forward + 5.0f*Vector3::Right + Vector3::Down);
 test3d2->SetScale(5.0f);
 m_3DObjects.push_back(test3d2);
 
-ImageGO2D *test = new ImageGO2D(m_RD, "twist");
-test->SetOri(45);
-test->SetPos(Vector2(300, 300));
-test->CentreOrigin();
-m_2DObjects.push_back(test);
+
 test = new ImageGO2D(m_RD, "guides_logo");
 test->SetPos(Vector2(100, 100));
 test->SetScale(Vector2(1.0f, 0.5f));

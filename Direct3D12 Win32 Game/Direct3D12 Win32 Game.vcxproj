@@ -220,6 +220,8 @@
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Images\Quit_Button.png" />
+    <Image Include="..\Images\Settings_Button.png" />
     <Image Include="directx.ico" />
   </ItemGroup>
   <ItemGroup>
