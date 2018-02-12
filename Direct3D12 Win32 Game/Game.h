@@ -97,6 +97,12 @@ private:
 	RenderData* m_RD;
 	Camera* m_cam;
 
+	Player2D* player_one;
+	Text2D* title_text;
+	ImageGO2D* start_game_button;
+	ImageGO2D* settings_button;
+	ImageGO2D* quit_button;
+
 	GameStateData* m_GSD;
 
 	//GEP:: Keyboard and Mouse Abstractions for basic input system
@@ -107,6 +113,12 @@ private:
 
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
+
+	int menu_option_selected = 0;
+	void highlight_option_selected();
+
+	void loadMenu();
+	void loadGame();
 
 	//Debug
 	Text2D * stateText = new Text2D("AH");

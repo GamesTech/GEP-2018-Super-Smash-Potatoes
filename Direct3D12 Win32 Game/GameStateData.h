@@ -3,11 +3,12 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
-enum State {
-	PLAY = 1,
-	PAUSE = 0,
-	MENU = 2,
-	EXIT = -1,
+enum GameState
+{
+	MENU,
+	INGAME,
+	INGAMEPAUSED,
+	GAMEOVER
 };
 
 struct GameStateData
@@ -21,5 +22,7 @@ struct GameStateData
 
 	//length of time since last frame
 	float m_dt;
+
+	GameState gameState;
 };
 

@@ -81,6 +81,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_GSD = new GameStateData;
 
+	m_GSD->gameState = MENU;
+
 //GEP::set up keyboard & mouse input systems
 	m_keyboard = std::make_unique<Keyboard>();
 	m_mouse = std::make_unique<Mouse>();
@@ -155,48 +157,32 @@ void Game::Initialize(HWND window, int width, int height)
 	m_RD->m_cam = m_cam;
 	m_3DObjects.push_back(m_cam);
 
-	TestPBGO3D* test3d = new TestPBGO3D();
-	test3d->SetScale(5.0f);
-	test3d->Init();
-	m_3DObjects.push_back(test3d);
+	player_one = new Player2D(m_RD, "gens");
+	player_one->SetDrive(100.0f);
+	player_one->SetDrag(0.5f);
 
-	GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
-	test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
-	test3d2->SetScale(5.0f);
-	m_3DObjects.push_back(test3d2);	
 
-	ImageGO2D *test = new ImageGO2D(m_RD, "twist");
-	test->SetOri(45);
-	test->SetPos(Vector2(300, 300));
-	test->CentreOrigin();
-	m_2DObjects.push_back(test);
-	test = new ImageGO2D(m_RD,"guides_logo");
-	test->SetPos(Vector2(100, 100));
-	test->SetScale(Vector2(1.0f,0.5f));
-	test->SetColour(Color(1, 0, 0, 1));
-	m_2DObjects.push_back(test);
+	title_text = new Text2D("Super Trash Potatoes");
+	m_2DObjects.push_back(title_text);
 
 	
 	m_2DObjects.push_back(stateText);
 
-	Player2D* testPlay = new Player2D(m_RD,"gens");
-	testPlay->SetPos(Vector2(300, 300));
-	testPlay->SetDrive(500.0f);
-	testPlay->SetDrag(0.5f);
-	m_2DObjects.push_back(testPlay);
+	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
+	start_game_button->SetPos(Vector2(300, 200));
+	start_game_button->CentreOrigin();
+	m_2DObjects.push_back(start_game_button);
 
-	SDKMeshGO3D *test3 = new SDKMeshGO3D(m_RD, "cup");
-	test3->SetPos(12.0f*Vector3::Forward + 5.0f*Vector3::Left + Vector3::Down);
-	test3->SetScale(5.0f);
-	m_3DObjects.push_back(test3);
+	settings_button = new ImageGO2D(m_RD, "Settings_Button");
+	settings_button->SetPos(Vector2(300, 300));
+	settings_button->CentreOrigin();
+	m_2DObjects.push_back(settings_button);
 
-	Loop *loop = new Loop(m_audEngine.get(), "NightAmbienceSimple_02");
-	loop->SetVolume(0.1f);
-	loop->Play();
-	m_sounds.push_back(loop);
+	quit_button = new ImageGO2D(m_RD, "Quit_Button");
+	quit_button->SetPos(Vector2(300, 400));
+	quit_button->CentreOrigin();
+	m_2DObjects.push_back(quit_button);
 
-	TestSound* TS = new TestSound(m_audEngine.get(), "Explo1");
-	m_sounds.push_back(TS);
 
 	m_gamePad = std::make_unique<GamePad>();
 	
@@ -211,7 +197,7 @@ void Game::Tick()
         Update(m_timer);
     });
 
-    Render();
+	Render();
 }
 
 //GEP:: Updates all the Game Object Structures
@@ -219,6 +205,24 @@ void Game::Update(DX::StepTimer const& timer)
 {
 	ReadInput();
     m_GSD->m_dt = float(timer.GetElapsedSeconds());
+
+	switch (m_GSD->gameState)
+	{
+	case MENU:
+
+		break;
+	case INGAME:
+
+		break;
+	case INGAMEPAUSED:
+
+		break;
+	case GAMEOVER:
+
+		break;
+	default:
+		break;
+	}
 
 	//this will update the audio engine but give us chance to do somehting else if that isn't working
 	if (!m_audEngine->Update())
@@ -238,6 +242,8 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 
     //Add your game logic here.
+
+
 	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
 	{
 		(*it)->Tick(m_GSD);
@@ -805,37 +811,168 @@ void Game::OnDeviceLost()
 
 void Game::ReadInput()
 {
-//GEP:: CHeck out the DirectXTK12 wiki for more information about these systems
-//https://github.com/Microsoft/DirectXTK/wiki/Mouse-and-keyboard-input
+	//GEP:: CHeck out the DirectXTK12 wiki for more information about these systems
+	//https://github.com/Microsoft/DirectXTK/wiki/Mouse-and-keyboard-input
 
-//You'll also found similar stuff for Game Controllers here:
-//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
+	//You'll also found similar stuff for Game Controllers here:
+	//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
 
-	
-
-//Note in both cases they are identical to the DirectXTK for DirectX 11
+	//Note in both cases they are identical to the DirectXTK for DirectX 11
 
 	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState= m_keyboard->GetState();
+	m_GSD->m_keyboardState = m_keyboard->GetState();
 
 	//Quit if press Esc
 	if (m_GSD->m_keyboardState.Escape)
-		PostQuitMessage(0);
+	{
+	PostQuitMessage(0);
+	}
 
 	m_GSD->m_mouseState = m_mouse->GetState();
 
-	// TODO: Gamepad
-	m_GSD->m_gamePadState = m_gamePad->GetState(0);
-
-	if (m_GSD->m_gamePadState.IsConnected())
+	switch (m_GSD->gameState)
 	{
-		// TODO: Read controller 0 here
-		if (m_GSD->m_gamePadState.IsViewPressed())
+	case MENU:
+		if (m_GSD->m_keyboardState.Down)
 		{
-			PostQuitMessage(0);
+			if (menu_option_selected < 3)
+			{
+				menu_option_selected++;
+				highlight_option_selected();
+			}
 		}
-		m_buttons.Update(m_GSD->m_gamePadState);
-		
+		if (m_GSD->m_keyboardState.Up)
+		{
+			if (menu_option_selected > 1)
+			{
+				menu_option_selected--;
+				highlight_option_selected();
+			}
+		}
+		if (m_GSD->m_keyboardState.Enter)
+		{
+			switch (menu_option_selected)
+			{
+			case 1:
+				loadGame();
+				break;
+			case 2:
+				//settings
+				break;
+			case 3:
+				PostQuitMessage(0);
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case INGAME:
+		if (m_GSD->m_keyboardState.O)
+		{
+			loadMenu();
+		}
+		break;
+	case INGAMEPAUSED:
+		break;
+	case GAMEOVER:
+		break;
+	default:
+		//something has gone wrong
+		break;
 	}
-
 }
+
+void Game::highlight_option_selected()
+{
+	switch (menu_option_selected)
+	{
+	case 1:
+		start_game_button->SetColour(Color(1, 0, 0));
+		settings_button->SetColour(Color(1, 1, 1));
+		quit_button->SetColour(Color(1, 1, 1));
+		break;
+	case 2:
+		start_game_button->SetColour(Color(1, 1, 1));
+		settings_button->SetColour(Color(1, 0, 0));
+		quit_button->SetColour(Color(1, 1, 1));
+		break;
+	case 3:
+		start_game_button->SetColour(Color(1, 1, 1));
+		settings_button->SetColour(Color(1, 1, 1));
+		quit_button->SetColour(Color(1, 0, 0));
+		break;
+	default:
+		//something has gone wrong
+		break;
+	}
+}
+
+void Game::loadMenu()
+{
+	if (m_GSD->gameState != MENU)
+	{
+		m_GSD->gameState = MENU;
+
+		m_2DObjects.clear();
+		m_2DObjects.push_back(title_text);
+		m_2DObjects.push_back(start_game_button);
+		m_2DObjects.push_back(settings_button);
+		m_2DObjects.push_back(quit_button);
+	}
+}
+
+void Game::loadGame()
+{
+	if (m_GSD->gameState != INGAME)
+	{
+		m_GSD->gameState = INGAME;
+		//reset gamestate() exp:
+		player_one->SetPos(Vector2(0, 0));
+
+		m_2DObjects.clear();
+		m_2DObjects.push_back(player_one);
+	}
+}
+
+
+
+/*
+TestPBGO3D* test3d = new TestPBGO3D();
+test3d->SetScale(5.0f);
+test3d->Init();
+m_3DObjects.push_back(test3d);
+
+GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
+test3d2->SetPos(10.0f*Vector3::Forward + 5.0f*Vector3::Right + Vector3::Down);
+test3d2->SetScale(5.0f);
+m_3DObjects.push_back(test3d2);
+
+
+test = new ImageGO2D(m_RD, "guides_logo");
+test->SetPos(Vector2(100, 100));
+test->SetScale(Vector2(1.0f, 0.5f));
+test->SetColour(Color(1, 0, 0, 1));
+m_2DObjects.push_back(test);
+
+Text2D * test2 = new Text2D("testing text");
+m_2DObjects.push_back(test2);
+
+Player2D* testPlay = new Player2D(m_RD, "gens");
+testPlay->SetDrive(100.0f);
+testPlay->SetDrag(0.5f);
+m_2DObjects.push_back(testPlay);
+
+SDKMeshGO3D *test3 = new SDKMeshGO3D(m_RD, "cup");
+test3->SetPos(12.0f*Vector3::Forward + 5.0f*Vector3::Left + Vector3::Down);
+test3->SetScale(5.0f);
+m_3DObjects.push_back(test3);
+
+Loop *loop = new Loop(m_audEngine.get(), "NightAmbienceSimple_02");
+loop->SetVolume(0.1f);
+loop->Play();
+m_sounds.push_back(loop);
+
+TestSound* TS = new TestSound(m_audEngine.get(), "Explo1");
+m_sounds.push_back(TS);
+*/

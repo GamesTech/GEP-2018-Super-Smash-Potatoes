@@ -173,6 +173,12 @@
     <Image Include="directx.ico">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="..\Images\Quit_Button.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\Images\Settings_Button.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest">

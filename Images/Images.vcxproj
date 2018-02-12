@@ -132,6 +132,13 @@
   <ItemGroup>
     <Text Include="READ_ME.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Start_Game_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Quit_Button.png" />
+    <ImageContentTask Include="Settings_Button.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
