@@ -26,6 +26,7 @@ protected:
 	//float m_gravity = 980;
 	float m_jumpForce = 25000;
 	float m_drive = 100.0f;
+	float m_size = 126.f;
 
 	bool m_grounded = false;
 

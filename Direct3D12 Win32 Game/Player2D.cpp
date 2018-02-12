@@ -85,12 +85,45 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 void Player2D::CheckCollision(GameObject2D *_obj)
 {
 	GameObject2D* object = _obj;
-	if (object->CollMin().x > m_min.x
-		&& object->CollMax().x < m_max.x
-		&& object->CollMin().y > m_min.y
-		&& object->CollMax().y < m_max.y)
+	if (object->CollMin().x >= m_min.x
+		&& object->CollMax().x <= m_max.x
+		&& object->CollMin().y >= m_min.y
+		&& object->CollMax().y <= m_max.y)
 	{
-		m_grounded = true;
+		m_grounded = m_pos.x = object->CollMax().x;
 	}
+	if (m_max.x <= object->CollMax().x && m_max.x >= object->CollMin().x &&  m_pos.y <= object->CollMax().y)
+	{
+		m_pos.x = object->CollMin().x - m_size;
+		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+	}
+	if (m_pos.x <= object->CollMax().x && m_pos.x >= object->CollMin().x && m_pos.y <= object->CollMax().y)
+	{
+		m_pos.x = object->CollMax().x;
+		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+	}
+
+	//if (m_pos.x <= object->CollMax().y && m_pos.x >= object->CollMin().y)
+	//{
+	//	m_pos.x = object->CollMax().x;
+	//	m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+	//}
+
+	//if (m_pos.y < 0.0f)
+	//{
+	//	m_pos.y = 0.0f;
+	//	m_vel.y = 0.0f;
+	//}
+
+	//if (m_pos.x > m_limit.x)
+	//{
+	//	m_pos.x = m_limit.x;
+	//	m_vel.x = 0.0f;
+	//}
+	//if (m_pos.y > m_limit.y)
+	//{
+	//	m_pos.y = m_limit.y;
+	//	m_vel.y = 0.0f;
+	//}
 
 }

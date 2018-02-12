@@ -179,9 +179,16 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	//m_2DObjects.push_back(stateText);
 
-	m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(100, 300));
+	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(500, 300));
 	m_testPlatform->TestCollision();
+	m_2DObjects.push_back(m_testPlatform);
+
+
+	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
+	m_testPlatform2->SetPos(Vector2(100, 300));
+	m_testPlatform2->TestCollision();
+	m_2DObjects.push_back(m_testPlatform2);
 
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
@@ -246,12 +253,15 @@ void Game::Update(DX::StepTimer const& timer)
 		(*it)->Tick(m_GSD);
 	}
 
+	//for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
+	//{
+	//	(*it)->Tick(m_GSD);
+	//}
+
 	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
 	{
-		(*it)->Tick(m_GSD);
+		m_player->Tick(m_GSD, *it);
 	}
-
-	m_player->Tick(m_GSD, m_testPlatform);
 
 	// TODO: Gamepad
 	auto state = m_gamePad->GetState(0);
@@ -339,7 +349,6 @@ void Game::Render()
 		(*it)->Render(m_RD);
 	}
 
-	m_testPlatform->Render(m_RD);
 	m_player->Render(m_RD);
 
 	m_RD->m_spriteBatch->End();
