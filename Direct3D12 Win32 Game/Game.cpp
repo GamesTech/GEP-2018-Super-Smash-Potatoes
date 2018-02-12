@@ -16,8 +16,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    m_outputWidth(800),
-    m_outputHeight(600),
+    m_outputWidth(1280),
+    m_outputHeight(720),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -160,12 +160,13 @@ void Game::Initialize(HWND window, int width, int height)
 	player_one = new Player2D(m_RD, "gens");
 	player_one->SetDrive(100.0f);
 	player_one->SetDrag(0.5f);
+	player_one->SetPos(Vector2(300, 300));
 
 
 	title_text = new Text2D("Super Trash Potatoes");
 	m_2DObjects.push_back(title_text);
 
-	
+	stateText->SetPos(Vector2(1100, 680));
 	m_2DObjects.push_back(stateText);
 
 	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
@@ -186,7 +187,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gamePad = std::make_unique<GamePad>();
 	
-	GameStateData::state = State::PLAY;
+	GameStateData::state = GameState::MENU;
 }
 
 //GEP:: Executes the basic game loop.
@@ -273,12 +274,12 @@ void Game::Update(DX::StepTimer const& timer)
 	//Debug: Displaying current gamestate
 	switch (GameStateData::state) 
 	{
-		case PLAY:
-		stateText->SetText("PLAY");
+		case MENU:
+		stateText->SetText("Menu");
 		break;
 
-		case PAUSE:
-		stateText->SetText("PAUSE");
+		case INGAME:
+		stateText->SetText("Ingame");
 		break;
 
 		default:
@@ -928,7 +929,7 @@ void Game::loadGame()
 	{
 		m_GSD->gameState = INGAME;
 		//reset gamestate() exp:
-		player_one->SetPos(Vector2(0, 0));
+		player_one->SetPos(Vector2(400, 400));
 
 		m_2DObjects.clear();
 		m_2DObjects.push_back(player_one);

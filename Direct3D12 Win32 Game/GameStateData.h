@@ -18,7 +18,7 @@ struct GameStateData
 	Mouse::State m_mouseState;
 	GamePad::State m_gamePadState;
 
-	static State state;
+	static GameState state;
 
 	//length of time since last frame
 	float m_dt;

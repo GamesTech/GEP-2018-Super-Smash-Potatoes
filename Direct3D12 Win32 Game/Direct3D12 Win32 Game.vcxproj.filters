@@ -165,6 +165,9 @@
     <ClCompile Include="Physics2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameStateData.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
