@@ -111,4 +111,7 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
+	void loadMenu();
+	void loadGame();
+
 };

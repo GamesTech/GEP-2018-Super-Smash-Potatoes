@@ -34,17 +34,6 @@ Game::~Game()
     // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
     WaitForGpu();
 
-	if (player_one)
-	{
-		delete player_one;
-		player_one = nullptr;
-	}
-	if (title_text)
-	{
-		delete title_text;
-		title_text = nullptr;
-	}
-
 	//delete the GO2Ds
 	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
 	{
@@ -174,6 +163,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 
 	title_text = new Text2D("Super Trash Potatoes");
+	m_2DObjects.push_back(title_text);
 
 
 	m_gamePad = std::make_unique<GamePad>();
@@ -802,18 +792,38 @@ void Game::ReadInput()
 	}
 
 
-	if (m_GSD->m_keyboardState.P)
+	if ((m_GSD->m_keyboardState.P) && (m_GSD->gameState != MENU))
 	{
-		if (m_GSD->gameState != INGAME)
-		{
-			m_GSD->gameState = INGAME;
-			m_2DObjects.push_back(player_one);
-		}
+		loadMenu();
+	}
+	if ((m_GSD->m_keyboardState.O) && (m_GSD->gameState != INGAME))
+	{
+		loadGame();
 	}
 
 
 	m_GSD->m_mouseState = m_mouse->GetState();
 }
+
+void Game::loadMenu()
+{
+	m_GSD->gameState = MENU;
+
+	m_2DObjects.clear();
+	m_2DObjects.push_back(title_text);
+}
+
+void Game::loadGame()
+{
+	m_GSD->gameState = INGAME;
+	//reset gamestate() exp:
+	player_one->SetPos(Vector2(0,0));
+
+	m_2DObjects.clear();
+	m_2DObjects.push_back(player_one);
+}
+
+
 
 /*
 TestPBGO3D* test3d = new TestPBGO3D();
