@@ -17,6 +17,7 @@ public:
 
 	//place the origin at the middle of the string
 	void CentreOrigin();
+	void BottomOrigin();
 
 	void Render(RenderData* _RD);
 protected:

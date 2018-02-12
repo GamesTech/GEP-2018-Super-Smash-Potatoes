@@ -50,3 +50,11 @@ void ImageGO2D::CentreOrigin()
 	m_origin.x = float(size.x / 2);
 	m_origin.y = float(size.y / 2);
 }
+
+void ImageGO2D::BottomOrigin()
+{
+	XMUINT2 size = GetTextureSize(m_texture.Get());
+
+	m_origin.x = float(size.x / 2);
+	m_origin.y = float(size.y);
+}

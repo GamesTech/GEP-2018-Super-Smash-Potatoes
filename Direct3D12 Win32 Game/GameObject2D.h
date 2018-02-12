@@ -28,6 +28,7 @@ public:
 
 
 	virtual void CentreOrigin() = 0;
+	virtual void BottomOrigin() = 0;
 
 	virtual void Tick(GameStateData* _GSD) {};
 	virtual void Render(RenderData* _RD) = 0;

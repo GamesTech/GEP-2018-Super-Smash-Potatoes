@@ -20,6 +20,7 @@ public:
 	void Render(RenderData* _RD);
 
 	void CentreOrigin();
+	void BottomOrigin();
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;

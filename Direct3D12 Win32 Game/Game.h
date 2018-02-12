@@ -9,6 +9,7 @@
 
 #include "StepTimer.h"
 #include "Audio.h"
+#include "Text2D.h"
 #include <vector>
 using std::vector;
 
@@ -107,6 +108,9 @@ private:
 
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
+
+	//Debug
+	Text2D * stateText;
 
 	DirectX::GamePad::ButtonStateTracker m_buttons;
 };
