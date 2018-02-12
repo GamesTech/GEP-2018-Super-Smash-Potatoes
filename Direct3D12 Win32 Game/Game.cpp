@@ -180,7 +180,7 @@ void Game::Initialize(HWND window, int width, int height)
 	//m_2DObjects.push_back(stateText);
 
 	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(500, 300));
+	m_testPlatform->SetPos(Vector2(500, 600));
 	m_testPlatform->TestCollision();
 	m_2DObjects.push_back(m_testPlatform);
 

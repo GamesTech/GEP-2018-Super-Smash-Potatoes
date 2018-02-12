@@ -45,6 +45,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		if (m_grounded)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
+			m_grounded = false;
 		}
 	}
 
@@ -85,23 +86,60 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 void Player2D::CheckCollision(GameObject2D *_obj)
 {
 	GameObject2D* object = _obj;
-	if (object->CollMin().x >= m_min.x
-		&& object->CollMax().x <= m_max.x
-		&& object->CollMin().y >= m_min.y
-		&& object->CollMax().y <= m_max.y)
+	float left = 0;
+	float right = 0;
+	float top = 0;
+	float bottom = 0;
+	
+	if (m_pos.x < object->Left() && object->Left() < m_max.x < object->Right())
 	{
-		m_grounded = m_pos.x = object->CollMax().x;
+		left = m_max.x - object->Left();
 	}
-	if (m_max.x <= object->CollMax().x && m_max.x >= object->CollMin().x &&  m_pos.y <= object->CollMax().y)
+	if (object->Left() < m_pos.x && m_pos.x < object->Right() && object->Right() < m_max.x) 
 	{
-		m_pos.x = object->CollMin().x - m_size;
-		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+		right = m_pos.x - object->Right();
 	}
-	if (m_pos.x <= object->CollMax().x && m_pos.x >= object->CollMin().x && m_pos.y <= object->CollMax().y)
+
+	if (m_pos.y < object->Top() && object->Top() < m_max.y && m_max.y < object->Bottom()) 
 	{
-		m_pos.x = object->CollMax().x;
-		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+		top = m_max.y - object->Bottom();
 	}
+
+	if (object->Top() < m_pos.y && m_pos.y < object->Bottom() && object->Bottom() < m_max.y) 
+	{
+		bottom = m_pos.y - object->Top();
+	}
+
+
+
+	if (m_max.x <= object->Right() && m_max.x >= object->Left())
+	{
+		if (m_pos.y <= object->Bottom() && m_max.y >= object->Top())
+		{
+			m_pos.x = object->Left() - m_size.x;
+			m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+			m_grounded = true;
+		}
+	}
+	else if (m_pos.x <= object->Right() && m_pos.x >= object->Left())
+	{
+		if ((m_pos.y <= object->Bottom() && m_max.y >= object->Top()))
+		{
+			m_pos.x = object->Right();
+			m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+			m_grounded = true;
+		}
+	}
+	else if (m_max.y <= object->Bottom() && m_max.y >= object->Top())
+	{
+		if (m_pos.x <= object->Right() && m_max.x >= object->Left())
+		{
+			m_pos.y = object->Bottom() + m_size.y;
+			m_vel.y = 0.0f; // yea, not a nice bounce for works okay for a first pass
+			m_grounded = true;
+		}
+	}
+	
 
 	//if (m_pos.x <= object->CollMax().y && m_pos.x >= object->CollMin().y)
 	//{

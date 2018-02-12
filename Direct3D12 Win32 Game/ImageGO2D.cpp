@@ -51,6 +51,9 @@ void ImageGO2D::SetBoundingBoxes()
 	m_min.y = m_pos.y;
 	m_max.x = m_pos.x + size.x;
 	m_max.y = m_pos.y + size.y;
+
+	m_size.x = size.x;
+	m_size.y = size.y;
 }
 
 void ImageGO2D::CentreOrigin()
