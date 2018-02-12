@@ -4,6 +4,7 @@
     <ImageContentTask Include="guides_logo.png" />
     <ImageContentTask Include="twist.png" />
     <ImageContentTask Include="gens.png" />
+    <ImageContentTask Include="mario.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
