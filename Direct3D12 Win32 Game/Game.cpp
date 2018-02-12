@@ -176,7 +176,7 @@ void Game::Initialize(HWND window, int width, int height)
 	test->SetColour(Color(1, 0, 0, 1));
 	m_2DObjects.push_back(test);
 
-	
+	stateText = new Text2D("1123");
 	m_2DObjects.push_back(stateText);
 
 	Player2D* testPlay = new Player2D(m_RD,"gens");
