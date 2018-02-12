@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include "File.h"
 
 extern void ExitGame();
 
@@ -201,6 +202,10 @@ void Game::Initialize(HWND window, int width, int height)
 	m_gamePad = std::make_unique<GamePad>();
 	
 	GameStateData::state = State::PLAY;
+
+	File * file = new File("test1.txt", false);
+
+	file->read();
 }
 
 //GEP:: Executes the basic game loop.
