@@ -166,6 +166,7 @@ void Game::Initialize(HWND window, int width, int height)
 	title_text = new Text2D("Super Trash Potatoes");
 	m_2DObjects.push_back(title_text);
 
+	stateText = new Text2D("1123");
 	stateText->SetPos(Vector2(1100, 680));
 	m_2DObjects.push_back(stateText);
 
