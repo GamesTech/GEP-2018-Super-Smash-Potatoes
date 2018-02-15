@@ -203,9 +203,17 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	GameStateData::state = State::PLAY;
 
-	File * file = new File("test1.txt", false);
+	File * file = new File("test2.txt", false);
 
-	file->read();
+	std::vector<std::string> block1;
+	block1.push_back("this is the first block");
+	file->addBlock(block1);
+	std::vector<std::string> block2;
+	block2.push_back("this is the second block");
+	file->addBlock(block2);
+	
+	file->write();
+	//file->read();
 }
 
 //GEP:: Executes the basic game loop.

@@ -6,11 +6,6 @@ File::File(std::string path, bool read_only)
 	this->path = path;
 }
 
-
-File::~File()
-{
-}
-
 bool File::read()
 {
 	inFile.open(path);
@@ -39,6 +34,31 @@ bool File::read()
 	}
 
 	inFile.close();
+
+	return true;
+}
+
+bool File::write()
+{
+	outFile.open(path);
+	if (!outFile) {
+		//Debug out?
+		return false;
+	}
+
+	for (int y = 0; y < contents.size(); y++)
+	{
+		outFile << "{\n";
+		for (int x = 0; x < contents.at(y).size(); x++)
+		{
+			outFile << contents.at(y).at(x) + "\n";
+		}
+		outFile << "}\n";
+	}
+
+	outFile.close();
+
+	return true;
 }
 
 std::vector<std::string> File::getBlock(int index) const
