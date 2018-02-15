@@ -26,12 +26,14 @@ public:
 	float GetOri() { return m_orientation; }
 	Color GetColour() { return m_colour; }
 	Vector2 GetScale() { return m_scale; }
+	float GetLayer() { return m_layer;  }
 
 	void SetPos(Vector2 _pos) { m_pos = _pos; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
 	void SetOri(float _ori) { m_orientation = _ori; }
 	void SetColour(Color _col) { m_colour = _col; }
 	void SetScale(Vector2 _scale) { m_scale = _scale; }
+	void SetLayer(float _layer) { m_layer = _layer;  }
 
 
 	virtual void CentreOrigin() = 0;

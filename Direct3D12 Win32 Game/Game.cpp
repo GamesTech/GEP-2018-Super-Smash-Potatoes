@@ -176,6 +176,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
 	start_game_button->SetPos(Vector2(300, 200));
+	start_game_button->SetLayer(1.0f);
 	start_game_button->CentreOrigin();
 	m_2DObjects.push_back(start_game_button);
 
@@ -358,7 +359,7 @@ void Game::Render()
 	//finally draw all 2D objects
 	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get());
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
 	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
 	{
