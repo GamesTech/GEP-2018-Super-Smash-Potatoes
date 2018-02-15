@@ -280,18 +280,18 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 
 	// TODO: Gamepad
-	auto state = m_gamePad->GetState(0);
+	m_GSD->m_gamePadState = m_gamePad->GetState(0);
 
-	if (state.IsConnected())
+	if (m_GSD->m_gamePadState.IsConnected())
 	{
 		// TODO: Read controller 0 here
-		if (state.IsViewPressed())
+		if (m_GSD->m_gamePadState.IsViewPressed())
 		{
 			PostQuitMessage(0);
 		}
 		else
 		{
-			m_gamePad->SetVibration(0, state.triggers.left, state.triggers.right);
+			m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
 		}
 	}
 
