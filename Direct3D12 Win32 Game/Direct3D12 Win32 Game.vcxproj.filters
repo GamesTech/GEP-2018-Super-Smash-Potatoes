@@ -112,7 +112,9 @@
     <ClInclude Include="Physics2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="File.h" />
+    <ClInclude Include="File.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -169,7 +171,9 @@
     <ClCompile Include="GameStateData.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp" />
+    <ClCompile Include="File.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

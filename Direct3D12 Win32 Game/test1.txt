@@ -1,2 +1,7 @@
-this is a dummy file
-yay for me I did my job
+{
+	this is a dummy file
+	yay for me I did my job
+}
+{
+	this is a seperate block
+}

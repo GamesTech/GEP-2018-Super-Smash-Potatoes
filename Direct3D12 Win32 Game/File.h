@@ -13,11 +13,12 @@ public:
 
 	bool write();
 
-	std::string getLine(int index) const;
+	std::vector<std::string> getBlock(int index) const;
+	void addBlock(std::vector<std::string> & block);
 private:
 	std::ifstream inFile;
 
 	std::string path;
-	std::vector<std::string> contents;
+	std::vector<std::vector<std::string>> contents;
 };
 

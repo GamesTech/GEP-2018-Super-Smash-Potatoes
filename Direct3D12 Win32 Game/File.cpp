@@ -13,7 +13,6 @@ File::~File()
 
 bool File::read()
 {
-	
 	inFile.open(path);
 	if (!inFile) {
 		//Debug out?
@@ -21,15 +20,33 @@ bool File::read()
 	}
 
 	std::string line;
+	std::vector<std::string> block;
 
 	while (std::getline(inFile, line)) {
-		contents.push_back(line);
+		if (line == "{")
+		{
+			continue;
+		}
+		else if (line == "}")
+		{
+			contents.push_back(block);
+			block.clear();
+		}
+		else
+		{
+			block.push_back(line);
+		}
 	}
 
 	inFile.close();
 }
 
-std::string File::getLine(int index) const
+std::vector<std::string> File::getBlock(int index) const
 {
 	return contents.at(index);
+}
+
+void File::addBlock(std::vector<std::string>& block)
+{
+	contents.push_back(block);
 }
