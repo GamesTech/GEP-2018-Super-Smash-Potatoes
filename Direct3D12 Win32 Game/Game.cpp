@@ -845,11 +845,6 @@ void Game::ReadInput()
 		{
 			loadMenu();
 		}
-		if (m_GSD->m_keyboardState.L)
-		{
-			audio_manager->playSound();
-			audio_manager->playLoopAmbience();
-		}
 		break;
 	case INGAMEPAUSED:
 		break;
@@ -910,6 +905,7 @@ void Game::loadGame()
 
 		m_2DObjects.clear();
 		m_2DObjects.push_back(player_one);
+		audio_manager->playLoopAmbience(0);
 	}
 }
 

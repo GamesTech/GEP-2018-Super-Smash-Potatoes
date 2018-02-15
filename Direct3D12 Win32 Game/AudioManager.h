@@ -12,17 +12,14 @@ public:
 	void suspendAudioManager();
 	void resumeAudioManager();
 	void playSound();
-	void playLoopAmbience();
+	void playLoopAmbience(int track);
 
 private:
 	void loadAllSounds();
 	std::vector<Sound*> m_sounds;
-
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	TestSound* TS;
-	Loop *loop;
-
+	std::vector<Loop*> loop_vector;
 };
 

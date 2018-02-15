@@ -106,14 +106,14 @@
     <ClInclude Include="pch.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TestSound.h">
-      <Filter>GameObjects\Sounds\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Physics2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">
       <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundAndMusic.h">
+      <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +162,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="TestSound.cpp">
-      <Filter>GameObjects\Sounds\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Physics2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
@@ -172,6 +169,9 @@
       <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="SoundAndMusic.cpp">
+      <Filter>GameObjects\Sounds\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

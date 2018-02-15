@@ -12,6 +12,7 @@ AudioManager::~AudioManager()
 		delete (*it);
 	}
 	m_sounds.clear();
+	loop_vector.clear();
 
 }
 
@@ -24,7 +25,7 @@ void AudioManager::initAudioManager()
 #endif
 	m_audEngine = std::make_unique<AudioEngine>(eflags);
 
-
+	loadAllSounds();
 }
 
 void AudioManager::updateAudioManager(GameStateData* gsd)
@@ -59,21 +60,21 @@ void AudioManager::resumeAudioManager()
 
 void AudioManager::playSound()
 {
-	TS->SetVolume(1.5f);
-	TS->Play();
-	m_sounds.push_back(TS);
+	//m_sounds.push_back(new SoundAndMusic(m_audEngine.get(), "Explo1"));
 }
 
 
-void AudioManager::playLoopAmbience()
+void AudioManager::playLoopAmbience(int track)
 {
-	loop->SetVolume(0.1f);
-	loop->Play();
-	m_sounds.push_back(loop);
+	if (track < loop_vector.size())
+	{
+		m_sounds.push_back(loop_vector[track]);
+	}
 }
 
 void AudioManager::loadAllSounds()
 {
-	TS = new TestSound(m_audEngine.get(), "Explo1");
-	loop = new Loop(m_audEngine.get(), "NightAmbienceSimple_02");
+	m_sounds.push_back(new SoundAndMusic(m_audEngine.get(), "Explo1"));
+
+	loop_vector.push_back(new Loop(m_audEngine.get(), "NightAmbienceSimple_02"));
 }
