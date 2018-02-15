@@ -88,24 +88,24 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 {
 	GameObject2D* object = _obj;
 
-	float w = 0.5 * (Width() + object->Width());
-	float h = 0.5 * (Height() + object->Height());
-	float dx = m_pos.x - object->GetPos().x;
-	float dy = m_pos.y - object->GetPos().y;
+	float width = 0.5 * (Width() + object->Width());
+	float height = 0.5 * (Height() + object->Height());
+	float distance_x = m_pos.x - object->GetPos().x;
+	float distance_y = m_pos.y - object->GetPos().y;
 
-	if (abs(dx) <= w && abs(dy) <= h)
+	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{
 		// collision occured
 
-		float wy = w * dy;
-		float hx = h * dx;
+		float collision_width = width * distance_y;
+		float collision_heihgt = height * distance_x;
 
-		if (wy > hx)
+		if (collision_width > collision_heihgt)
 		{
-			if (wy > -hx)
+			if (collision_width > -collision_heihgt)
 			{
-				m_pos.y = object->Bottom();
-				m_vel.y = 0.0f;
+				m_pos.y = object->Top() - m_size.y;
+				//m_vel.y = 0.0f;
 				//m_grounded = true;
 
 				// collision at the bottom 
@@ -120,7 +120,7 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 		}
 		else
 		{
-			if (wy > -hx)
+			if (collision_width > -collision_heihgt)
 			{
 				m_pos.x = object->Right();
 				m_vel.x = 0.0f;
@@ -130,7 +130,10 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 			else
 			{
 				m_pos.y = object->Top() - m_size.y;
-				m_vel.y = 0.0f;
+				if (m_vel.y > 0)
+				{
+					m_vel.y = 0.0f;
+				}
 				m_grounded = true;
 				// at the top 
 			}
