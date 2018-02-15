@@ -178,31 +178,31 @@ void Game::Initialize(HWND window, int width, int height)
 	start_game_button->SetPos(Vector2(300, 200));
 	start_game_button->CentreOrigin();
 	m_2DObjects.push_back(start_game_button);
-	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
-	m_2DObjects.push_back(m_testPlatform);
 
 	settings_button = new ImageGO2D(m_RD, "Settings_Button");
 	settings_button->SetPos(Vector2(300, 300));
 	settings_button->CentreOrigin();
 	m_2DObjects.push_back(settings_button);
 
+	quit_button = new ImageGO2D(m_RD, "Quit_Button");
+	quit_button->SetPos(Vector2(300, 400));
+	quit_button->CentreOrigin();
+	m_2DObjects.push_back(quit_button);
+	
+	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(500, 600));
+	m_testPlatform->TestCollision();
+	m_2DPlatforms.push_back(m_testPlatform);
+
 	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
 	m_testPlatform2->SetPos(Vector2(100, 300));
 	m_testPlatform2->TestCollision();
-	m_2DObjects.push_back(m_testPlatform2);
+	m_2DPlatforms.push_back(m_testPlatform2);
 
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetDrive(500.0f);
 	m_player->SetDrag(0.5f);
-
-	quit_button = new ImageGO2D(m_RD, "Quit_Button");
-	quit_button->SetPos(Vector2(300, 400));
-	quit_button->CentreOrigin();
-	m_2DObjects.push_back(quit_button);
-
 
 	m_gamePad = std::make_unique<GamePad>();
 	
@@ -274,7 +274,7 @@ void Game::Update(DX::StepTimer const& timer)
 	//	(*it)->Tick(m_GSD);
 	//}
 
-	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
+	for (vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
 	{
 		m_player->Tick(m_GSD, *it);
 	}
@@ -364,6 +364,12 @@ void Game::Render()
 	{
 		(*it)->Render(m_RD);
 	}
+
+	for (vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
+	{
+		(*it)->Render(m_RD);
+	}
+
 
 	m_player->Render(m_RD);
 
@@ -955,10 +961,10 @@ void Game::loadGame()
 	{
 		m_GSD->gameState = INGAME;
 		//reset gamestate() exp:
-		player_one->SetPos(Vector2(400, 400));
+		//player_one->SetPos(Vector2(400, 400));
 
 		m_2DObjects.clear();
-		m_2DObjects.push_back(player_one);
+		//m_2DObjects.push_back(player_one);
 	}
 }
 

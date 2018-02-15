@@ -93,6 +93,7 @@ private:
 
 	vector<GameObject3D*> m_3DObjects;
 	vector<GameObject2D*> m_2DObjects;
+	vector<GameObject2D*> m_2DPlatforms;
 	vector<Sound*> m_sounds;
 
 	//Player2D* m_testPlatform;
@@ -101,7 +102,7 @@ private:
 	RenderData* m_RD;
 	Camera* m_cam;
 
-	Player2D* player_one;
+	//Player2D* player_one;
 	Text2D* title_text;
 	ImageGO2D* start_game_button;
 	ImageGO2D* settings_button;
