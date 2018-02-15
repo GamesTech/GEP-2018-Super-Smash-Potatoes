@@ -38,7 +38,7 @@ void ImageGO2D::Render(RenderData* _RD)
 {
 	_RD->m_spriteBatch->Draw(_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
 		GetTextureSize(m_texture.Get()),
-		m_pos, nullptr, m_colour, m_orientation, m_origin, m_scale);
+		m_pos, nullptr, m_colour, m_orientation, m_origin, m_scale, SpriteEffects_None, m_layer);
 	//TODO::add sprite effects & layer Depth
 	//TODO::example stuff for sprite sheet
 }

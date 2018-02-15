@@ -45,6 +45,7 @@ protected:
 	Vector2 m_origin = Vector2::Zero;
 	Vector2 m_centre = Vector2::Zero;
 	float m_orientation = 0.0f;
+	float m_layer = 0.0f;
 	Color m_colour = Colors::White;
 	Vector2 m_scale = Vector2::One;
 	Vector2 m_min = Vector2::Zero;
