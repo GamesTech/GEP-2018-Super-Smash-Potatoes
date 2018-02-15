@@ -12,18 +12,22 @@ public:
 	Player2D(RenderData* _RD, string _filename);
 	virtual ~Player2D();
 
-	virtual void Tick(GameStateData* _GSD);
+	void Tick(GameStateData* _GSD, GameObject2D* _obj);
 
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
 
+	void TestCollision() { SetBoundingBoxes(); }
+	void CheckCollision(GameObject2D* _obj);
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
 	Vector2 GetLimit() { return m_limit; }
 
 protected:
-	float m_gravity = 980;
-	float m_jumpForce = 5000;
-	float m_drive = 1.0f;
+	//float m_gravity = 980;
+	float m_jumpForce = 25000;
+	float m_drive = 100.0f;
+
+	bool m_grounded = false;
 
 	Vector2 m_limit = Vector2(800, 600);
 };

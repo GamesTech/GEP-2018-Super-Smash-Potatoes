@@ -4,7 +4,9 @@
 
 Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
 {
+	SetBoundingBoxes();
 	BottomOrigin();
+	//SetMass(100);
 }
 
 
@@ -12,10 +14,22 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD)
+void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 {
 
 //Push the guy around in the directions for the key presses
+	SetBoundingBoxes();
+
+	if (m_pos.y < m_limit.y)
+	{
+		m_grounded = false;
+	}
+	else
+	{
+		m_grounded = true;
+	}
+
+	CheckCollision(_obj);
 	
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
 	{
@@ -28,19 +42,21 @@ void Player2D::Tick(GameStateData * _GSD)
 
 	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
 	{
-		AddForce(-m_jumpForce * Vector2::UnitY);
+		if (m_grounded)
+		{
+			AddForce(-m_jumpForce * Vector2::UnitY);
+			m_grounded = false;
+		}
 	}
 
-	if (m_pos.y < m_limit.y)
-	{
-		AddForce(m_gravity * Vector2::UnitY);
-	}
+	AddGravity(m_grounded);
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
 	
 	//AddForce(m_drive*mousePush);
 
 	//GEP:: Lets go up the inheritence and share our functionality
+
 
 	Physics2D::Tick(_GSD);
 
@@ -66,4 +82,59 @@ void Player2D::Tick(GameStateData * _GSD)
 		m_pos.y = m_limit.y;
 		m_vel.y = 0.0f;
 	}
+}
+
+void Player2D::CheckCollision(GameObject2D *_obj)
+{
+	GameObject2D* object = _obj;
+
+	float w = 0.5 * (Width() + object->Width());
+	float h = 0.5 * (Height() + object->Height());
+	float dx = m_pos.x - object->GetPos().x;
+	float dy = m_pos.y - object->GetPos().y;
+
+	if (abs(dx) <= w && abs(dy) <= h)
+	{
+		// collision occured
+
+		float wy = w * dy;
+		float hx = h * dx;
+
+		if (wy > hx)
+		{
+			if (wy > -hx)
+			{
+				m_pos.y = object->Bottom();
+				m_vel.y = 0.0f;
+				//m_grounded = true;
+
+				// collision at the bottom 
+			}
+			else
+			{
+				m_pos.x = object->Left() - m_size.x;
+				m_vel.x = 0.0f;
+				m_grounded = true;
+				// on the left 
+			}
+		}
+		else
+		{
+			if (wy > -hx)
+			{
+				m_pos.x = object->Right();
+				m_vel.x = 0.0f;
+				m_grounded = true;
+				// on the right 
+			}
+			else
+			{
+				m_pos.y = object->Top() - m_size.y;
+				m_vel.y = 0.0f;
+				m_grounded = true;
+				// at the top 
+			}
+		}
+	}
+
 }

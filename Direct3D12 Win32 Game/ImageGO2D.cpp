@@ -43,18 +43,37 @@ void ImageGO2D::Render(RenderData* _RD)
 	//TODO::example stuff for sprite sheet
 }
 
+void ImageGO2D::SetBoundingBoxes()
+{
+	XMUINT2 size = GetTextureSize(m_texture.Get());
+
+	m_min.x = m_pos.x;
+	m_min.y = m_pos.y;
+	m_max.x = m_pos.x + size.x;
+	m_max.y = m_pos.y + size.y;
+
+	m_size.x = size.x;
+	m_size.y = size.y;
+}
+
 void ImageGO2D::CentreOrigin()
 {
 	XMUINT2 size = GetTextureSize(m_texture.Get());
 
 	m_origin.x = float(size.x / 2);
 	m_origin.y = float(size.y / 2);
+
 }
 
 void ImageGO2D::BottomOrigin()
 {
 	XMUINT2 size = GetTextureSize(m_texture.Get());
 
+	//m_min.x = m_origin.x;
+	//m_min.y = m_origin.y;
+	//m_max.x = m_origin.x + size.x;
+	//m_max.y = m_origin.y + size.y;
+	
 	m_origin.x = float(size.x / 2);
 	m_origin.y = float(size.y);
 }

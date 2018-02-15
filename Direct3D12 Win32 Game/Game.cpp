@@ -157,11 +157,15 @@ void Game::Initialize(HWND window, int width, int height)
 	m_RD->m_cam = m_cam;
 	m_3DObjects.push_back(m_cam);
 
-	player_one = new Player2D(m_RD, "gens");
-	player_one->SetDrive(100.0f);
-	player_one->SetDrag(0.5f);
-	player_one->SetPos(Vector2(300, 300));
+	//TestPBGO3D* test3d = new TestPBGO3D();
+	//test3d->SetScale(5.0f);
+	//test3d->Init();
+	//m_3DObjects.push_back(test3d);
 
+	//GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
+	//test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
+	//test3d2->SetScale(5.0f);
+	//m_3DObjects.push_back(test3d2);	
 
 	title_text = new Text2D("Super Trash Potatoes");
 	m_2DObjects.push_back(title_text);
@@ -174,11 +178,25 @@ void Game::Initialize(HWND window, int width, int height)
 	start_game_button->SetPos(Vector2(300, 200));
 	start_game_button->CentreOrigin();
 	m_2DObjects.push_back(start_game_button);
+	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(500, 600));
+	m_testPlatform->TestCollision();
+	m_2DObjects.push_back(m_testPlatform);
 
 	settings_button = new ImageGO2D(m_RD, "Settings_Button");
 	settings_button->SetPos(Vector2(300, 300));
 	settings_button->CentreOrigin();
 	m_2DObjects.push_back(settings_button);
+
+	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
+	m_testPlatform2->SetPos(Vector2(100, 300));
+	m_testPlatform2->TestCollision();
+	m_2DObjects.push_back(m_testPlatform2);
+
+	m_player = new Player2D(m_RD,"gens");
+	m_player->SetPos(Vector2(300, 300));
+	m_player->SetDrive(500.0f);
+	m_player->SetDrag(0.5f);
 
 	quit_button = new ImageGO2D(m_RD, "Quit_Button");
 	quit_button->SetPos(Vector2(300, 400));
@@ -251,9 +269,14 @@ void Game::Update(DX::StepTimer const& timer)
 		(*it)->Tick(m_GSD);
 	}
 
+	//for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
+	//{
+	//	(*it)->Tick(m_GSD);
+	//}
+
 	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
 	{
-		(*it)->Tick(m_GSD);
+		m_player->Tick(m_GSD, *it);
 	}
 
 	// TODO: Gamepad
@@ -341,6 +364,8 @@ void Game::Render()
 	{
 		(*it)->Render(m_RD);
 	}
+
+	m_player->Render(m_RD);
 
 	m_RD->m_spriteBatch->End();
 

@@ -16,6 +16,6 @@ void TestSound::Tick(GameStateData * _GSD)
 {
 	if (_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space)
 	{
-		Play();
+		//Play();
 	}
 }

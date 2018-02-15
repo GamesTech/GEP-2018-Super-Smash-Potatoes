@@ -12,6 +12,16 @@ Physics2D::~Physics2D()
 {
 }
 
+// basic gravity 
+void Physics2D::AddGravity(bool _grounded)
+{
+	if (_grounded != true)
+	{
+		m_acc += m_gravity * m_mass;
+	}
+
+}
+
 //GEP:: Basic Euler Solver for point mass 
 void Physics2D::Tick(GameStateData * _GSD)
 {

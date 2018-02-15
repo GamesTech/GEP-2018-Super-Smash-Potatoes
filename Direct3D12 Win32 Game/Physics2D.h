@@ -10,6 +10,7 @@ public:
 	~Physics2D();
 
 	void AddForce(Vector2 _push) { m_acc += _push / m_mass; }
+	void AddGravity(bool _grounded);
 
 	Vector2 GetVel() { return m_vel; }
 
@@ -23,6 +24,7 @@ public:
 protected:
 	Vector2 m_vel;
 	Vector2 m_acc;
+	Vector2 m_gravity = Vector2 (0.f, 980.f);
 
 	float m_mass = 1.0f;
 	float m_drag = 0.0f;
