@@ -170,6 +170,7 @@
     </FXCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Loop.h" />
     <ClInclude Include="Physics2D.h" />
@@ -188,11 +189,12 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TestPBGO3D.h" />
-    <ClInclude Include="TestSound.h" />
+    <ClInclude Include="SoundEffects.h" />
     <ClInclude Include="Text2D.h" />
     <ClInclude Include="GameStateData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameStateData.cpp" />
     <ClCompile Include="Loop.cpp" />
@@ -214,7 +216,7 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="TestPBGO3D.cpp" />
-    <ClCompile Include="TestSound.cpp" />
+    <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="Text2D.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -26,11 +26,6 @@ Game::Game() :
 
 Game::~Game()
 {
-	if (m_audEngine)
-	{
-		m_audEngine->Suspend();
-	}
-
     // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
     WaitForGpu();
 
@@ -46,15 +41,10 @@ Game::~Game()
 		delete (*it);
 	}
 	m_3DObjects.clear();
-	//delete the sounds
-	for (vector<Sound *>::iterator it = m_sounds.begin(); it != m_sounds.end(); it++)
-	{
-		delete (*it);
-	}
-	m_sounds.clear();
 
 	delete m_RD;
 	delete m_GSD;
+	delete audio_manager;
 
 	m_keyboard.reset();
 	m_mouse.reset();
@@ -72,12 +62,8 @@ void Game::Initialize(HWND window, int width, int height)
     CreateDevice();
     CreateResources();
 
-//GEP::init Audio System
-	AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
-#ifdef _DEBUG
-	eflags = eflags | AudioEngine_Debug;
-#endif
-	m_audEngine = std::make_unique<AudioEngine>(eflags);
+	audio_manager = new AudioManager;
+	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
 
@@ -245,22 +231,7 @@ void Game::Update(DX::StepTimer const& timer)
 		break;
 	}
 
-	//this will update the audio engine but give us chance to do somehting else if that isn't working
-	if (!m_audEngine->Update())
-	{
-		if (m_audEngine->IsCriticalError())
-		{
-			// We lost the audio device!
-		}
-	}
-	else
-	{
-		//update sounds playing
-		for (vector<Sound *>::iterator it = m_sounds.begin(); it != m_sounds.end(); it++)
-		{
-			(*it)->Tick(m_GSD);
-		}
-	}
+	audio_manager->updateAudioManager(m_GSD);
 
     //Add your game logic here.
 
@@ -452,14 +423,14 @@ void Game::OnDeactivated()
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
-	m_audEngine->Suspend();
+	audio_manager->suspendAudioManager();
 	m_gamePad->Suspend();
 }
 
 void Game::OnResuming()
 {
     m_timer.ResetElapsedTime();
-	m_audEngine->Resume();
+	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
 	m_gamePad->Resume();
@@ -906,6 +877,11 @@ void Game::ReadInput()
 		{
 			loadMenu();
 		}
+		if (m_GSD->m_keyboardState.N && !m_GSD->m_prevKeyboardState.N)
+		{
+			audio_manager->playSound(0);
+			audio_manager->changeLoopTrack(1);
+		}
 		break;
 	case INGAMEPAUSED:
 		break;
@@ -965,7 +941,9 @@ void Game::loadGame()
 		//player_one->SetPos(Vector2(400, 400));
 
 		m_2DObjects.clear();
-		//m_2DObjects.push_back(player_one);
+		audio_manager->changeLoopTrack(0);
+		audio_manager->playSound(0);
+		m_2DObjects.push_back(player_one);
 	}
 }
 
