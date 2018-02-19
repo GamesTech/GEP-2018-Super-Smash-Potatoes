@@ -139,6 +139,9 @@
     <ImageContentTask Include="Quit_Button.png" />
     <ImageContentTask Include="Settings_Button.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Buttons.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

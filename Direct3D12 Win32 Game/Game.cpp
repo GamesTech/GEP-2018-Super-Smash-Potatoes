@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include <SpriteBatch.h>
 
 extern void ExitGame();
 
@@ -174,34 +175,40 @@ void Game::Initialize(HWND window, int width, int height)
 	stateText->SetPos(Vector2(1100, 680));
 	m_2DObjects.push_back(stateText);
 
-	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
+	start_game_button = new ImageGO2D(m_RD, "Buttons");
 	start_game_button->SetPos(Vector2(300, 200));
+	start_game_button->SetRect(1, 1, 240, 80);
 	start_game_button->SetLayer(1.0f);
 	start_game_button->CentreOrigin();
 	m_2DObjects.push_back(start_game_button);
 
-	settings_button = new ImageGO2D(m_RD, "Settings_Button");
+	settings_button = new ImageGO2D(m_RD, "Buttons");
 	settings_button->SetPos(Vector2(300, 300));
+	settings_button->SetRect(1, 81, 240, 160);
 	settings_button->CentreOrigin();
 	m_2DObjects.push_back(settings_button);
 
-	quit_button = new ImageGO2D(m_RD, "Quit_Button");
+	quit_button = new ImageGO2D(m_RD, "Buttons");
 	quit_button->SetPos(Vector2(300, 400));
+	quit_button->SetRect(1, 161, 240, 240);
 	quit_button->CentreOrigin();
 	m_2DObjects.push_back(quit_button);
 	
 	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
 	m_testPlatform->SetPos(Vector2(500, 600));
+	m_testPlatform->SetRect();
 	m_testPlatform->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform);
 
 	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
 	m_testPlatform2->SetPos(Vector2(100, 300));
+	m_testPlatform2->SetRect();
 	m_testPlatform2->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform2);
 
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
+	m_player->SetRect(65, 65, 128, 128);
 	m_player->SetDrive(500.0f);
 	m_player->SetDrag(0.5f);
 

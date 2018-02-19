@@ -22,10 +22,13 @@ public:
 	void SetBoundingBoxes();
 	void CentreOrigin();
 	void BottomOrigin();
+	void SetRect(float left, float top, float right, float bottom);
+	void SetRect();
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
 	int m_resourceNum = -1;
+	RECT m_rect;
 
 };
 
