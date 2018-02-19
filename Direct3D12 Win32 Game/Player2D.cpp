@@ -40,7 +40,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		AddForce(m_drive * Vector2::UnitX);
 	}
 
-	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
+	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || _GSD->m_gamePadState.IsAPressed())
 	{
 		if (m_grounded)
 		{
