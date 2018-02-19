@@ -178,9 +178,10 @@ void Game::Initialize(HWND window, int width, int height)
 	quit_button->CentreOrigin();
 	m_2DObjects.push_back(quit_button);
 	
-	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	ImageGO2D *m_testPlatform = new ImageGO2D(m_RD, "platform");
 	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
+	m_testPlatform->DefaultOrigin();
+	m_testPlatform->SetBoundingBoxes();
 	m_2DPlatforms.push_back(m_testPlatform);
 
 	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");

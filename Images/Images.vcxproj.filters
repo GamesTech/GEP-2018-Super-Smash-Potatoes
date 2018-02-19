@@ -7,6 +7,7 @@
     <ImageContentTask Include="Start_Game_Button.png" />
     <ImageContentTask Include="Settings_Button.png" />
     <ImageContentTask Include="Quit_Button.png" />
+    <ImageContentTask Include="platform.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

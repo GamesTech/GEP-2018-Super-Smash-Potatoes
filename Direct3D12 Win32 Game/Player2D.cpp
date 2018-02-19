@@ -90,8 +90,8 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 
 	float width = 0.5 * (Width() + object->Width());
 	float height = 0.5 * (Height() + object->Height());
-	float distance_x = m_pos.x - object->GetPos().x;
-	float distance_y = m_pos.y - object->GetPos().y;
+	float distance_x = CenterX() - object->CenterX();
+	float distance_y = CenterY() - object->CenterY();
 
 	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{

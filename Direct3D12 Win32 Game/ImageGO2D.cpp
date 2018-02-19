@@ -77,3 +77,9 @@ void ImageGO2D::BottomOrigin()
 	m_origin.x = float(size.x / 2);
 	m_origin.y = float(size.y);
 }
+
+void ImageGO2D::DefaultOrigin()
+{
+	m_origin.x = 0.0f;
+	m_origin.y = 0.0f;
+}

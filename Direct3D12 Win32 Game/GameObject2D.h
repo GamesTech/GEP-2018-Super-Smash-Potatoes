@@ -21,6 +21,8 @@ public:
 	float Bottom() { return m_max.y; }
 	float Width() { return m_size.x; }
 	float Height() { return m_size.y; }
+	float CenterX() { return (m_pos.x + m_size.x / 2); }
+	float CenterY() { return (m_pos.y + m_size.y / 2); }
 
 	Vector2 GetOrigin() { return m_origin; }
 	float GetOri() { return m_orientation; }
@@ -45,7 +47,7 @@ public:
 protected:
 	Vector2 m_pos = Vector2::Zero;
 	Vector2 m_origin = Vector2::Zero;
-	Vector2 m_centre = Vector2::Zero;
+	Vector2 m_center = Vector2::Zero;
 	float m_orientation = 0.0f;
 	float m_layer = 0.0f;
 	Color m_colour = Colors::White;

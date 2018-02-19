@@ -22,6 +22,7 @@ public:
 	void SetBoundingBoxes();
 	void CentreOrigin();
 	void BottomOrigin();
+	void DefaultOrigin();
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
