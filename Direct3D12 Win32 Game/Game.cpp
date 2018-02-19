@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include "File.h"
+#include "Debug.h"
 
 extern void ExitGame();
 
@@ -193,6 +195,9 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gamePad = std::make_unique<GamePad>();
 	
+	GameStateData::state = State::PLAY;
+	Debug::init();
+	Debug::output("hello", "world");
 	GameStateData::state = GameState::MENU;
 }
 
