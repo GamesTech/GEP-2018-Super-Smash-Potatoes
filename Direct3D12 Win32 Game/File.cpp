@@ -46,7 +46,11 @@ bool File::read()
 
 bool File::write()
 {
-	if (read_only)return false;
+	if (read_only)
+	{
+		//Debug out READ ONLY FILE
+		return false;
+	}
 	outFile.open(path + ext);
 	if (!outFile) {
 		//Debug out?

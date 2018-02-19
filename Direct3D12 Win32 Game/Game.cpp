@@ -203,6 +203,8 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	GameStateData::state = State::PLAY;
 
+
+	/* Write Demo */
 	File * file = new File("test2", ".ssp", false);
 
 	std::vector<std::string> block1;
@@ -213,7 +215,15 @@ void Game::Initialize(HWND window, int width, int height)
 	file->addBlock(block2);
 	
 	file->write();
-	//file->read();
+
+
+	/* Read Demo */
+	File * file1 = new File("test3", ".ssp", true);
+
+	file1->read();
+	bool b = file1->write();
+	std::vector<std::string> vec = file1->getBlock(0);
+	
 }
 
 //GEP:: Executes the basic game loop.
