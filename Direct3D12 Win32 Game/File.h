@@ -23,5 +23,6 @@ private:
 	std::string ext;
 	std::string path;
 	std::vector<std::vector<std::string>> contents;
+	bool read_only;
 };
 

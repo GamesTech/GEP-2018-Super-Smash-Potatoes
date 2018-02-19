@@ -9,6 +9,7 @@ File::File(std::string path, std::string ext, bool read_only)
 {
 	this->path = path;
 	this->ext = ext;
+	this->read_only = read_only;
 }
 
 bool File::read()
@@ -45,6 +46,7 @@ bool File::read()
 
 bool File::write()
 {
+	if (read_only)return false;
 	outFile.open(path + ext);
 	if (!outFile) {
 		//Debug out?
