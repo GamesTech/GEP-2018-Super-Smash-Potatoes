@@ -115,6 +115,8 @@
     <ClInclude Include="SoundEffects.h">
       <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="File.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -174,6 +176,8 @@
     <ClCompile Include="SoundEffects.cpp">
       <Filter>GameObjects\Sounds\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="File.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
