@@ -112,7 +112,7 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SoundAndMusic.h">
+    <ClInclude Include="SoundEffects.h">
       <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -168,8 +168,10 @@
     <ClCompile Include="GameStateData.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="SoundAndMusic.cpp">
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffects.cpp">
       <Filter>GameObjects\Sounds\Source</Filter>
     </ClCompile>
   </ItemGroup>

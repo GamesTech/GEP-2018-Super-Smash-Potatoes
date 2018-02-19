@@ -189,7 +189,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TestPBGO3D.h" />
-    <ClInclude Include="SoundAndMusic.h" />
+    <ClInclude Include="SoundEffects.h" />
     <ClInclude Include="Text2D.h" />
     <ClInclude Include="GameStateData.h" />
   </ItemGroup>
@@ -216,7 +216,7 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="TestPBGO3D.cpp" />
-    <ClCompile Include="SoundAndMusic.cpp" />
+    <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="Text2D.cpp" />
   </ItemGroup>
   <ItemGroup>

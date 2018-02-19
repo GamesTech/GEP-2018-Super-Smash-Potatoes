@@ -8,6 +8,7 @@ Loop::Loop(AudioEngine* _audEngine, string _filename) :Sound(_audEngine,_filenam
 	{
 		m_loop = m_sfx->CreateInstance();
 	}
+	for_looping = true;
 }
 
 
@@ -28,7 +29,6 @@ void Loop::Play()
 		m_loop->Play(true);
 	}
 	m_playing = !m_playing;
-
 }
 
 
