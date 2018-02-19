@@ -195,7 +195,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gamePad = std::make_unique<GamePad>();
 	
-	GameStateData::state = State::PLAY;
+	//What is this??? vvv
+	//GameStateData::state = State::PLAY;
 	Debug::init();
 	Debug::output("hello", "world");
 	GameStateData::state = GameState::MENU;
@@ -948,7 +949,7 @@ void Game::loadGame()
 		m_2DObjects.clear();
 		audio_manager->changeLoopTrack(0);
 		audio_manager->playSound(0);
-		m_2DObjects.push_back(player_one);
+		//m_2DObjects.push_back(player_one);
 	}
 }
 
