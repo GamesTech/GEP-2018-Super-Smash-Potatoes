@@ -115,6 +115,9 @@
     <ClInclude Include="File.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -172,6 +175,9 @@
       <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="File.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
   </ItemGroup>

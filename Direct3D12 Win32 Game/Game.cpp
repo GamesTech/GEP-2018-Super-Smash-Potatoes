@@ -7,6 +7,7 @@
 #include "RenderData.h"
 #include "GameStateData.h"
 #include "File.h"
+#include "Debug.h"
 
 extern void ExitGame();
 
@@ -202,18 +203,8 @@ void Game::Initialize(HWND window, int width, int height)
 	m_gamePad = std::make_unique<GamePad>();
 	
 	GameStateData::state = State::PLAY;
-
-	File * file = new File("test2", ".ssp", false);
-
-	std::vector<std::string> block1;
-	block1.push_back("this is the first block");
-	file->addBlock(block1);
-	std::vector<std::string> block2;
-	block2.push_back("this is the second block");
-	file->addBlock(block2);
-	
-	file->write();
-	//file->read();
+	Debug::init();
+	Debug::output("hello", "world");
 }
 
 //GEP:: Executes the basic game loop.

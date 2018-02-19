@@ -19,7 +19,6 @@ public:
 private:
 	std::ifstream inFile;
 	std::ofstream outFile;
-
 	std::string ext;
 	std::string path;
 	std::vector<std::vector<std::string>> contents;
