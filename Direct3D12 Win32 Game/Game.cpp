@@ -203,7 +203,7 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	GameStateData::state = State::PLAY;
 
-	File * file = new File("test2.txt", false);
+	File * file = new File("test2", ".ssp", false);
 
 	std::vector<std::string> block1;
 	block1.push_back("this is the first block");

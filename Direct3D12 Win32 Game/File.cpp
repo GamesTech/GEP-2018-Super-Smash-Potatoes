@@ -1,14 +1,19 @@
 #include "pch.h"
 #include "File.h"
 
-File::File(std::string path, bool read_only)
+File::File(std::string path, bool read_only) : File(path, ".ssp", read_only)
+{
+}
+
+File::File(std::string path, std::string ext, bool read_only)
 {
 	this->path = path;
+	this->ext = ext;
 }
 
 bool File::read()
 {
-	inFile.open(path);
+	inFile.open(path + ext);
 	if (!inFile) {
 		//Debug out?
 		return false;
@@ -40,7 +45,7 @@ bool File::read()
 
 bool File::write()
 {
-	outFile.open(path);
+	outFile.open(path + ext);
 	if (!outFile) {
 		//Debug out?
 		return false;

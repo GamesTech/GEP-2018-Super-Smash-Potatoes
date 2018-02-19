@@ -6,6 +6,7 @@ class File
 {
 public:
 	File(std::string path, bool read_only);
+	File(std::string path, std::string ext, bool read_only);
 	~File() = default;
 
 	
@@ -19,6 +20,7 @@ private:
 	std::ifstream inFile;
 	std::ofstream outFile;
 
+	std::string ext;
 	std::string path;
 	std::vector<std::vector<std::string>> contents;
 };
