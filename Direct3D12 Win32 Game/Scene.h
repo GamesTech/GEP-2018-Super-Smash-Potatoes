@@ -2,7 +2,17 @@
 class Scene
 {
 public:
-	Scene();
-	~Scene();
+	Scene() = default;
+	~Scene() = default;
+
+	void virtual init();
+	void virtual update();
+	void virtual render();
+
+	GameObject2D& getObjectByIndex(int index) const;
+	GameObject2D& getObjectByTag(std::string tag) const;
+
+private:
+	std::vector<std::unique_ptr<GameObject2D>> game_objects;
 };
 

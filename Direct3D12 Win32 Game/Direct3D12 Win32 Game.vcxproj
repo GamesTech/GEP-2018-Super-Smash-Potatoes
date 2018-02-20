@@ -177,6 +177,8 @@
     <ClInclude Include="Loop.h" />
     <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player2D.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SDKMeshGO3D.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="Game.h" />
@@ -204,6 +206,8 @@
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player2D.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDKMeshGO3D.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject2D.cpp" />
