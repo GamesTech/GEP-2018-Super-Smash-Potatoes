@@ -109,6 +109,10 @@ private:
 	ImageGO2D* start_game_button;
 	ImageGO2D* settings_button;
 	ImageGO2D* quit_button;
+	Text2D* resolution_text;
+	ImageGO2D* main_menu_button;
+
+
 
 	GameStateData* m_GSD;
 
@@ -118,11 +122,20 @@ private:
 	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
 
+	int menu_option_selected = 1;
+	int resolution_option_selected = 1;
+	bool settings_menu_open = false;
+	//audio system
+	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
+
 	int menu_option_selected = 0;
 	void highlight_option_selected();
 
 	void loadMenu();
+	void loadSettings();
 	void loadGame();
+
+	void newResolutionText(int new_resolution_option);
 
 	//Debug
 	Text2D * stateText;
