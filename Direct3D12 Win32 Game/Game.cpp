@@ -16,8 +16,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    m_outputWidth(800),
-    m_outputHeight(600),
+    m_outputWidth(1280),
+    m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -165,6 +165,12 @@ void Game::Initialize(HWND window, int width, int height)
 	title_text = new Text2D("Super Trash Potatoes");
 	m_2DObjects.push_back(title_text);
 
+	resolution_text = new Text2D("<- 1280 x 720 ->");
+	resolution_text->SetPos(Vector2(300, 200));
+
+	stateText = new Text2D("1123");
+	stateText->SetPos(Vector2(1100, 680));
+	m_2DObjects.push_back(stateText);
 
 	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
 	start_game_button->SetPos(Vector2(300, 200));
@@ -180,6 +186,15 @@ void Game::Initialize(HWND window, int width, int height)
 	quit_button->SetPos(Vector2(300, 400));
 	quit_button->CentreOrigin();
 	m_2DObjects.push_back(quit_button);
+
+	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
+	main_menu_button->SetPos(Vector2(300, 300));
+	main_menu_button->CentreOrigin();
+	
+	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(500, 600));
+	m_testPlatform->TestCollision();
+	m_2DPlatforms.push_back(m_testPlatform);
 
 
 	m_gamePad = std::make_unique<GamePad>();
@@ -810,7 +825,7 @@ void Game::ReadInput()
 	switch (m_GSD->gameState)
 	{
 	case MENU:
-		if (m_GSD->m_keyboardState.Down)
+		if (m_GSD->m_keyboardState.Down && !m_GSD->m_prevKeyboardState.Down)
 		{
 			if (menu_option_selected < 3)
 			{
@@ -818,7 +833,7 @@ void Game::ReadInput()
 				highlight_option_selected();
 			}
 		}
-		if (m_GSD->m_keyboardState.Up)
+		if (m_GSD->m_keyboardState.Up && !m_GSD->m_prevKeyboardState.Up)
 		{
 			if (menu_option_selected > 1)
 			{
@@ -826,21 +841,68 @@ void Game::ReadInput()
 				highlight_option_selected();
 			}
 		}
-		if (m_GSD->m_keyboardState.Enter)
+		if (settings_menu_open)
 		{
-			switch (menu_option_selected)
+			if (m_GSD->m_keyboardState.Left && !m_GSD->m_prevKeyboardState.Left)
 			{
-			case 1:
-				loadGame();
-				break;
-			case 2:
-				//settings
-				break;
-			case 3:
-				PostQuitMessage(0);
-				break;
-			default:
-				break;
+				if (resolution_option_selected < 3)
+				{
+					resolution_option_selected++;
+					newResolutionText(resolution_option_selected);
+				}
+			}
+			if (m_GSD->m_keyboardState.Right && !m_GSD->m_prevKeyboardState.Right)
+			{
+				if (resolution_option_selected > 1)
+				{
+					resolution_option_selected--;
+					newResolutionText(resolution_option_selected);
+				}
+			}
+		}
+		if (m_GSD->m_keyboardState.Enter && !m_GSD->m_prevKeyboardState.Enter)
+		{
+			if (settings_menu_open == true)
+			{
+				switch (menu_option_selected)
+				{
+				case 1:
+					//nada
+					break;
+				case 2:
+					switch (resolution_option_selected)
+					{
+					case 1:
+						m_outputWidth = 800;
+						m_outputHeight = 600;
+						break;
+					case 2:
+						m_outputWidth = 1280;
+						m_outputHeight = 960;
+						break;
+					case 3:
+						m_outputWidth = 1440;
+						m_outputHeight = 1080;
+						break;
+					}
+
+					loadMenu();
+				}
+			}
+			else
+			{
+				switch (menu_option_selected)
+				{
+				case 1:
+					loadGame();
+					break;
+				case 2:
+					loadSettings();
+					break;
+				case 3:
+					PostQuitMessage(0);
+					break;
+				}
 			}
 		}
 		break;
@@ -862,26 +924,43 @@ void Game::ReadInput()
 
 void Game::highlight_option_selected()
 {
-	switch (menu_option_selected)
+	if (settings_menu_open == true)
 	{
-	case 1:
-		start_game_button->SetColour(Color(1, 0, 0));
-		settings_button->SetColour(Color(1, 1, 1));
-		quit_button->SetColour(Color(1, 1, 1));
-		break;
-	case 2:
-		start_game_button->SetColour(Color(1, 1, 1));
-		settings_button->SetColour(Color(1, 0, 0));
-		quit_button->SetColour(Color(1, 1, 1));
-		break;
-	case 3:
-		start_game_button->SetColour(Color(1, 1, 1));
-		settings_button->SetColour(Color(1, 1, 1));
-		quit_button->SetColour(Color(1, 0, 0));
-		break;
-	default:
-		//something has gone wrong
-		break;
+		switch (menu_option_selected)
+		{
+		case 1:
+			resolution_text->SetColour(Color(1, 0, 0));
+			main_menu_button->SetColour(Color(1, 1, 1));
+			break;
+		case 2:
+			resolution_text->SetColour(Color(1, 1, 1));
+			main_menu_button->SetColour(Color(1, 0, 0));
+			break;
+		}
+	}
+	else if (settings_menu_open == false)
+	{
+		switch (menu_option_selected)
+		{
+		case 1:
+			start_game_button->SetColour(Color(1, 0, 0));
+			settings_button->SetColour(Color(1, 1, 1));
+			quit_button->SetColour(Color(1, 1, 1));
+			break;
+		case 2:
+			start_game_button->SetColour(Color(1, 1, 1));
+			settings_button->SetColour(Color(1, 0, 0));
+			quit_button->SetColour(Color(1, 1, 1));
+			break;
+		case 3:
+			start_game_button->SetColour(Color(1, 1, 1));
+			settings_button->SetColour(Color(1, 1, 1));
+			quit_button->SetColour(Color(1, 0, 0));
+			break;
+		default:
+			//something has gone wrong
+			break;
+		}
 	}
 }
 
@@ -890,13 +969,26 @@ void Game::loadMenu()
 	if (m_GSD->gameState != MENU)
 	{
 		m_GSD->gameState = MENU;
-
-		m_2DObjects.clear();
-		m_2DObjects.push_back(title_text);
-		m_2DObjects.push_back(start_game_button);
-		m_2DObjects.push_back(settings_button);
-		m_2DObjects.push_back(quit_button);
 	}
+
+	menu_option_selected = 1;
+	settings_menu_open = false;
+
+	m_2DObjects.clear();
+	m_2DObjects.push_back(title_text);
+	m_2DObjects.push_back(start_game_button);
+	m_2DObjects.push_back(settings_button);
+	m_2DObjects.push_back(quit_button);
+
+}
+
+void Game::loadSettings()
+{
+	menu_option_selected = 1;
+	settings_menu_open = true;
+	m_2DObjects.clear();
+	m_2DObjects.push_back(resolution_text);
+	m_2DObjects.push_back(main_menu_button);
 }
 
 void Game::loadGame()
@@ -909,6 +1001,24 @@ void Game::loadGame()
 
 		m_2DObjects.clear();
 		m_2DObjects.push_back(player_one);
+	}
+}
+
+void Game::newResolutionText(int new_resolution_option)
+{
+	delete resolution_text;
+	resolution_text = nullptr;
+	switch (new_resolution_option)
+	{
+	case 1:
+		resolution_text = new Text2D("800 x 600 ->");
+		break;
+	case 2:
+		resolution_text = new Text2D("<- 1280 x 960 ->");
+		break;
+	case 3:
+		resolution_text = new Text2D("<- 1440 x 1080");
+		break;
 	}
 }
 
