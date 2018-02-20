@@ -27,7 +27,7 @@ public:
 	Color GetColour() { return m_colour; }
 	Vector2 GetScale() { return m_scale; }
 	float GetLayer() { return m_layer;  }
-
+	std::string GetTag() { return tag; }
 	void SetPos(Vector2 _pos) { m_pos = _pos; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
 	void SetOri(float _ori) { m_orientation = _ori; }
@@ -54,6 +54,7 @@ protected:
 	Vector2 m_max = Vector2::Zero;
 	Vector2 m_size = Vector2::Zero;
 
+	std::string tag;
 	//bool m_grounded = false;
 
 };
