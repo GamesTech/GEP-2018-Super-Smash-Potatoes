@@ -8,6 +8,7 @@
 #include "GameStateData.h"
 #include "File.h"
 #include "Debug.h"
+#include "MenuScene.h"
 
 extern void ExitGame();
 
@@ -38,12 +39,7 @@ Game::~Game()
 	}
 	m_2DObjects.clear();
 	//delete the GO3Ds
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		delete (*it);
-	}
-	m_3DObjects.clear();
-
+	
 	delete m_RD;
 	delete m_GSD;
 	delete audio_manager;
@@ -155,9 +151,6 @@ void Game::Initialize(HWND window, int width, int height)
 	//test3d2->SetScale(5.0f);
 	//m_3DObjects.push_back(test3d2);	
 
-	title_text = new Text2D("Super Trash Potatoes");
-	m_2DObjects.push_back(title_text);
-
 	resolution_text = new Text2D("<- 1280 x 720 ->");
 	resolution_text->SetPos(Vector2(300, 200));
 
@@ -165,22 +158,6 @@ void Game::Initialize(HWND window, int width, int height)
 	stateText->SetPos(Vector2(1100, 680));
 	m_2DObjects.push_back(stateText);
 
-	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
-	start_game_button->SetPos(Vector2(300, 200));
-	start_game_button->SetLayer(1.0f);
-	start_game_button->CentreOrigin();
-	m_2DObjects.push_back(start_game_button);
-
-	settings_button = new ImageGO2D(m_RD, "Settings_Button");
-	settings_button->SetPos(Vector2(300, 300));
-	settings_button->CentreOrigin();
-	m_2DObjects.push_back(settings_button);
-
-	quit_button = new ImageGO2D(m_RD, "Quit_Button");
-	quit_button->SetPos(Vector2(300, 400));
-	quit_button->CentreOrigin();
-	m_2DObjects.push_back(quit_button);
-	
 	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
 	m_testPlatform->SetPos(Vector2(500, 600));
 	m_testPlatform->TestCollision();
@@ -190,15 +167,11 @@ void Game::Initialize(HWND window, int width, int height)
 	m_testPlatform2->SetPos(Vector2(100, 300));
 	m_testPlatform2->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform2);
+
 	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
 	main_menu_button->SetPos(Vector2(300, 300));
 	main_menu_button->CentreOrigin();
 	
-	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
-	m_2DPlatforms.push_back(m_testPlatform);
-
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetDrive(500.0f);
@@ -210,6 +183,8 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::init();
 	Debug::output("hello", "world");
 
+	scene = std::make_unique<MenuScene>();
+	scene->init(m_RD);
 
 	GameStateData::state = GameState::MENU;
 }
@@ -231,43 +206,9 @@ void Game::Update(DX::StepTimer const& timer)
 	ReadInput();
     m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
-	switch (m_GSD->gameState)
-	{
-	case MENU:
-
-		break;
-	case INGAME:
-
-		break;
-	case INGAMEPAUSED:
-
-		break;
-	case GAMEOVER:
-
-		break;
-	default:
-		break;
-	}
-
 	audio_manager->updateAudioManager(m_GSD);
 
-    //Add your game logic here.
-
-
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		(*it)->Tick(m_GSD);
-	}
-
-	//for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
-	//{
-	//	(*it)->Tick(m_GSD);
-	//}
-
-	for (vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
-	{
-		m_player->Tick(m_GSD, *it);
-	}
+	scene->update(m_GSD);
 
 	// TODO: Gamepad
 	m_GSD->m_gamePadState = m_gamePad->GetState(0);
@@ -283,90 +224,26 @@ void Game::Update(DX::StepTimer const& timer)
 		{
 			m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
 		}
-	}
-
-	//Debug: Displaying current gamestate
-	switch (GameStateData::state) 
-	{
-		case MENU:
-		stateText->SetText("Menu");
-		break;
-
-		case INGAME:
-		stateText->SetText("Ingame");
-		break;
-
-		default:
-		stateText->SetText("STATE NOT ADDED TO DEBUG TEXT");
-		break;
-	}
-	
+	}	
 }
 
 //GEP:: Draws the scene.
 void Game::Render()
 {
-    // Don't try to render anything before the first Update.
-    if (m_timer.GetFrameCount() == 0)
-    {
-        return;
-    }
-
-    // Prepare the command list to render a new frame.
-    Clear();
-
-
-//draw each type of 3D objects
-
-	//primative batch
-	m_RD->m_effect->SetProjection(m_cam->GetProj());
-	m_RD->m_effect->SetView(m_cam->GetView());
-	m_RD->m_effect->Apply(m_commandList.Get());
-	m_RD->m_effect->EnableDefaultLighting();
-	m_RD->m_batch->Begin(m_commandList.Get());
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
+	// Don't try to render anything before the first Update.
+	if (m_timer.GetFrameCount() == 0)
 	{
-		if( (*it)->GetType()== GO3D_RT_PRIM )(*it)->Render(m_RD);
-	}
-	m_RD->m_batch->End();
-
-	//Render Geometric Primitives
-	m_RD->m_GPeffect->SetProjection(m_cam->GetProj());
-	m_RD->m_GPeffect->SetView(m_cam->GetView());
-	m_RD->m_GPeffect->Apply(m_commandList.Get());
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		if ((*it)->GetType() == GO3D_RT_GEOP)(*it)->Render(m_RD);
+		return;
 	}
 
-	//Render VBO Models	
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		if ((*it)->GetType() == GO3D_RT_SDK)(*it)->Render(m_RD);
-	}
+	// Prepare the command list to render a new frame.
+	Clear();
 
-	//finally draw all 2D objects
-	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
-	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
-
-	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
-	{
-		(*it)->Render(m_RD);
-	}
-
-	for (vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
-	{
-		(*it)->Render(m_RD);
-	}
+	scene->render(m_RD, m_commandList);
 
 
-	m_player->Render(m_RD);
-
-	m_RD->m_spriteBatch->End();
-
-    // Show the new frame.
-    Present();
+	// Show the new frame.
+	Present();
 	m_graphicsMemory->Commit(m_commandQueue.Get());
 }
 
@@ -916,8 +793,6 @@ void Game::ReadInput()
 						m_outputHeight = 1080;
 						break;
 					}
-
-					loadMenu();
 				}
 			}
 			else
@@ -940,7 +815,7 @@ void Game::ReadInput()
 	case INGAME:
 		if (m_GSD->m_keyboardState.O)
 		{
-			loadMenu();
+			
 		}
 		if (m_GSD->m_keyboardState.N && !m_GSD->m_prevKeyboardState.N)
 		{
@@ -976,46 +851,8 @@ void Game::highlight_option_selected()
 	}
 	else if (settings_menu_open == false)
 	{
-		switch (menu_option_selected)
-		{
-		case 1:
-			start_game_button->SetColour(Color(1, 0, 0));
-			settings_button->SetColour(Color(1, 1, 1));
-			quit_button->SetColour(Color(1, 1, 1));
-			break;
-		case 2:
-			start_game_button->SetColour(Color(1, 1, 1));
-			settings_button->SetColour(Color(1, 0, 0));
-			quit_button->SetColour(Color(1, 1, 1));
-			break;
-		case 3:
-			start_game_button->SetColour(Color(1, 1, 1));
-			settings_button->SetColour(Color(1, 1, 1));
-			quit_button->SetColour(Color(1, 0, 0));
-			break;
-		default:
-			//something has gone wrong
-			break;
-		}
+		
 	}
-}
-
-void Game::loadMenu()
-{
-	if (m_GSD->gameState != MENU)
-	{
-		m_GSD->gameState = MENU;
-	}
-
-	menu_option_selected = 1;
-	settings_menu_open = false;
-
-	m_2DObjects.clear();
-	m_2DObjects.push_back(title_text);
-	m_2DObjects.push_back(start_game_button);
-	m_2DObjects.push_back(settings_button);
-	m_2DObjects.push_back(quit_button);
-
 }
 
 void Game::loadSettings()

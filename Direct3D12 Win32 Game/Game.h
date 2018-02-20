@@ -11,6 +11,7 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
+#include "Scene.h"
 #include "AudioManager.h"
 
 using std::vector;
@@ -105,10 +106,6 @@ private:
 	AudioManager* audio_manager;
 
 	//Player2D* player_one;
-	Text2D* title_text;
-	ImageGO2D* start_game_button;
-	ImageGO2D* settings_button;
-	ImageGO2D* quit_button;
 	Text2D* resolution_text;
 	ImageGO2D* main_menu_button;
 
@@ -128,14 +125,14 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	int menu_option_selected = 0;
 	void highlight_option_selected();
 
-	void loadMenu();
 	void loadSettings();
 	void loadGame();
 
 	void newResolutionText(int new_resolution_option);
+
+	std::unique_ptr<Scene> scene;
 
 	//Debug
 	Text2D * stateText;
