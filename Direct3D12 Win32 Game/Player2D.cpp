@@ -34,10 +34,13 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
+		facing = LEFT;
+		
 	}
 	if (_GSD->m_keyboardState.D || _GSD->m_gamePadState.IsDPadRightPressed() || _GSD->m_gamePadState.IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
+		facing = RIGHT;
 	}
 
 	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
@@ -45,10 +48,33 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		if (m_grounded)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
+			
 			m_grounded = false;
 		}
 	}
 
+	if (!m_grounded)
+	{
+		if (facing == LEFT)
+		{
+			SetRect(116, 0, 182, 63);
+		}
+		if (facing == RIGHT)
+		{
+			SetRect(1435, 0, 1502, 63);
+		}
+	}
+	else
+	{
+		if (facing == LEFT)
+		{
+			SetRect(724, 0, 775, 63);
+		}
+		if (facing == RIGHT)
+		{
+			SetRect(844, 0, 894, 63);
+		}
+	}
 	AddGravity(m_grounded);
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);

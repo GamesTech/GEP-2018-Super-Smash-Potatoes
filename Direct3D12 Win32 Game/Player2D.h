@@ -3,6 +3,12 @@
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 
+enum Facing
+{
+	LEFT,
+	RIGHT
+};
+
 class Player2D :
 	public Physics2D
 {
@@ -23,6 +29,7 @@ public:
 	Vector2 GetLimit() { return m_limit; }
 
 protected:
+	Facing facing;
 	//float m_gravity = 980;
 	float m_jumpForce = 25000;
 	float m_drive = 100.0f;

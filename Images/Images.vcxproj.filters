@@ -8,6 +8,7 @@
     <ImageContentTask Include="Settings_Button.png" />
     <ImageContentTask Include="Quit_Button.png" />
     <ImageContentTask Include="Buttons.png" />
+    <ImageContentTask Include="mario_sprite_batch.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

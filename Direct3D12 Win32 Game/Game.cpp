@@ -194,9 +194,9 @@ void Game::Initialize(HWND window, int width, int height)
 	m_testPlatform2->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform2);
 
-	m_player = new Player2D(m_RD,"gens");
+	m_player = new Player2D(m_RD,"mario_sprite_batch");
 	m_player->SetPos(Vector2(300, 300));
-	m_player->SetRect(65, 65, 128, 128);
+	m_player->SetRect(724, 0, 775, 63);
 	m_player->SetDrive(500.0f);
 	m_player->SetDrag(0.5f);
 
