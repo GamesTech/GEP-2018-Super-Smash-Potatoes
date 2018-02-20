@@ -13,7 +13,7 @@ public:
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
 
 private:
-	void virtual ReadInput(GameStateData* gsd) override;
+	void virtual  ReadInput(GameStateData* gsd) override;
 	void newResolutionText(int new_resolution_option);
 
 	int menu_option_selected = 1;

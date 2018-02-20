@@ -44,9 +44,6 @@ Game::~Game()
 	delete m_GSD;
 	delete audio_manager;
 
-	m_keyboard.reset();
-	m_mouse.reset();
-
 	m_graphicsMemory.reset();
 }
 
@@ -64,17 +61,9 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
-
 	m_GSD->gameState = MENU;
 
-//GEP::set up keyboard & mouse input systems
-	m_keyboard = std::make_unique<Keyboard>();
-	m_mouse = std::make_unique<Mouse>();
-	m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
-	m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
-
 	m_RD = new RenderData;
-
 	m_RD->m_d3dDevice = m_d3dDevice;
 	m_RD->m_commandQueue = m_commandQueue;
 	m_RD->m_commandList = m_commandList;
@@ -139,20 +128,6 @@ void Game::Initialize(HWND window, int width, int height)
 //GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
-	m_3DObjects.push_back(m_cam);
-
-	//TestPBGO3D* test3d = new TestPBGO3D();
-	//test3d->SetScale(5.0f);
-	//test3d->Init();
-	//m_3DObjects.push_back(test3d);
-
-	//GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
-	//test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
-	//test3d2->SetScale(5.0f);
-	//m_3DObjects.push_back(test3d2);	
-
-	resolution_text = new Text2D("<- 1280 x 720 ->");
-	resolution_text->SetPos(Vector2(300, 200));
 
 	stateText = new Text2D("1123");
 	stateText->SetPos(Vector2(1100, 680));
@@ -167,17 +142,11 @@ void Game::Initialize(HWND window, int width, int height)
 	m_testPlatform2->SetPos(Vector2(100, 300));
 	m_testPlatform2->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform2);
-
-	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
-	main_menu_button->SetPos(Vector2(300, 300));
-	main_menu_button->CentreOrigin();
 	
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetDrive(500.0f);
 	m_player->SetDrag(0.5f);
-
-	m_gamePad = std::make_unique<GamePad>();
 	
 	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
@@ -186,7 +155,10 @@ void Game::Initialize(HWND window, int width, int height)
 	scene = std::make_unique<MenuScene>();
 	scene->init(m_RD);
 
-	GameStateData::state = GameState::MENU;
+	//m_keyboard = std::make_unique<Keyboard>();
+	//m_mouse = std::make_unique<Mouse>();
+	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
+	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
 }
 
 //GEP:: Executes the basic game loop.
@@ -203,28 +175,29 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-	ReadInput();
+	scene->ReadInput(m_GSD);
+
     m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
 	scene->update(m_GSD);
 
-	// TODO: Gamepad
-	m_GSD->m_gamePadState = m_gamePad->GetState(0);
+	//// TODO: Gamepad
+	//m_GSD->m_gamePadState = m_gamePad->GetState(0);
 
-	if (m_GSD->m_gamePadState.IsConnected())
-	{
-		// TODO: Read controller 0 here
-		if (m_GSD->m_gamePadState.IsViewPressed())
-		{
-			PostQuitMessage(0);
-		}
-		else
-		{
-			m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
-		}
-	}	
+	//if (m_GSD->m_gamePadState.IsConnected())
+	//{
+	//	// TODO: Read controller 0 here
+	//	if (m_GSD->m_gamePadState.IsViewPressed())
+	//	{
+	//		PostQuitMessage(0);
+	//	}
+	//	else
+	//	{
+	//		m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
+	//	}
+	//}	
 }
 
 //GEP:: Draws the scene.
@@ -708,233 +681,3 @@ void Game::OnDeviceLost()
     CreateDevice();
     CreateResources();
 }
-
-void Game::ReadInput()
-{
-	//GEP:: CHeck out the DirectXTK12 wiki for more information about these systems
-	//https://github.com/Microsoft/DirectXTK/wiki/Mouse-and-keyboard-input
-
-	//You'll also found similar stuff for Game Controllers here:
-	//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
-
-	//Note in both cases they are identical to the DirectXTK for DirectX 11
-
-	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState = m_keyboard->GetState();
-
-	//Quit if press Esc
-	if (m_GSD->m_keyboardState.Escape)
-	{
-	PostQuitMessage(0);
-	}
-
-	m_GSD->m_mouseState = m_mouse->GetState();
-
-	switch (m_GSD->gameState)
-	{
-	case MENU:
-		if (m_GSD->m_keyboardState.Down && !m_GSD->m_prevKeyboardState.Down)
-		{
-			if (menu_option_selected < 3)
-			{
-				menu_option_selected++;
-				highlight_option_selected();
-			}
-		}
-		if (m_GSD->m_keyboardState.Up && !m_GSD->m_prevKeyboardState.Up)
-		{
-			if (menu_option_selected > 1)
-			{
-				menu_option_selected--;
-				highlight_option_selected();
-			}
-		}
-		if (settings_menu_open)
-		{
-			if (m_GSD->m_keyboardState.Left && !m_GSD->m_prevKeyboardState.Left)
-			{
-				if (resolution_option_selected < 3)
-				{
-					resolution_option_selected++;
-					newResolutionText(resolution_option_selected);
-				}
-			}
-			if (m_GSD->m_keyboardState.Right && !m_GSD->m_prevKeyboardState.Right)
-			{
-				if (resolution_option_selected > 1)
-				{
-					resolution_option_selected--;
-					newResolutionText(resolution_option_selected);
-				}
-			}
-		}
-		if (m_GSD->m_keyboardState.Enter && !m_GSD->m_prevKeyboardState.Enter)
-		{
-			if (settings_menu_open == true)
-			{
-				switch (menu_option_selected)
-				{
-				case 1:
-					//nada
-					break;
-				case 2:
-					switch (resolution_option_selected)
-					{
-					case 1:
-						m_outputWidth = 800;
-						m_outputHeight = 600;
-						break;
-					case 2:
-						m_outputWidth = 1280;
-						m_outputHeight = 960;
-						break;
-					case 3:
-						m_outputWidth = 1440;
-						m_outputHeight = 1080;
-						break;
-					}
-				}
-			}
-			else
-			{
-				switch (menu_option_selected)
-				{
-				case 1:
-					loadGame();
-					break;
-				case 2:
-					loadSettings();
-					break;
-				case 3:
-					PostQuitMessage(0);
-					break;
-				}
-			}
-		}
-		break;
-	case INGAME:
-		if (m_GSD->m_keyboardState.O)
-		{
-			
-		}
-		if (m_GSD->m_keyboardState.N && !m_GSD->m_prevKeyboardState.N)
-		{
-			audio_manager->playSound(0);
-			audio_manager->changeLoopTrack(1);
-		}
-		break;
-	case INGAMEPAUSED:
-		break;
-	case GAMEOVER:
-		break;
-	default:
-		//something has gone wrong
-		break;
-	}
-}
-
-void Game::highlight_option_selected()
-{
-	if (settings_menu_open == true)
-	{
-		switch (menu_option_selected)
-		{
-		case 1:
-			resolution_text->SetColour(Color(1, 0, 0));
-			main_menu_button->SetColour(Color(1, 1, 1));
-			break;
-		case 2:
-			resolution_text->SetColour(Color(1, 1, 1));
-			main_menu_button->SetColour(Color(1, 0, 0));
-			break;
-		}
-	}
-	else if (settings_menu_open == false)
-	{
-		
-	}
-}
-
-void Game::loadSettings()
-{
-	menu_option_selected = 1;
-	settings_menu_open = true;
-	m_2DObjects.clear();
-	m_2DObjects.push_back(resolution_text);
-	m_2DObjects.push_back(main_menu_button);
-}
-
-void Game::loadGame()
-{
-	if (m_GSD->gameState != INGAME)
-	{
-		m_GSD->gameState = INGAME;
-		//reset gamestate() exp:
-		//player_one->SetPos(Vector2(400, 400));
-
-		m_2DObjects.clear();
-		audio_manager->changeLoopTrack(0);
-		audio_manager->playSound(0);
-		//m_2DObjects.push_back(player_one);
-	}
-}
-
-void Game::newResolutionText(int new_resolution_option)
-{
-	delete resolution_text;
-	resolution_text = nullptr;
-	switch (new_resolution_option)
-	{
-	case 1:
-		resolution_text = new Text2D("800 x 600 ->");
-		break;
-	case 2:
-		resolution_text = new Text2D("<- 1280 x 960 ->");
-		break;
-	case 3:
-		resolution_text = new Text2D("<- 1440 x 1080");
-		break;
-	}
-}
-
-
-
-/*
-TestPBGO3D* test3d = new TestPBGO3D();
-test3d->SetScale(5.0f);
-test3d->Init();
-m_3DObjects.push_back(test3d);
-
-GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
-test3d2->SetPos(10.0f*Vector3::Forward + 5.0f*Vector3::Right + Vector3::Down);
-test3d2->SetScale(5.0f);
-m_3DObjects.push_back(test3d2);
-
-
-test = new ImageGO2D(m_RD, "guides_logo");
-test->SetPos(Vector2(100, 100));
-test->SetScale(Vector2(1.0f, 0.5f));
-test->SetColour(Color(1, 0, 0, 1));
-m_2DObjects.push_back(test);
-
-Text2D * test2 = new Text2D("testing text");
-m_2DObjects.push_back(test2);
-
-Player2D* testPlay = new Player2D(m_RD, "gens");
-testPlay->SetDrive(100.0f);
-testPlay->SetDrag(0.5f);
-m_2DObjects.push_back(testPlay);
-
-SDKMeshGO3D *test3 = new SDKMeshGO3D(m_RD, "cup");
-test3->SetPos(12.0f*Vector3::Forward + 5.0f*Vector3::Left + Vector3::Down);
-test3->SetScale(5.0f);
-m_3DObjects.push_back(test3);
-
-Loop *loop = new Loop(m_audEngine.get(), "NightAmbienceSimple_02");
-loop->SetVolume(0.1f);
-loop->Play();
-m_sounds.push_back(loop);
-
-TestSound* TS = new TestSound(m_audEngine.get(), "Explo1");
-m_sounds.push_back(TS);
-*/

@@ -3,7 +3,7 @@ class Scene
 {
 public:
 	Scene() = default;
-	~Scene() = default;
+	virtual ~Scene() = default;
 
 	void virtual init(RenderData* m_RD) {};
 	void virtual update(GameStateData* gsd) {};
@@ -15,7 +15,5 @@ public:
 	GameObject2D& getObjectByTag(std::string tag) const;
 
 protected:
-	//This may cause massive issues later...
 	std::vector<GameObject2D*> game_objects;
 };
-

@@ -213,9 +213,7 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsScene.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
+    <ClCompile Include="SettingsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

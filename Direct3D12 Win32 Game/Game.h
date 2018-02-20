@@ -94,29 +94,17 @@ private:
 
 	std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;
 
-	vector<GameObject3D*> m_3DObjects;
 	vector<GameObject2D*> m_2DObjects;
 	vector<GameObject2D*> m_2DPlatforms;
 
-	//Player2D* m_testPlatform;
-	//Player2D* m_testPlatform2;
 	Player2D* m_player;
 	RenderData* m_RD;
 	Camera* m_cam;
 	AudioManager* audio_manager;
-
-	//Player2D* player_one;
-	Text2D* resolution_text;
-	ImageGO2D* main_menu_button;
-
-
-
 	GameStateData* m_GSD;
 
-	//GEP:: Keyboard and Mouse Abstractions for basic input system
-	void ReadInput();
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	std::unique_ptr<DirectX::Mouse> m_mouse;
+	//std::unique_ptr<DirectX::Keyboard> m_keyboard;
+	//std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
 
 	int menu_option_selected = 1;
@@ -124,13 +112,6 @@ private:
 	bool settings_menu_open = false;
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
-
-	void highlight_option_selected();
-
-	void loadSettings();
-	void loadGame();
-
-	void newResolutionText(int new_resolution_option);
 
 	std::unique_ptr<Scene> scene;
 
