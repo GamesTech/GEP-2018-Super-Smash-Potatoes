@@ -3,7 +3,7 @@ class Scene
 {
 public:
 	Scene() = default;
-	virtual ~Scene();
+	virtual ~Scene() = default;
 
 	void virtual init(RenderData* m_RD) {};
 	void virtual update(GameStateData* gsd) {};
@@ -16,8 +16,4 @@ public:
 
 protected:
 	std::vector<GameObject2D*> game_objects;
-
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	std::unique_ptr<DirectX::Mouse> m_mouse;
-	std::unique_ptr<DirectX::GamePad> m_gamePad;
 };

@@ -155,7 +155,10 @@ void Game::Initialize(HWND window, int width, int height)
 	scene = std::make_unique<MenuScene>();
 	scene->init(m_RD);
 
-	GameStateData::state = GameState::MENU;
+	//m_keyboard = std::make_unique<Keyboard>();
+	//m_mouse = std::make_unique<Mouse>();
+	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
+	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
 }
 
 //GEP:: Executes the basic game loop.
