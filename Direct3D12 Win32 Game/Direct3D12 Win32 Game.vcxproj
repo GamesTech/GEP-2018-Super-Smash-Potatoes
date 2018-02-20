@@ -192,6 +192,7 @@
     <ClInclude Include="PBGO3D.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RenderData.h" />
+    <ClInclude Include="SettingsScene.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TestPBGO3D.h" />
@@ -226,6 +227,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SettingsScene.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="TestPBGO3D.cpp" />
     <ClCompile Include="SoundEffects.cpp" />
