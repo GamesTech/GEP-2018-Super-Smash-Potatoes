@@ -195,10 +195,11 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gamePad = std::make_unique<GamePad>();
 	
-	//What is this??? vvv
-	//GameStateData::state = State::PLAY;
+	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
 	Debug::output("hello", "world");
+
+
 	GameStateData::state = GameState::MENU;
 }
 
