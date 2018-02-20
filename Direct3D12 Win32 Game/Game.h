@@ -11,6 +11,8 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
+#include "AudioManager.h"
+
 using std::vector;
 
 struct RenderData;
@@ -94,13 +96,13 @@ private:
 	vector<GameObject3D*> m_3DObjects;
 	vector<GameObject2D*> m_2DObjects;
 	vector<GameObject2D*> m_2DPlatforms;
-	vector<Sound*> m_sounds;
 
 	//Player2D* m_testPlatform;
 	//Player2D* m_testPlatform2;
 	Player2D* m_player;
 	RenderData* m_RD;
 	Camera* m_cam;
+	AudioManager* audio_manager;
 
 	//Player2D* player_one;
 	Text2D* title_text;
@@ -115,9 +117,6 @@ private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
-
-	//audio system
-	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
 	int menu_option_selected = 0;
 	void highlight_option_selected();
