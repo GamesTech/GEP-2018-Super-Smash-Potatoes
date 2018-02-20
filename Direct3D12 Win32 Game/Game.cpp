@@ -178,21 +178,20 @@ void Game::Initialize(HWND window, int width, int height)
 	quit_button->CentreOrigin();
 	m_2DObjects.push_back(quit_button);
 	
-	ImageGO2D *m_testPlatform = new ImageGO2D(m_RD, "platform");
+	Player2D *m_testPlatform = new Player2D(m_RD, "platform");
 	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->DefaultOrigin();
-	m_testPlatform->SetBoundingBoxes();
+	m_testPlatform->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform);
 
-	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
+	ImageGO2D *m_testPlatform2 = new ImageGO2D(m_RD, "platform");
 	m_testPlatform2->SetPos(Vector2(100, 300));
-	m_testPlatform2->TestCollision();
+	m_testPlatform2->SetBoundingBoxes();
 	m_2DPlatforms.push_back(m_testPlatform2);
 
-	m_player = new Player2D(m_RD,"gens");
+	m_player = new Player2D(m_RD,"gens2");
 	m_player->SetPos(Vector2(300, 300));
-	m_player->SetDrive(500.0f);
-	m_player->SetDrag(0.5f);
+	m_player->SetDrive(800.0f);
+	m_player->SetDrag(5.f);
 
 	m_gamePad = std::make_unique<GamePad>();
 	
