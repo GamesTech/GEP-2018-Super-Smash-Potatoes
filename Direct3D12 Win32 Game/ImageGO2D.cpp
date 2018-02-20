@@ -51,20 +51,15 @@ void ImageGO2D::SetBoundingBoxes()
 
 	m_min.x = m_pos.x;
 	m_min.y = m_pos.y;
-	m_max.x = m_pos.x + size.x;
-	m_max.y = m_pos.y + size.y;
+	m_max.x = m_pos.x + m_size.x;
+	m_max.y = m_pos.y + m_size.y;
 
-	m_size.x = size.x;
-	m_size.y = size.y;
 }
 
 void ImageGO2D::CentreOrigin()
 {
-	XMUINT2 size = GetTextureSize(m_texture.Get());
-
-	m_origin.x = float(size.x / 2);
-	m_origin.y = float(size.y / 2);
-
+	m_origin.x = float(m_size.x / 2);
+	m_origin.y = float(m_size.y / 2);
 }
 
 void ImageGO2D::BottomOrigin()
@@ -76,8 +71,8 @@ void ImageGO2D::BottomOrigin()
 	//m_max.x = m_origin.x + size.x;
 	//m_max.y = m_origin.y + size.y;
 	
-	m_origin.x = float(size.x / 2);
-	m_origin.y = float(size.y);
+	m_origin.x = float(m_size.x / 2);
+	m_origin.y = float(m_size.y);
 }
 
 void ImageGO2D::SetRect(float left, float top, float right, float bottom)
@@ -86,9 +81,16 @@ void ImageGO2D::SetRect(float left, float top, float right, float bottom)
 	m_rect.top = top;
 	m_rect.right = right;
 	m_rect.bottom = bottom;
+	m_size.x = m_rect.right - m_rect.left;
+	m_size.y = m_rect.bottom - m_rect.top;
 }
 
 void ImageGO2D::SetRect()
 {
+	XMUINT2 size = GetTextureSize(m_texture.Get());
+	m_min.x = m_pos.x;
+	m_min.y = m_pos.y;
+	m_max.x = m_pos.x + size.x;
+	m_max.y = m_pos.y + size.y;
 	SetRect(m_min.x, m_min.y, m_max.x, m_max.y);
 }

@@ -196,13 +196,13 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
 	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->SetRect();
+	m_testPlatform->SetRect(0, 0, 128, 128);
 	m_testPlatform->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform);
 
 	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
 	m_testPlatform2->SetPos(Vector2(100, 300));
-	m_testPlatform2->SetRect();
+	m_testPlatform2->SetRect(0, 0, 128, 128);
 	m_testPlatform2->TestCollision();
 	m_2DPlatforms.push_back(m_testPlatform2);
 
