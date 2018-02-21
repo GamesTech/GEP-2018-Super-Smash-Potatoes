@@ -180,8 +180,13 @@ void Game::Initialize(HWND window, int width, int height)
 	
 	Player2D *m_testPlatform = new Player2D(m_RD, "platform");
 	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
+	m_testPlatform->SetBoundingBoxes();
 	m_2DPlatforms.push_back(m_testPlatform);
+
+	Player2D *m_testPlatform3 = new Player2D(m_RD, "platform");
+	m_testPlatform3->SetPos(Vector2(100, 600));
+	m_testPlatform3->SetBoundingBoxes();
+	m_2DPlatforms.push_back(m_testPlatform3);
 
 	ImageGO2D *m_testPlatform2 = new ImageGO2D(m_RD, "platform");
 	m_testPlatform2->SetPos(Vector2(100, 300));

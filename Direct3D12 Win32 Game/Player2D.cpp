@@ -58,6 +58,9 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	//GEP:: Lets go up the inheritence and share our functionality
 	Physics2D::Tick(_GSD);
 
+	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
+	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
+
 	//after that as updated my position let's lock it inside my limits
 	if (m_pos.x < 0.0f)
 	{
