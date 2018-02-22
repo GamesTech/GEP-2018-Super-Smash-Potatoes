@@ -130,6 +130,7 @@
     <ClInclude Include="GameScene.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="LevelFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -204,6 +205,7 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
+    <ClCompile Include="LevelFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
