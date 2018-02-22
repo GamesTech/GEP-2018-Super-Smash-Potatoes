@@ -94,9 +94,3 @@ void ImageGO2D::SetRect()
 	m_max.y = m_pos.y + size.y;
 	SetRect(m_min.x, m_min.y, m_max.x, m_max.y);
 }
-
-void ImageGO2D::DefaultOrigin()
-{
-	m_origin.x = 0.0f;
-	m_origin.y = 0.0f;
-}
