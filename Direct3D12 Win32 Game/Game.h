@@ -11,6 +11,7 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
+#include "Scene.h"
 #include "AudioManager.h"
 
 using std::vector;
@@ -61,6 +62,7 @@ private:
     void GetAdapter(IDXGIAdapter1** ppAdapter);
 
     void OnDeviceLost();
+	void checkIfNewScene();
 
     // Application state
     HWND                                                m_window;
@@ -93,48 +95,26 @@ private:
 
 	std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;
 
-	vector<GameObject3D*> m_3DObjects;
 	vector<GameObject2D*> m_2DObjects;
-	vector<GameObject2D*> m_2DPlatforms;
 
-	//Player2D* m_testPlatform;
-	//Player2D* m_testPlatform2;
-	Player2D* m_player;
 	RenderData* m_RD;
 	Camera* m_cam;
 	AudioManager* audio_manager;
-
-	//Player2D* player_one;
-	Text2D* title_text;
-	ImageGO2D* start_game_button;
-	ImageGO2D* settings_button;
-	ImageGO2D* quit_button;
-	Text2D* resolution_text;
-	ImageGO2D* main_menu_button;
-
-
-
 	GameStateData* m_GSD;
 
-	//GEP:: Keyboard and Mouse Abstractions for basic input system
-	void ReadInput();
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	std::unique_ptr<DirectX::Mouse> m_mouse;
-	std::unique_ptr<DirectX::GamePad> m_gamePad;
+	//std::unique_ptr<DirectX::Mouse> m_mouse;
+	//std::unique_ptr<DirectX::GamePad> m_gamePad;
 
 	int menu_option_selected = 1;
 	int resolution_option_selected = 1;
 	bool settings_menu_open = false;
+	int prevScene = 0;
+
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	void highlight_option_selected();
-
-	void loadMenu();
-	void loadSettings();
-	void loadGame();
-
-	void newResolutionText(int new_resolution_option);
+	std::unique_ptr<Scene> scene;
 
 	//Debug
 	Text2D * stateText;

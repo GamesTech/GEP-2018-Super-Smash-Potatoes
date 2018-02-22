@@ -3,7 +3,7 @@
 
 GameObject2D & Scene::getObjectByIndex(int index) const
 {
-	return *game_objects.at(index).get();
+	return *game_objects.at(index);
 }
 
 GameObject2D & Scene::getObjectByTag(std::string tag) const
@@ -12,7 +12,7 @@ GameObject2D & Scene::getObjectByTag(std::string tag) const
 	{
 		if (obj->GetTag() == tag)
 		{
-			return *obj.get();
+			return *obj;
 		}
 	}
 }
