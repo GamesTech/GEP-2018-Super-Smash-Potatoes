@@ -194,11 +194,6 @@ void Game::Initialize(HWND window, int width, int height)
 	main_menu_button->SetPos(Vector2(300, 300));
 	main_menu_button->CentreOrigin();
 	
-	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
-	m_2DPlatforms.push_back(m_testPlatform);
-
 	m_player = new Player2D(m_RD,"gens");
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetDrive(500.0f);

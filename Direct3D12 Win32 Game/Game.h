@@ -128,7 +128,6 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	int menu_option_selected = 0;
 	void highlight_option_selected();
 
 	void loadMenu();
