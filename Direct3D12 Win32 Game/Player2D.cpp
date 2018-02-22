@@ -19,14 +19,14 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	//Physics2D::Tick(_GSD);
 //Push the guy around in the directions for the key presses
 
-	if (m_pos.y < m_limit.y)
-	{
-		m_grounded = false;
-	}
-	else
-	{
-		m_grounded = true;
-	}
+	//if (m_pos.y < m_limit.y)
+	//{
+	//	m_grounded = false;
+	//}
+	//else
+	//{
+	//	m_grounded = true;
+	//}
 
 	SetBoundingBoxes();
 	CheckCollision(_obj);
@@ -105,7 +105,8 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_heihgt)
 			{
-				m_pos.y = object->Bottom();
+				float newPosY = object->GetPos().y + object->Height();
+				m_pos.y = newPosY;
 				m_vel.y = 0.0f;
 				//m_grounded = true;
 
@@ -113,8 +114,9 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 			}
 			else
 			{
-				m_pos.x = object->Left() - m_size.x;
-				//m_vel.x = 0.0f;
+				float newPosX = object->GetPos().x - m_size.x;
+				m_pos.x = newPosX;
+				m_vel.x = 0.0f;
 				m_grounded = true;
 				// on the left 
 			}
@@ -123,19 +125,25 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_heihgt)
 			{
-				m_pos.x = object->Right();
-				//m_vel.x = 0.0f;
+				float newPosX = object->GetPos().x + object->Width();
+				m_pos.x = newPosX;
+				m_vel.x = 0.0f;
 				m_grounded = true;
 				// on the right 
 			}
 			else
 			{
-				m_pos.y = object->Top() - m_size.y;
+				float newPosY = object->GetPos().y - m_size.y;
+				m_pos.y = newPosY;
 				m_vel.y = 0.0f;
 				m_grounded = true;
 				// at the top 
 			}
 		}
+	}
+	else
+	{
+		m_grounded = false;
 	}
 
 }
