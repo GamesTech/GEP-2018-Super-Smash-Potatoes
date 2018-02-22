@@ -49,5 +49,8 @@ void GameScene::render(RenderData* m_RD,
 
 void GameScene::ReadInput(GameStateData* gsd)
 {
-
+	if (gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+	{
+		gsd->gameState = MENU;
+	}
 }
