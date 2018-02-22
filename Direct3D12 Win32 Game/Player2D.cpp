@@ -5,7 +5,7 @@
 Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
 {
 	SetBoundingBoxes();
-	BottomOrigin();
+	//BottomOrigin();
 	//SetMass(100);
 }
 
@@ -16,20 +16,21 @@ Player2D::~Player2D()
 
 void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 {
-
+	//Physics2D::Tick(_GSD);
 //Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
 	AnimationTick();
 
-	if (m_pos.y < m_limit.y)
-	{
-		m_grounded = false;
-	}
-	else
-	{
-		m_grounded = true;
-	}
+	//if (m_pos.y < m_limit.y)
+	//{
+	//	m_grounded = false;
+	//}
+	//else
+	//{
+	//	m_grounded = true;
+	//}
 
+	SetBoundingBoxes();
 	CheckCollision(_obj);
 	
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
@@ -50,7 +51,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		action_movement = STILL;
 	}
 
-	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
+	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || _GSD->m_gamePadState.IsAPressed())
 	{
 		if (m_grounded)
 		{
@@ -76,9 +77,10 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	//AddForce(m_drive*mousePush);
 
 	//GEP:: Lets go up the inheritence and share our functionality
-
-
 	Physics2D::Tick(_GSD);
+
+	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
+	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
 
 	//after that as updated my position let's lock it inside my limits
 	if (m_pos.x < 0.0f)
@@ -110,8 +112,8 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 
 	float width = 0.5 * (Width() + object->Width());
 	float height = 0.5 * (Height() + object->Height());
-	float distance_x = m_pos.x - object->GetPos().x;
-	float distance_y = m_pos.y - object->GetPos().y;
+	float distance_x = CenterX() - object->CenterX();
+	float distance_y = CenterY() - object->CenterY();
 
 	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{
@@ -124,15 +126,17 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_heihgt)
 			{
-				m_pos.y = object->Top() - m_size.y;
-				//m_vel.y = 0.0f;
+				float newPosY = object->GetPos().y + object->Height();
+				m_pos.y = newPosY;
+				m_vel.y = 0.0f;
 				//m_grounded = true;
 
 				// collision at the bottom 
 			}
 			else
 			{
-				m_pos.x = object->Left() - m_size.x;
+				float newPosX = object->GetPos().x - m_size.x;
+				m_pos.x = newPosX;
 				m_vel.x = 0.0f;
 				m_grounded = true;
 				// on the left 
@@ -142,22 +146,25 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_heihgt)
 			{
-				m_pos.x = object->Right();
+				float newPosX = object->GetPos().x + object->Width();
+				m_pos.x = newPosX;
 				m_vel.x = 0.0f;
 				m_grounded = true;
 				// on the right 
 			}
 			else
 			{
-				m_pos.y = object->Top() - m_size.y;
-				if (m_vel.y > 0)
-				{
-					m_vel.y = 0.0f;
-				}
+				float newPosY = object->GetPos().y - m_size.y;
+				m_pos.y = newPosY;
+				m_vel.y = 0.0f;
 				m_grounded = true;
 				// at the top 
 			}
 		}
+	}
+	else
+	{
+		m_grounded = false;
 	}
 
 }

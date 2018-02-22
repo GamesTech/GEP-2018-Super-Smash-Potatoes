@@ -23,11 +23,12 @@ public:
 
 protected:
 	//float m_gravity = 980;
-	float m_jumpForce = 25000;
+	float m_jumpForce = 45000;
 	float m_drive = 100.0f;
+	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
 
-	Vector2 m_limit = Vector2(800, 600);
+	Vector2 m_limit = Vector2(1100, 600);
 };
 

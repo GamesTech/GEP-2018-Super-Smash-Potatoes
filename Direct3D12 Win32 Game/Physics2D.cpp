@@ -15,7 +15,8 @@ Physics2D::~Physics2D()
 // basic gravity 
 void Physics2D::AddGravity(bool _grounded)
 {
-	if (_grounded != true)
+	m_grounded = _grounded;
+	if (true)
 	{
 		m_acc += m_gravity * m_mass;
 	}
@@ -26,7 +27,14 @@ void Physics2D::AddGravity(bool _grounded)
 void Physics2D::Tick(GameStateData * _GSD)
 {
 	//VERY Basic idea of drag i.e. the faster I go the more I get pulled back
-	m_acc -= m_drag * m_vel;
+	if (m_grounded)
+	{
+		m_acc -= m_drag * m_vel;
+	}
+	else
+	{
+		m_acc -= 1.f * m_vel;
+	}
 
 	Vector2 newPos = m_pos + _GSD->m_dt * m_vel;
 	Vector2 newVel = m_vel + _GSD->m_dt * m_acc;
