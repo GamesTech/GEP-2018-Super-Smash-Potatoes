@@ -62,6 +62,7 @@ private:
     void GetAdapter(IDXGIAdapter1** ppAdapter);
 
     void OnDeviceLost();
+	void checkIfNewScene();
 
     // Application state
     HWND                                                m_window;
@@ -95,21 +96,21 @@ private:
 	std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;
 
 	vector<GameObject2D*> m_2DObjects;
-	vector<GameObject2D*> m_2DPlatforms;
 
-	Player2D* m_player;
 	RenderData* m_RD;
 	Camera* m_cam;
 	AudioManager* audio_manager;
 	GameStateData* m_GSD;
 
-	//std::unique_ptr<DirectX::Keyboard> m_keyboard;
+	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	//std::unique_ptr<DirectX::Mouse> m_mouse;
-	std::unique_ptr<DirectX::GamePad> m_gamePad;
+	//std::unique_ptr<DirectX::GamePad> m_gamePad;
 
 	int menu_option_selected = 1;
 	int resolution_option_selected = 1;
 	bool settings_menu_open = false;
+	int prevScene = 0;
+
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 

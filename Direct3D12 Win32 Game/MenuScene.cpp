@@ -6,8 +6,6 @@
 
 void MenuScene::init(RenderData* m_RD)
 {
-	m_keyboard = std::make_unique<Keyboard>();
-
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
@@ -27,6 +25,8 @@ void MenuScene::init(RenderData* m_RD)
 	quit_button->SetPos(Vector2(300, 400));
 	quit_button->CentreOrigin();
 	game_objects.push_back(quit_button);
+
+	highlight_option_selected();
 }
 
 void MenuScene::update(GameStateData* gsd)
@@ -78,23 +78,6 @@ void MenuScene::highlight_option_selected()
 
 void MenuScene::ReadInput(GameStateData* gsd)
 {
-	//GEP:: CHeck out the DirectXTK12 wiki for more information about these systems
-	//https://github.com/Microsoft/DirectXTK/wiki/Mouse-and-keyboard-input
-
-	//You'll also found similar stuff for Game Controllers here:
-	//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
-
-	//Note in both cases they are identical to the DirectXTK for DirectX 11
-
-	gsd->m_prevKeyboardState = gsd->m_keyboardState;
-	gsd->m_keyboardState = m_keyboard->GetState();
-
-	//Quit if press Esc
-	if (gsd->m_keyboardState.Escape)
-	{
-		PostQuitMessage(0);
-	}
-
 	if (gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
 	{
 		if (menu_option_selected < 3)
@@ -117,10 +100,10 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		switch (menu_option_selected)
 		{
 		case 1:
-			//loadGame();
+			gsd->gameState = INGAME;
 			break;
 		case 2:
-			//loadsettings();
+			gsd->gameState = SETTINGS;
 			break;
 		case 3:
 			PostQuitMessage(0);

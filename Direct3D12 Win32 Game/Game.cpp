@@ -9,6 +9,8 @@
 #include "File.h"
 #include "Debug.h"
 #include "MenuScene.h"
+#include "SettingsScene.h"
+#include "GameScene.h"
 
 extern void ExitGame();
 
@@ -117,7 +119,6 @@ void Game::Initialize(HWND window, int width, int height)
 	m_RD->m_GPeffect = std::make_unique<BasicEffect>(m_d3dDevice.Get(), EffectFlags::Lighting, pd3);
 	m_RD->m_GPeffect->EnableDefaultLighting();
 
-	
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
     /*
@@ -128,25 +129,6 @@ void Game::Initialize(HWND window, int width, int height)
 //GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
-
-	stateText = new Text2D("1123");
-	stateText->SetPos(Vector2(1100, 680));
-	m_2DObjects.push_back(stateText);
-
-	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
-	m_testPlatform->SetPos(Vector2(500, 600));
-	m_testPlatform->TestCollision();
-	m_2DPlatforms.push_back(m_testPlatform);
-
-	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
-	m_testPlatform2->SetPos(Vector2(100, 300));
-	m_testPlatform2->TestCollision();
-	m_2DPlatforms.push_back(m_testPlatform2);
-	
-	m_player = new Player2D(m_RD,"gens");
-	m_player->SetPos(Vector2(300, 300));
-	m_player->SetDrive(500.0f);
-	m_player->SetDrag(0.5f);
 	
 	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
@@ -155,7 +137,7 @@ void Game::Initialize(HWND window, int width, int height)
 	scene = std::make_unique<MenuScene>();
 	scene->init(m_RD);
 
-	//m_keyboard = std::make_unique<Keyboard>();
+	m_keyboard = std::make_unique<Keyboard>();
 	//m_mouse = std::make_unique<Mouse>();
 	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
 	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
@@ -175,9 +157,13 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
+	checkIfNewScene();
+
+	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
+	m_GSD->m_keyboardState = m_keyboard->GetState();
 	scene->ReadInput(m_GSD);
 
-    m_GSD->m_dt = float(timer.GetElapsedSeconds());
+     m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
@@ -278,21 +264,21 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
-	m_gamePad->Resume();
+	//m_gamePad->Resume();
 	m_buttons.Reset();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
-	m_gamePad->Suspend();
+	//m_gamePad->Suspend();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	audio_manager->suspendAudioManager();
-	m_gamePad->Suspend();
+	//m_gamePad->Suspend();
 }
 
 void Game::OnResuming()
@@ -301,7 +287,7 @@ void Game::OnResuming()
 	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
-	m_gamePad->Resume();
+	//m_gamePad->Resume();
 	m_buttons.Reset();
 }
 
@@ -680,4 +666,29 @@ void Game::OnDeviceLost()
 
     CreateDevice();
     CreateResources();
+}
+
+void Game::checkIfNewScene()
+{
+	if (m_GSD->gameState != prevScene)
+	{
+		scene.release();
+		switch (m_GSD->gameState)
+		{
+		case MENU:
+			scene = std::make_unique<MenuScene>();
+			break;
+		case SETTINGS:
+			scene = std::make_unique<SettingsScene>();
+			break;
+		case INGAME:
+			scene = std::make_unique<GameScene>();
+			break;
+		case GAMEOVER:
+			//gameover man, GAMEOVER
+			break;
+		}
+		scene->init(m_RD);
+		prevScene = m_GSD->gameState;
+	}
 }

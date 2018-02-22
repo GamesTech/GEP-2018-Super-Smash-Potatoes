@@ -7,14 +7,28 @@
 
 void GameScene::init(RenderData* m_RD)
 {
+	Player2D *m_testPlatform = new Player2D(m_RD, "gens");
+	m_testPlatform->SetPos(Vector2(500, 600));
+	m_testPlatform->TestCollision();
+	m_2DPlatforms.push_back(m_testPlatform);
+
+	Player2D *m_testPlatform2 = new Player2D(m_RD, "gens");
+	m_testPlatform2->SetPos(Vector2(100, 300));
+	m_testPlatform2->TestCollision();
+	m_2DPlatforms.push_back(m_testPlatform2);
+
+	m_player = new Player2D(m_RD, "gens");
+	m_player->SetPos(Vector2(300, 300));
+	m_player->SetDrive(500.0f);
+	m_player->SetDrag(0.5f);
 }
 
 void GameScene::update(GameStateData* gsd)
 {
-	/*for (std::vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
+	for (std::vector<GameObject2D *>::iterator it = m_2DPlatforms.begin(); it != m_2DPlatforms.end(); it++)
 	{
 		m_player->Tick(gsd, *it);
-	}*/
+	}
 }
 
 void GameScene::render(RenderData* m_RD,

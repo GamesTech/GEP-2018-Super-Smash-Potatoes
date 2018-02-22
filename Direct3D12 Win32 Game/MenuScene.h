@@ -20,8 +20,6 @@ private:
 	ImageGO2D* quit_button;
 	int menu_option_selected = 1;
 
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-
 	void highlight_option_selected();
 };
 

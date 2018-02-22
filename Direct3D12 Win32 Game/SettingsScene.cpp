@@ -7,16 +7,23 @@
 void SettingsScene::init(RenderData * m_RD)
 {
 	resolution_text = new Text2D("Resolution Text");
+	resolution_text->SetPos(Vector2(300, 200));
 	resolution_text->SetLayer(1.0f);
 	game_objects.push_back(resolution_text);
 
 	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
 	main_menu_button->SetPos(Vector2(300, 300));
-	main_menu_button->CentreOrigin();
+	game_objects.push_back(main_menu_button);
+
+	highlight_option_selected();
 }
 
 void SettingsScene::update(GameStateData * gsd)
 {
+	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	{
+		(*it)->Tick(gsd);
+	}
 }
 
 void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
@@ -34,7 +41,7 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 	m_RD->m_spriteBatch->End();
 }
 
-void SettingsScene::ReadInput(GameStateData * gsd)
+void SettingsScene::ReadInput(GameStateData* gsd)
 {
 	if (gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
 	{
