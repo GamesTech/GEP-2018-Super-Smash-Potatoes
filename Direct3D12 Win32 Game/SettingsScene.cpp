@@ -29,6 +29,7 @@ void SettingsScene::init(RenderData * m_RD)
 
 	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
 	main_menu_button->SetPos(Vector2(300, 300));
+	main_menu_button->SetRect(1, 1, 240, 80);
 	game_objects.push_back(main_menu_button);
 
 	highlight_option_selected();

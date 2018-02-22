@@ -10,19 +10,22 @@ void MenuScene::init(RenderData* m_RD)
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
-	start_game_button = new ImageGO2D(m_RD, "Start_Game_Button");
+	start_game_button = new ImageGO2D(m_RD, "Buttons");
 	start_game_button->SetPos(Vector2(300, 200));
+	start_game_button->SetRect(1, 1, 240, 80);
 	start_game_button->SetLayer(1.0f);
 	start_game_button->CentreOrigin();
 	game_objects.push_back(start_game_button);
 
-	settings_button = new ImageGO2D(m_RD, "Settings_Button");
+	settings_button = new ImageGO2D(m_RD, "Buttons");
 	settings_button->SetPos(Vector2(300, 300));
+	settings_button->SetRect(1, 81, 240, 160);
 	settings_button->CentreOrigin();
 	game_objects.push_back(settings_button);
 
-	quit_button = new ImageGO2D(m_RD, "Quit_Button");
+	quit_button = new ImageGO2D(m_RD, "Buttons");
 	quit_button->SetPos(Vector2(300, 400));
+	quit_button->SetRect(1, 161, 240, 240);
 	quit_button->CentreOrigin();
 	game_objects.push_back(quit_button);
 
