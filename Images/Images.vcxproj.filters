@@ -7,6 +7,8 @@
     <ImageContentTask Include="Start_Game_Button.png" />
     <ImageContentTask Include="Settings_Button.png" />
     <ImageContentTask Include="Quit_Button.png" />
+    <ImageContentTask Include="Buttons.png" />
+    <ImageContentTask Include="mario_sprite_batch.png" />
     <ImageContentTask Include="Main_Menu_Button.png" />
   </ItemGroup>
   <ItemGroup>

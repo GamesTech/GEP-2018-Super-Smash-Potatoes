@@ -19,6 +19,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 
 //Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
+	AnimationTick();
 
 	if (m_pos.y < m_limit.y)
 	{
@@ -34,10 +35,19 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
+		direction = LEFT;
+		action_movement = WALK;
+		
 	}
-	if (_GSD->m_keyboardState.D || _GSD->m_gamePadState.IsDPadRightPressed() || _GSD->m_gamePadState.IsLeftThumbStickRight())
+	else if (_GSD->m_keyboardState.D || _GSD->m_gamePadState.IsDPadRightPressed() || _GSD->m_gamePadState.IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
+		direction = RIGHT;
+		action_movement = WALK;
+	}
+	else
+	{
+		action_movement = STILL;
 	}
 
 	if (_GSD->m_keyboardState.Space || _GSD->m_gamePadState.IsAPressed())
@@ -45,10 +55,20 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		if (m_grounded)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
+			
 			m_grounded = false;
 		}
 	}
 
+	if (!m_grounded)
+	{
+		action_jump = JUMP;
+	}
+	else
+	{
+		action_jump = GROUND;
+	}
+	
 	AddGravity(m_grounded);
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);

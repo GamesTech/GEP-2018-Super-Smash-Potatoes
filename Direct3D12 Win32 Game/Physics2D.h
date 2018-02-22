@@ -1,9 +1,9 @@
 #pragma once
-#include "ImageGO2D.h"
+#include "Animation2D.h"
 
 //GEP:: Euler Integration Solve for VERY Basic 2D physics
 class Physics2D :
-	public ImageGO2D
+	public Animation2D
 {
 public:
 	Physics2D(RenderData* _RD, string _filename);

@@ -2,7 +2,6 @@
 #include "Physics2D.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
-
 class Player2D :
 	public Physics2D
 {

@@ -170,6 +170,7 @@
     </FXCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Animation2D.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Debug.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="GameStateData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation2D.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Debug.cpp" />

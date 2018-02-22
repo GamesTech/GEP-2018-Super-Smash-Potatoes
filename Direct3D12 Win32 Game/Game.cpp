@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include <SpriteBatch.h>
 #include "File.h"
 #include "Debug.h"
 #include "MenuScene.h"
