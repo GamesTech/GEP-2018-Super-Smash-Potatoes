@@ -19,7 +19,6 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	//Physics2D::Tick(_GSD);
 //Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
-	AnimationTick();
 
 	//if (m_pos.y < m_limit.y)
 	//{
@@ -69,7 +68,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	{
 		action_jump = GROUND;
 	}
-	
+	AnimationTick();
 	AddGravity(m_grounded);
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
