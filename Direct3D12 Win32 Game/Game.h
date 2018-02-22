@@ -104,7 +104,7 @@ private:
 
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	//std::unique_ptr<DirectX::Mouse> m_mouse;
-	//std::unique_ptr<DirectX::GamePad> m_gamePad;
+	std::unique_ptr<DirectX::GamePad> m_gamePad;
 
 	int menu_option_selected = 1;
 	int resolution_option_selected = 1;

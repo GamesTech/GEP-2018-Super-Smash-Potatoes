@@ -139,6 +139,7 @@ void Game::Initialize(HWND window, int width, int height)
 	scene->init(m_RD);
 
 	m_keyboard = std::make_unique<Keyboard>();
+	m_gamePad = std::make_unique<GamePad>();
 	//m_mouse = std::make_unique<Mouse>();
 	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
 	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
@@ -171,7 +172,7 @@ void Game::Update(DX::StepTimer const& timer)
 	scene->update(m_GSD);
 
 	//// TODO: Gamepad
-	//m_GSD->m_gamePadState = m_gamePad->GetState(0);
+	m_GSD->m_gamePadState = m_gamePad->GetState(0);
 
 	//if (m_GSD->m_gamePadState.IsConnected())
 	//{
@@ -265,21 +266,21 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
-	//m_gamePad->Resume();
+	m_gamePad->Resume();
 	m_buttons.Reset();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
-	//m_gamePad->Suspend();
+	m_gamePad->Suspend();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	audio_manager->suspendAudioManager();
-	//m_gamePad->Suspend();
+	m_gamePad->Suspend();
 }
 
 void Game::OnResuming()
@@ -288,7 +289,7 @@ void Game::OnResuming()
 	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
-	//m_gamePad->Resume();
+	m_gamePad->Resume();
 	m_buttons.Reset();
 }
 

@@ -136,6 +136,9 @@
     <ClInclude Include="SettingsScene.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Animation2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -214,6 +217,9 @@
       <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="SettingsScene.cpp" />
+    <ClCompile Include="Animation2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

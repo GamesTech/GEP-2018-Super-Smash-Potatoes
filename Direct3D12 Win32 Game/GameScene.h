@@ -17,8 +17,8 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 
 	Player2D* m_player;
-	std::vector<GameObject2D*> m_2DPlatforms;
-
+	Text2D* title_text;
+	ImageGO2D* platform;
 
 };
 
