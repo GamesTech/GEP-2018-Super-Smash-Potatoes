@@ -30,7 +30,7 @@ public:
 	~Animation2D();
 
 	void loadSprites(string _filename);
-	void AnimationTick();
+	void AnimationTick(GameStateData * _GSD);
 	void AnimationOn();
 	void SetDefault();
 	void SetJump();
@@ -48,6 +48,9 @@ protected:
 	bool m_animation_on = false;
 
 private:
+	float timer = 0;
+	int change_animation = 1;
+
 	float left_default_positions[4] = { 0, 0, 0, 0 };
 	float right_default_positions[4] = { 0, 0, 0, 0 };
 	float left_jump_positions[4] = { 0, 0, 0, 0 };
