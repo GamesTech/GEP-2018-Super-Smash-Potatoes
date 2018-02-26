@@ -15,6 +15,7 @@ public:
 
 private:
 	virtual void ReadInput(GameStateData* gsd) override;
+	void CheckCollision(GameObject2D * _player, GameObject2D * _obj);
 	std::vector<GameObject2D*> platforms;
 	std::vector<GameObject2D*> objects;
 	Player2D* m_player;

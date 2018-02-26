@@ -49,7 +49,11 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		}
 	}
 
-	if (!m_grounded)
+	if (m_vel.y == 0)
+	{
+		action_jump = GROUND;
+	}
+	else
 	{
 		if (m_vel.y < 300)
 		{
@@ -59,11 +63,6 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		{
 			action_jump = FALL;
 		}
-		
-	}
-	else
-	{
-		action_jump = GROUND;
 	}
 
 	AnimationTick();

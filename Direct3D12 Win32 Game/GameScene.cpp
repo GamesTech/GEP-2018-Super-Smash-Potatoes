@@ -59,6 +59,7 @@ void GameScene::init(RenderData* m_RD)
 	
 	//declare platforms before player
 	m_player = new Player2D(m_RD, "mario_sprite_batch");
+	m_player->loadSprites("MarioSpriteBatch.txt");
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetLayer(1.0f);
 	m_player->SetDrive(1000.0f);
@@ -103,3 +104,68 @@ void GameScene::ReadInput(GameStateData* gsd)
 		gsd->gameState = MENU;
 	}
 }
+
+void GameScene::CheckCollision(GameObject2D *_player, GameObject2D *_obj)
+{
+	GameObject2D* object = _obj;
+	GameObject2D* player = _player;
+
+	float width = 0.5 * (player->Width() + object->Width());
+	float height = 0.5 * (player->Height() + object->Height());
+	float distance_x = player->CenterX() - object->CenterX();
+	float distance_y = player->CenterY() - object->CenterY();
+
+	if (abs(distance_x) <= width && abs(distance_y) <= height)
+	{
+		// collision occured
+
+		float collision_width = width * distance_y;
+		float collision_heihgt = height * distance_x;
+
+		if (collision_width > collision_heihgt)
+		{
+			if (collision_width > -collision_heihgt)
+			{
+				float newPosY = object->GetPos().y + object->Height();
+				//m_pos.y = newPosY;
+				//m_vel.y = 0.0f;
+				//m_grounded = true;
+
+				// collision at the bottom 
+			}
+			else
+			{
+				float newPosX = object->GetPos().x - player->Width();
+				//m_pos.x = newPosX;
+				//m_vel.x = 0.0f;
+				//m_grounded = true;
+				// on the left 
+			}
+		}
+		else
+		{
+			if (collision_width > -collision_heihgt)
+			{
+				float newPosX = object->GetPos().x + object->Width();
+				//m_pos.x = newPosX;
+				//m_vel.x = 0.0f;
+				//m_grounded = true;
+				// on the right 
+			}
+			else
+			{
+				float newPosY = object->GetPos().y - player->Height();
+				//player->SetPos().y = newPosY;
+				//m_vel.y = 0.0f;
+				//m_grounded = true;
+				// at the top 
+			}
+		}
+	}
+	else
+	{
+		//m_grounded = false;
+	}
+
+}
+
