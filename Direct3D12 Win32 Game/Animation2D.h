@@ -35,6 +35,8 @@ public:
 	void SetDefault();
 	void SetJump();
 	void SetWalk();
+	void SetWalk1();
+	void SetWalk2();
 	void SetRun();
 	void SetFall();
 	void SetPunch();
@@ -52,6 +54,10 @@ private:
 	float right_jump_positions[4] = { 0, 0, 0, 0 };
 	float left_walk_positions[4] = { 0, 0, 0, 0 };
 	float right_walk_positions[4] = { 0, 0, 0, 0 };
+	float left_walk_1_positions[4] = { 0, 0, 0, 0 };
+	float right_walk_1_positions[4] = { 0, 0, 0, 0 };
+	float left_walk_2_positions[4] = { 0, 0, 0, 0 };
+	float right_walk_2_positions[4] = { 0, 0, 0, 0 };
 	float fall_positions[4] = { 0, 0, 0, 0 };
 
 };
