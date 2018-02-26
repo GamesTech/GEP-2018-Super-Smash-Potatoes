@@ -674,19 +674,22 @@ void Game::checkIfNewScene()
 {
 	if (m_GSD->gameState != prevScene)
 	{
-		scene.release();
 		switch (m_GSD->gameState)
 		{
 		case MENU:
+			delete scene.release();
 			scene = std::make_unique<MenuScene>();
 			break;
 		case SETTINGS:
+			delete scene.release();
 			scene = std::make_unique<SettingsScene>();
 			break;
 		case INGAME:
+			delete scene.release();
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
+			delete scene.release();
 			//gameover man, GAMEOVER
 			break;
 		}

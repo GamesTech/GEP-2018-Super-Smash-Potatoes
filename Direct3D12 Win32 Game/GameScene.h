@@ -6,7 +6,7 @@ class GameScene : public Scene
 public:
 
 	GameScene() = default;
-	~GameScene() = default;
+	~GameScene();
 
 	void virtual init(RenderData* m_RD) override;
 	void virtual update(GameStateData* gsd) override;
@@ -15,10 +15,11 @@ public:
 
 private:
 	virtual void ReadInput(GameStateData* gsd) override;
-
+	std::vector<GameObject2D*> platforms;
+	std::vector<GameObject2D*> objects;
 	Player2D* m_player;
-	Text2D* title_text;
-	ImageGO2D* platform;
+	//Text2D* title_text;
+	//ImageGO2D* platform;
 
 };
 
