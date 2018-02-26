@@ -16,6 +16,7 @@ void GameScene::init(RenderData* m_RD)
 	m_player->SetLayer(1.0f);
 	m_player->SetDrive(500.0f);
 	m_player->SetDrag(0.5f);
+	m_player->loadSprites("MarioSpriteBatch.txt");
 	m_player->SetRect(724, 0, 775, 63);
 	//game_objects.push_back(m_player);
 

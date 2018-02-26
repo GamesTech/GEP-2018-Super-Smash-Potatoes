@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Animation2D.h"
 
+#include<iostream>
+#include<fstream>
+
 Animation2D::Animation2D(RenderData* _RD, string _filename) :ImageGO2D(_RD, _filename)
 {
 	action_movement = STILL;
@@ -43,11 +46,11 @@ void Animation2D::SetDefault()
 	{
 		if (direction == LEFT)
 		{
-			SetRect(724, 0, 775, 63);
+			SetRect(left_default_positions[0], left_default_positions[1], left_default_positions[2], left_default_positions[3]);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(844, 0, 894, 63);
+			SetRect(right_default_positions[0], right_default_positions[1], right_default_positions[2], right_default_positions[3]);
 		}
 	}
 }
@@ -86,4 +89,27 @@ void Animation2D::SetFall()
 
 void Animation2D::SetPunch()
 {
+}
+
+void Animation2D::loadSprites(string _filename)
+{
+	std::ifstream sprite_position_batching;
+	sprite_position_batching.open(_filename);
+	if (sprite_position_batching.is_open()) 
+	{
+		while (!sprite_position_batching.eof()) 
+		{
+			for (int i = 0; i < 4; i++) //prints into array
+			{
+				sprite_position_batching >> left_default_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array
+			{
+				sprite_position_batching >> right_default_positions[i];
+			}
+
+
+		}
+	}
+	sprite_position_batching.close();
 }
