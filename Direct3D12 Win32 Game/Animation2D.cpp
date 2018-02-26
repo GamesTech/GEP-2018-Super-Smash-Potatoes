@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "GameStateData.h"
 #include "Animation2D.h"
 
 #include<iostream>
@@ -14,14 +15,31 @@ Animation2D::~Animation2D()
 
 }
 
-void Animation2D::AnimationTick()
+void Animation2D::AnimationTick(GameStateData * _GSD)
 {
 	
 	if (action_jump == GROUND)
 	{
 		if (action_movement == WALK)
 		{
-			SetWalk();
+			switch (change_animation)
+			{
+				case 1:
+				{
+					SetWalk();
+					break;
+				}
+				case 2:
+				{
+					SetWalk1();
+					break;
+				}
+				case 3:
+				{
+					SetWalk2();
+					break;
+				}
+			}
 		}
 		else
 		{
@@ -37,6 +55,23 @@ void Animation2D::AnimationTick()
 		SetFall();
 	}
 	
+	if (timer >= 0.3)
+	{
+		if (change_animation < 3)
+		{
+			change_animation++;
+		}
+		else
+		{
+			change_animation = 1;
+		}
+		timer -= 0.3;
+	}
+	else
+	{
+		timer += _GSD->m_dt;
+	}
+
 }
 
 void Animation2D::AnimationOn()
@@ -83,6 +118,30 @@ void Animation2D::SetWalk()
 	}
 }
 
+void Animation2D::SetWalk1()
+{
+	if (direction == LEFT)
+	{
+		SetRect(left_walk_1_positions[0], left_walk_1_positions[1], left_walk_1_positions[2], left_walk_1_positions[3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(right_walk_1_positions[0], right_walk_1_positions[1], right_walk_1_positions[2], right_walk_1_positions[3]);
+	}
+}
+
+void Animation2D::SetWalk2()
+{
+	if (direction == LEFT)
+	{
+		SetRect(left_walk_2_positions[0], left_walk_2_positions[1], left_walk_2_positions[2], left_walk_2_positions[3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(right_walk_2_positions[0], right_walk_2_positions[1], right_walk_2_positions[2], right_walk_2_positions[3]);
+	}
+}
+
 void Animation2D::SetRun()
 {
 }
@@ -120,13 +179,29 @@ void Animation2D::loadSprites(string _filename)
 			{
 				sprite_position_batching >> right_jump_positions[i];
 			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Left
+			for (int i = 0; i < 4; i++) //prints into array Walk Left
 			{
 				sprite_position_batching >> left_walk_positions[i];
 			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Right
+			for (int i = 0; i < 4; i++) //prints into array Walk Right
 			{
 				sprite_position_batching >> right_walk_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Walk Left
+			{
+				sprite_position_batching >> left_walk_1_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Walk Right
+			{
+				sprite_position_batching >> right_walk_1_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Walk Left
+			{
+				sprite_position_batching >> left_walk_2_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Walk Right
+			{
+				sprite_position_batching >> right_walk_2_positions[i];
 			}
 			for (int i = 0; i < 4; i++) //prints into array Falling
 			{

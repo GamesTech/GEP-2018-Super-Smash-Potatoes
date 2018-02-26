@@ -66,7 +66,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		action_jump = GROUND;
 	}
 
-	AnimationTick();
+	AnimationTick(_GSD);
 	AddGravity(m_grounded);
 
 	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
