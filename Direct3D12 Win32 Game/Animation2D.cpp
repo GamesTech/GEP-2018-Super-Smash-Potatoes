@@ -59,11 +59,11 @@ void Animation2D::SetJump()
 {
 	if (direction == LEFT)
 	{
-		SetRect(116, 0, 182, 63);
+		SetRect(left_jump_positions[0], left_jump_positions[1], left_jump_positions[2], left_jump_positions[3]);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(1435, 0, 1502, 63);
+		SetRect(right_jump_positions[0], right_jump_positions[1], right_jump_positions[2], right_jump_positions[3]);
 	}
 }
 
@@ -71,11 +71,11 @@ void Animation2D::SetWalk()
 {
 	if (direction == LEFT)
 	{
-		SetRect(600, 0, 655, 63);
+		SetRect(left_walk_positions[0], left_walk_positions[1], left_walk_positions[2], left_walk_positions[3]);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(964, 0, 1019, 63);
+		SetRect(right_walk_positions[0], right_walk_positions[1], right_walk_positions[2], right_walk_positions[3]);
 	}
 }
 
@@ -99,16 +99,30 @@ void Animation2D::loadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof()) 
 		{
-			for (int i = 0; i < 4; i++) //prints into array
+			for (int i = 0; i < 4; i++) //prints into array Default Left
 			{
 				sprite_position_batching >> left_default_positions[i];
 			}
-			for (int i = 0; i < 4; i++) //prints into array
+			for (int i = 0; i < 4; i++) //prints into array Default Right
 			{
 				sprite_position_batching >> right_default_positions[i];
 			}
-
-
+			for (int i = 0; i < 4; i++) //prints into array Jump Left
+			{
+				sprite_position_batching >> left_jump_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Jump Right
+			{
+				sprite_position_batching >> right_jump_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Jump Left
+			{
+				sprite_position_batching >> left_walk_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Jump Right
+			{
+				sprite_position_batching >> right_walk_positions[i];
+			}
 		}
 	}
 	sprite_position_batching.close();
