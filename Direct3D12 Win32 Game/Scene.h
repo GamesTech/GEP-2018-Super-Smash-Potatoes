@@ -11,6 +11,7 @@ public:
 	void virtual render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) {};
 	void virtual ReadInput(GameStateData* gsd) {};
+	void virtual giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain) {};
 
 	GameObject2D& getObjectByIndex(int index) const;
 	GameObject2D& getObjectByTag(std::string tag) const;
