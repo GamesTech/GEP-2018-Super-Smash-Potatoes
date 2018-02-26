@@ -22,8 +22,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    m_outputWidth(1280),
-    m_outputHeight(960),
+    //m_outputWidth(1280),
+    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -47,6 +47,7 @@ Game::~Game()
 	delete m_GSD;
 	delete audio_manager;
 
+	m_swapChain->SetFullscreenState(false, NULL);
 	m_graphicsMemory.reset();
 }
 
@@ -682,6 +683,7 @@ void Game::checkIfNewScene()
 			break;
 		case SETTINGS:
 			scene = std::make_unique<SettingsScene>();
+			scene->giveSwapChain(m_swapChain);
 			break;
 		case INGAME:
 			scene = std::make_unique<GameScene>();

@@ -66,6 +66,7 @@ private:
 
     // Application state
     HWND                                                m_window;
+	HWND												new_window;
     int                                                 m_outputWidth;
     int                                                 m_outputHeight;
 
