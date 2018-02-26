@@ -96,10 +96,12 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		m_pos.x = m_limit.x;
 		m_vel.x = 0.0f;
 	}
-	if (m_pos.y > m_limit.y)
+	if (m_pos.y > m_limit.y + 200)
 	{
-		m_pos.y = m_limit.y;
-		m_vel.y = 0.0f;
+		m_pos.x = 400.0f;
+		m_pos.y = 300.0f;
+		m_vel.x = 0.0f;
+		m_vel.y = 301.0f;
 	}
 }
 
