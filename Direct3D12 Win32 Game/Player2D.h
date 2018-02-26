@@ -19,15 +19,18 @@ public:
 	void TestCollision() { SetBoundingBoxes(); }
 	void CheckCollision(GameObject2D* _obj);
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
+	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 	Vector2 GetLimit() { return m_limit; }
 
 protected:
-	//float m_gravity = 980;
-	float m_jumpForce = 45000;
-	float m_drive = 100.0f;
+
+	float m_jumpForce = 90000;
+	float m_drive = 200.0f;
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
+	float m_speed_limit;
+
 
 	Vector2 m_limit = Vector2(1100, 600);
 };

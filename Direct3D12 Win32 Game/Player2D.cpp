@@ -17,8 +17,9 @@ Player2D::~Player2D()
 void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 {
 	//Physics2D::Tick(_GSD);
-//Push the guy around in the directions for the key presses
+	//Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
+	Physics2D::SetSpeedLimit(m_speed_limit);
 
 	//if (m_pos.y < m_limit.y)
 	//{
