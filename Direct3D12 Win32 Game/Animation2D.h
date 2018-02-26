@@ -52,5 +52,6 @@ private:
 	float right_jump_positions[4] = { 0, 0, 0, 0 };
 	float left_walk_positions[4] = { 0, 0, 0, 0 };
 	float right_walk_positions[4] = { 0, 0, 0, 0 };
+	float fall_positions[4] = { 0, 0, 0, 0 };
 
 };

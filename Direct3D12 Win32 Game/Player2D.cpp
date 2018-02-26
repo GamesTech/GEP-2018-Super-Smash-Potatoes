@@ -17,18 +17,7 @@ Player2D::~Player2D()
 void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 {
 	//Physics2D::Tick(_GSD);
-//Push the guy around in the directions for the key presses
-	SetBoundingBoxes();
-
-	//if (m_pos.y < m_limit.y)
-	//{
-	//	m_grounded = false;
-	//}
-	//else
-	//{
-	//	m_grounded = true;
-	//}
-
+	//Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
 	CheckCollision(_obj);
 	
@@ -62,12 +51,21 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 
 	if (!m_grounded)
 	{
-		action_jump = JUMP;
+		if (m_vel.y < 300)
+		{
+			action_jump = JUMP;
+		}
+		else if (m_vel.y > 300)
+		{
+			action_jump = FALL;
+		}
+		
 	}
 	else
 	{
 		action_jump = GROUND;
 	}
+
 	AnimationTick();
 	AddGravity(m_grounded);
 
