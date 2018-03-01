@@ -29,6 +29,6 @@ protected:
 
 	bool m_grounded = false;
 
-	Vector2 m_limit = Vector2(1100, 600);
+	Vector2 m_limit = Vector2(1280, 720);
 };
 

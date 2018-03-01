@@ -80,10 +80,12 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
 
 	//after that as updated my position let's lock it inside my limits
-	if (m_pos.x < 0.0f)
+	if (m_pos.x < 0.0f - 500)
 	{
-		m_pos.x = 0.0f;
-		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+		m_pos.x = 400.0f;
+		m_pos.y = 300.0f;
+		m_vel.x = 0.0f;
+		m_vel.y = 301.0f; // yea, not a nice bounce for works okay for a first pass
 	}
 	if (m_pos.y < 0.0f)
 	{
@@ -91,10 +93,12 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		m_vel.y = 0.0f;
 	}
 
-	if (m_pos.x > m_limit.x)
+	if (m_pos.x > m_limit.x + 500)
 	{
-		m_pos.x = m_limit.x;
+		m_pos.x = 400.0f;
+		m_pos.y = 300.0f;
 		m_vel.x = 0.0f;
+		m_vel.y = 301.0f;
 	}
 	if (m_pos.y > m_limit.y + 200)
 	{

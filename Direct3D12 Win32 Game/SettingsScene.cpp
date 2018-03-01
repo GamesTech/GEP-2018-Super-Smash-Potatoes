@@ -133,7 +133,7 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 		break;
 	case 3:
 		new_outputWidth = 1280;
-		new_outputHeight = 960;
+		new_outputHeight = 720;
 		break;
 	case 4:
 		new_outputWidth = 1440;
@@ -158,7 +158,7 @@ void SettingsScene::newResolutionText(int new_resolution_option)
 		resolution_text->SetText("Resolution: <- 1024 x 768 ->"); //Arcade Machine Reso
 		break;
 	case 3:
-		resolution_text->SetText("Resolution: <- 1280 x 960 ->");
+		resolution_text->SetText("Resolution: <- 1280 x 720 ->");
 		break;
 	case 4:
 		resolution_text->SetText("Resolution: <- 1440 x 1080");

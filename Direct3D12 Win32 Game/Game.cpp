@@ -57,6 +57,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
+	
 
     CreateDevice();
     CreateResources();
@@ -305,6 +306,7 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // Properties
+//Called on init
 void Game::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
