@@ -13,6 +13,10 @@ public:
 
 	void Tick(GameStateData* _GSD, GameObject2D* _obj);
 
+	void respawn();
+
+	void controller(GameStateData * _GSD);
+
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
 
@@ -28,6 +32,7 @@ protected:
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
+	bool m_bonus_jump = false;
 
 	Vector2 m_limit = Vector2(1280, 720);
 };
