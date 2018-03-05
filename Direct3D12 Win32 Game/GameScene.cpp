@@ -5,20 +5,19 @@
 #include "GameStateData.h"
 
 
-void GameScene::init(RenderData* m_RD)
+GameScene::~GameScene()
+{
+	delete[] m_player;
+}
+
+void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
-	m_player = new Player2D(m_RD, "mario_sprite_batch");
-	m_player->SetPos(Vector2(300, 300));
-	m_player->SetLayer(1.0f);
-	m_player->SetDrive(500.0f);
-	m_player->SetDrag(0.5f);
-	m_player->loadSprites("MarioSpriteBatch.txt");
-	m_player->SetRect(724, 0, 775, 63);
-	//game_objects.push_back(m_player);
+	no_players = gsd->no_players;
+	spawnPlayers(m_RD, no_players);
 
 	platform = new ImageGO2D(m_RD, "platform");
 	platform->SetPos(Vector2(200, 600));
@@ -31,7 +30,10 @@ void GameScene::update(GameStateData* gsd)
 {
 	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
 	{
-		m_player->Tick(gsd, *it);
+		for (int i = 0; i < no_players; i++)
+		{
+			m_player[i]->Tick(gsd, *it);
+		}
 	}
 }
 
@@ -48,7 +50,11 @@ void GameScene::render(RenderData* m_RD,
 		(*it)->Render(m_RD);
 	}
 
-	m_player->Render(m_RD);
+	for (int i = 0; i < no_players; i++)
+	{
+		m_player[i]->Render(m_RD);
+	}
+
 	m_RD->m_spriteBatch->End();
 }
 
@@ -59,4 +65,19 @@ void GameScene::ReadInput(GameStateData* gsd)
 		gsd->gameState = MENU;
 	}
 
+}
+
+void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
+{
+	for (int i = 0; i < no_players; i++)
+	{
+		m_player[i] = new Player2D(m_RD, "mario_sprite_batch");
+		m_player[i]->SetPos(Vector2(300, 300));
+		m_player[i]->SetLayer(1.0f);
+		m_player[i]->SetDrive(500.0f);
+		m_player[i]->SetDrag(0.5f);
+		m_player[i]->loadSprites("MarioSpriteBatch.txt");
+		m_player[i]->SetRect(724, 0, 775, 63);
+		m_player[i]->setPlayerNo(i);
+	}
 }

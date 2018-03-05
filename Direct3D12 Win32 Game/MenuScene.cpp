@@ -4,7 +4,7 @@
 #include "GameObject2D.h"
 #include "GameStateData.h"
 
-void MenuScene::init(RenderData* m_RD)
+void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
