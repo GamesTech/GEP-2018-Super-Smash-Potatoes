@@ -139,6 +139,7 @@
     <ClInclude Include="Animation2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="LevelFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -222,6 +223,7 @@
     <ClCompile Include="SettingsScene.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
+    <ClCompile Include="LevelFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

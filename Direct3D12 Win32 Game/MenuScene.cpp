@@ -3,6 +3,7 @@
 #include "RenderData.h"
 #include "GameObject2D.h"
 #include "GameStateData.h"
+#include "LevelFile.h"
 
 void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
