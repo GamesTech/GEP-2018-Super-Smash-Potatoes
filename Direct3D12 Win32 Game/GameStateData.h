@@ -18,6 +18,7 @@ struct GameStateData
 	Mouse::State m_mouseState;
 
 	GamePad::State m_gamePadState[4];
+	GamePad::State m_prevGamePadState[4];
 
 	static GameState state;
 

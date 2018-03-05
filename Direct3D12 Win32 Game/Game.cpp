@@ -174,10 +174,11 @@ void Game::Update(DX::StepTimer const& timer)
 	scene->update(m_GSD);
 
 	//// TODO: Gamepad
-	m_GSD->m_gamePadState[0] = m_gamePad->GetState(0);
-	m_GSD->m_gamePadState[1] = m_gamePad->GetState(1);
-	m_GSD->m_gamePadState[2] = m_gamePad->GetState(2);
-	m_GSD->m_gamePadState[3] = m_gamePad->GetState(3);
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
+		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+	}
 }
 
 //GEP:: Draws the scene.

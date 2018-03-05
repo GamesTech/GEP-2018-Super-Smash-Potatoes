@@ -60,11 +60,11 @@ void GameScene::render(RenderData* m_RD,
 
 void GameScene::ReadInput(GameStateData* gsd)
 {
-	if (gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
+		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
 		gsd->gameState = MENU;
 	}
-
 }
 
 void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
