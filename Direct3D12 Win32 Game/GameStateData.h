@@ -6,8 +6,8 @@
 enum GameState
 {
 	MENU,
+	SETTINGS,
 	INGAME,
-	INGAMEPAUSED,
 	GAMEOVER
 };
 

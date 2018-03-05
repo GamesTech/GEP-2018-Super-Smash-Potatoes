@@ -140,7 +140,19 @@
     <ImageContentTask Include="Settings_Button.png" />
   </ItemGroup>
   <ItemGroup>
+    <ImageContentTask Include="mario_sprite_batch.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ImageContentTask Include="Main_Menu_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Buttons.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="platform.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="gens2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
