@@ -7,6 +7,7 @@ struct GameObjectData {
 	Vector2 scale;
 	float orientation;
 	float layer;
+	string image_file;
 };
 
 class LevelFile

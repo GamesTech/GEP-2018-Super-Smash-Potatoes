@@ -72,12 +72,25 @@ bool File::write()
 	return true;
 }
 
-std::vector<std::string> File::getBlock(int index) const
+const std::vector<std::string>& File::getBlock(int index) const
 {
 	return contents.at(index);
+}
+
+int File::getNumberOfBlocks() const
+{
+	return contents.size();
 }
 
 void File::addBlock(std::vector<std::string>& block)
 {
 	contents.push_back(block);
+}
+
+Vector2 File::parseVector2(std::string s)
+{
+	int index = s.find(',');
+	float a = std::stof(s.substr(0, index));
+	float b = std::stof(s.substr(index + 1, s.size()));
+	return Vector2(a, b);
 }
