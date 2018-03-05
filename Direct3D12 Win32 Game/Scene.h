@@ -6,7 +6,7 @@ public:
 	Scene() = default;
 	virtual ~Scene() = default;
 
-	void virtual init(RenderData* m_RD) {};
+	void virtual init(RenderData* m_RD, GameStateData* gsd) {};
 	void virtual update(GameStateData* gsd) {};
 	void virtual render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) {};

@@ -16,12 +16,15 @@ struct GameStateData
 	Keyboard::State m_keyboardState;
 	Keyboard::State m_prevKeyboardState;
 	Mouse::State m_mouseState;
-	GamePad::State m_gamePadState;
+
+	GamePad::State m_gamePadState[4];
+	GamePad::State m_prevGamePadState[4];
 
 	static GameState state;
 
 	//length of time since last frame
 	float m_dt;
+	int no_players;
 
 	GameState gameState;
 };

@@ -4,7 +4,7 @@
 #include "GameObject2D.h"
 #include "GameStateData.h"
 
-void MenuScene::init(RenderData* m_RD)
+void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
@@ -81,7 +81,8 @@ void MenuScene::highlight_option_selected()
 
 void MenuScene::ReadInput(GameStateData* gsd)
 {
-	if (gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
+	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down) 
+		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
 	{
 		if (menu_option_selected < 3)
 		{
@@ -89,7 +90,8 @@ void MenuScene::ReadInput(GameStateData* gsd)
 			highlight_option_selected();
 		}
 	}
-	if (gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
+	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
+		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
 	{
 		if (menu_option_selected > 1)
 		{
@@ -98,7 +100,8 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		}
 	}
 
-	if (gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 	{
 		switch (menu_option_selected)
 		{

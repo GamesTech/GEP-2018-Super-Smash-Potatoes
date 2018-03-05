@@ -21,6 +21,8 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	SetBoundingBoxes();
 	CheckCollision(_obj);
 	controller(_GSD);
+	
+	controller(_GSD);
 
 	if (!m_grounded)
 	{
@@ -72,6 +74,11 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	}
 }
 
+void Player2D::setPlayerNo(int player_number)
+{
+	player_no = player_number;
+}
+
 void Player2D::respawn()
 {
 	m_pos.x = 400.0f;
@@ -82,14 +89,14 @@ void Player2D::respawn()
 
 void Player2D::controller(GameStateData * _GSD)
 {
-	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
+	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState[player_no].IsDPadLeftPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		direction = LEFT;
 		action_movement = WALK;
 
 	}
-	else if (_GSD->m_keyboardState.D || _GSD->m_gamePadState.IsDPadRightPressed() || _GSD->m_gamePadState.IsLeftThumbStickRight())
+	else if (_GSD->m_keyboardState.D || _GSD->m_gamePadState[player_no].IsDPadRightPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		direction = RIGHT;
@@ -100,7 +107,7 @@ void Player2D::controller(GameStateData * _GSD)
 		action_movement = STILL;
 	}
 
-	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || _GSD->m_gamePadState.IsAPressed())
+	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || (_GSD->m_gamePadState[player_no].IsAPressed() && !_GSD->m_prevGamePadState[player_no].IsAPressed()))
 	{
 		if (m_grounded)
 		{
@@ -110,10 +117,11 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 
-	if ((_GSD->m_keyboardState.X && _GSD->m_keyboardState.Up))
+	if ((_GSD->m_keyboardState.X && _GSD->m_keyboardState.Up) || ((_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()) && (_GSD->m_gamePadState[player_no].IsDPadUpPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
 	{
 		if (m_bonus_jump)
 		{
+			m_vel.y = 0;
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_bonus_jump = false;
 		}

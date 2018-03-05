@@ -18,14 +18,14 @@ SettingsScene::~SettingsScene()
 	}
 }
 
-void SettingsScene::init(RenderData * m_RD)
+void SettingsScene::init(RenderData * m_RD, GameStateData* gsd)
 {
 	resolution_text = new Text2D("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
 	resolution_text->SetLayer(1.0f);
 	game_objects.push_back(resolution_text);
-	newResolutionText(2);
-	resolution_option_selected = 2;
+	newResolutionText(3);
+	resolution_option_selected = 3;
 
 	fullscreen_text = new Text2D("Fullscreen: False");
 	fullscreen_text->SetPos(Vector2(300, 300));
@@ -65,7 +65,8 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 
 void SettingsScene::ReadInput(GameStateData* gsd)
 {
-	if (gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
+	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
+		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
 	{
 		if (menu_option_selected < 3)
 		{
@@ -73,7 +74,8 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 			highlight_option_selected();
 		}
 	}
-	if (gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
+	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
+		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
 	{
 		if (menu_option_selected > 1)
 		{
@@ -85,7 +87,8 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 	switch (menu_option_selected)
 	{
 	case 1:
-		if (gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
+		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
+			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
 		{
 			if (resolution_option_selected > 1)
 			{
@@ -93,7 +96,8 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 				newResolutionText(resolution_option_selected);
 			}
 		}
-		if (gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
+		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
+			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
 		{
 			if (resolution_option_selected < 4)
 			{
@@ -103,20 +107,23 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 		}
 		break;
 	case 2:
-		if (gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left && fullscreen == true)
+		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left && fullscreen == true)
+			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
 		{
 			fullscreen = false;
 			fullscreen_text->SetText("Fullscreen: False");
 			m_swapChain->SetFullscreenState(false, NULL);
 		}
-		if (gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right && fullscreen == false)
+		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right && fullscreen == false)
+			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
 		{
 			fullscreen = true;
 			fullscreen_text->SetText("Fullscreen: True");
 			m_swapChain->SetFullscreenState(true, NULL);
 		}
 	case 3:
-		if (gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+			|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 		{
 			gsd->gameState = MENU;
 		}

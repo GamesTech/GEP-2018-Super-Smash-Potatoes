@@ -13,6 +13,8 @@ public:
 
 	void Tick(GameStateData* _GSD, GameObject2D* _obj);
 
+	void setPlayerNo(int player_number);
+
 	void respawn();
 
 	void controller(GameStateData * _GSD);
@@ -27,6 +29,7 @@ public:
 
 protected:
 	//float m_gravity = 980;
+	int player_no = 0;
 	float m_jumpForce = 45000;
 	float m_drive = 100.0f;
 	Vector2 m_max_speed = Vector2(400, 400);

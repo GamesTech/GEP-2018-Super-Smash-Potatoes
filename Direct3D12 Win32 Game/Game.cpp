@@ -138,7 +138,7 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::output("hello", "world");
 
 	scene = std::make_unique<MenuScene>();
-	scene->init(m_RD);
+	scene->init(m_RD, m_GSD);
 
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
@@ -174,20 +174,11 @@ void Game::Update(DX::StepTimer const& timer)
 	scene->update(m_GSD);
 
 	//// TODO: Gamepad
-	m_GSD->m_gamePadState = m_gamePad->GetState(0);
-
-	//if (m_GSD->m_gamePadState.IsConnected())
-	//{
-	//	// TODO: Read controller 0 here
-	//	if (m_GSD->m_gamePadState.IsViewPressed())
-	//	{
-	//		PostQuitMessage(0);
-	//	}
-	//	else
-	//	{
-	//		m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
-	//	}
-	//}	
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
+		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+	}
 }
 
 //GEP:: Draws the scene.
@@ -688,13 +679,21 @@ void Game::checkIfNewScene()
 			scene->giveSwapChain(m_swapChain);
 			break;
 		case INGAME:
+			m_GSD->no_players = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				if (m_GSD->m_gamePadState[i].IsConnected())
+				{
+					m_GSD->no_players++;
+				}
+			}
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
 			//gameover man, GAMEOVER
 			break;
 		}
-		scene->init(m_RD);
+		scene->init(m_RD, m_GSD);
 		prevScene = m_GSD->gameState;
 	}
 }
