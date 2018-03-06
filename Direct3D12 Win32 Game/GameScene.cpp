@@ -56,6 +56,12 @@ void GameScene::init(RenderData* m_RD)
 	platform2->SetRect(1, 1, 600, 72);
 	platforms.push_back(platform2);
 
+	ImageGO2D* platform3 = new ImageGO2D(m_RD, "platform");
+	platform3->SetPos(Vector2(800,450));
+	platform3->SetLayer(1.0f);
+	platform3->SetRect(1, 1, 600, 72);
+	platforms.push_back(platform3);
+
 	
 	//declare platforms before player
 	m_player = new Player2D(m_RD, "mario_sprite_batch");
@@ -63,21 +69,24 @@ void GameScene::init(RenderData* m_RD)
 	m_player->SetPos(Vector2(300, 300));
 	m_player->SetLayer(1.0f);
 	m_player->SetDrive(1000.0f);
-	m_player->SetDrag(5.f);
+	m_player->SetDrag(10.f);
 	m_player->SetRect(724, 0, 775, 63);
-	m_player->SetSpeedLimit(1);
+	m_player->SetSpeedLimit(platforms.size());
 }
 
 void GameScene::update(GameStateData* gsd)
 {
 	for (std::vector<GameObject2D *>::iterator it = platforms.begin(); it != platforms.end(); it++)
 	{
-		if (CheckCollision(*it))
+		if (CheckCollision(*it) && !m_anim_grounded)
 		{
-			break;
+			m_anim_grounded = true;
 		}
+		m_player->SetAnimGrounded(m_anim_grounded);
+		m_player->Tick(gsd);
+		
 	}
-	m_player->Tick(gsd);
+	m_anim_grounded = false;
 }
 
 void GameScene::render(RenderData* m_RD,
@@ -129,24 +138,14 @@ bool GameScene::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_height)
 			{
-				float newPosY = object->GetPos().y + object->Height();
-				m_player->SetPosY(newPosY);
-				//m_player->SetVelY(0);
-				//m_pos.y = newPosY;
-				//m_vel.y = 0.0f;
-				//m_grounded = true;
-
+				m_player->SetNewPos(object->GetPos().y + object->Height());
+				m_player->SetCollState(m_player->COLBOTTOM);
 				// collision at the bottom 
 			}
 			else
 			{
-				float newPosX = object->GetPos().x - m_player->Width();
-				m_player->SetPosX(newPosX);
-				//m_player->SetVelX(0);
-				m_player->SetGrounded(true);
-				//m_pos.x = newPosX;
-				//m_vel.x = 0.0f;
-				//m_grounded = true;
+				m_player->SetNewPos(object->GetPos().x - m_player->Width());
+				m_player->SetCollState(m_player->COLLEFT);
 				// on the left 
 			}
 		}
@@ -154,24 +153,14 @@ bool GameScene::CheckCollision(GameObject2D *_obj)
 		{
 			if (collision_width > -collision_height)
 			{
-				float newPosX = object->GetPos().x + object->Width();
-				m_player->SetPosX(newPosX);
-				//m_player->SetVelX(0);
-				m_player->SetGrounded(true);
-				//m_pos.x = newPosX;
-				//m_vel.x = 0.0f;
-				//m_grounded = true;
+				m_player->SetNewPos(object->GetPos().x + object->Width());
+				m_player->SetCollState(m_player->COLRIGHT);
 				// on the right 
 			}
 			else
 			{
-				float newPosY = object->GetPos().y - m_player->Height();
-				m_player->SetPosY(newPosY);
-				//m_player->SetVelY(0);
-				m_player->SetGrounded(true);
-				//player->SetPos().y = newPosY;
-				//m_vel.y = 0.0f;
-				//m_grounded = true;
+				m_player->SetNewPos(object->GetPos().y - m_player->Height());
+				m_player->SetCollState(m_player->COLTOP);
 				// at the top 
 			}
 		}
@@ -179,9 +168,8 @@ bool GameScene::CheckCollision(GameObject2D *_obj)
 	}
 	else
 	{
-		m_player->SetGrounded(false);
+		m_player->SetCollState(m_player->COLNONE);
 		return false;
-		//m_grounded = false;
 	}
 
 }

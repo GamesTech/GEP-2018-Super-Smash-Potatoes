@@ -19,6 +19,7 @@ private:
 	std::vector<GameObject2D*> platforms;
 	std::vector<GameObject2D*> objects;
 	Player2D* m_player;
+	bool m_anim_grounded = false;
 	//Text2D* title_text;
 	//ImageGO2D* platform;
 
