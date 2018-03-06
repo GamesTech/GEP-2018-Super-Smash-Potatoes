@@ -240,6 +240,7 @@ void Game::Present()
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
+	WaitForGpu();
     HRESULT hr = m_swapChain->Present(1, 0);
 
     // If the device was reset we must completely reinitialize the renderer.
@@ -668,13 +669,14 @@ void Game::checkIfNewScene()
 {
 	if (m_GSD->gameState != prevScene)
 	{
-		scene.release();
 		switch (m_GSD->gameState)
 		{
 		case MENU:
+			scene.reset();
 			scene = std::make_unique<MenuScene>();
 			break;
 		case SETTINGS:
+			scene.reset();
 			scene = std::make_unique<SettingsScene>();
 			scene->giveSwapChain(m_swapChain);
 			break;
@@ -687,9 +689,11 @@ void Game::checkIfNewScene()
 					m_GSD->no_players++;
 				}
 			}
+			scene.reset();
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
+			//scene.release();
 			//gameover man, GAMEOVER
 			break;
 		}

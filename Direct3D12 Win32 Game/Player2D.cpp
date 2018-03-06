@@ -14,12 +14,14 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
+void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
 	//Physics2D::Tick(_GSD);
 	//Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
-	CheckCollision(_obj);
+	ProcessCollision();
+
+	//CheckCollision(_obj);
 	
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState[player_no].IsDPadLeftPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
 	{
@@ -44,12 +46,16 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		if (m_grounded)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
-			
+			//m_jumping = true;
 			m_grounded = false;
 		}
 	}
 
-	if (!m_grounded)
+	if (m_anim_grounded)
+	{
+		action_jump = GROUND;
+	}
+	else
 	{
 		if (m_vel.y < 300)
 		{
@@ -58,12 +64,8 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		else if (m_vel.y > 300)
 		{
 			action_jump = FALL;
+			//m_jumping = false;
 		}
-		
-	}
-	else
-	{
-		action_jump = GROUND;
 	}
 
 	AnimationTick(_GSD);
@@ -176,3 +178,34 @@ void Player2D::CheckCollision(GameObject2D *_obj)
 	}
 
 }
+
+void Player2D::ProcessCollision()
+{
+	switch (m_coll_state)
+	{
+	case COLTOP:
+		m_grounded = true;
+		m_pos.y = m_new_pos;
+		m_vel.y = 0;
+		break;
+	case COLBOTTOM:
+		//m_grounded = true;
+		m_pos.y = m_new_pos;
+		m_vel.y = 0;
+		break;
+	case COLRIGHT:
+		m_grounded = true;
+		m_pos.x = m_new_pos;
+		m_vel.x = 0;
+		break;
+	case COLLEFT:
+		m_grounded = true;
+		m_pos.x = m_new_pos;
+		m_vel.x = 0;
+		break;
+	case COLNONE:
+		m_grounded = false;
+		break;
+	}
+}
+
