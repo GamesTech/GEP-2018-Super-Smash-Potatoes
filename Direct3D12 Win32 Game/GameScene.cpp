@@ -7,77 +7,41 @@
 
 GameScene::~GameScene()
 {	
-	for (auto object : objects)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
-	for (auto object : platforms)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
-
-	platforms.clear();
-	objects.clear();
-	//delete[] m_player;
+	platforms.shrink_to_fit();
+	objects.shrink_to_fit();
 }
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
-	Text2D* title_text = new Text2D("Super Trash Potatoes");
-	title_text = new Text2D("Super Trash Potatoes");
-	title_text->SetLayer(1.0f);
-	objects.push_back(title_text);
-
+	objects.emplace_back(new Text2D("Super Trash Potatoes"));
+	for (auto& object : objects)
+	{
+		object->SetLayer(1.0f);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		platforms.emplace_back(new ImageGO2D(m_RD, "platform"));
+	}
+	int i = 0;
+	for (auto& platform : platforms)
+	{
+		platform->SetPos(platform_pos[i]);
+		platform->SetLayer(1.0f);
+		platform->SetRect(1, 1, 600, 72);
+		i++;
+	}
 	
-	ImageGO2D* platform = new ImageGO2D(m_RD, "platform");
-	platform->SetPos(Vector2(200, 600));
-	platform->SetLayer(1.0f);
-	platform->SetRect(1,1,600,72);
-	platforms.push_back(platform);
-
-	ImageGO2D* platform2 = new ImageGO2D(m_RD, "platform");
-	platform2->SetPos(Vector2(0, 300));
-	platform2->SetLayer(1.0f);
-	platform2->SetRect(1, 1, 600, 72);
-	platforms.push_back(platform2);
-
-	ImageGO2D* platform3 = new ImageGO2D(m_RD, "platform");
-	platform3->SetPos(Vector2(800,450));
-	platform3->SetLayer(1.0f);
-	platform3->SetRect(1, 1, 600, 72);
-	platforms.push_back(platform3);
-
 	no_players = gsd->no_players;
 	spawnPlayers(m_RD, no_players);
-
-	
-	//declare platforms before player
-	//m_player = new Player2D(m_RD, "mario_sprite_batch");
-	//m_player->loadSprites("MarioSpriteBatch.txt");
-	//m_player->SetPos(Vector2(300, 300));
-	//m_player->SetLayer(1.0f);
-	//m_player->SetDrive(1000.0f);
-	//m_player->SetDrag(10.f);
-	//m_player->SetRect(724, 0, 775, 63);
-	//m_player->SetSpeedLimit(platforms.size());
 }
 
 void GameScene::update(GameStateData* gsd)
 {
-	for (std::vector<GameObject2D *>::iterator it = platforms.begin(); it != platforms.end(); it++)
+	for (auto& platform : platforms)
 	{
-
 		for (int i = 0; i < no_players; i++)
 		{
-			if (CheckCollision(*it, i) && !m_anim_grounded[i])
+			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
 				m_anim_grounded[i] = true;
 			}
@@ -100,13 +64,13 @@ void GameScene::render(RenderData* m_RD,
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& object : objects)
 	{
-		(*it)->Render(m_RD);
+		object->Render(m_RD);
 	}
-	for (std::vector<GameObject2D *>::iterator it = platforms.begin(); it != platforms.end(); it++)
+	for (auto& platform : platforms)
 	{
-		(*it)->Render(m_RD);
+		platform->Render(m_RD);
 	}
 
 	for (int i = 0; i < no_players; i++)

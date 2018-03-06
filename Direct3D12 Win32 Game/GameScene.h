@@ -19,13 +19,12 @@ private:
 	bool CheckCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
+	Vector2 platform_pos[3] = { Vector2(200, 600), Vector2(0, 300), Vector2(800, 450)};
 
 	std::unique_ptr<Player2D> m_player[4];
 
-	Text2D* title_text;
-	ImageGO2D* platform;
-	std::vector<GameObject2D*> platforms;
-	std::vector<GameObject2D*> objects;
+	std::vector<std::unique_ptr<GameObject2D>> platforms;
+	std::vector<std::unique_ptr<GameObject2D>> objects;
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	//Text2D* title_text;

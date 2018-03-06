@@ -40,6 +40,7 @@ public:
 	void SetColour(Color _col) { m_colour = _col; }
 	void SetScale(Vector2 _scale) { m_scale = _scale; }
 	void SetLayer(float _layer) { m_layer = _layer;  }
+	void SetRect(float left, float top, float right, float bottom);
 
 
 	virtual void CentreOrigin() = 0;
@@ -59,6 +60,7 @@ protected:
 	Vector2 m_min = Vector2::Zero;
 	Vector2 m_max = Vector2::Zero;
 	Vector2 m_size = Vector2::Zero;
+	RECT m_rect;
 
 	std::string tag;
 	//bool m_grounded = false;
