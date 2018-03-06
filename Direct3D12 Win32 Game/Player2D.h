@@ -23,6 +23,10 @@ public:
 
 	void setPlayerNo(int player_number);
 
+	void respawn();
+
+	void controller(GameStateData * _GSD);
+
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
 	void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
@@ -50,6 +54,7 @@ protected:
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
+	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	//bool m_jumping = false;
  	//float m_speed_limit;

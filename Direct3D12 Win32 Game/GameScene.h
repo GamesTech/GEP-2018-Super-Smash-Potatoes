@@ -20,7 +20,7 @@ private:
 
 	int no_players = 0;
 
-	Player2D* m_player[4];
+	std::unique_ptr<Player2D> m_player[4];
 
 	Text2D* title_text;
 	ImageGO2D* platform;

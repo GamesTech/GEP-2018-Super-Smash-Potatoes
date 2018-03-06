@@ -29,7 +29,7 @@ public:
 	Animation2D(RenderData* _RD, string _filename);
 	~Animation2D();
 
-	void loadSprites(string _filename);
+	void LoadSprites(string _filename);
 	void AnimationTick(GameStateData * _GSD);
 	void AnimationOn();
 	void SetDefault();
@@ -49,8 +49,9 @@ protected:
 
 private:
 	float timer = 0;
-	int change_animation = 1;
-
+	int m_change_animation = 1;
+	int m_pixel_gap_colour = 0;
+	int m_player_number = 0;
 	float left_default_positions[4] = { 0, 0, 0, 0 };
 	float right_default_positions[4] = { 0, 0, 0, 0 };
 	float left_jump_positions[4] = { 0, 0, 0, 0 };

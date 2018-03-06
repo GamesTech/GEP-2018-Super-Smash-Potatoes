@@ -26,7 +26,7 @@ GameScene::~GameScene()
 
 	platforms.clear();
 	objects.clear();
-	delete[] m_player;
+	//delete[] m_player;
 }
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
@@ -185,13 +185,13 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		m_player[i] = new Player2D(m_RD, "mario_sprite_batch");
+		std::string str_player_no = "mario_sprite_batch_" + std::to_string(i);
+		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
 		m_player[i]->SetDrag(0.5f);
-		m_player[i]->loadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetRect(724, 0, 775, 63);
+		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->SetSpeedLimit(platforms.size());
 		m_player[i]->setPlayerNo(i);
 	}
