@@ -106,7 +106,6 @@ namespace DirectX
             }
 
 
-
 			return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_hCPU, static_cast<INT>(index), m_increment);
         }
 

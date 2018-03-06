@@ -65,15 +65,19 @@ void GameScene::init(RenderData* m_RD)
 	m_player->SetDrive(1000.0f);
 	m_player->SetDrag(5.f);
 	m_player->SetRect(724, 0, 775, 63);
-	m_player->SetSpeedLimit(platforms.size());
+	m_player->SetSpeedLimit(1);
 }
 
 void GameScene::update(GameStateData* gsd)
 {
 	for (std::vector<GameObject2D *>::iterator it = platforms.begin(); it != platforms.end(); it++)
 	{
-		m_player->Tick(gsd, *it);
+		if (CheckCollision(*it))
+		{
+			break;
+		}
 	}
+	m_player->Tick(gsd);
 }
 
 void GameScene::render(RenderData* m_RD,
@@ -105,28 +109,29 @@ void GameScene::ReadInput(GameStateData* gsd)
 	}
 }
 
-void GameScene::CheckCollision(GameObject2D *_player, GameObject2D *_obj)
+bool GameScene::CheckCollision(GameObject2D *_obj)
 {
 	GameObject2D* object = _obj;
-	GameObject2D* player = _player;
 
-	float width = 0.5 * (player->Width() + object->Width());
-	float height = 0.5 * (player->Height() + object->Height());
-	float distance_x = player->CenterX() - object->CenterX();
-	float distance_y = player->CenterY() - object->CenterY();
+	float width = 0.5 * (m_player->Width() + object->Width());
+	float height = 0.5 * (m_player->Height() + object->Height());
+	float distance_x = m_player->CenterX() - object->CenterX();
+	float distance_y = m_player->CenterY() - object->CenterY();
 
 	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{
 		// collision occured
 
 		float collision_width = width * distance_y;
-		float collision_heihgt = height * distance_x;
+		float collision_height = height * distance_x;
 
-		if (collision_width > collision_heihgt)
+		if (collision_width > collision_height)
 		{
-			if (collision_width > -collision_heihgt)
+			if (collision_width > -collision_height)
 			{
 				float newPosY = object->GetPos().y + object->Height();
+				m_player->SetPosY(newPosY);
+				//m_player->SetVelY(0);
 				//m_pos.y = newPosY;
 				//m_vel.y = 0.0f;
 				//m_grounded = true;
@@ -135,7 +140,10 @@ void GameScene::CheckCollision(GameObject2D *_player, GameObject2D *_obj)
 			}
 			else
 			{
-				float newPosX = object->GetPos().x - player->Width();
+				float newPosX = object->GetPos().x - m_player->Width();
+				m_player->SetPosX(newPosX);
+				//m_player->SetVelX(0);
+				m_player->SetGrounded(true);
 				//m_pos.x = newPosX;
 				//m_vel.x = 0.0f;
 				//m_grounded = true;
@@ -144,9 +152,12 @@ void GameScene::CheckCollision(GameObject2D *_player, GameObject2D *_obj)
 		}
 		else
 		{
-			if (collision_width > -collision_heihgt)
+			if (collision_width > -collision_height)
 			{
 				float newPosX = object->GetPos().x + object->Width();
+				m_player->SetPosX(newPosX);
+				//m_player->SetVelX(0);
+				m_player->SetGrounded(true);
 				//m_pos.x = newPosX;
 				//m_vel.x = 0.0f;
 				//m_grounded = true;
@@ -154,16 +165,22 @@ void GameScene::CheckCollision(GameObject2D *_player, GameObject2D *_obj)
 			}
 			else
 			{
-				float newPosY = object->GetPos().y - player->Height();
+				float newPosY = object->GetPos().y - m_player->Height();
+				m_player->SetPosY(newPosY);
+				//m_player->SetVelY(0);
+				m_player->SetGrounded(true);
 				//player->SetPos().y = newPosY;
 				//m_vel.y = 0.0f;
 				//m_grounded = true;
 				// at the top 
 			}
 		}
+		return true;
 	}
 	else
 	{
+		m_player->SetGrounded(false);
+		return false;
 		//m_grounded = false;
 	}
 

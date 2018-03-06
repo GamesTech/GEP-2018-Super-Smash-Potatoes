@@ -15,6 +15,10 @@ public:
 	virtual ~GameObject2D();
 
 	Vector2 GetPos() { return m_pos; }
+	void SetPosX(float _pos_x) {  m_pos.x = _pos_x; }
+	void SetPosY(float _pos_y) { m_pos.y = _pos_y; }
+	//virtual float SetVelY(float vel_y) = 0;
+	//virtual float SetVelX(float vel_x) = 0;
 	float Left () { return m_min.x; }
 	float Right () { return m_max.x; }
 	float Top() { return m_min.y; }

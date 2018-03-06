@@ -247,6 +247,7 @@ void Game::Present()
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
+	WaitForGpu();
     HRESULT hr = m_swapChain->Present(1, 0);
 
     // If the device was reset we must completely reinitialize the renderer.
@@ -677,19 +678,19 @@ void Game::checkIfNewScene()
 		switch (m_GSD->gameState)
 		{
 		case MENU:
-			delete scene.release();
+			scene.reset();
 			scene = std::make_unique<MenuScene>();
 			break;
 		case SETTINGS:
-			delete scene.release();
+			scene.reset();
 			scene = std::make_unique<SettingsScene>();
 			break;
 		case INGAME:
-			delete scene.release();
+			scene.reset();
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
-			delete scene.release();
+			//scene.release();
 			//gameover man, GAMEOVER
 			break;
 		}

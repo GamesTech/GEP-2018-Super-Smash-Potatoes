@@ -14,12 +14,12 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
+void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
 	//Physics2D::Tick(_GSD);
 	//Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
-	CheckCollision(_obj);
+	//CheckCollision(_obj);
 	
 	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState.IsDPadLeftPressed() || _GSD->m_gamePadState.IsLeftThumbStickLeft())
 	{
@@ -49,7 +49,7 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 		}
 	}
 
-	if (m_vel.y == 0)
+	if (m_grounded)
 	{
 		action_jump = GROUND;
 	}
@@ -78,28 +78,28 @@ void Player2D::Tick(GameStateData * _GSD, GameObject2D* _obj)
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
 
-	//after that as updated my position let's lock it inside my limits
-	if (m_pos.x < 0.0f)
-	{
-		m_pos.x = 0.0f;
-		m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
-	}
-	if (m_pos.y < 0.0f)
-	{
-		m_pos.y = 0.0f;
-		m_vel.y = 0.0f;
-	}
+	////after that as updated my position let's lock it inside my limits
+	//if (m_pos.x < 0.0f)
+	//{
+	//	m_pos.x = 0.0f;
+	//	m_vel.x = 0.0f; // yea, not a nice bounce for works okay for a first pass
+	//}
+	//if (m_pos.y < 0.0f)
+	//{
+	//	m_pos.y = 0.0f;
+	//	m_vel.y = 0.0f;
+	//}
 
-	if (m_pos.x > m_limit.x)
-	{
-		m_pos.x = m_limit.x;
-		m_vel.x = 0.0f;
-	}
-	if (m_pos.y > m_limit.y)
-	{
-		m_pos.y = m_limit.y;
-		m_vel.y = 0.0f;
-	}
+	//if (m_pos.x > m_limit.x)
+	//{
+	//	m_pos.x = m_limit.x;
+	//	m_vel.x = 0.0f;
+	//}
+	//if (m_pos.y > m_limit.y)
+	//{
+	//	m_pos.y = m_limit.y;
+	//	m_vel.y = 0.0f;
+	//}
 }
 
 void Player2D::CheckCollision(GameObject2D *_obj)

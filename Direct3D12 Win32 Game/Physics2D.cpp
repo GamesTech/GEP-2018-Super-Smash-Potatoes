@@ -16,7 +16,7 @@ Physics2D::~Physics2D()
 void Physics2D::AddGravity(bool _grounded)
 {
 	m_grounded = _grounded;
-	if (true)
+	if (!m_grounded)
 	{
 		m_acc += (m_gravity * m_mass) / m_speed_limit;
 	}
