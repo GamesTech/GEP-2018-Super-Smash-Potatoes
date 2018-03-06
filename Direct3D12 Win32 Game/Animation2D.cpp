@@ -22,7 +22,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		if (action_movement == WALK)
 		{
-			switch (change_animation)
+			switch (m_change_animation)
 			{
 				case 1:
 				{
@@ -57,13 +57,13 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	
 	if (timer >= 0.3)
 	{
-		if (change_animation < 3)
+		if (m_change_animation < 3)
 		{
-			change_animation++;
+			m_change_animation++;
 		}
 		else
 		{
-			change_animation = 1;
+			m_change_animation = 1;
 		}
 		timer -= 0.3;
 	}
@@ -155,7 +155,7 @@ void Animation2D::SetPunch()
 {
 }
 
-void Animation2D::loadSprites(string _filename)
+void Animation2D::LoadSprites(string _filename)
 {
 	std::ifstream sprite_position_batching;
 	sprite_position_batching.open(_filename);
@@ -210,4 +210,5 @@ void Animation2D::loadSprites(string _filename)
 		}
 	}
 	sprite_position_batching.close();
+	SetRect(left_default_positions[0], left_default_positions[1], left_default_positions[2], left_default_positions[3]);
 }

@@ -16,7 +16,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
-	no_players = gsd->no_players;
+	no_players = 4;//gsd->no_players;
 	spawnPlayers(m_RD, no_players);
 
 	platform = new ImageGO2D(m_RD, "platform");
@@ -71,13 +71,13 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		m_player[i] = new Player2D(m_RD, "mario_sprite_batch");
+		std::string str_player_no = "mario_sprite_batch_" + std::to_string(i);
+		m_player[i] = new Player2D(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
 		m_player[i]->SetDrag(0.5f);
-		m_player[i]->loadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetRect(724, 0, 775, 63);
+		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->setPlayerNo(i);
 	}
 }
