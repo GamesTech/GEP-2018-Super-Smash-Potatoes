@@ -16,13 +16,19 @@ public:
 private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(RenderData* m_RD, int no_players);
+	bool CheckCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
+	Vector2 platform_pos[3] = { Vector2(200, 600), Vector2(0, 300), Vector2(800, 450)};
 
-	Player2D* m_player[4];
+	std::unique_ptr<Player2D> m_player[4];
 
-	Text2D* title_text;
-	ImageGO2D* platform;
+	std::vector<std::unique_ptr<GameObject2D>> platforms;
+	std::vector<std::unique_ptr<GameObject2D>> objects;
+	//Player2D* m_player;
+	bool m_anim_grounded[4] = { false,false,false,false };
+	//Text2D* title_text;
+	//ImageGO2D* platform;
 
 };
 

@@ -15,6 +15,10 @@ public:
 	virtual ~GameObject2D();
 
 	Vector2 GetPos() { return m_pos; }
+	void SetPosX(float _pos_x) {  m_pos.x = _pos_x; }
+	void SetPosY(float _pos_y) { m_pos.y = _pos_y; }
+	//virtual float SetVelY(float vel_y) = 0;
+	//virtual float SetVelX(float vel_x) = 0;
 	float Left () { return m_min.x; }
 	float Right () { return m_max.x; }
 	float Top() { return m_min.y; }
@@ -36,6 +40,7 @@ public:
 	void SetColour(Color _col) { m_colour = _col; }
 	void SetScale(Vector2 _scale) { m_scale = _scale; }
 	void SetLayer(float _layer) { m_layer = _layer;  }
+	void SetRect(float left, float top, float right, float bottom);
 
 
 	virtual void CentreOrigin() = 0;
@@ -55,6 +60,7 @@ protected:
 	Vector2 m_min = Vector2::Zero;
 	Vector2 m_max = Vector2::Zero;
 	Vector2 m_size = Vector2::Zero;
+	RECT m_rect;
 
 	std::string tag;
 	//bool m_grounded = false;

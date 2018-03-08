@@ -3,10 +3,24 @@
 #include "RenderData.h"
 #include "GameObject2D.h"
 #include "GameStateData.h"
+#include "LevelFile.h"
+
+MenuScene::~MenuScene()
+{
+	for (auto object : game_objects)
+	{
+		if (object)
+		{
+			delete object;
+			object = nullptr;
+		}
+	}
+	game_objects.clear();
+}
 
 void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
-	title_text = new Text2D("Super Trash Potatoes");
+	Text2D* title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
