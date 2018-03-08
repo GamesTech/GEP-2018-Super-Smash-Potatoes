@@ -154,7 +154,7 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(0.5f);
+		m_player[i]->SetDrag(10.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->SetSpeedLimit(platforms.size());
 		m_player[i]->setPlayerNo(i);
