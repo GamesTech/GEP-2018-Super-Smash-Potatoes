@@ -32,27 +32,35 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 	
 	no_players = gsd->no_players;
+	if (no_players == 0)
+	{
+		no_players = 1;
+	}
 	spawnPlayers(m_RD, no_players);
 }
 
 void GameScene::update(GameStateData* gsd)
 {
-	for (auto& platform : platforms)
+	for (int i = 0; i < no_players; i++)
 	{
-		for (int i = 0; i < no_players; i++)
+		for (auto& platform : platforms)
 		{
 			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
+				if (!m_player[i]->GetJumping())
+				{
+					m_player[i]->SetVelY(0);
+				}
 				m_anim_grounded[i] = true;
+				break;
 			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd);
+			else
+			{
+				//m_anim_grounded[i] = m_player[i]->GetGrounded();
+			}
 		}
-		
-	}
-	for (int i = 0; i < no_players; i++)
-	{
-		m_anim_grounded[i] = false;
+		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+		m_player[i]->Tick(gsd);
 	}
 }
 
@@ -154,9 +162,9 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(10.f);
+		m_player[i]->SetDrag(2.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetSpeedLimit(platforms.size());
+		m_player[i]->SetSpeedLimit(1);
 		m_player[i]->setPlayerNo(i);
 	}
 }

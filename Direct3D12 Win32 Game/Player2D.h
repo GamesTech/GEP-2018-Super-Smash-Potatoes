@@ -33,6 +33,7 @@ public:
 	void SetVelX(float _vel_x) { m_vel.x = _vel_x; }
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
 	bool GetGrounded() { return m_grounded; };
+	bool GetJumping() { return m_jumping; };
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 
 	void TestCollision() { SetBoundingBoxes(); }
@@ -46,9 +47,11 @@ public:
 
 protected:
 	void ProcessCollision();
+	void ProcessCollision1();
 
 	float m_jumpForce = 90000;
 	float m_drive = 200.0f;
+	float jumping_timer = 0;
 	//float m_gravity = 980;
 	int player_no = 0;
 	Vector2 m_max_speed = Vector2(400, 400);
@@ -56,7 +59,8 @@ protected:
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
-	//bool m_jumping = false;
+	bool m_grabing_side = false;
+	bool m_jumping = false;
  	//float m_speed_limit;
 	float m_new_pos = 0;
 	Collision m_coll_state = COLNONE;

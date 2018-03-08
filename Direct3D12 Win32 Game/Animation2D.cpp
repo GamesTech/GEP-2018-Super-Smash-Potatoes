@@ -41,6 +41,10 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 				}
 			}
 		}
+		else if (action_movement == GRAB)
+		{
+			SetGrab();
+		}
 		else
 		{
 			SetDefault();
@@ -54,6 +58,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		SetFall();
 	}
+	
 	
 	if (timer >= 0.3)
 	{
@@ -155,6 +160,18 @@ void Animation2D::SetPunch()
 {
 }
 
+void Animation2D::SetGrab()
+{
+	if (direction == LEFT)
+	{
+		SetRect(left_grab_positions[0], left_grab_positions[1], left_grab_positions[2], left_grab_positions[3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(right_grab_positions[0], right_grab_positions[1], right_grab_positions[2], right_grab_positions[3]);
+	}
+}
+
 void Animation2D::LoadSprites(string _filename)
 {
 	std::ifstream sprite_position_batching;
@@ -206,6 +223,14 @@ void Animation2D::LoadSprites(string _filename)
 			for (int i = 0; i < 4; i++) //prints into array Falling
 			{
 				sprite_position_batching >> fall_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Falling
+			{
+				sprite_position_batching >> left_grab_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Falling
+			{
+				sprite_position_batching >> right_grab_positions[i];
 			}
 		}
 	}

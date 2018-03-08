@@ -9,3 +9,5 @@
 0 0 0 0 /Left Walk 3
 0 0 0 0 /Right Walk 3
 0 0 0 0 /Fall
+0 0 0 0 /Left Wall Grab
+0 0 0 0 /Right Wall Grab
