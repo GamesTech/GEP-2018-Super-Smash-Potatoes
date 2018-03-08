@@ -4,6 +4,37 @@
 #include "GameObject2D.h"
 #include "GameStateData.h"
 #include "LevelFile.h"
+#include "CharacterSelectScene.h"
+#include "ArenaSelectScene.h"
+
+MenuScene::~MenuScene()
+{
+	if (title_text)
+	{
+		delete title_text;
+		title_text = nullptr;
+	}
+	if (start_game_button)
+	{
+		delete start_game_button;
+		start_game_button = nullptr;
+	}
+	if (settings_button)
+	{
+		delete settings_button;
+		settings_button = nullptr;
+	}
+	if (quit_button)
+	{
+		delete quit_button;
+		quit_button = nullptr;
+	}
+	if (quit_button)
+	{
+		delete quit_button;
+		quit_button = nullptr;
+	}
+}
 
 MenuScene::~MenuScene()
 {
@@ -43,13 +74,16 @@ void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 	quit_button->CentreOrigin();
 	game_objects.push_back(quit_button);
 
+	//selection_scene->init(m_RD, gsd);
+
+
 	highlight_option_selected();
 }
 
 void MenuScene::update(GameStateData* gsd)
 {
 	//Add your game logic here.
-
+	
 	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
 	{
 		(*it)->Tick(gsd);
@@ -120,6 +154,9 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		switch (menu_option_selected)
 		{
 		case 1:
+			selection_scene = std::unique_ptr<CharacterSelectScene>(new CharacterSelectScene);
+
+
 			gsd->gameState = INGAME;
 			break;
 		case 2:
