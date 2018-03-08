@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene.h"
 
-class MenuScene : public Scene
+class CharacterSelectScene : public Scene
 {
 public:
-	MenuScene() = default;
-	virtual ~MenuScene();
+	CharacterSelectScene();
+	~CharacterSelectScene();
 
 	void virtual init(RenderData* m_RD, GameStateData* gsd) override;
 	void virtual update(GameStateData* gsd) override;
@@ -14,16 +14,5 @@ public:
 	void virtual ReadInput(GameStateData* gsd) override;
 
 private:
-	Text2D* title_text;
-	ImageGO2D* start_game_button;
-	ImageGO2D* settings_button;
-	ImageGO2D* quit_button;
 
-	std::unique_ptr<Scene> selection_scene;
-	//^^wanna make this unique?
-
-	int menu_option_selected = 1;
-
-	void highlight_option_selected();
 };
-
