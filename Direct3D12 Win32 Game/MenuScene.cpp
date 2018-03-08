@@ -4,37 +4,7 @@
 #include "GameObject2D.h"
 #include "GameStateData.h"
 #include "LevelFile.h"
-#include "CharacterSelectScene.h"
-#include "ArenaSelectScene.h"
 
-MenuScene::~MenuScene()
-{
-	if (title_text)
-	{
-		delete title_text;
-		title_text = nullptr;
-	}
-	if (start_game_button)
-	{
-		delete start_game_button;
-		start_game_button = nullptr;
-	}
-	if (settings_button)
-	{
-		delete settings_button;
-		settings_button = nullptr;
-	}
-	if (quit_button)
-	{
-		delete quit_button;
-		quit_button = nullptr;
-	}
-	if (quit_button)
-	{
-		delete quit_button;
-		quit_button = nullptr;
-	}
-}
 
 MenuScene::~MenuScene()
 {
@@ -51,7 +21,7 @@ MenuScene::~MenuScene()
 
 void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
-	Text2D* title_text = new Text2D("Super Trash Potatoes");
+	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
@@ -73,9 +43,6 @@ void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 	quit_button->SetRect(1, 161, 240, 240);
 	quit_button->CentreOrigin();
 	game_objects.push_back(quit_button);
-
-	//selection_scene->init(m_RD, gsd);
-
 
 	highlight_option_selected();
 }
@@ -154,10 +121,7 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		switch (menu_option_selected)
 		{
 		case 1:
-			selection_scene = std::unique_ptr<CharacterSelectScene>(new CharacterSelectScene);
-
-
-			gsd->gameState = INGAME;
+			gsd->gameState = CHARACTERSELECT;
 			break;
 		case 2:
 			gsd->gameState = SETTINGS;

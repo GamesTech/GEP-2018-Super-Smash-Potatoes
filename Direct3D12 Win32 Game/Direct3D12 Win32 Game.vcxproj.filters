@@ -140,6 +140,12 @@
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="LevelFile.h" />
+    <ClInclude Include="ArenaSelectScene.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectScene.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -224,6 +230,12 @@
       <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="LevelFile.cpp" />
+    <ClCompile Include="ArenaSelectScene.cpp">
+      <Filter>Game Base\Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectScene.cpp">
+      <Filter>Game Base\Headers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
