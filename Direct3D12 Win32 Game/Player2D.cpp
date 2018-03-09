@@ -18,12 +18,13 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
 	//Push the guy around in the directions for the key presses
 	SetBoundingBoxes();
+	controller(_GSD);
+	
+	ProcessCollision();
 
 	if (m_anim_grounded)
 	{
 		action_jump = GROUND;
-		m_grounded = true;
-		ProcessCollision();
 	}
 	else
 	{
@@ -34,46 +35,36 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 		else if (m_vel.y > 300)
 		{
 			action_jump = FALL;
-			//m_jumping = false;
 		}
-		ProcessCollision1();
 		m_grounded = false;
 	}
 
-	controller(_GSD);
-
-	if (m_coll_state != COLRIGHT && m_coll_state != COLLEFT)
+	//GEP:: Lets go up the inheritence and share our functionality
+	//after that as updated my position let's lock it inside my limits
+	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
+	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
+	AddGravity(m_grounded);
+	Physics2D::Tick(_GSD);
+	RespawnPlayer();
+	if (m_jumping)
 	{
-		AddGravity(m_grounded);
-		m_grabing_side = false;
-	}
-	else
-	{
-		if (m_coll_state == COLRIGHT)
+		if (jumping_timer >= 1)
 		{
-			direction = LEFT;
+			m_jumping = false;
 		}
 		else
 		{
-			direction = RIGHT;
+			jumping_timer += _GSD->m_dt;
 		}
-		m_grabing_side = true;
-		action_movement = GRAB;
-		m_vel.y = 0;
 	}
-	
-	AnimationTick(_GSD);
+	else
+	{
+		jumping_timer = 0;
+	}
+}
 
-	/*Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
-	AddForce(m_drive*mousePush);*/
-
-	//GEP:: Lets go up the inheritence and share our functionality
-	Physics2D::Tick(_GSD);
-
-	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
-	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
-
-	//after that as updated my position let's lock it inside my limits
+void Player2D::RespawnPlayer()
+{
 	if (m_pos.x < 0.0f - 500)
 	{
 		respawn();
@@ -91,24 +82,28 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	{
 		respawn();
 	}
-	if (m_jumping)
+}
+
+void Player2D::Grabbing()
+{
+	if (m_coll_state != COLRIGHT && m_coll_state != COLLEFT)
 	{
-		if (jumping_timer >= 1)
-		{
-			m_jumping = false;
-		}
-		else
-		{
-			jumping_timer += _GSD->m_dt;
-		}
+
+		m_grabing_side = false;
 	}
 	else
 	{
-		jumping_timer = 0;
-	}
-	if (m_vel.y > 350)
-	{
-		m_vel.y = 350;
+		if (m_coll_state == COLRIGHT)
+		{
+			direction = LEFT;
+		}
+		else
+		{
+			direction = RIGHT;
+		}
+		m_grabing_side = true;
+		action_movement = GRAB;
+		m_vel.y = 0;
 	}
 }
 
@@ -180,116 +175,29 @@ void Player2D::ProcessCollision()
 	switch (m_coll_state)
 	{
 	case COLTOP:
+		//m_vel.y = 0;
+		m_grounded = true;
+		m_bonus_jump = true;
 		m_pos.y = m_new_pos;
 		break;
 	case COLBOTTOM:
-		
+		m_grounded = true;
+		m_pos.y = m_new_pos;
 		break;
 	case COLRIGHT:
+		m_grounded = true;
+		m_bonus_jump = true;
+		m_vel.x = 0;
 		m_pos.x = m_new_pos;
 		break;
 	case COLLEFT:
+		m_grounded = true;
+		m_bonus_jump = true;
+		//m_vel.x = 0;
 		m_pos.x = m_new_pos;
 		break;
 	case COLNONE:
 		//m_grounded = false;
 		break;
 	}
-}
-
-void Player2D::ProcessCollision1()
-{
-	switch (m_coll_state)
-	{
-	case COLTOP:
-		m_grounded = true;
-		m_bonus_jump = true;
-		
-		//m_vel.y = 0;
-		break;
-	case COLBOTTOM:
-		m_grounded = true;
-		m_pos.y = m_new_pos;
-		//m_vel.y = 0;
-		break;
-	case COLRIGHT:
-		m_grounded = true;
-		m_bonus_jump = true;
-		//m_vel.x = 0;
-		break;
-	case COLLEFT:
-		m_grounded = true;
-		m_bonus_jump = true;
-		//m_vel.x = 0;
-		break;
-	case COLNONE:
-		//m_grounded = false;
-		break;
-	}
-}
-
-void Player2D::CheckCollision(GameObject2D *_obj)
-{
-	GameObject2D* object = _obj;
-
-	float width = 0.5 * (Width() + object->Width());
-	float height = 0.5 * (Height() + object->Height());
-	float distance_x = CenterX() - object->CenterX();
-	float distance_y = CenterY() - object->CenterY();
-
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
-	{
-		// collision occured
-
-		float collision_width = width * distance_y;
-		float collision_heihgt = height * distance_x;
-
-		if (collision_width > collision_heihgt)
-		{
-			if (collision_width > -collision_heihgt)
-			{
-				float newPosY = object->GetPos().y + object->Height();
-				m_pos.y = newPosY;
-				m_vel.y = 0.0f;
-				//m_grounded = true;
-
-				// collision at the bottom 
-			}
-			else
-			{
-				float newPosX = object->GetPos().x - m_size.x;
-				m_pos.x = newPosX;
-				m_vel.x = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// on the left 
-			}
-		}
-		else
-		{
-			if (collision_width > -collision_heihgt)
-			{
-				float newPosX = object->GetPos().x + object->Width();
-				m_pos.x = newPosX;
-				m_vel.x = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// on the right 
-			}
-			else
-			{
-				float newPosY = object->GetPos().y - m_size.y;
-				m_pos.y = newPosY;
-				m_vel.y = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// at the top 
-			}
-		}
-	}
-	else
-	{
-		m_grounded = false;
-	}
-
 }

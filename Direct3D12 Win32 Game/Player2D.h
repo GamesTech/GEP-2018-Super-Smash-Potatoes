@@ -21,6 +21,10 @@ public:
 
 	void Tick(GameStateData* _GSD/*, GameObject2D* _obj*/);
 
+	void RespawnPlayer();
+
+	void Grabbing();
+
 	void setPlayerNo(int player_number);
 
 	void respawn();
@@ -37,7 +41,6 @@ public:
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 
 	void TestCollision() { SetBoundingBoxes(); }
-	void CheckCollision(GameObject2D* _obj);
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
@@ -47,20 +50,21 @@ public:
 
 protected:
 	void ProcessCollision();
-	void ProcessCollision1();
 
 	float m_jumpForce = 90000;
 	float m_drive = 200.0f;
 	float jumping_timer = 0;
 	//float m_gravity = 980;
 	int player_no = 0;
-	Vector2 m_max_speed = Vector2(400, 400);
+	Vector2 m_max_speed = Vector2(350, 350);
 
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
 	bool m_jumping = false;
+	bool m_once = true;
+
  	//float m_speed_limit;
 	float m_new_pos = 0;
 	Collision m_coll_state = COLNONE;

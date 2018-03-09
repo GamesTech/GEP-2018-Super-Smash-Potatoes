@@ -47,20 +47,17 @@ void GameScene::update(GameStateData* gsd)
 		{
 			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
-				if (!m_player[i]->GetJumping())
-				{
-					m_player[i]->SetVelY(0);
-				}
 				m_anim_grounded[i] = true;
 				break;
 			}
 			else
 			{
-				//m_anim_grounded[i] = m_player[i]->GetGrounded();
+				m_anim_grounded[i] = false;
 			}
 		}
 		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
 		m_player[i]->Tick(gsd);
+		m_player[i]->AnimationTick(gsd);
 	}
 }
 
