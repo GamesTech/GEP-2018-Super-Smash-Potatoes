@@ -24,7 +24,7 @@ void Physics2D::AddGravity(bool _grounded)
 }
 
 //GEP:: Basic Euler Solver for point mass 
-void Physics2D::Tick(GameStateData * _GSD)
+void Physics2D::Tick(GameStateData * _GSD, bool _coll)
 {
 	//VERY Basic idea of drag i.e. the faster I go the more I get pulled back
 	if (m_grounded)
@@ -38,6 +38,12 @@ void Physics2D::Tick(GameStateData * _GSD)
 
 	Vector2 newPos = m_pos + _GSD->m_dt * m_vel;
 	Vector2 newVel = m_vel + _GSD->m_dt * m_acc;
+
+	if (_coll)
+	{
+		//newPos.y += (m_pos.y + _GSD->m_dt * m_vel.y)*-1;
+		newVel.y += (m_vel.y + _GSD->m_dt * m_acc.y)*-1;
+	}
 
 	m_pos = newPos;
 	m_vel = newVel;

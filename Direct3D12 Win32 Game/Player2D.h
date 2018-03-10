@@ -43,6 +43,7 @@ public:
 	Vector2 GetLimit() { return m_limit; };
 	Vector2 GetCurrVel() { return m_vel; };
 	void SetCollState(Collision _col) { m_coll_state = _col; };
+	Collision GetCollState() { return m_coll_state; };
 
 protected:
 	void ProcessCollision();
@@ -56,6 +57,7 @@ protected:
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
+	bool m_top_coll = false;
 	//bool m_jumping = false;
  	//float m_speed_limit;
 	float m_new_pos = 0;

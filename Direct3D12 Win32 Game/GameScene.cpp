@@ -32,6 +32,10 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 	
 	no_players = gsd->no_players;
+	if (no_players == 0)
+	{
+		no_players = 1;
+	}
 	spawnPlayers(m_RD, no_players);
 }
 
@@ -39,17 +43,14 @@ void GameScene::update(GameStateData* gsd)
 {
 	for (auto& platform : platforms)
 	{
-		for (int i = 0; i < no_players; i++)
+		if (CheckCollision(platform.get(), 0) && !m_anim_grounded[0])
 		{
-			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
-			{
-				m_anim_grounded[i] = true;
-			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd);
+			m_anim_grounded[0] = true;
+			break;
 		}
-		
 	}
+	m_player[0]->SetAnimGrounded(m_anim_grounded[0]);
+	m_player[0]->Tick(gsd);
 	for (int i = 0; i < no_players; i++)
 	{
 		m_anim_grounded[i] = false;
@@ -129,11 +130,16 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
 				// on the right 
 			}
-			else
+			else if(m_player[_i]->GetCurrVel().y >= 0)
 			{
 				m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
 				m_player[_i]->SetCollState(m_player[_i]->COLTOP);
 				// at the top 
+			}
+			else
+			{
+				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+				return false;
 			}
 		}
 		return true;
@@ -153,8 +159,8 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
-		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(0.5f);
+		m_player[i]->SetDrive(2000.0f);
+		m_player[i]->SetDrag(10.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->SetSpeedLimit(platforms.size());
 		m_player[i]->setPlayerNo(i);

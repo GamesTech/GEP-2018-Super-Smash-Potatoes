@@ -18,13 +18,22 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
 	//Physics2D::Tick(_GSD);
 	//Push the guy around in the directions for the key presses
+	if (m_coll_state == Collision::COLTOP)
+	{
+		m_top_coll = true;
+	}
+	else
+	{
+		m_top_coll = false;
+	}
+
 	SetBoundingBoxes();
 	controller(_GSD);
 	ProcessCollision();
 
 	//CheckCollision(_obj);
 	
-	controller(_GSD);
+	//controller(_GSD);
 
 	if (m_anim_grounded)
 	{
@@ -51,7 +60,7 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	//AddForce(m_drive*mousePush);
 
 	//GEP:: Lets go up the inheritence and share our functionality
-	Physics2D::Tick(_GSD);
+	Physics2D::Tick(_GSD, m_top_coll);
 
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
@@ -114,8 +123,8 @@ void Player2D::controller(GameStateData * _GSD)
 		if (m_grounded)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
-
 			m_grounded = false;
+			m_top_coll = false;
 		}
 	}
 
@@ -204,24 +213,24 @@ void Player2D::ProcessCollision()
 		m_grounded = true;
 		m_bonus_jump = true;
 		m_pos.y = m_new_pos;
-		m_vel.y = 0;
+		//m_vel.y = 0;
 		break;
 	case COLBOTTOM:
 		//m_grounded = true;
 		m_pos.y = m_new_pos;
-		m_vel.y = 0;
+		//m_vel.y = 0;
 		break;
 	case COLRIGHT:
 		m_grounded = true;
 		m_bonus_jump = true;
 		m_pos.x = m_new_pos;
-		m_vel.x = 0;
+		//m_vel.x = 0;
 		break;
 	case COLLEFT:
 		m_grounded = true;
 		m_bonus_jump = true;
 		m_pos.x = m_new_pos;
-		m_vel.x = 0;
+		//m_vel.x = 0;
 		break;
 	case COLNONE:
 		m_grounded = false;

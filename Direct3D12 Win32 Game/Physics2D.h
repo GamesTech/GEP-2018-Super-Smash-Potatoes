@@ -20,7 +20,7 @@ public:
 	float GetDrag() { return m_drag; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 
-	virtual void Tick(GameStateData* _GSD);
+	virtual void Tick(GameStateData* _GSD, bool _coll);
 
 protected:
 	Vector2 m_vel;
