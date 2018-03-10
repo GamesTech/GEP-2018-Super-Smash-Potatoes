@@ -19,7 +19,7 @@ private:
 	bool CheckCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
-	Vector2 platform_pos[3] = { Vector2(200, 600), Vector2(600, 600), Vector2(400, 400) };
+	Vector2 platform_pos[4] = { Vector2(1000, 1000), Vector2(600, 600), Vector2(400, 400), Vector2(200, 200) };
 
 	std::unique_ptr<Player2D> m_player[4];
 

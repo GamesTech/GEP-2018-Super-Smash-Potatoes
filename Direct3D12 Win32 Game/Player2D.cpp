@@ -38,25 +38,30 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 		}
 		m_grounded = false;
 	}
-
+	Grabbing();
 	//GEP:: Lets go up the inheritence and share our functionality
 	//after that as updated my position let's lock it inside my limits
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
-	if (m_timer >= 0.25)
+	if (m_vel.y > m_max_speed.y * 0.75) { m_vel.y = m_max_speed.y * 0.75; }
+	if (m_vel.y < -m_max_speed.y) { m_vel.y = -m_max_speed.y; }
+	
+	Physics2D::Tick(_GSD);
+	if (m_timer >= 0.5)
 	{
 		AddGravity(m_grounded);
-		Physics2D::Tick(_GSD);
 	}
 	else
 	{
+		m_vel.y = 0;
 		m_timer += _GSD->m_dt;
 	}
 	RespawnPlayer();
 	if (m_jumping)
 	{
-		if (jumping_timer >= 1)
+		if (jumping_timer >= 0.5)
 		{
+			col_once = false;
 			m_jumping = false;
 		}
 		else
@@ -95,7 +100,6 @@ void Player2D::Grabbing()
 {
 	if (m_coll_state != COLRIGHT && m_coll_state != COLLEFT)
 	{
-
 		m_grabing_side = false;
 	}
 	else
@@ -110,7 +114,6 @@ void Player2D::Grabbing()
 		}
 		m_grabing_side = true;
 		action_movement = GRAB;
-		m_vel.y = 0;
 	}
 }
 
@@ -185,29 +188,42 @@ void Player2D::ProcessCollision()
 		//m_vel.y = 0;
 		m_grounded = true;
 		m_bonus_jump = true;
-		m_pos.y = m_new_pos;
+		m_pos.y = m_new_pos.y;
 		if (!col_once)
 		{
-			m_vel.y = 0;
 			m_timer = 0;
 			col_once = true;
 		}
 		break;
 	case COLBOTTOM:
-		m_grounded = true;
-		m_pos.y = m_new_pos;
+			m_grounded = false;
+			m_pos.y = m_new_pos.y;
 		break;
 	case COLRIGHT:
 		m_grounded = true;
 		m_bonus_jump = true;
-		m_vel.x = 0;
-		m_pos.x = m_new_pos;
+		if (!col_once)
+		{
+			//m_vel.x = 0;
+			m_pos.x = m_new_pos.x;
+		}
+		else
+		{
+			m_pos.y = m_new_pos.y;
+		}
 		break;
 	case COLLEFT:
 		m_grounded = true;
 		m_bonus_jump = true;
-		//m_vel.x = 0;
-		m_pos.x = m_new_pos;
+		if (!col_once)
+		{
+			//m_vel.x = 0;
+			m_pos.x = m_new_pos.x;
+		}
+		else
+		{
+			m_pos.y = m_new_pos.y;
+		}
 		break;
 	case COLNONE:
 		//m_grounded = false;

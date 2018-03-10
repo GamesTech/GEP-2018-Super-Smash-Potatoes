@@ -32,12 +32,12 @@ public:
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
 	bool GetGrounded() { return m_grounded; };
 	bool GetJumping() { return m_jumping; };
-	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
+	void SetNewPos(float _new_pos_x, float _new_pos_y) { m_new_pos.x = _new_pos_x; m_new_pos.y = _new_pos_y;};
 
 	void TestCollision() { SetBoundingBoxes(); }
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
-	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
+	//void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
 	Vector2 GetLimit() { return m_limit; };
 	Vector2 GetCurrVel() { return m_vel; };
 	void SetCollState(Collision _col) { m_coll_state = _col; };
@@ -45,23 +45,23 @@ public:
 protected:
 	void ProcessCollision();
 
-	float m_jumpForce = 90000;
+	float m_jumpForce = 80000;
 	float m_drive = 200.0f;
 	float jumping_timer = 0;
 	float m_timer = 0.25;
 	//float m_gravity = 980;
 	int player_no = 0;
-	Vector2 m_max_speed = Vector2(350, 350);
+	Vector2 m_max_speed = Vector2(350, 1000);
 
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
 	bool m_jumping = false;
-	bool m_once = true;
+	bool m_once = false;
 
  	//float m_speed_limit;
-	float m_new_pos = 0;
+	Vector2 m_new_pos;
 	Collision m_coll_state = COLNONE;
 
 	Vector2 m_limit = Vector2(1280, 720);

@@ -29,7 +29,7 @@ void Physics2D::Tick(GameStateData * _GSD)
 	//VERY Basic idea of drag i.e. the faster I go the more I get pulled back
 	if (m_grounded)
 	{
-		m_acc -= (m_drag * m_vel) / m_speed_limit;
+		m_acc -= (m_drag * m_vel) / 2;
 	}
 	else
 	{

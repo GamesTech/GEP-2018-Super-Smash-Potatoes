@@ -18,7 +18,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	{
 		object->SetLayer(1.0f);
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		platforms.emplace_back(new ImageGO2D(m_RD, "platform"));
 	}
@@ -115,13 +115,13 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 		{
 			if (collision_width > -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
+				m_player[_i]->SetNewPos(m_player[_i]->GetPos().x, object->GetPos().y + object->Height());
 				m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
 				// collision at the bottom 
 			}
 			else
 			{
-				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
+				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width(), object->GetPos().y - m_player[_i]->Height());
 				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
 				// on the left 
 			}
@@ -130,13 +130,13 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 		{
 			if (collision_width > -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
+				m_player[_i]->SetNewPos(object->GetPos().x + object->Width(), object->GetPos().y - m_player[_i]->Height());
 				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
 				// on the right 
 			}
 			else
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
+				m_player[_i]->SetNewPos(m_player[_i]->GetPos().x, object->GetPos().y - m_player[_i]->Height());
 				m_player[_i]->SetCollState(m_player[_i]->COLTOP);
 				// at the top 
 			}
@@ -159,7 +159,7 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(2.f);
+		m_player[i]->SetDrag(3.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->SetSpeedLimit(1);
 		m_player[i]->setPlayerNo(i);
