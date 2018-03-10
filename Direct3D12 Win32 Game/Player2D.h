@@ -20,17 +20,11 @@ public:
 	virtual ~Player2D();
 
 	void Tick(GameStateData* _GSD/*, GameObject2D* _obj*/);
-
 	void RespawnPlayer();
-
 	void Grabbing();
-
 	void setPlayerNo(int player_number);
-
 	void respawn();
-
 	void controller(GameStateData * _GSD);
-
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
 	void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
@@ -54,6 +48,7 @@ protected:
 	float m_jumpForce = 90000;
 	float m_drive = 200.0f;
 	float jumping_timer = 0;
+	float m_timer = 0.25;
 	//float m_gravity = 980;
 	int player_no = 0;
 	Vector2 m_max_speed = Vector2(350, 350);
@@ -70,5 +65,8 @@ protected:
 	Collision m_coll_state = COLNONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
+
+private:
+	bool col_once;
 };
 

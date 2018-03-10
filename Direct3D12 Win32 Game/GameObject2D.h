@@ -28,7 +28,7 @@ public:
 	float CenterX() { return (m_pos.x + m_size.x / 2); }
 	float CenterY() { return (m_pos.y + m_size.y / 2); }
 
-	RECT GetRECT() { RECT m_rect; };
+	RECT GetRECT() { return m_rect; };
 	Vector2 GetOrigin() { return m_origin; }
 	float GetOri() { return m_orientation; }
 	Color GetColour() { return m_colour; }

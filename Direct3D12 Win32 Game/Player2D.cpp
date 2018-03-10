@@ -43,8 +43,15 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	//after that as updated my position let's lock it inside my limits
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
-	AddGravity(m_grounded);
-	Physics2D::Tick(_GSD);
+	if (m_timer >= 0.25)
+	{
+		AddGravity(m_grounded);
+		Physics2D::Tick(_GSD);
+	}
+	else
+	{
+		m_timer += _GSD->m_dt;
+	}
 	RespawnPlayer();
 	if (m_jumping)
 	{
@@ -179,6 +186,12 @@ void Player2D::ProcessCollision()
 		m_grounded = true;
 		m_bonus_jump = true;
 		m_pos.y = m_new_pos;
+		if (!col_once)
+		{
+			m_vel.y = 0;
+			m_timer = 0;
+			col_once = true;
+		}
 		break;
 	case COLBOTTOM:
 		m_grounded = true;
