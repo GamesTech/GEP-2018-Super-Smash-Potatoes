@@ -48,7 +48,7 @@ public:
 protected:
 	void ProcessCollision();
 
-	float m_jumpForce = 90000;
+	float m_jumpForce = 120000;
 	float m_drive = 200.0f;
 	//float m_gravity = 980;
 	int player_no = 0;
@@ -57,7 +57,8 @@ protected:
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
-	bool m_top_coll = false;
+	bool m_y_coll = false;
+	bool m_x_coll = false;
 	//bool m_jumping = false;
  	//float m_speed_limit;
 	float m_new_pos = 0;

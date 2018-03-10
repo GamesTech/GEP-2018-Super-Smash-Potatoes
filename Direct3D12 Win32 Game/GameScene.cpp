@@ -110,34 +110,56 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 		float collision_width = width * distance_y;
 		float collision_height = height * distance_x;
 
-		if (collision_width > collision_height)
+		if (collision_width < collision_height)
 		{
-			if (collision_width > -collision_height)
+			if (collision_width < -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
-				// collision at the bottom 
+				if (m_player[_i]->GetCurrVel().y >= 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
+					// at the top 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
 			}
-			else
-			{
-				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
-				// on the left 
-			}
-		}
-		else
-		{
-			if (collision_width > -collision_height)
+			else if (m_player[_i]->GetCurrVel().x <= 0)
 			{
 				m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
 				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
 				// on the right 
 			}
-			else if(m_player[_i]->GetCurrVel().y >= 0)
+			else
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLTOP);
-				// at the top 
+				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+				return false;
+			}
+			
+		}
+		else
+		{
+			if (collision_width > -collision_height)
+			{
+				if (m_player[_i]->GetCurrVel().y < 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
+					// collision at the bottom 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+			}
+			else if (m_player[_i]->GetCurrVel().x >= 0)
+			{
+				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
+				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+				// on the left 
 			}
 			else
 			{
