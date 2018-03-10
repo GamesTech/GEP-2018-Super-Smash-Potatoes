@@ -41,16 +41,19 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 
 void GameScene::update(GameStateData* gsd)
 {
+	for (int i = 0; i < no_players; i++)
+	{
 	for (auto& platform : platforms)
 	{
-		if (CheckCollision(platform.get(), 0) && !m_anim_grounded[0])
+		if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
 		{
-			m_anim_grounded[0] = true;
+			m_anim_grounded[i] = true;
 			break;
 		}
 	}
-	m_player[0]->SetAnimGrounded(m_anim_grounded[0]);
-	m_player[0]->Tick(gsd);
+	m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+	m_player[i]->Tick(gsd);
+	}
 	for (int i = 0; i < no_players; i++)
 	{
 		m_anim_grounded[i] = false;
