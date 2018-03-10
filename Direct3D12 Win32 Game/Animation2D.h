@@ -18,7 +18,8 @@ enum ActionMovement
 {
 	STILL,
 	WALK,
-	RUN
+	RUN,
+	GRAB
 };
 
 //GEP:: Animation class
@@ -40,6 +41,7 @@ public:
 	void SetRun();
 	void SetFall();
 	void SetPunch();
+	void SetGrab();
 
 protected:
 	Direction direction;
@@ -63,5 +65,6 @@ private:
 	float left_walk_2_positions[4] = { 0, 0, 0, 0 };
 	float right_walk_2_positions[4] = { 0, 0, 0, 0 };
 	float fall_positions[4] = { 0, 0, 0, 0 };
-
+	float left_grab_positions[4] = { 0, 0, 0, 0 };
+	float right_grab_positions[4] = { 0, 0, 0, 0 };
 };

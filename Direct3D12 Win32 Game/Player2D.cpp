@@ -16,7 +16,6 @@ Player2D::~Player2D()
 
 void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
-	//Physics2D::Tick(_GSD);
 	//Push the guy around in the directions for the key presses
 	if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
 	{
@@ -39,10 +38,6 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	controller(_GSD);
 	ProcessCollision();
 
-	//CheckCollision(_obj);
-	
-	//controller(_GSD);
-
 	if (m_anim_grounded)
 	{
 		action_jump = GROUND;
@@ -56,16 +51,12 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 		else if (m_vel.y > 300)
 		{
 			action_jump = FALL;
-			//m_jumping = false;
 		}
 	}
-
+	Grabbing();
 	AnimationTick(_GSD);
 	AddGravity(m_grounded);
 
-	Vector2 mousePush = Vector2(_GSD->m_mouseState.x, _GSD->m_mouseState.y);
-	
-	//AddForce(m_drive*mousePush);
 
 	//GEP:: Lets go up the inheritence and share our functionality
 	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos);
@@ -74,6 +65,11 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
 
 	//after that as updated my position let's lock it inside my limits
+	deathZone();
+}
+
+void Player2D::deathZone()
+{
 	if (m_pos.x < 0.0f - 500)
 	{
 		respawn();
@@ -98,6 +94,28 @@ void Player2D::setPlayerNo(int player_number)
 	player_no = player_number;
 }
 
+void Player2D::Grabbing()
+{
+	if (m_coll_state != COLRIGHT && m_coll_state != COLLEFT)
+	{
+		m_grabing_side = false;
+	}
+	else
+	{
+		if (m_coll_state == COLRIGHT)
+		{
+			direction = LEFT;
+		}
+		else
+		{
+			direction = RIGHT;
+		}
+		m_grabing_side = true;
+		action_movement = GRAB;
+		m_vel.y = 0;
+	}
+}
+
 void Player2D::respawn()
 {
 	m_pos.x = 400.0f;
@@ -112,18 +130,27 @@ void Player2D::controller(GameStateData * _GSD)
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		direction = LEFT;
-		action_movement = WALK;
+		if (!m_grabing_side)
+		{
+			action_movement = WALK;
+		}
 
 	}
 	else if (_GSD->m_keyboardState.D || _GSD->m_gamePadState[player_no].IsDPadRightPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		direction = RIGHT;
-		action_movement = WALK;
+		if (!m_grabing_side)
+		{
+			action_movement = WALK;
+		}
 	}
 	else
 	{
-		action_movement = STILL;
+		if (!m_grabing_side)
+		{
+			action_movement = STILL;
+		}
 	}
 
 	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || (_GSD->m_gamePadState[player_no].IsAPressed() && !_GSD->m_prevGamePadState[player_no].IsAPressed()))
@@ -146,72 +173,6 @@ void Player2D::controller(GameStateData * _GSD)
 			m_bonus_jump = false;
 		}
 	}
-}
-
-void Player2D::CheckCollision(GameObject2D *_obj)
-{
-	GameObject2D* object = _obj;
-
-	float width = 0.5 * (Width() + object->Width());
-	float height = 0.5 * (Height() + object->Height());
-	float distance_x = CenterX() - object->CenterX();
-	float distance_y = CenterY() - object->CenterY();
-
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
-	{
-		// collision occured
-
-		float collision_width = width * distance_y;
-		float collision_heihgt = height * distance_x;
-
-		if (collision_width > collision_heihgt)
-		{
-			if (collision_width > -collision_heihgt)
-			{
-				float newPosY = object->GetPos().y + object->Height();
-				m_pos.y = newPosY;
-				m_vel.y = 0.0f;
-				//m_grounded = true;
-
-				// collision at the bottom 
-			}
-			else
-			{
-				float newPosX = object->GetPos().x - m_size.x;
-				m_pos.x = newPosX;
-				m_vel.x = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// on the left 
-			}
-		}
-		else
-		{
-			if (collision_width > -collision_heihgt)
-			{
-				float newPosX = object->GetPos().x + object->Width();
-				m_pos.x = newPosX;
-				m_vel.x = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// on the right 
-			}
-			else
-			{
-				float newPosY = object->GetPos().y - m_size.y;
-				m_pos.y = newPosY;
-				m_vel.y = 0.0f;
-				m_grounded = true;
-				m_bonus_jump = true;
-				// at the top 
-			}
-		}
-	}
-	else
-	{
-		m_grounded = false;
-	}
-
 }
 
 void Player2D::ProcessCollision()

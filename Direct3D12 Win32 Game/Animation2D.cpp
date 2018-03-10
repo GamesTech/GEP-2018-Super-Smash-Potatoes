@@ -17,29 +17,33 @@ Animation2D::~Animation2D()
 
 void Animation2D::AnimationTick(GameStateData * _GSD)
 {
-	
+
 	if (action_jump == GROUND)
 	{
 		if (action_movement == WALK)
 		{
 			switch (m_change_animation)
 			{
-				case 1:
-				{
-					SetWalk();
-					break;
-				}
-				case 2:
-				{
-					SetWalk1();
-					break;
-				}
-				case 3:
-				{
-					SetWalk2();
-					break;
-				}
+			case 1:
+			{
+				SetWalk();
+				break;
 			}
+			case 2:
+			{
+				SetWalk1();
+				break;
+			}
+			case 3:
+			{
+				SetWalk2();
+				break;
+			}
+			}
+		}
+		else if (action_movement == GRAB)
+		{
+			SetGrab();
 		}
 		else
 		{
@@ -54,7 +58,8 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		SetFall();
 	}
-	
+
+
 	if (timer >= 0.3)
 	{
 		if (m_change_animation < 3)
@@ -155,13 +160,25 @@ void Animation2D::SetPunch()
 {
 }
 
+void Animation2D::SetGrab()
+{
+	if (direction == LEFT)
+	{
+		SetRect(left_grab_positions[0], left_grab_positions[1], left_grab_positions[2], left_grab_positions[3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(right_grab_positions[0], right_grab_positions[1], right_grab_positions[2], right_grab_positions[3]);
+	}
+}
+
 void Animation2D::LoadSprites(string _filename)
 {
 	std::ifstream sprite_position_batching;
 	sprite_position_batching.open(_filename);
-	if (sprite_position_batching.is_open()) 
+	if (sprite_position_batching.is_open())
 	{
-		while (!sprite_position_batching.eof()) 
+		while (!sprite_position_batching.eof())
 		{
 			for (int i = 0; i < 4; i++) //prints into array Default Left
 			{
@@ -206,6 +223,14 @@ void Animation2D::LoadSprites(string _filename)
 			for (int i = 0; i < 4; i++) //prints into array Falling
 			{
 				sprite_position_batching >> fall_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Falling
+			{
+				sprite_position_batching >> left_grab_positions[i];
+			}
+			for (int i = 0; i < 4; i++) //prints into array Falling
+			{
+				sprite_position_batching >> right_grab_positions[i];
 			}
 		}
 	}

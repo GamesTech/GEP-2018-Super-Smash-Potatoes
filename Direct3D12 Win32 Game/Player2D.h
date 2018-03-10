@@ -23,10 +23,6 @@ public:
 
 	void setPlayerNo(int player_number);
 
-	void respawn();
-
-	void controller(GameStateData * _GSD);
-
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
 	void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
@@ -47,6 +43,10 @@ public:
 
 protected:
 	void ProcessCollision();
+	void Grabbing();
+	void deathZone();
+	void respawn();
+	void controller(GameStateData * _GSD);
 
 	float m_jumpForce = 60000;
 	float m_drive = 200.0f;
@@ -57,6 +57,7 @@ protected:
 	bool m_grounded = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
+	bool m_grabing_side = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
 	//bool m_jumping = false;
