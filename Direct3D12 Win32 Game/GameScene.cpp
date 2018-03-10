@@ -32,23 +32,27 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 	
 	no_players = gsd->no_players;
+	if (no_players == 0)
+	{
+		no_players = 1;
+	}
 	spawnPlayers(m_RD, no_players);
 }
 
 void GameScene::update(GameStateData* gsd)
 {
-	for (auto& platform : platforms)
+	for (int i = 0; i < no_players; i++)
 	{
-		for (int i = 0; i < no_players; i++)
+		for (auto& platform : platforms)
 		{
-			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
+			if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
 			{
 				m_anim_grounded[i] = true;
+				break;
 			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd);
 		}
-		
+		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+		m_player[i]->Tick(gsd);
 	}
 	for (int i = 0; i < no_players; i++)
 	{
@@ -106,24 +110,23 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 		float collision_width = width * distance_y;
 		float collision_height = height * distance_x;
 
-		if (collision_width > collision_height)
+		if (collision_width < collision_height)
 		{
-			if (collision_width > -collision_height)
+			if (collision_width < -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
-				// collision at the bottom 
+				if (m_player[_i]->GetCurrVel().y >= 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
+					// at the top 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
 			}
-			else
-			{
-				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
-				// on the left 
-			}
-		}
-		else
-		{
-			if (collision_width > -collision_height)
+			else if (m_player[_i]->GetCurrVel().x <= 0)
 			{
 				m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
 				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
@@ -131,9 +134,37 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 			}
 			else
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLTOP);
-				// at the top 
+				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+				return false;
+			}
+			
+		}
+		else
+		{
+			if (collision_width > -collision_height)
+			{
+				if (m_player[_i]->GetCurrVel().y < 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
+					// collision at the bottom 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+			}
+			else if (m_player[_i]->GetCurrVel().x >= 0)
+			{
+				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
+				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+				// on the left 
+			}
+			else
+			{
+				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+				return false;
 			}
 		}
 		return true;
@@ -154,9 +185,8 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(0.5f);
+		m_player[i]->SetDrag(2.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetSpeedLimit(platforms.size());
 		m_player[i]->setPlayerNo(i);
 	}
 }
