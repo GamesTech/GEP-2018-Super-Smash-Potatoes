@@ -48,7 +48,7 @@ public:
 protected:
 	void ProcessCollision();
 
-	float m_jumpForce = 120000;
+	float m_jumpForce = 60000;
 	float m_drive = 200.0f;
 	//float m_gravity = 980;
 	int player_no = 0;

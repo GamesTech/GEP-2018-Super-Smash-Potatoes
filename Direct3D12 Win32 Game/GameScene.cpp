@@ -43,16 +43,16 @@ void GameScene::update(GameStateData* gsd)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-	for (auto& platform : platforms)
-	{
-		if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
+		for (auto& platform : platforms)
 		{
-			m_anim_grounded[i] = true;
-			break;
+			if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
+			{
+				m_anim_grounded[i] = true;
+				break;
+			}
 		}
-	}
-	m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-	m_player[i]->Tick(gsd);
+		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+		m_player[i]->Tick(gsd);
 	}
 	for (int i = 0; i < no_players; i++)
 	{
@@ -184,10 +184,9 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
-		m_player[i]->SetDrive(2000.0f);
-		m_player[i]->SetDrag(10.f);
+		m_player[i]->SetDrive(500.0f);
+		m_player[i]->SetDrag(2.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetSpeedLimit(platforms.size());
 		m_player[i]->setPlayerNo(i);
 	}
 }

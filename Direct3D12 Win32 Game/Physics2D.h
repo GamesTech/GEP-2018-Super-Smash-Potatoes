@@ -9,7 +9,7 @@ public:
 	Physics2D(RenderData* _RD, string _filename);
 	~Physics2D();
 
-	void AddForce(Vector2 _push) { m_acc += (_push / m_mass) / m_speed_limit; }
+	void AddForce(Vector2 _push) { m_acc += (_push / m_mass); }
 	void AddGravity(bool _grounded);
 
 	Vector2 GetVel() { return m_vel; }

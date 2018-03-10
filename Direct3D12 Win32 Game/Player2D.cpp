@@ -142,6 +142,7 @@ void Player2D::controller(GameStateData * _GSD)
 		{
 			m_vel.y = 0;
 			AddForce(-m_jumpForce * Vector2::UnitY);
+			m_y_coll = false;
 			m_bonus_jump = false;
 		}
 	}
