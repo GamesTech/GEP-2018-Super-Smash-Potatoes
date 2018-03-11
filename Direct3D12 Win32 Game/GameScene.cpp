@@ -30,6 +30,11 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		platform->SetRect(1, 1, 600, 72);
 		i++;
 	}
+	platform_side = std::make_unique<ImageGO2D>(m_RD, "platform_side");
+	platform_side->SetPos(Vector2(0, 0));
+	platform_side->SetLayer(1.0f);
+	platform_side->SetRect(1, 1, 72, 600);
+	platforms.push_back(std::move(platform_side));
 	
 	no_players = gsd->no_players;
 	if (no_players == 0)

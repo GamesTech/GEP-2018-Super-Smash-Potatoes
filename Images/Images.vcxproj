@@ -160,6 +160,9 @@
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png" />
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="platform_side.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

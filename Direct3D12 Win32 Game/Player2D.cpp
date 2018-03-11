@@ -105,14 +105,16 @@ void Player2D::Grabbing()
 		if (m_coll_state == COLRIGHT)
 		{
 			direction = LEFT;
+			AddForce(-100000.f * Vector2::UnitX);
 		}
 		else
 		{
+			AddForce(100000.f * Vector2::UnitX);
 			direction = RIGHT;
 		}
 		m_grabing_side = true;
+		m_grounded = true;
 		action_movement = GRAB;
-		m_vel.y = 0;
 	}
 }
 
@@ -191,14 +193,14 @@ void Player2D::ProcessCollision()
 		//m_vel.y = 0;
 		break;
 	case COLRIGHT:
-		m_grounded = true;
-		m_bonus_jump = true;
+		//m_grounded = true;
+		//m_bonus_jump = true;
 		//m_pos.x = m_new_pos;
 		//m_vel.x = 0;
 		break;
 	case COLLEFT:
-		m_grounded = true;
-		m_bonus_jump = true;
+		//m_grounded = true;
+		//m_bonus_jump = true;
 		//m_pos.x = m_new_pos;
 		//m_vel.x = 0;
 		break;
