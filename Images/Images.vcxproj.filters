@@ -26,6 +26,7 @@
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="platform_side.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

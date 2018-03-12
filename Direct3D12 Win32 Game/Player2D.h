@@ -25,10 +25,12 @@ public:
 
 	void SetDrive(float _drive) { m_drive = _drive; }
 	float GetDrive() { return m_drive; }
+	bool GetGrounded() { return m_grounded; };
+	
 	void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
 	void SetVelX(float _vel_x) { m_vel.x = _vel_x; }
+	
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
-	bool GetGrounded() { return m_grounded; };
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 
 	void TestCollision() { SetBoundingBoxes(); }
@@ -40,6 +42,7 @@ public:
 	Vector2 GetCurrVel() { return m_vel; };
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	Collision GetCollState() { return m_coll_state; };
+	bool GetLedgeJump() { return m_ledge_jump; };
 
 protected:
 	void ProcessCollision();
@@ -58,8 +61,10 @@ protected:
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
+	bool m_ledge_jump = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
+
 	//bool m_jumping = false;
  	//float m_speed_limit;
 	float m_new_pos = 0;

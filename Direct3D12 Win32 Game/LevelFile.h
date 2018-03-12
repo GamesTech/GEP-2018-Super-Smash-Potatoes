@@ -7,6 +7,8 @@ struct GameObjectData {
 	Vector2 scale;
 	float orientation;
 	float layer;
+	Vector2 sprite_size_min;
+	Vector2 sprite_size_max;
 	string image_file;
 };
 

@@ -17,22 +17,29 @@ Player2D::~Player2D()
 void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 {
 	//Push the guy around in the directions for the key presses
-	if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
+	//if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
+	//{
+	//	m_y_coll = true;
+	//}
+	//else
+	//{
+	//	m_y_coll = false;
+	//}
+	//if (m_coll_state == Collision::COLLEFT || m_coll_state == Collision::COLRIGHT)
+	//{
+	//	m_x_coll = true;
+	//}
+	//else
+	//{
+	//	m_x_coll = false;
+	//}
+
+	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
 	{
-		m_y_coll = true;
+		m_ledge_jump = false;
 	}
-	else
-	{
-		m_y_coll = false;
-	}
-	if (m_coll_state == Collision::COLLEFT || m_coll_state == Collision::COLRIGHT)
-	{
-		m_x_coll = true;
-	}
-	else
-	{
-		m_x_coll = false;
-	}
+
+
 
 	SetBoundingBoxes();
 	controller(_GSD);
@@ -55,11 +62,10 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	}
 	Grabbing();
 	AnimationTick(_GSD);
+
 	AddGravity(m_grounded);
-
-
 	//GEP:: Lets go up the inheritence and share our functionality
-	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos);
+	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
 
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
@@ -102,17 +108,26 @@ void Player2D::Grabbing()
 	}
 	else
 	{
+		
 		if (m_coll_state == COLRIGHT)
 		{
 			direction = LEFT;
+			//if (m_grounded)
+			//{
+			//	AddForce(-10000.f * Vector2::UnitX);
+			//}
 		}
 		else
 		{
 			direction = RIGHT;
+			//if (m_grounded )
+			//{
+			//	AddForce(10000.f * Vector2::UnitX);
+			//}
 		}
 		m_grabing_side = true;
+		//m_grounded = true;
 		action_movement = GRAB;
-		m_vel.y = 0;
 	}
 }
 
@@ -159,17 +174,20 @@ void Player2D::controller(GameStateData * _GSD)
 		{
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_grounded = false;
-			m_y_coll = false;
+			m_coll_state = Collision::COLNONE;
+			if (m_grabing_side)
+			{
+				m_ledge_jump = true;
+			}
 		}
 	}
 
-	if ((_GSD->m_keyboardState.X && _GSD->m_keyboardState.Up) || ((_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()) && (_GSD->m_gamePadState[player_no].IsDPadUpPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
+	if ((_GSD->m_keyboardState.X && _GSD->m_keyboardState.W) || ((_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()) && (_GSD->m_gamePadState[player_no].IsDPadUpPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
 	{
 		if (m_bonus_jump)
 		{
 			m_vel.y = 0;
 			AddForce(-m_jumpForce * Vector2::UnitY);
-			m_y_coll = false;
 			m_bonus_jump = false;
 		}
 	}
@@ -182,28 +200,39 @@ void Player2D::ProcessCollision()
 	case COLTOP:
 		m_grounded = true;
 		m_bonus_jump = true;
+		m_y_coll = true;
+		m_x_coll = false;
 		//m_pos.y = m_new_pos;
 		//m_vel.y = 0;
 		break;
 	case COLBOTTOM:
+		m_y_coll = true;
+		m_x_coll = false;
 		//m_grounded = true;
 		//m_pos.y = m_new_pos;
 		//m_vel.y = 0;
 		break;
 	case COLRIGHT:
 		m_grounded = true;
-		m_bonus_jump = true;
+		m_x_coll = true;
+		m_y_coll = false;
+		//m_bonus_jump = true;
 		//m_pos.x = m_new_pos;
 		//m_vel.x = 0;
 		break;
 	case COLLEFT:
 		m_grounded = true;
-		m_bonus_jump = true;
+		m_x_coll = true;
+		m_y_coll = false;
+		//m_bonus_jump = true;
 		//m_pos.x = m_new_pos;
 		//m_vel.x = 0;
 		break;
 	case COLNONE:
+		m_x_coll = false;
+		m_y_coll = false;
 		m_grounded = false;
+		//m_ledge_jump = false;
 		break;
 	}
 }

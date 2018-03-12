@@ -29,7 +29,7 @@ private:
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	//Text2D* title_text;
-	//ImageGO2D* platform;
+	std::unique_ptr<ImageGO2D> platform_side;
 
 };
 

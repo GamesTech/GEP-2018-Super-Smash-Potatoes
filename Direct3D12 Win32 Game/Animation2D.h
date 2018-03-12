@@ -35,7 +35,7 @@ public:
 	void AnimationOn();
 	void SetDefault();
 	void SetJump();
-	void SetWalk();
+	void SetWalk(int animation);
 	void SetWalk1();
 	void SetWalk2();
 	void SetRun();
@@ -50,21 +50,27 @@ protected:
 	bool m_animation_on = false;
 
 private:
+	enum SpriteStateData
+	{
+		LDefault,
+		RDefault,
+		LJump,
+		RJump,
+		LWalk1,
+		RWalk1,
+		LWalk2,
+		RWalk2,
+		LWalk3,
+		RWalk3,
+		Fall,
+		LGrab,
+		RGrab
+	};
+
+
 	float timer = 0;
 	int m_change_animation = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float left_default_positions[4] = { 0, 0, 0, 0 };
-	float right_default_positions[4] = { 0, 0, 0, 0 };
-	float left_jump_positions[4] = { 0, 0, 0, 0 };
-	float right_jump_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_1_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_1_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_2_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_2_positions[4] = { 0, 0, 0, 0 };
-	float fall_positions[4] = { 0, 0, 0, 0 };
-	float left_grab_positions[4] = { 0, 0, 0, 0 };
-	float right_grab_positions[4] = { 0, 0, 0, 0 };
+	float sprite_batch[13][4];
 };

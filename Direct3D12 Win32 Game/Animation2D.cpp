@@ -22,24 +22,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		if (action_movement == WALK)
 		{
-			switch (m_change_animation)
-			{
-			case 1:
-			{
-				SetWalk();
-				break;
-			}
-			case 2:
-			{
-				SetWalk1();
-				break;
-			}
-			case 3:
-			{
-				SetWalk2();
-				break;
-			}
-			}
+			SetWalk(m_change_animation);
 		}
 		else if (action_movement == GRAB)
 		{
@@ -90,11 +73,11 @@ void Animation2D::SetDefault()
 	{
 		if (direction == LEFT)
 		{
-			SetRect(left_default_positions[0], left_default_positions[1], left_default_positions[2], left_default_positions[3]);
+			SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(right_default_positions[0], right_default_positions[1], right_default_positions[2], right_default_positions[3]);
+			SetRect(sprite_batch[RDefault][0], sprite_batch[RDefault][1], sprite_batch[RDefault][2], sprite_batch[RDefault][3]);
 		}
 	}
 }
@@ -103,49 +86,51 @@ void Animation2D::SetJump()
 {
 	if (direction == LEFT)
 	{
-		SetRect(left_jump_positions[0], left_jump_positions[1], left_jump_positions[2], left_jump_positions[3]);
+		SetRect(sprite_batch[LJump][0], sprite_batch[LJump][1], sprite_batch[LJump][2], sprite_batch[LJump][3]);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(right_jump_positions[0], right_jump_positions[1], right_jump_positions[2], right_jump_positions[3]);
+		SetRect(sprite_batch[RJump][0], sprite_batch[RJump][1], sprite_batch[RJump][2], sprite_batch[RJump][3]);
 	}
 }
 
-void Animation2D::SetWalk()
+void Animation2D::SetWalk(int animation)
 {
-	if (direction == LEFT)
+	if (animation == 1)
 	{
-		SetRect(left_walk_positions[0], left_walk_positions[1], left_walk_positions[2], left_walk_positions[3]);
+		if (direction == LEFT)
+		{
+			SetRect(sprite_batch[LWalk1][0], sprite_batch[LWalk1][1], sprite_batch[LWalk1][2], sprite_batch[LWalk1][3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(sprite_batch[RWalk1][0], sprite_batch[RWalk1][1], sprite_batch[RWalk1][2], sprite_batch[RWalk1][3]);
+		}
 	}
-	if (direction == RIGHT)
+	else if (animation == 2)
 	{
-		SetRect(right_walk_positions[0], right_walk_positions[1], right_walk_positions[2], right_walk_positions[3]);
+		if (direction == LEFT)
+		{
+			SetRect(sprite_batch[LWalk2][0], sprite_batch[LWalk2][1], sprite_batch[LWalk2][2], sprite_batch[LWalk2][3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(sprite_batch[RWalk2][0], sprite_batch[RWalk2][1], sprite_batch[RWalk2][2], sprite_batch[RWalk2][3]);
+		}
+	}
+	else
+	{
+		if (direction == LEFT)
+		{
+			SetRect(sprite_batch[LWalk3][0], sprite_batch[LWalk3][1], sprite_batch[LWalk3][2], sprite_batch[LWalk3][3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(sprite_batch[RWalk3][0], sprite_batch[RWalk3][1], sprite_batch[RWalk3][2], sprite_batch[RWalk3][3]);
+		}
 	}
 }
 
-void Animation2D::SetWalk1()
-{
-	if (direction == LEFT)
-	{
-		SetRect(left_walk_1_positions[0], left_walk_1_positions[1], left_walk_1_positions[2], left_walk_1_positions[3]);
-	}
-	if (direction == RIGHT)
-	{
-		SetRect(right_walk_1_positions[0], right_walk_1_positions[1], right_walk_1_positions[2], right_walk_1_positions[3]);
-	}
-}
-
-void Animation2D::SetWalk2()
-{
-	if (direction == LEFT)
-	{
-		SetRect(left_walk_2_positions[0], left_walk_2_positions[1], left_walk_2_positions[2], left_walk_2_positions[3]);
-	}
-	if (direction == RIGHT)
-	{
-		SetRect(right_walk_2_positions[0], right_walk_2_positions[1], right_walk_2_positions[2], right_walk_2_positions[3]);
-	}
-}
 
 void Animation2D::SetRun()
 {
@@ -153,7 +138,7 @@ void Animation2D::SetRun()
 
 void Animation2D::SetFall()
 {
-	SetRect(fall_positions[0], fall_positions[1], fall_positions[2], fall_positions[3]);
+	SetRect(sprite_batch[Fall][0], sprite_batch[Fall][1], sprite_batch[Fall][2], sprite_batch[Fall][3]);
 }
 
 void Animation2D::SetPunch()
@@ -164,11 +149,11 @@ void Animation2D::SetGrab()
 {
 	if (direction == LEFT)
 	{
-		SetRect(left_grab_positions[0], left_grab_positions[1], left_grab_positions[2], left_grab_positions[3]);
+		SetRect(sprite_batch[LGrab][0], sprite_batch[LGrab][1], sprite_batch[LGrab][2], sprite_batch[LGrab][3]);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(right_grab_positions[0], right_grab_positions[1], right_grab_positions[2], right_grab_positions[3]);
+		SetRect(sprite_batch[RGrab][0], sprite_batch[RGrab][1], sprite_batch[RGrab][2], sprite_batch[RGrab][3]);
 	}
 }
 
@@ -180,60 +165,15 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int i = 0; i < 4; i++) //prints into array Default Left
+			for (int j = 0; j < 14; j++)
 			{
-				sprite_position_batching >> left_default_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Default Right
-			{
-				sprite_position_batching >> right_default_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Left
-			{
-				sprite_position_batching >> left_jump_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Right
-			{
-				sprite_position_batching >> right_jump_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_1_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_1_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_2_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_2_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Falling
-			{
-				sprite_position_batching >> fall_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Falling
-			{
-				sprite_position_batching >> left_grab_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Falling
-			{
-				sprite_position_batching >> right_grab_positions[i];
-			}
+				for (int i = 0; i < 4; i++) //prints into array Default Left
+				{
+					sprite_position_batching >> sprite_batch[j][i];
+				}
+			}			
 		}
 	}
 	sprite_position_batching.close();
-	SetRect(left_default_positions[0], left_default_positions[1], left_default_positions[2], left_default_positions[3]);
+	SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
 }
