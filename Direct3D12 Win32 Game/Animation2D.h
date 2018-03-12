@@ -35,7 +35,7 @@ public:
 	void AnimationOn();
 	void SetDefault();
 	void SetJump();
-	void SetWalk();
+	void SetWalk(int animation);
 	void SetWalk1();
 	void SetWalk2();
 	void SetRun();

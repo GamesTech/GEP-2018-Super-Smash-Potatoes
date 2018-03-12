@@ -22,24 +22,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		if (action_movement == WALK)
 		{
-			switch (m_change_animation)
-			{
-			case 1:
-			{
-				SetWalk();
-				break;
-			}
-			case 2:
-			{
-				SetWalk1();
-				break;
-			}
-			case 3:
-			{
-				SetWalk2();
-				break;
-			}
-			}
+			SetWalk(m_change_animation);
 		}
 		else if (action_movement == GRAB)
 		{
@@ -111,41 +94,43 @@ void Animation2D::SetJump()
 	}
 }
 
-void Animation2D::SetWalk()
+void Animation2D::SetWalk(int animation)
 {
-	if (direction == LEFT)
+	if (animation == 1)
 	{
-		SetRect(left_walk_positions[0], left_walk_positions[1], left_walk_positions[2], left_walk_positions[3]);
+		if (direction == LEFT)
+		{
+			SetRect(left_walk_positions[0], left_walk_positions[1], left_walk_positions[2], left_walk_positions[3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(right_walk_positions[0], right_walk_positions[1], right_walk_positions[2], right_walk_positions[3]);
+		}
 	}
-	if (direction == RIGHT)
+	else if (animation == 2)
 	{
-		SetRect(right_walk_positions[0], right_walk_positions[1], right_walk_positions[2], right_walk_positions[3]);
+		if (direction == LEFT)
+		{
+			SetRect(left_walk_1_positions[0], left_walk_1_positions[1], left_walk_1_positions[2], left_walk_1_positions[3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(right_walk_1_positions[0], right_walk_1_positions[1], right_walk_1_positions[2], right_walk_1_positions[3]);
+		}
+	}
+	else
+	{
+		if (direction == LEFT)
+		{
+			SetRect(left_walk_2_positions[0], left_walk_2_positions[1], left_walk_2_positions[2], left_walk_2_positions[3]);
+		}
+		if (direction == RIGHT)
+		{
+			SetRect(right_walk_2_positions[0], right_walk_2_positions[1], right_walk_2_positions[2], right_walk_2_positions[3]);
+		}
 	}
 }
 
-void Animation2D::SetWalk1()
-{
-	if (direction == LEFT)
-	{
-		SetRect(left_walk_1_positions[0], left_walk_1_positions[1], left_walk_1_positions[2], left_walk_1_positions[3]);
-	}
-	if (direction == RIGHT)
-	{
-		SetRect(right_walk_1_positions[0], right_walk_1_positions[1], right_walk_1_positions[2], right_walk_1_positions[3]);
-	}
-}
-
-void Animation2D::SetWalk2()
-{
-	if (direction == LEFT)
-	{
-		SetRect(left_walk_2_positions[0], left_walk_2_positions[1], left_walk_2_positions[2], left_walk_2_positions[3]);
-	}
-	if (direction == RIGHT)
-	{
-		SetRect(right_walk_2_positions[0], right_walk_2_positions[1], right_walk_2_positions[2], right_walk_2_positions[3]);
-	}
-}
 
 void Animation2D::SetRun()
 {
