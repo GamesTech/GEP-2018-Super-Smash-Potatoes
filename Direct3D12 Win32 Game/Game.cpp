@@ -6,6 +6,12 @@
 #include "Game.h"
 #include "RenderData.h"
 #include "GameStateData.h"
+#include <SpriteBatch.h>
+#include "File.h"
+#include "Debug.h"
+#include "MenuScene.h"
+#include "SettingsScene.h"
+#include "GameScene.h"
 
 extern void ExitGame();
 
@@ -16,8 +22,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    m_outputWidth(800),
-    m_outputHeight(600),
+    //m_outputWidth(1280),
+    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -26,11 +32,6 @@ Game::Game() :
 
 Game::~Game()
 {
-	if (m_audEngine)
-	{
-		m_audEngine->Suspend();
-	}
-
     // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
     WaitForGpu();
 
@@ -41,24 +42,12 @@ Game::~Game()
 	}
 	m_2DObjects.clear();
 	//delete the GO3Ds
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		delete (*it);
-	}
-	m_3DObjects.clear();
-	//delete the sounds
-	for (vector<Sound *>::iterator it = m_sounds.begin(); it != m_sounds.end(); it++)
-	{
-		delete (*it);
-	}
-	m_sounds.clear();
-
+	
 	delete m_RD;
 	delete m_GSD;
+	delete audio_manager;
 
-	m_keyboard.reset();
-	m_mouse.reset();
-
+	m_swapChain->SetFullscreenState(false, NULL);
 	m_graphicsMemory.reset();
 }
 
@@ -68,27 +57,18 @@ void Game::Initialize(HWND window, int width, int height)
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
+	
 
     CreateDevice();
     CreateResources();
 
-//GEP::init Audio System
-	AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
-#ifdef _DEBUG
-	eflags = eflags | AudioEngine_Debug;
-#endif
-	m_audEngine = std::make_unique<AudioEngine>(eflags);
+	audio_manager = new AudioManager;
+	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
-
-//GEP::set up keyboard & mouse input systems
-	m_keyboard = std::make_unique<Keyboard>();
-	m_mouse = std::make_unique<Mouse>();
-	m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
-	m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
+	m_GSD->gameState = MENU;
 
 	m_RD = new RenderData;
-
 	m_RD->m_d3dDevice = m_d3dDevice;
 	m_RD->m_commandQueue = m_commandQueue;
 	m_RD->m_commandList = m_commandList;
@@ -142,7 +122,6 @@ void Game::Initialize(HWND window, int width, int height)
 	m_RD->m_GPeffect = std::make_unique<BasicEffect>(m_d3dDevice.Get(), EffectFlags::Lighting, pd3);
 	m_RD->m_GPeffect->EnableDefaultLighting();
 
-	
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
     /*
@@ -153,49 +132,19 @@ void Game::Initialize(HWND window, int width, int height)
 //GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
-	m_3DObjects.push_back(m_cam);
+	
+	//Init of debug file use the Debug::output to save stuff to the file
+	Debug::init();
+	Debug::output("hello", "world");
 
-	TestPBGO3D* test3d = new TestPBGO3D();
-	test3d->SetScale(5.0f);
-	test3d->Init();
-	m_3DObjects.push_back(test3d);
+	scene = std::make_unique<MenuScene>();
+	scene->init(m_RD, m_GSD);
 
-	GPGO3D* test3d2 = new GPGO3D(GP_TEAPOT);
-	test3d2->SetPos(10.0f*Vector3::Forward+5.0f*Vector3::Right+Vector3::Down);
-	test3d2->SetScale(5.0f);
-	m_3DObjects.push_back(test3d2);	
-
-	ImageGO2D *test = new ImageGO2D(m_RD, "twist");
-	test->SetOri(45);
-	test->SetPos(Vector2(300, 300));
-	test->CentreOrigin();
-	m_2DObjects.push_back(test);
-	test = new ImageGO2D(m_RD,"guides_logo");
-	test->SetPos(Vector2(100, 100));
-	test->SetScale(Vector2(1.0f,0.5f));
-	test->SetColour(Color(1, 0, 0, 1));
-	m_2DObjects.push_back(test);
-
-	Text2D * test2 = new Text2D("testing text");
-	m_2DObjects.push_back(test2);
-
-	Player2D* testPlay = new Player2D(m_RD,"gens");
-	testPlay->SetDrive(100.0f);
-	testPlay->SetDrag(0.5f);
-	m_2DObjects.push_back(testPlay);
-
-	SDKMeshGO3D *test3 = new SDKMeshGO3D(m_RD, "cup");
-	test3->SetPos(12.0f*Vector3::Forward + 5.0f*Vector3::Left + Vector3::Down);
-	test3->SetScale(5.0f);
-	m_3DObjects.push_back(test3);
-
-	Loop *loop = new Loop(m_audEngine.get(), "NightAmbienceSimple_02");
-	loop->SetVolume(0.1f);
-	loop->Play();
-	m_sounds.push_back(loop);
-
-	TestSound* TS = new TestSound(m_audEngine.get(), "Explo1");
-	m_sounds.push_back(TS);
+	m_keyboard = std::make_unique<Keyboard>();
+	m_gamePad = std::make_unique<GamePad>();
+	//m_mouse = std::make_unique<Mouse>();
+	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
+	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
 }
 
 //GEP:: Executes the basic game loop.
@@ -206,100 +155,49 @@ void Game::Tick()
         Update(m_timer);
     });
 
-    Render();
+	Render();
 }
 
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-	ReadInput();
-    m_GSD->m_dt = float(timer.GetElapsedSeconds());
+	checkIfNewScene();
 
-	//this will update the audio engine but give us chance to do somehting else if that isn't working
-	if (!m_audEngine->Update())
-	{
-		if (m_audEngine->IsCriticalError())
-		{
-			// We lost the audio device!
-		}
-	}
-	else
-	{
-		//update sounds playing
-		for (vector<Sound *>::iterator it = m_sounds.begin(); it != m_sounds.end(); it++)
-		{
-			(*it)->Tick(m_GSD);
-		}
-	}
+	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
+	m_GSD->m_keyboardState = m_keyboard->GetState();
+	scene->ReadInput(m_GSD);
 
-    //Add your game logic here.
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		(*it)->Tick(m_GSD);
-	}
+     m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
-	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
+	audio_manager->updateAudioManager(m_GSD);
+
+	scene->update(m_GSD);
+
+	//// TODO: Gamepad
+	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
-		(*it)->Tick(m_GSD);
+		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
+		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
 	}
 }
 
 //GEP:: Draws the scene.
 void Game::Render()
 {
-    // Don't try to render anything before the first Update.
-    if (m_timer.GetFrameCount() == 0)
-    {
-        return;
-    }
-
-    // Prepare the command list to render a new frame.
-    Clear();
-
-
-//draw each type of 3D objects
-
-	//primative batch
-	m_RD->m_effect->SetProjection(m_cam->GetProj());
-	m_RD->m_effect->SetView(m_cam->GetView());
-	m_RD->m_effect->Apply(m_commandList.Get());
-	m_RD->m_effect->EnableDefaultLighting();
-	m_RD->m_batch->Begin(m_commandList.Get());
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
+	// Don't try to render anything before the first Update.
+	if (m_timer.GetFrameCount() == 0)
 	{
-		if( (*it)->GetType()== GO3D_RT_PRIM )(*it)->Render(m_RD);
-	}
-	m_RD->m_batch->End();
-
-	//Render Geometric Primitives
-	m_RD->m_GPeffect->SetProjection(m_cam->GetProj());
-	m_RD->m_GPeffect->SetView(m_cam->GetView());
-	m_RD->m_GPeffect->Apply(m_commandList.Get());
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		if ((*it)->GetType() == GO3D_RT_GEOP)(*it)->Render(m_RD);
+		return;
 	}
 
-	//Render VBO Models	
-	for (vector<GameObject3D *>::iterator it = m_3DObjects.begin(); it != m_3DObjects.end(); it++)
-	{
-		if ((*it)->GetType() == GO3D_RT_SDK)(*it)->Render(m_RD);
-	}
+	// Prepare the command list to render a new frame.
+	Clear();
 
-	//finally draw all 2D objects
-	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
-	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get());
+	scene->render(m_RD, m_commandList);
 
-	for (vector<GameObject2D *>::iterator it = m_2DObjects.begin(); it != m_2DObjects.end(); it++)
-	{
-		(*it)->Render(m_RD);
-	}
 
-	m_RD->m_spriteBatch->End();
-
-    // Show the new frame.
-    Present();
+	// Show the new frame.
+	Present();
 	m_graphicsMemory->Commit(m_commandQueue.Get());
 }
 
@@ -342,6 +240,7 @@ void Game::Present()
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
+	WaitForGpu();
     HRESULT hr = m_swapChain->Present(1, 0);
 
     // If the device was reset we must completely reinitialize the renderer.
@@ -361,25 +260,31 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
+	m_gamePad->Resume();
+	m_buttons.Reset();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
+	m_gamePad->Suspend();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
-	m_audEngine->Suspend();
+	audio_manager->suspendAudioManager();
+	m_gamePad->Suspend();
 }
 
 void Game::OnResuming()
 {
     m_timer.ResetElapsedTime();
-	m_audEngine->Resume();
+	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
+	m_gamePad->Resume();
+	m_buttons.Reset();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
@@ -393,11 +298,12 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // Properties
+//Called on init
 void Game::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = 800;
-    height = 600;
+    width = 1280;
+    height = 720;
 }
 
 // These are the resources that depend on the device.
@@ -759,22 +665,39 @@ void Game::OnDeviceLost()
     CreateResources();
 }
 
-void Game::ReadInput()
+void Game::checkIfNewScene()
 {
-//GEP:: CHeck out the DirectXTK12 wiki for more information about these systems
-//https://github.com/Microsoft/DirectXTK/wiki/Mouse-and-keyboard-input
-
-//You'll also found similar stuff for Game Controllers here:
-//https://github.com/Microsoft/DirectXTK/wiki/Game-controller-input
-
-//Note in both cases they are identical to the DirectXTK for DirectX 11
-
-	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState= m_keyboard->GetState();
-
-	//Quit if press Esc
-	if (m_GSD->m_keyboardState.Escape)
-		PostQuitMessage(0);
-
-	m_GSD->m_mouseState = m_mouse->GetState();
+	if (m_GSD->gameState != prevScene)
+	{
+		switch (m_GSD->gameState)
+		{
+		case MENU:
+			scene.reset();
+			scene = std::make_unique<MenuScene>();
+			break;
+		case SETTINGS:
+			scene.reset();
+			scene = std::make_unique<SettingsScene>();
+			scene->giveSwapChain(m_swapChain);
+			break;
+		case INGAME:
+			m_GSD->no_players = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				if (m_GSD->m_gamePadState[i].IsConnected())
+				{
+					m_GSD->no_players++;
+				}
+			}
+			scene.reset();
+			scene = std::make_unique<GameScene>();
+			break;
+		case GAMEOVER:
+			//scene.release();
+			//gameover man, GAMEOVER
+			break;
+		}
+		scene->init(m_RD, m_GSD);
+		prevScene = m_GSD->gameState;
+	}
 }

@@ -27,11 +27,20 @@ public:
 	void SetPan(float _pan) { m_pan = _pan; }
 	float GetPan() { return m_pan; }
 
+	bool GetPlaying() { return m_playing; }
+	void TogglePlaying() { m_playing = !m_playing; }
+	void SetPlaying(bool _playing) { m_playing = _playing; }
+
+	bool getForLooping() { return for_looping; }
+
 protected:
 	std::unique_ptr<DirectX::SoundEffect> m_sfx;
 
 	float m_volume = 1.0f;
 	float m_pitch = 0.0f;
 	float m_pan = 0.0f;
+
+	bool m_playing = false;
+	bool for_looping = false;
 };
 

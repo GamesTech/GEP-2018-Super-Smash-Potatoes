@@ -16,12 +16,8 @@ public:
 
 	virtual void Play();
 
-	bool GetPlaying() { return m_playing; }
-	void TogglePlaying() { m_playing = !m_playing; }
-	void SetPlaying(bool _playing) { m_playing = _playing; }
 
 protected:
 	std::unique_ptr<DirectX::SoundEffectInstance> m_loop;
-	bool m_playing = false;
 };
 

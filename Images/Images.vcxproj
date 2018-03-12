@@ -132,6 +132,37 @@
   <ItemGroup>
     <Text Include="READ_ME.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Start_Game_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Quit_Button.png" />
+    <ImageContentTask Include="Settings_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Main_Menu_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Buttons.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="platform.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="gens2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="platform_side.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

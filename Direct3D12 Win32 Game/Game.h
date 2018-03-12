@@ -9,7 +9,11 @@
 
 #include "StepTimer.h"
 #include "Audio.h"
+#include "Text2D.h"
 #include <vector>
+#include "Scene.h"
+#include "AudioManager.h"
+
 using std::vector;
 
 struct RenderData;
@@ -58,9 +62,11 @@ private:
     void GetAdapter(IDXGIAdapter1** ppAdapter);
 
     void OnDeviceLost();
+	void checkIfNewScene();
 
     // Application state
     HWND                                                m_window;
+	HWND												new_window;
     int                                                 m_outputWidth;
     int                                                 m_outputHeight;
 
@@ -90,21 +96,31 @@ private:
 
 	std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;
 
-	vector<GameObject3D*> m_3DObjects;
 	vector<GameObject2D*> m_2DObjects;
-	vector<Sound*> m_sounds;
 
 	RenderData* m_RD;
 	Camera* m_cam;
-
+	AudioManager* audio_manager;
 	GameStateData* m_GSD;
 
-	//GEP:: Keyboard and Mouse Abstractions for basic input system
-	void ReadInput();
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	std::unique_ptr<DirectX::Mouse> m_mouse;
+	//std::unique_ptr<DirectX::Mouse> m_mouse;
+	std::unique_ptr<DirectX::GamePad> m_gamePad;
+
+	int menu_option_selected = 1;
+	int resolution_option_selected = 1;
+	bool settings_menu_open = false;
+	int prevScene = 0;
+
+	const int MAX_PLAYERS = 4;
 
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
+	std::unique_ptr<Scene> scene;
+
+	//Debug
+	Text2D * stateText;
+
+	DirectX::GamePad::ButtonStateTracker m_buttons;
 };

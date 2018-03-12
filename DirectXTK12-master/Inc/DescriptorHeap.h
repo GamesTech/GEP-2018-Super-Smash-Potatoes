@@ -101,9 +101,12 @@ namespace DirectX
             assert(m_pHeap != 0);
             if (index >= m_desc.NumDescriptors)
             {
-                throw std::out_of_range("D3DX12_CPU_DESCRIPTOR_HANDLE");
+
+				throw std::out_of_range("D3DX12_CPU_DESCRIPTOR_HANDLE");
             }
-            return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_hCPU, static_cast<INT>(index), m_increment);
+
+
+			return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_hCPU, static_cast<INT>(index), m_increment);
         }
 
         size_t Count() const { return m_desc.NumDescriptors; }

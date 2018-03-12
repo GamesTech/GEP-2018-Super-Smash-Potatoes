@@ -4,6 +4,7 @@
 #include "RenderData.h"
 
 
+
 ImageGO2D::ImageGO2D(RenderData* _RD, string _filename)
 {
 
@@ -32,21 +33,44 @@ ImageGO2D::ImageGO2D(RenderData* _RD, string _filename)
 ImageGO2D::~ImageGO2D()
 {
 	m_texture.Reset();
+
 }
 
 void ImageGO2D::Render(RenderData* _RD)
 {
 	_RD->m_spriteBatch->Draw(_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
 		GetTextureSize(m_texture.Get()),
-		m_pos, nullptr, m_colour, m_orientation, m_origin, m_scale);
+		m_pos, &m_rect, m_colour, m_orientation, m_origin, m_scale, SpriteEffects_None, m_layer);
 	//TODO::add sprite effects & layer Depth
 	//TODO::example stuff for sprite sheet
 }
 
-void ImageGO2D::CentreOrigin()
+void ImageGO2D::SetBoundingBoxes()
 {
 	XMUINT2 size = GetTextureSize(m_texture.Get());
 
-	m_origin.x = float(size.x / 2);
-	m_origin.y = float(size.y / 2);
+	m_min.x = m_pos.x;
+	m_min.y = m_pos.y;
+	m_max.x = m_pos.x + m_size.x;
+	m_max.y = m_pos.y + m_size.y;
+
+}
+
+void ImageGO2D::CentreOrigin()
+{
+	m_origin.x = float(m_size.x / 2);
+	m_origin.y = float(m_size.y / 2);
+}
+
+void ImageGO2D::BottomOrigin()
+{
+	XMUINT2 size = GetTextureSize(m_texture.Get());
+
+	//m_min.x = m_origin.x;
+	//m_min.y = m_origin.y;
+	//m_max.x = m_origin.x + size.x;
+	//m_max.y = m_origin.y + size.y;
+	
+	m_origin.x = float(m_size.x / 2);
+	m_origin.y = float(m_size.y);
 }
