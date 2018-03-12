@@ -1,5 +1,6 @@
 //#pragma once
 #include "Scene.h"
+#include "LevelFile.h"
 
 class GameScene : public Scene
 {
@@ -22,6 +23,7 @@ private:
 	Vector2 platform_pos[3] = { Vector2(200, 600), Vector2(0, 300), Vector2(800, 450)};
 
 	std::unique_ptr<Player2D> m_player[4];
+	std::unique_ptr <LevelFile> level;
 
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
 	std::vector<std::unique_ptr<GameObject2D>> objects;

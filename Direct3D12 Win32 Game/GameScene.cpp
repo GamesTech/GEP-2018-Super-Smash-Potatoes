@@ -13,24 +13,29 @@ GameScene::~GameScene()
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
+	level = std::make_unique<LevelFile>();
+	level->read("test", ".lvl");
+
+	for (int i = 0; i < level->getObjListSize(); i++)
+	{
+		auto platform = new ImageGO2D(m_RD, "platform");
+
+		platform->SetPos(level->getObj(i).position);
+		platform->SetOrigin(level->getObj(i).origin);
+		platform->SetScale(level->getObj(i).scale);
+		platform->SetOri(level->getObj(i).orientation);
+		platform->SetLayer(level->getObj(i).layer);
+
+		platform->SetRect(1, 1, 600, 72);
+		platforms.emplace_back(platform);
+	}
+
 	objects.emplace_back(new Text2D("Super Trash Potatoes"));
 	for (auto& object : objects)
 	{
 		object->SetLayer(1.0f);
 	}
-	for (int i = 0; i < 3; i++)
-	{
-		platforms.emplace_back(new ImageGO2D(m_RD, "platform"));
-	}
-	int i = 0;
-	for (auto& platform : platforms)
-	{
-		platform->SetPos(platform_pos[i]);
-		platform->SetLayer(1.0f);
-		platform->SetRect(1, 1, 600, 72);
-		i++;
-	}
-	
+
 	no_players = gsd->no_players;
 	if (no_players == 0)
 	{
