@@ -131,20 +131,29 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
-			else if (m_player[_i]->GetCurrVel().x <= 0)
+			else if (collision_width > -collision_height) //if (m_player[_i]->GetCurrVel().x <= 0)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
+				if (!m_player[_i]->GetLedgeJump())
+				{
+					m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
+					m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+
 				// on the right 
 			}
-			else
-			{
-				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-				return false;
-			}
+			//else
+			//{
+			//	m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+			//	return false;
+			//}
 			
 		}
-		else
+		else if(collision_width > collision_height)
 		{
 			if (collision_width > -collision_height)
 			{
@@ -160,17 +169,25 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
-			else if (m_player[_i]->GetCurrVel().x >= 0)
+			else if (collision_width < -collision_height)//if (m_player[_i]->GetCurrVel().x >= 0)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+				if (!m_player[_i]->GetLedgeJump())
+				{
+					m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
+					m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
 				// on the left 
 			}
-			else
-			{
-				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-				return false;
-			}
+			//else
+			//{
+			//	m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+			//	return false;
+			//}
 		}
 		return true;
 	}
@@ -189,8 +206,8 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(300, 300));
 		m_player[i]->SetLayer(1.0f);
-		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(2.f);
+		m_player[i]->SetDrive(900.0f);
+		m_player[i]->SetDrag(3.f);
 		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
 		m_player[i]->setPlayerNo(i);
 	}
