@@ -30,7 +30,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 		}
 		else
 		{
-			SetDefault();
+			SetDefault(m_change_animation2);
 		}
 	}
 	else if (action_jump == JUMP)
@@ -43,7 +43,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	}
 
 
-	if (timer >= 0.3)
+	if (timer >= 0.1)
 	{
 		if (m_change_animation < 3)
 		{
@@ -53,11 +53,29 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 		{
 			m_change_animation = 1;
 		}
-		timer -= 0.3;
+		timer -= 0.2;
 	}
 	else
 	{
 		timer += _GSD->m_dt;
+	}
+	if (timer2 >= 10)
+	{
+		if (m_change_animation2 < 2)
+		{
+			m_change_animation2++;
+			timer2 -= 0.3;
+		}
+		else
+		{
+			m_change_animation2 = 1;
+			timer2 -= rand() % 10;
+		}
+		
+	}
+	else
+	{
+		timer2 += _GSD->m_dt;
 	}
 
 }
@@ -67,17 +85,34 @@ void Animation2D::AnimationOn()
 	m_animation_on = true;
 }
 
-void Animation2D::SetDefault()
+void Animation2D::SetDefault(int animation)
 {
-	if (action_movement == STILL)
+	if (animation == 1)
 	{
-		if (direction == LEFT)
+		if (action_movement == STILL)
 		{
-			SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
+			if (direction == LEFT)
+			{
+				SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
+			}
+			if (direction == RIGHT)
+			{
+				SetRect(sprite_batch[RDefault][0], sprite_batch[RDefault][1], sprite_batch[RDefault][2], sprite_batch[RDefault][3]);
+			}
 		}
-		if (direction == RIGHT)
+	}
+	else
+	{
+		if (action_movement == STILL)
 		{
-			SetRect(sprite_batch[RDefault][0], sprite_batch[RDefault][1], sprite_batch[RDefault][2], sprite_batch[RDefault][3]);
+			if (direction == LEFT)
+			{
+				SetRect(sprite_batch[LDefault2][0], sprite_batch[LDefault2][1], sprite_batch[LDefault2][2], sprite_batch[LDefault2][3]);
+			}
+			if (direction == RIGHT)
+			{
+				SetRect(sprite_batch[RDefault2][0], sprite_batch[RDefault2][1], sprite_batch[RDefault2][2], sprite_batch[RDefault2][3]);
+			}
 		}
 	}
 }
@@ -172,7 +207,7 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 15; j++)
+			for (int j = 0; j < 17; j++)
 			{
 				for (int i = 0; i < 4; i++) //prints into array Default Left
 				{

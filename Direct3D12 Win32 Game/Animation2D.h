@@ -33,7 +33,7 @@ public:
 	void LoadSprites(string _filename);
 	void AnimationTick(GameStateData * _GSD);
 	void AnimationOn();
-	void SetDefault();
+	void SetDefault(int animation);
 	void SetJump();
 	void SetWalk(int animation);
 	void SetRun();
@@ -52,6 +52,8 @@ private:
 	{
 		LDefault,
 		RDefault,
+		LDefault2,
+		RDefault2,
 		LJump,
 		RJump,
 		LWalk1,
@@ -68,8 +70,10 @@ private:
 
 
 	float timer = 0;
+	float timer2 = 0;
 	int m_change_animation = 1;
+	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[14][4];
+	float sprite_batch[16][4];
 };
