@@ -40,7 +40,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	no_players = gsd->no_players;
 	if (no_players == 0)
 	{
-		no_players = 1;
+		no_players = 2;
 	}
 	spawnPlayers(m_RD, no_players);
 }
@@ -51,14 +51,19 @@ void GameScene::update(GameStateData* gsd)
 	{
 		for (auto& platform : platforms)
 		{
-			if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
+			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
 				m_anim_grounded[i] = true;
 				break;
 			}
 		}
 		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-		m_player[i]->Tick(gsd);
+		m_player[i]->Tick(gsd, i);
+
+		if (m_player[i]->Attack())
+		{
+			CheckAttackPos(gsd, i);
+		}
 	}
 	for (int i = 0; i < no_players; i++)
 	{
@@ -212,5 +217,28 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 		m_player[i]->LoadSprites("KirbySpriteBatch.txt");
 		m_player[i]->setPlayerNo(i);
 	}
+}
+
+void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
+{
+	float collision_width = m_player[_i]->Width();
+	for (int j = 0; j < no_players; j++)
+	{
+		if (_i != j)
+		{
+			float player_width = m_player[j]->Width();
+			float distance_1 = collision_width - player_width;
+			float distance_2 = collision_width + player_width;
+			float distance_x = m_player[_i]->GetPos().x - m_player[j]->GetPos().x;
+			float distance_y = m_player[_i]->GetPos().y - m_player[j]->GetPos().y;
+
+			if (distance_1*distance_1 <= (distance_x*distance_x) + (distance_y*distance_y)
+				&& (distance_x * distance_x) + (distance_y * distance_y) <= distance_2 * distance_2)
+			{
+				m_player[j]->Hit(_GSD);
+			}
+		}
+	}
+	m_player[_i]->Attack(false);
 }
 
