@@ -27,6 +27,9 @@
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="platform_side.png" />
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

@@ -36,8 +36,6 @@ public:
 	void SetDefault();
 	void SetJump();
 	void SetWalk(int animation);
-	void SetWalk1();
-	void SetWalk2();
 	void SetRun();
 	void SetFall();
 	void SetPunch();
@@ -62,9 +60,10 @@ private:
 		RWalk2,
 		LWalk3,
 		RWalk3,
-		Fall,
-		LGrab,
-		RGrab
+		LFall,
+		RFall,
+		RGrab,
+		LGrab
 	};
 
 
@@ -72,5 +71,5 @@ private:
 	int m_change_animation = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[13][4];
+	float sprite_batch[14][4];
 };
