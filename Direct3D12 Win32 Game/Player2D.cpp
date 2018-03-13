@@ -45,22 +45,40 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 	controller(_GSD);
 	ProcessCollision();
 
-	if (m_anim_grounded)
+	if(m_punch)
 	{
-		action_jump = GROUND;
+		action_jump = PUNCH;
 	}
 	else
 	{
-		if (m_vel.y < 300)
+		if (m_anim_grounded)
 		{
-			action_jump = JUMP;
+			action_jump = GROUND;
 		}
-		else if (m_vel.y > 300)
+		else
 		{
-			action_jump = FALL;
+			if (m_vel.y < 300)
+			{
+				if (m_jumping)
+				{
+					action_jump = JUMP;
+				}
+				else if (m_upwards_punch)
+				{
+					action_jump = UPWARDPUNCH;
+				}
+			}
+			else if (m_vel.y > 300)
+			{
+				action_jump = FALL;
+				m_upwards_punch = false;
+			}
+
 		}
 	}
+
 	Grabbing();
+	PunchTimer(_GSD);
 	AnimationTick(_GSD);
 
 	AddGravity(m_grounded);
@@ -72,6 +90,18 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 
 	//after that as updated my position let's lock it inside my limits
 	deathZone();
+}
+
+void Player2D::PunchTimer(GameStateData * _GSD)
+{
+	if (m_timer_punch >= 1)
+	{
+		m_punch = false;
+	}
+	else
+	{
+		m_timer_punch += _GSD->m_dt;
+	}
 }
 
 void Player2D::deathZone()
@@ -112,18 +142,10 @@ void Player2D::Grabbing()
 		if (m_coll_state == COLRIGHT)
 		{
 			direction = LEFT;
-			//if (m_grounded)
-			//{
-			//	AddForce(-10000.f * Vector2::UnitX);
-			//}
 		}
 		else
 		{
 			direction = RIGHT;
-			//if (m_grounded )
-			//{
-			//	AddForce(10000.f * Vector2::UnitX);
-			//}
 		}
 		m_grabing_side = true;
 		//m_grounded = true;
@@ -175,6 +197,8 @@ void Player2D::controller(GameStateData * _GSD)
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
+			m_upwards_punch = false;
+			m_jumping = true;
 			if (m_grabing_side)
 			{
 				m_ledge_jump = true;
@@ -189,6 +213,18 @@ void Player2D::controller(GameStateData * _GSD)
 			m_vel.y = 0;
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_bonus_jump = false;
+			m_coll_state = Collision::COLNONE;
+			m_jumping = false;
+			m_upwards_punch = true;
+		}
+	}
+	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) || (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
+	{
+		if (!m_punch && !m_upwards_punch && !m_grabing_side)
+		{
+			Punch();
+			m_punch = true;
+			m_timer_punch = 0;
 		}
 	}
 }

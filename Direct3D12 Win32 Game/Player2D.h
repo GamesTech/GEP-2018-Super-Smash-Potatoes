@@ -34,7 +34,6 @@ public:
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 
 	void TestCollision() { SetBoundingBoxes(); }
-	void CheckCollision(GameObject2D* _obj);
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
@@ -47,6 +46,7 @@ public:
 protected:
 	void ProcessCollision();
 	void Grabbing();
+	void PunchTimer(GameStateData * _GSD);
 	void deathZone();
 	void respawn();
 	void controller(GameStateData * _GSD);
@@ -58,12 +58,17 @@ protected:
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
+	bool m_jumping = false;
+	bool m_upwards_punch = false;
+	bool m_punch = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
 	bool m_ledge_jump = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
+
+	float m_timer_punch = 4;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;
