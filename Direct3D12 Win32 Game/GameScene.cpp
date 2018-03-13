@@ -221,18 +221,18 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 
 void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 {
-	float collision_width = m_player[_i]->Width()/4;
+	float collision_width = m_player[_i]->Width()/3;
 	float coll_pos_x = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
 	float coll_pos_y = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
 	if (m_player[_i]->GetOrientation())
 	{
-		coll_pos_x -= 40;
+		coll_pos_x -= 50;
 		punch_direction = 1;
 	}
 	else
 	{
-		coll_pos_x += 40;
+		coll_pos_x += 50;
 		punch_direction = -1;
 	}
 
