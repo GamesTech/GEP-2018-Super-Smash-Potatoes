@@ -219,12 +219,12 @@ void Player2D::controller(GameStateData * _GSD)
 	}
 }
 
-void Player2D::Hit(GameStateData * _GSD)
+void Player2D::Hit(GameStateData * _GSD, int _dir)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
 	AddForce(-m_jumpForce * Vector2::UnitY * m_damage);
-	AddForce(m_jumpForce * Vector2::UnitX * m_damage);
+	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.02;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 }
@@ -274,3 +274,14 @@ void Player2D::ProcessCollision()
 	}
 }
 
+bool Player2D::GetOrientation()
+{
+	if (direction == RIGHT)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

@@ -45,7 +45,8 @@ public:
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool Attack() { return m_attack; };
 	void Attack(bool _attack) { m_attack = _attack; };
-	void Hit(GameStateData * _GSD);
+	void Hit(GameStateData * _GSD, int _dir);
+	bool GetOrientation();
 
 protected:
 	void ProcessCollision();

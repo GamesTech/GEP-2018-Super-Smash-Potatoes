@@ -221,7 +221,21 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 
 void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 {
-	float collision_width = m_player[_i]->Width();
+	float collision_width = m_player[_i]->Width()/4;
+	float coll_pos_x = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float coll_pos_y = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float punch_direction = 0;
+	if (m_player[_i]->GetOrientation())
+	{
+		coll_pos_x -= 40;
+		punch_direction = 1;
+	}
+	else
+	{
+		coll_pos_x += 40;
+		punch_direction = -1;
+	}
+
 	for (int j = 0; j < no_players; j++)
 	{
 		if (_i != j)
@@ -229,13 +243,13 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 			float player_width = m_player[j]->Width();
 			float distance_1 = collision_width - player_width;
 			float distance_2 = collision_width + player_width;
-			float distance_x = m_player[_i]->GetPos().x - m_player[j]->GetPos().x;
-			float distance_y = m_player[_i]->GetPos().y - m_player[j]->GetPos().y;
+			float distance_x = coll_pos_x - (m_player[j]->GetPos().x + (m_player[j]->Width() / 2));
+			float distance_y = coll_pos_y - (m_player[j]->GetPos().y + (m_player[j]->Height() / 2));
 
 			if (distance_1*distance_1 <= (distance_x*distance_x) + (distance_y*distance_y)
 				&& (distance_x * distance_x) + (distance_y * distance_y) <= distance_2 * distance_2)
 			{
-				m_player[j]->Hit(_GSD);
+				m_player[j]->Hit(_GSD, punch_direction);
 			}
 		}
 	}
