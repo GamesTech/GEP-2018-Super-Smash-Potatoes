@@ -138,7 +138,14 @@ void Animation2D::SetRun()
 
 void Animation2D::SetFall()
 {
-	SetRect(sprite_batch[Fall][0], sprite_batch[Fall][1], sprite_batch[Fall][2], sprite_batch[Fall][3]);
+	if (direction == LEFT)
+	{
+		SetRect(sprite_batch[LFall][0], sprite_batch[LFall][1], sprite_batch[LFall][2], sprite_batch[LFall][3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(sprite_batch[RFall][0], sprite_batch[RFall][1], sprite_batch[RFall][2], sprite_batch[RFall][3]);
+	}
 }
 
 void Animation2D::SetPunch()
@@ -165,7 +172,7 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 14; j++)
+			for (int j = 0; j < 15; j++)
 			{
 				for (int i = 0; i < 4; i++) //prints into array Default Left
 				{
