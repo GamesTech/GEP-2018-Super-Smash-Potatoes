@@ -14,7 +14,7 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
+void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 {
 	//Push the guy around in the directions for the key presses
 	//if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
@@ -42,7 +42,10 @@ void Player2D::Tick(GameStateData * _GSD/*, GameObject2D* _obj*/)
 
 
 	SetBoundingBoxes();
-	controller(_GSD);
+	if (_test == 0)
+	{
+		controller(_GSD);
+	}
 	ProcessCollision();
 
 	if(m_punch)
@@ -155,15 +158,20 @@ void Player2D::Grabbing()
 
 void Player2D::respawn()
 {
+	action_jump = GROUND;
 	m_pos.x = 400.0f;
 	m_pos.y = 300.0f;
 	m_vel.x = 0.0f;
 	m_vel.y = 301.0f;
+	m_damage = 1;
 }
 
 void Player2D::controller(GameStateData * _GSD)
 {
-	if (_GSD->m_keyboardState.A || _GSD->m_gamePadState[player_no].IsDPadLeftPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
+	// Walk
+	if (_GSD->m_keyboardState.A 
+		|| _GSD->m_gamePadState[player_no].IsDPadLeftPressed() 
+		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		direction = LEFT;
@@ -173,7 +181,9 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 
 	}
-	else if (_GSD->m_keyboardState.D || _GSD->m_gamePadState[player_no].IsDPadRightPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
+	else if (_GSD->m_keyboardState.D 
+		|| _GSD->m_gamePadState[player_no].IsDPadRightPressed() 
+		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		direction = RIGHT;
@@ -190,7 +200,12 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 
-	if ((_GSD->m_keyboardState.Space && !_GSD->m_prevKeyboardState.Space) || (_GSD->m_gamePadState[player_no].IsAPressed() && !_GSD->m_prevGamePadState[player_no].IsAPressed()))
+
+	// Jump
+	if ((_GSD->m_keyboardState.Space 
+		&& !_GSD->m_prevKeyboardState.Space) 
+		|| (_GSD->m_gamePadState[player_no].IsAPressed() 
+			&& !_GSD->m_prevGamePadState[player_no].IsAPressed()))
 	{
 		if (m_grounded)
 		{
@@ -206,7 +221,13 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 
-	if ((_GSD->m_keyboardState.X && _GSD->m_keyboardState.W) || ((_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()) && (_GSD->m_gamePadState[player_no].IsDPadUpPressed() || _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
+	// Bonus Jump
+	if ((_GSD->m_keyboardState.X 
+		&& _GSD->m_keyboardState.W) 
+		|| ((_GSD->m_gamePadState[player_no].IsXPressed() 
+			&& !_GSD->m_prevGamePadState[player_no].IsXPressed()) 
+			&& (_GSD->m_gamePadState[player_no].IsDPadUpPressed() 
+				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
 	{
 		if (m_bonus_jump)
 		{
@@ -223,11 +244,29 @@ void Player2D::controller(GameStateData * _GSD)
 		if (!m_punch && !m_upwards_punch && !m_grabing_side)
 		{
 			Punch();
+			m_attack = true;
 			m_punch = true;
 			m_timer_punch = 0;
 		}
 	}
+
+	//if (_GSD->m_keyboardState.Enter
+	//	&& !_GSD->m_prevKeyboardState.Enter)
+	//{
+	//	m_attack = true;
+	//}
 }
+
+void Player2D::Hit(GameStateData * _GSD, int _dir)
+{
+	m_grounded = false;
+	m_coll_state = Collision::COLNONE;
+	AddForce(-m_jumpForce * Vector2::UnitY * m_damage);
+	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
+	m_damage *= 1.02;
+	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+}
+
 
 void Player2D::ProcessCollision()
 {
@@ -273,3 +312,14 @@ void Player2D::ProcessCollision()
 	}
 }
 
+bool Player2D::GetOrientation()
+{
+	if (direction == RIGHT)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

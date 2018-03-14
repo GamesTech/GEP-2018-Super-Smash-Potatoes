@@ -14,7 +14,7 @@ GameScene::~GameScene()
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	level = std::make_unique<LevelFile>();
-	level->read("test2", ".lvl");
+	level->read("test2", ".huwsucks");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
@@ -40,7 +40,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	no_players = gsd->no_players;
 	if (no_players == 0)
 	{
-		no_players = 1;
+		no_players = 2;
 	}
 	spawnPlayers(m_RD, no_players);
 }
@@ -51,14 +51,19 @@ void GameScene::update(GameStateData* gsd)
 	{
 		for (auto& platform : platforms)
 		{
-			if (CheckCollision(platform.get(), 0) && !m_anim_grounded[i])
+			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
 				m_anim_grounded[i] = true;
 				break;
 			}
 		}
 		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-		m_player[i]->Tick(gsd);
+		m_player[i]->Tick(gsd, i);
+
+		if (m_player[i]->Attack())
+		{
+			CheckAttackPos(gsd, i);
+		}
 	}
 	for (int i = 0; i < no_players; i++)
 	{
@@ -205,12 +210,49 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 	{
 		std::string str_player_no = "kirby_sprite_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		m_player[i]->SetPos(Vector2(300, 300));
+		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);
 		m_player[i]->LoadSprites("KirbySpriteBatch.txt");
 		m_player[i]->setPlayerNo(i);
 	}
+}
+
+void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
+{
+	float collision_width = m_player[_i]->Width()/3;
+	float coll_pos_x = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float coll_pos_y = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float punch_direction = 0;
+	if (m_player[_i]->GetOrientation())
+	{
+		coll_pos_x -= 50;
+		punch_direction = 1;
+	}
+	else
+	{
+		coll_pos_x += 50;
+		punch_direction = -1;
+	}
+
+	for (int j = 0; j < no_players; j++)
+	{
+		if (_i != j)
+		{
+			float player_width = m_player[j]->Width();
+			float distance_1 = collision_width - player_width;
+			float distance_2 = collision_width + player_width;
+			float distance_x = coll_pos_x - (m_player[j]->GetPos().x + (m_player[j]->Width() / 2));
+			float distance_y = coll_pos_y - (m_player[j]->GetPos().y + (m_player[j]->Height() / 2));
+
+			if (distance_1*distance_1 <= (distance_x*distance_x) + (distance_y*distance_y)
+				&& (distance_x * distance_x) + (distance_y * distance_y) <= distance_2 * distance_2)
+			{
+				m_player[j]->Hit(_GSD, punch_direction);
+			}
+		}
+	}
+	m_player[_i]->Attack(false);
 }
 

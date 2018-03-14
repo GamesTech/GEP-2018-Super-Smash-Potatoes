@@ -83,7 +83,7 @@ private:
 
 	float timer = 0;
 	float timer2 = 0;
-	float timer_punch = 2;
+	float timer_punch = 0.1;
 	int m_change_punch_animation = 1;
 	int m_change_animation = 1;
 	int m_change_animation2 = 1;

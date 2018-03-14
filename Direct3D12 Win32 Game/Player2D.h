@@ -19,7 +19,7 @@ public:
 	Player2D(RenderData* _RD, string _filename);
 	virtual ~Player2D();
 
-	void Tick(GameStateData* _GSD/*, GameObject2D* _obj*/);
+	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
 
@@ -42,6 +42,10 @@ public:
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	Collision GetCollState() { return m_coll_state; };
 	bool GetLedgeJump() { return m_ledge_jump; };
+	bool Attack() { return m_attack; };
+	void Attack(bool _attack) { m_attack = _attack; };
+	void Hit(GameStateData * _GSD, int _dir);
+	bool GetOrientation();
 
 protected:
 	void ProcessCollision();
@@ -53,6 +57,7 @@ protected:
 
 	float m_jumpForce = 60000;
 	float m_drive = 200.0f;
+	float m_damage = 1;
 	//float m_gravity = 980;
 	int player_no = 0;
 	Vector2 m_max_speed = Vector2(400, 400);
@@ -67,6 +72,7 @@ protected:
 	bool m_ledge_jump = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
+	bool m_attack = false;
 
 	float m_timer_punch = 4;
 

@@ -166,6 +166,15 @@
   <ItemGroup>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
