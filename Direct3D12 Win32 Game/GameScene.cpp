@@ -14,7 +14,7 @@ GameScene::~GameScene()
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	level = std::make_unique<LevelFile>();
-	level->read("test2", ".lvl");
+	level->read("test2", ".huwsucks");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
@@ -210,7 +210,7 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 	{
 		std::string str_player_no = "kirby_sprite_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		m_player[i]->SetPos(Vector2(300, 300));
+		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);

@@ -244,16 +244,17 @@ void Player2D::controller(GameStateData * _GSD)
 		if (!m_punch && !m_upwards_punch && !m_grabing_side)
 		{
 			Punch();
+			m_attack = true;
 			m_punch = true;
 			m_timer_punch = 0;
 		}
 	}
 
-	if (_GSD->m_keyboardState.Enter
-		&& !_GSD->m_prevKeyboardState.Enter)
-	{
-		m_attack = true;
-	}
+	//if (_GSD->m_keyboardState.Enter
+	//	&& !_GSD->m_prevKeyboardState.Enter)
+	//{
+	//	m_attack = true;
+	//}
 }
 
 void Player2D::Hit(GameStateData * _GSD, int _dir)
