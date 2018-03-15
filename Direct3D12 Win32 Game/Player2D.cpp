@@ -42,10 +42,11 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 
 
 	SetBoundingBoxes();
-	//if (_test == 0)
-	//{
+	if (!m_hit)
+	{
 	controller(_GSD);
-	//}
+	}
+	m_hit = false;
 	ProcessCollision();
 
 	if(m_punch)
@@ -270,6 +271,7 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	m_hit = true;
 }
 
 

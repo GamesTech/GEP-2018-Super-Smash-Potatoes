@@ -73,6 +73,7 @@ protected:
 	bool m_y_coll = false;
 	bool m_x_coll = false;
 	bool m_attack = false;
+	bool m_hit = false;
 
 	float m_timer_punch = 4;
 
