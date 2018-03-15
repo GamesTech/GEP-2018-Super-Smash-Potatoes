@@ -14,7 +14,7 @@ GameScene::~GameScene()
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	level = std::make_unique<LevelFile>();
-	level->read("test2", ".huwsucks");
+	level->read("test2", ".lvl");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
@@ -37,7 +37,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		object->SetLayer(1.0f);
 	}
 
-	no_players = gsd->no_players;
+	no_players = 2; // gsd->no_players;
 	if (no_players == 0)
 	{
 		no_players = 2;

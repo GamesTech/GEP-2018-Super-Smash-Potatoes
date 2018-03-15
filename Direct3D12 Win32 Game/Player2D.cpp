@@ -97,8 +97,12 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 
 void Player2D::PunchTimer(GameStateData * _GSD)
 {
-	if (m_timer_punch >= 1)
+	if (m_timer_punch >= 0.6)
 	{
+		if (m_punch)
+		{
+			m_attack = true;
+		}
 		m_punch = false;
 	}
 	else
@@ -164,6 +168,7 @@ void Player2D::respawn()
 	m_vel.x = 0.0f;
 	m_vel.y = 301.0f;
 	m_damage = 1;
+	m_upwards_punch = false;
 }
 
 void Player2D::controller(GameStateData * _GSD)
@@ -239,12 +244,12 @@ void Player2D::controller(GameStateData * _GSD)
 			m_upwards_punch = true;
 		}
 	}
-	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) || (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
+	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
+		|| (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
 	{
 		if (!m_punch && !m_upwards_punch && !m_grabing_side)
 		{
 			Punch();
-			m_attack = true;
 			m_punch = true;
 			m_timer_punch = 0;
 		}
