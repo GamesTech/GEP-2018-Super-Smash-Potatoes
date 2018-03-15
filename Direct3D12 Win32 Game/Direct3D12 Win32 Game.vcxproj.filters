@@ -256,4 +256,7 @@
       <Filter>Assets</Filter>
     </Manifest>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels.txt" />
+  </ItemGroup>
 </Project>
