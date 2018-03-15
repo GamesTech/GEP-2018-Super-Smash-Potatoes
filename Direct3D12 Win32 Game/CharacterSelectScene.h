@@ -30,6 +30,8 @@ private:
 	std::vector<string> sprite_names;
 
 	int selection_player[4] = { 0,0,0,0 };
+	bool players_locked[4] = { false, false, false, false };
 
 	int no_players = 0;
+
 };

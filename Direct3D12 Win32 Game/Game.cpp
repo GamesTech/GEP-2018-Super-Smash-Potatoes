@@ -176,10 +176,19 @@ void Game::Update(DX::StepTimer const& timer)
 	scene->update(m_GSD);
 
 	//// TODO: Gamepad
+	m_GSD->no_players = 0;
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
 		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+		if (m_GSD->m_gamePadState[i].IsConnected())
+		{
+			m_GSD->no_players++;
+		}
+	}
+	if (m_GSD->no_players == 0)
+	{
+		m_GSD->no_players = 1;
 	}
 }
 
@@ -678,14 +687,6 @@ void Game::checkIfNewScene()
 			scene = std::make_unique<MenuScene>();
 			break;
 		case CHARACTERSELECT:
-			m_GSD->no_players = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (m_GSD->m_gamePadState[i].IsConnected())
-				{
-					m_GSD->no_players++;
-				}
-			}
 			scene.reset();
 			scene = std::make_unique<CharacterSelectScene>();
 			break;
@@ -699,14 +700,6 @@ void Game::checkIfNewScene()
 			scene->giveSwapChain(m_swapChain);
 			break;
 		case INGAME:
-			m_GSD->no_players = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (m_GSD->m_gamePadState[i].IsConnected())
-				{
-					m_GSD->no_players++;
-				}
-			}
 			scene.reset();
 			scene = std::make_unique<GameScene>();
 			break;
