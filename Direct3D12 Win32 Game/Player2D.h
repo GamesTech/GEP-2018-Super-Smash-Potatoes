@@ -21,6 +21,8 @@ public:
 
 	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
 
+	void AnimationChecks(GameStateData * _GSD);
+
 	void setPlayerNo(int player_number);
 
 	void SetDrive(float _drive) { m_drive = _drive; }

@@ -16,39 +16,28 @@ Player2D::~Player2D()
 
 void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 {
-	//Push the guy around in the directions for the key presses
-	//if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
-	//{
-	//	m_y_coll = true;
-	//}
-	//else
-	//{
-	//	m_y_coll = false;
-	//}
-	//if (m_coll_state == Collision::COLLEFT || m_coll_state == Collision::COLRIGHT)
-	//{
-	//	m_x_coll = true;
-	//}
-	//else
-	//{
-	//	m_x_coll = false;
-	//}
-
 	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
 	{
 		m_ledge_jump = false;
 	}
-
-
-
 	SetBoundingBoxes();
-	//if (_test == 0)
-	//{
 	controller(_GSD);
-	//}
 	ProcessCollision();
+	AnimationChecks(_GSD);
+	AddGravity(m_grounded);
+	//GEP:: Lets go up the inheritence and share our functionality
+	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
 
-	if(m_punch)
+	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
+	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
+
+	//after that as updated my position let's lock it inside my limits
+	deathZone();
+}
+
+void Player2D::AnimationChecks(GameStateData * _GSD)
+{
+	if (m_punch)
 	{
 		action_jump = PUNCH;
 	}
@@ -83,21 +72,11 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	Grabbing();
 	PunchTimer(_GSD);
 	AnimationTick(_GSD);
-
-	AddGravity(m_grounded);
-	//GEP:: Lets go up the inheritence and share our functionality
-	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
-
-	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
-	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
-
-	//after that as updated my position let's lock it inside my limits
-	deathZone();
 }
 
 void Player2D::PunchTimer(GameStateData * _GSD)
 {
-	if (m_timer_punch >= 0.6)
+	if (m_timer_punch >= 0.3)
 	{
 		if (m_punch)
 		{
@@ -155,6 +134,7 @@ void Player2D::Grabbing()
 			direction = RIGHT;
 		}
 		m_grabing_side = true;
+		m_upwards_punch = false;
 		//m_grounded = true;
 		action_movement = GRAB;
 	}

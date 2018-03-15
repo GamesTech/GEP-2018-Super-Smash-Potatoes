@@ -86,12 +86,12 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 		timer2 += _GSD->m_dt;
 	}
 
-	if (timer_punch >= 0.4)
+	if (timer_punch >= 0.1)
 	{
 		if (m_change_punch_animation < 4)
 		{
 			m_change_punch_animation++;
-			timer2 -= 0.4;
+			timer2 -= 0.1;
 		}
 	}
 	else
