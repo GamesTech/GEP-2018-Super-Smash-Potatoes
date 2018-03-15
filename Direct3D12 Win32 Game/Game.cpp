@@ -678,6 +678,14 @@ void Game::checkIfNewScene()
 			scene = std::make_unique<MenuScene>();
 			break;
 		case CHARACTERSELECT:
+			m_GSD->no_players = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				if (m_GSD->m_gamePadState[i].IsConnected())
+				{
+					m_GSD->no_players++;
+				}
+			}
 			scene.reset();
 			scene = std::make_unique<CharacterSelectScene>();
 			break;

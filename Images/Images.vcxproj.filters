@@ -27,6 +27,9 @@
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="PlayerPreviewBoxes.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\Mario_UI_Sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

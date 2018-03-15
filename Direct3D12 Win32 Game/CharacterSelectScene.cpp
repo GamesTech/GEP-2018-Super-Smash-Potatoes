@@ -27,23 +27,41 @@ CharacterSelectScene::~CharacterSelectScene()
 
 void CharacterSelectScene::init(RenderData * m_RD, GameStateData * gsd)
 {
+	no_players = gsd->no_players;
 	loadCharactersFile("PlayerSprites.txt");
 
 	title_text = new Text2D("Character Select!");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
+	sprites_per_row = 12;
+	int current_sprites_on_row = 0;
+	int row_no = 0;
+
 	for (int i = 0; i < sprite_names.size(); i++)
 	{
-		selection_option[i] = new ImageGO2D(m_RD, sprite_names[i]);
-		selection_option[i]->SetPos(Vector2((i * 200) + 200, 200));
-		selection_option[i]->SetRect(1, 1, 200, 200);
-		selection_option[i]->SetLayer(1.0f);
-		selection_option[i]->CentreOrigin();
-		game_objects.push_back(selection_option[i]);
+		grid_sprite_temp = new ImageGO2D(m_RD, sprite_names[i]);
+		grid_sprite_temp->SetPos(Vector2(100 + (current_sprites_on_row * 100), 100 + (row_no * 100)));
+		grid_sprite_temp->SetRect(1, 1, 60, 75);
+		grid_sprite_temp->SetLayer(1.0f);
+		grid_sprite_temp->CentreOrigin();
+		grid_sprites.push_back(grid_sprite_temp);
+
+		player_preview_temp = new ImageGO2D(m_RD, sprite_names[i]);
+		player_preview_temp->SetRect(1, 1, 60, 75);
+		player_preview_temp->SetLayer(0.0f);
+		player_preview_temp->CentreOrigin();
+		player_previews.push_back(player_preview_temp);
+
+		//new row
+		current_sprites_on_row++;
+
+		if (current_sprites_on_row == sprites_per_row)
+		{
+			row_no++;
+			current_sprites_on_row = 0;
+		}
 	}
-
-
 
 	player_preview_boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
 	player_preview_boxes->SetPos(Vector2(640, 620));
@@ -52,38 +70,11 @@ void CharacterSelectScene::init(RenderData * m_RD, GameStateData * gsd)
 	player_preview_boxes->CentreOrigin();
 	game_objects.push_back(player_preview_boxes);
 
-	player1_preview = new ImageGO2D(m_RD, "gens2");
-	player1_preview->SetPos(Vector2(640-270, 620));
-	player1_preview->SetRect(1, 1, 100, 100);
-	player1_preview->SetLayer(1.0f);
-	player1_preview->CentreOrigin();
-	game_objects.push_back(player1_preview);
-
-	player2_preview = new ImageGO2D(m_RD, "gens2");
-	player2_preview->SetPos(Vector2(640-90, 620));
-	player2_preview->SetRect(1, 1, 100, 100);
-	player2_preview->SetLayer(1.0f);
-	player2_preview->CentreOrigin();
-	game_objects.push_back(player2_preview);
-
-	player3_preview = new ImageGO2D(m_RD, "gens2");
-	player3_preview->SetPos(Vector2(640+90, 620));
-	player3_preview->SetRect(1, 1, 100, 100);
-	player3_preview->SetLayer(1.0f);
-	player3_preview->CentreOrigin();
-	game_objects.push_back(player3_preview);
-
-	player4_preview = new ImageGO2D(m_RD, "gens2");
-	player4_preview->SetPos(Vector2(640+270, 620));
-	player4_preview->SetRect(1, 1, 100, 100);
-	player4_preview->SetLayer(1.0f);
-	player4_preview->CentreOrigin();
-	game_objects.push_back(player4_preview);
-
 }
 
 void CharacterSelectScene::update(GameStateData * gsd)
 {
+	no_players = gsd->no_players;
 	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
 	{
 		(*it)->Tick(gsd);
@@ -101,6 +92,15 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 	{
 		(*it)->Render(m_RD);
 	}
+	for (std::vector<ImageGO2D*>::iterator it = grid_sprites.begin(); it != grid_sprites.end(); it++)
+	{
+		(*it)->Render(m_RD);
+	}
+
+	for (int i = 0; i < no_players; i++)
+	{
+		player_previews[selection_player[i]]->Render(m_RD);
+	}
 
 	m_RD->m_spriteBatch->End();
 }
@@ -109,36 +109,87 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 void CharacterSelectScene::ReadInput(GameStateData * gsd)
 {
-	for (int i = 0; i < gsd->no_players; i++)
+	for (int i = 0; i < no_players; i++)
 	{
 		if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-			|| (gsd->m_gamePadState[i].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
+			|| (gsd->m_gamePadState[i].IsDPadUpPressed() && !gsd->m_prevGamePadState[i].IsDPadUpPressed()))
 		{
+			grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
+			grid_sprites[selection_player[i]]->SetScale(Vector2(1.0f, 1.0f));
 
+			if ((selection_player[i] - sprites_per_row) >= 0)
+			{
+				selection_player[i] = selection_player[i] - sprites_per_row;
+			}
 		}
 		if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-			|| (gsd->m_gamePadState[i].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
+			|| (gsd->m_gamePadState[i].IsDPadDownPressed() && !gsd->m_prevGamePadState[i].IsDPadDownPressed()))
 		{
+			grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
+			grid_sprites[selection_player[i]]->SetScale(Vector2(1.0f, 1.0f));
 
+			if ((selection_player[i] + sprites_per_row) < grid_sprites.size())
+			{
+				selection_player[i] = selection_player[i] + sprites_per_row;
+			}
 		}
 		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-			|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
+			|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
 		{
-			selection_player[i]--;
+			grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
+			grid_sprites[selection_player[i]]->SetScale(Vector2(1.0f, 1.0f));
+
+			if ((selection_player[i] - 1) >= 0)
+			{
+				selection_player[i]--;
+			}
 		}
 		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-			|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
+			|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
 		{
-			selection_player[i]++;
+			grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
+			grid_sprites[selection_player[i]]->SetScale(Vector2(1.0f, 1.0f));
+
+			if ((selection_player[i] + 1) < grid_sprites.size())
+			{
+				selection_player[i]++;
+			}
 		}
+
+		float red = 0;
+		float green = 0;
+		float blue = 0;
+		switch (i)
+		{
+		case 0:
+			red = 1;
+			break;
+		case 1:
+			blue = 1;
+			break;
+		case 2:
+			green = 1;
+			break;
+		case 3:
+			red = 0.5f;
+			green = 0.5f;
+			break;
+		}
+
+		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
+
+
+		grid_sprites[selection_player[i]]->SetScale(Vector2(1.2f, 1.2f));
+		player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
 		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
+			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
 		{
-
+			//player i locked in
 		}
 	}
-	if (gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
 		gsd->gameState = MENU;
 	}

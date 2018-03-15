@@ -231,10 +231,10 @@
     </ClCompile>
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="ArenaSelectScene.cpp">
-      <Filter>Game Base\Headers</Filter>
+      <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectScene.cpp">
-      <Filter>Game Base\Headers</Filter>
+      <Filter>Game Base\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
