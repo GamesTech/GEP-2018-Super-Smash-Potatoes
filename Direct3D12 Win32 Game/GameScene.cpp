@@ -129,6 +129,7 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 				{
 					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
 					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
+					return true;
 					// at the top 
 				}
 				else
@@ -137,26 +138,21 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
-			else if (collision_width > -collision_height) //if (m_player[_i]->GetCurrVel().x <= 0)
+			else if (collision_width > -collision_height)
 			{
 				if (!m_player[_i]->GetLedgeJump())
 				{
 					m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
 					m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
+					return true;
+					// on the right 
 				}
 				else
 				{
 					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
 					return false;
 				}
-
-				// on the right 
 			}
-			//else
-			//{
-			//	m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-			//	return false;
-			//}
 			
 		}
 		else if(collision_width > collision_height)
@@ -167,6 +163,7 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 				{
 					m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
 					m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
+					return true;
 					// collision at the bottom 
 				}
 				else
@@ -175,27 +172,22 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
-			else if (collision_width < -collision_height)//if (m_player[_i]->GetCurrVel().x >= 0)
+			else if (collision_width < -collision_height)
 			{
 				if (!m_player[_i]->GetLedgeJump())
 				{
 					m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
 					m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+					return true;
+					// on the left 
 				}
 				else
 				{
 					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
 					return false;
 				}
-				// on the left 
 			}
-			//else
-			//{
-			//	m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-			//	return false;
-			//}
 		}
-		return true;
 	}
 	else
 	{
@@ -227,12 +219,12 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	float punch_direction = 0;
 	if (m_player[_i]->GetOrientation())
 	{
-		coll_pos_x -= 50;
+		coll_pos_x -= 40;
 		punch_direction = 1;
 	}
 	else
 	{
-		coll_pos_x += 50;
+		coll_pos_x += 40;
 		punch_direction = -1;
 	}
 
