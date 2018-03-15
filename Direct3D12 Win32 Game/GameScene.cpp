@@ -37,11 +37,13 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		object->SetLayer(1.0f);
 	}
 
-	no_players = 2; // gsd->no_players;
-	if (no_players == 0)
+	no_players = gsd->no_players;
+	if (no_players == 0 || no_players == 1)
 	{
+		//for playtesting
 		no_players = 2;
 	}
+
 	spawnPlayers(m_RD, no_players);
 }
 
@@ -213,18 +215,18 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 
 void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 {
-	float collision_width = m_player[_i]->Width()/3;
-	float coll_pos_x = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
-	float coll_pos_y = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float r1 = m_player[_i]->Width()/1.5;
+	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
 	if (m_player[_i]->GetOrientation())
 	{
-		coll_pos_x -= 40;
+		x1 += 40;
 		punch_direction = 1;
 	}
 	else
 	{
-		coll_pos_x += 40;
+		x1 -= 40;
 		punch_direction = -1;
 	}
 
@@ -232,14 +234,13 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	{
 		if (_i != j)
 		{
-			float player_width = m_player[j]->Width();
-			float distance_1 = collision_width - player_width;
-			float distance_2 = collision_width + player_width;
-			float distance_x = coll_pos_x - (m_player[j]->GetPos().x + (m_player[j]->Width() / 2));
-			float distance_y = coll_pos_y - (m_player[j]->GetPos().y + (m_player[j]->Height() / 2));
+			float r2 = m_player[j]->Width();
+			//float distance_1 = collision_width - player_width;
+			//float distance_2 = collision_width + player_width;
+			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
 
-			if (distance_1*distance_1 <= (distance_x*distance_x) + (distance_y*distance_y)
-				&& (distance_x * distance_x) + (distance_y * distance_y) <= distance_2 * distance_2)
+			if (r1 > sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))))
 			{
 				m_player[j]->Hit(_GSD, punch_direction);
 			}

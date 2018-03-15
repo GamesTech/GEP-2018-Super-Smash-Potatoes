@@ -171,8 +171,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation2D.h" />
+    <ClInclude Include="ArenaSelectScene.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterSelectScene.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="GameScene.h" />
@@ -204,8 +206,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
+    <ClCompile Include="ArenaSelectScene.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterSelectScene.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GameScene.cpp" />

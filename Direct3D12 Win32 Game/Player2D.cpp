@@ -21,7 +21,11 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 		m_ledge_jump = false;
 	}
 	SetBoundingBoxes();
+	if (!m_hit)
+	{
 	controller(_GSD);
+	}
+	m_hit = false;
 	ProcessCollision();
 	AnimationChecks(_GSD);
 	AddGravity(m_grounded);
@@ -250,6 +254,7 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	m_hit = true;
 }
 
 
