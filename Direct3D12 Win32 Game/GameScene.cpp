@@ -37,11 +37,13 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		object->SetLayer(1.0f);
 	}
 
-	no_players = 2; // gsd->no_players;
-	if (no_players == 0)
+	no_players = gsd->no_players;
+	if (no_players == 0 || no_players == 1)
 	{
+		//for playtesting
 		no_players = 2;
 	}
+
 	spawnPlayers(m_RD, no_players);
 }
 

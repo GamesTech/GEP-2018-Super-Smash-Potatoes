@@ -10,6 +10,8 @@
 #include "File.h"
 #include "Debug.h"
 #include "MenuScene.h"
+#include "CharacterSelectScene.h"
+#include "ArenaSelectScene.h"
 #include "SettingsScene.h"
 #include "GameScene.h"
 
@@ -174,10 +176,19 @@ void Game::Update(DX::StepTimer const& timer)
 	scene->update(m_GSD);
 
 	//// TODO: Gamepad
+	m_GSD->no_players = 0;
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
 		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+		if (m_GSD->m_gamePadState[i].IsConnected())
+		{
+			m_GSD->no_players++;
+		}
+	}
+	if (m_GSD->no_players == 0)
+	{
+		m_GSD->no_players = 1;
 	}
 }
 
@@ -675,25 +686,25 @@ void Game::checkIfNewScene()
 			scene.reset();
 			scene = std::make_unique<MenuScene>();
 			break;
+		case CHARACTERSELECT:
+			scene.reset();
+			scene = std::make_unique<CharacterSelectScene>();
+			break;
+		case ARENASELECT:
+			scene.reset();
+			scene = std::make_unique<ArenaSelectScene>();
+			break;
 		case SETTINGS:
 			scene.reset();
 			scene = std::make_unique<SettingsScene>();
 			scene->giveSwapChain(m_swapChain);
 			break;
 		case INGAME:
-			m_GSD->no_players = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (m_GSD->m_gamePadState[i].IsConnected())
-				{
-					m_GSD->no_players++;
-				}
-			}
 			scene.reset();
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
-			//scene.release();
+			//scene.reset();
 			//gameover man, GAMEOVER
 			break;
 		}

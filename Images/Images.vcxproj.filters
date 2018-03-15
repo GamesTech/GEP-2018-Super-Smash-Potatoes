@@ -40,6 +40,10 @@
     <ImageContentTask Include="Scenes\platform_side.png" />
     <ImageContentTask Include="Scenes\platform.png" />
     <ImageContentTask Include="Scenes\platform_large.png" />
+    <ImageContentTask Include="PlayerPreviewBoxes.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\Mario_UI_Sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
