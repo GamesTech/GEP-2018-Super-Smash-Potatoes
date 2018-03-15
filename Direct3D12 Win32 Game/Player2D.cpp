@@ -25,7 +25,6 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	{
 	controller(_GSD);
 	}
-	m_hit = false;
 	ProcessCollision();
 	AnimationChecks(_GSD);
 	AddGravity(m_grounded);
@@ -53,29 +52,49 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		}
 		else
 		{
-			if (m_vel.y < 300)
+			if (m_hit)
 			{
-				if (m_jumping)
-				{
-					action_jump = JUMP;
-				}
-				else if (m_upwards_punch)
-				{
-					action_jump = UPWARDPUNCH;
-				}
+				action_jump = HIT;
 			}
-			else if (m_vel.y > 300)
+			else
 			{
-				action_jump = FALL;
-				m_upwards_punch = false;
+				if (m_vel.y < 300)
+				{
+					if (m_jumping)
+					{
+						action_jump = JUMP;
+					}
+					else if (m_upwards_punch)
+					{
+						action_jump = UPWARDPUNCH;
+					}
+				}
+				else if (m_vel.y > 300)
+				{
+					action_jump = FALL;
+					m_upwards_punch = false;
+				}
 			}
 
 		}
 	}
 
+	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
 	AnimationTick(_GSD);
+}
+
+void Player2D::HitTimer(GameStateData * _GSD)
+{
+	if (m_timer_hit >= 0.8)
+	{
+		m_hit = false;
+	}
+	else
+	{
+		m_timer_hit += _GSD->m_dt;
+	}
 }
 
 void Player2D::PunchTimer(GameStateData * _GSD)
@@ -255,6 +274,7 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_hit = true;
+	m_timer_hit = 0;
 }
 
 

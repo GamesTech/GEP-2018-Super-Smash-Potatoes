@@ -13,7 +13,8 @@ enum ActionJump
 	JUMP,
 	UPWARDPUNCH,
 	PUNCH,
-	FALL
+	FALL,
+	HIT
 };
 
 enum ActionMovement
@@ -52,6 +53,7 @@ private:
 	void SetFall();
 	void SetPunch(int animation);
 	void SetGrab();
+	void SetHit();
 
 	enum SpriteStateData
 	{
@@ -77,7 +79,9 @@ private:
 		LKick2,
 		RKick2,
 		LKick3,
-		RKick3
+		RKick3,
+		LHit,
+		RHit
 	};
 
 
@@ -89,5 +93,5 @@ private:
 	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[24][4];
+	float sprite_batch[26][4];
 };

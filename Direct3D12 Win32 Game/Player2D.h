@@ -21,8 +21,6 @@ public:
 
 	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
 
-	void AnimationChecks(GameStateData * _GSD);
-
 	void setPlayerNo(int player_number);
 
 	void SetDrive(float _drive) { m_drive = _drive; }
@@ -51,6 +49,8 @@ public:
 
 protected:
 	void ProcessCollision();
+	void AnimationChecks(GameStateData * _GSD);
+	void HitTimer(GameStateData * _GSD);
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
 	void deathZone();
@@ -78,6 +78,7 @@ protected:
 	bool m_hit = false;
 
 	float m_timer_punch = 4;
+	float m_timer_hit = 4;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;

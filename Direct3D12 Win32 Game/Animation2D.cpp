@@ -45,6 +45,10 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		SetJumpPunch();
 	}
+	else if (action_jump == HIT)
+	{
+		SetHit();
+	}
 	else if (action_jump == FALL)
 	{
 		SetFall();
@@ -264,6 +268,18 @@ void Animation2D::SetGrab()
 	}
 }
 
+void Animation2D::SetHit()
+{
+	if (direction == LEFT)
+	{
+		SetRect(sprite_batch[LHit][0], sprite_batch[LHit][1], sprite_batch[LHit][2], sprite_batch[LHit][3]);
+	}
+	if (direction == RIGHT)
+	{
+		SetRect(sprite_batch[RHit][0], sprite_batch[RHit][1], sprite_batch[RHit][2], sprite_batch[RHit][3]);
+	}
+}
+
 void Animation2D::LoadSprites(string _filename)
 {
 	std::ifstream sprite_position_batching;
@@ -272,9 +288,9 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 25; j++)
+			for (int j = 0; j < 27; ++j)
 			{
-				for (int i = 0; i < 4; i++) //prints into array Default Left
+				for (int i = 0; i < 4; ++i) //prints into array Default Left
 				{
 					sprite_position_batching >> sprite_batch[j][i];
 				}
