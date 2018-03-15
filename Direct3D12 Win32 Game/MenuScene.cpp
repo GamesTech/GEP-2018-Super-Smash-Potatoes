@@ -5,6 +5,7 @@
 #include "GameStateData.h"
 #include "LevelFile.h"
 
+
 MenuScene::~MenuScene()
 {
 	for (auto object : game_objects)
@@ -20,7 +21,7 @@ MenuScene::~MenuScene()
 
 void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 {
-	Text2D* title_text = new Text2D("Super Trash Potatoes");
+	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
 	game_objects.push_back(title_text);
 
@@ -49,7 +50,7 @@ void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 void MenuScene::update(GameStateData* gsd)
 {
 	//Add your game logic here.
-
+	
 	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
 	{
 		(*it)->Tick(gsd);
@@ -120,7 +121,7 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		switch (menu_option_selected)
 		{
 		case 1:
-			gsd->gameState = INGAME;
+			gsd->gameState = CHARACTERSELECT;
 			break;
 		case 2:
 			gsd->gameState = SETTINGS;
