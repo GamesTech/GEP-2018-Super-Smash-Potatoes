@@ -146,9 +146,6 @@
     <ImageContentTask Include="Buttons.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="platform.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageContentTask Include="gens2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +156,23 @@
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png" />
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png" />
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Scenes\platform.png" />
+    <ImageContentTask Include="Scenes\platform_large.png" />
+    <ImageContentTask Include="Scenes\platform_side.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="PlayerPreviewBoxes.png" />

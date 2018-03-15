@@ -7,6 +7,8 @@ struct GameObjectData {
 	Vector2 scale;
 	float orientation;
 	float layer;
+	Vector2 sprite_size_min;
+	Vector2 sprite_size_max;
 	string image_file;
 };
 
@@ -17,6 +19,9 @@ public:
 	~LevelFile() = default;
 
 	void read(std::string file, std::string ext);
+	GameObjectData getObj(int index) { return object_data.at(index); };
+	int getObjListSize() { return object_data.size(); };
+
 private:
 	std::unique_ptr<File> level_file;
 	std::vector<GameObjectData> object_data;

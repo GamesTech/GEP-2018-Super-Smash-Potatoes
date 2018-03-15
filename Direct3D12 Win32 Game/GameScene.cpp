@@ -13,42 +13,59 @@ GameScene::~GameScene()
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
+	level = std::make_unique<LevelFile>();
+	level->read("test2", ".lvl");
+
+	for (int i = 0; i < level->getObjListSize(); i++)
+	{
+		string temp_name = level->getObj(i).image_file;
+ 		auto platform = new ImageGO2D(m_RD, temp_name);
+
+		platform->SetPos(level->getObj(i).position);
+		platform->SetOrigin(level->getObj(i).origin);
+		platform->SetScale(level->getObj(i).scale);
+		platform->SetOri(level->getObj(i).orientation);
+		platform->SetLayer(level->getObj(i).layer);
+
+		platform->SetRect(level->getObj(i).sprite_size_min.x, level->getObj(i).sprite_size_min.y, level->getObj(i).sprite_size_max.x, level->getObj(i).sprite_size_max.y);
+		platforms.emplace_back(platform);
+	}
+
 	objects.emplace_back(new Text2D("Super Trash Potatoes"));
 	for (auto& object : objects)
 	{
 		object->SetLayer(1.0f);
 	}
-	for (int i = 0; i < 3; i++)
-	{
-		platforms.emplace_back(new ImageGO2D(m_RD, "platform"));
-	}
-	int i = 0;
-	for (auto& platform : platforms)
-	{
-		platform->SetPos(platform_pos[i]);
-		platform->SetLayer(1.0f);
-		platform->SetRect(1, 1, 600, 72);
-		i++;
-	}
-	
+
 	no_players = gsd->no_players;
+	if (no_players == 0 || no_players == 1)
+	{
+		//for playtesting
+		no_players = 2;
+	}
+
 	spawnPlayers(m_RD, no_players);
 }
 
 void GameScene::update(GameStateData* gsd)
 {
-	for (auto& platform : platforms)
+	for (int i = 0; i < no_players; i++)
 	{
-		for (int i = 0; i < no_players; i++)
+		for (auto& platform : platforms)
 		{
 			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
 			{
 				m_anim_grounded[i] = true;
+				break;
 			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd);
 		}
-		
+		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+		m_player[i]->Tick(gsd, i);
+
+		if (m_player[i]->Attack())
+		{
+			CheckAttackPos(gsd, i);
+		}
 	}
 	for (int i = 0; i < no_players; i++)
 	{
@@ -106,37 +123,73 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 		float collision_width = width * distance_y;
 		float collision_height = height * distance_x;
 
-		if (collision_width > collision_height)
+		if (collision_width < collision_height)
+		{
+			if (collision_width < -collision_height)
+			{
+				if (m_player[_i]->GetCurrVel().y >= 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
+					return true;
+					// at the top 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+			}
+			else if (collision_width > -collision_height)
+			{
+				if (!m_player[_i]->GetLedgeJump())
+				{
+					m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
+					m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
+					return true;
+					// on the right 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+			}
+			
+		}
+		else if(collision_width > collision_height)
 		{
 			if (collision_width > -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
-				// collision at the bottom 
+				if (m_player[_i]->GetCurrVel().y < 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
+					return true;
+					// collision at the bottom 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
 			}
-			else
+			else if (collision_width < -collision_height)
 			{
-				m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
-				// on the left 
+				if (!m_player[_i]->GetLedgeJump())
+				{
+					m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
+					m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
+					return true;
+					// on the left 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
 			}
 		}
-		else
-		{
-			if (collision_width > -collision_height)
-			{
-				m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
-				m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
-				// on the right 
-			}
-			else
-			{
-				m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
-				m_player[_i]->SetCollState(m_player[_i]->COLTOP);
-				// at the top 
-			}
-		}
-		return true;
 	}
 	else
 	{
@@ -149,15 +202,51 @@ void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = "mario_sprite_batch_" + std::to_string(i);
+		std::string str_player_no = "kirby_sprite_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		m_player[i]->SetPos(Vector2(300, 300));
+		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(1.0f);
-		m_player[i]->SetDrive(500.0f);
-		m_player[i]->SetDrag(0.5f);
-		m_player[i]->LoadSprites("MarioSpriteBatch.txt");
-		m_player[i]->SetSpeedLimit(platforms.size());
+		m_player[i]->SetDrive(900.0f);
+		m_player[i]->SetDrag(3.f);
+		m_player[i]->LoadSprites("KirbySpriteBatch.txt");
 		m_player[i]->setPlayerNo(i);
 	}
+}
+
+void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
+{
+	float collision_width = m_player[_i]->Width()/3;
+	float coll_pos_x = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float coll_pos_y = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float punch_direction = 0;
+	if (m_player[_i]->GetOrientation())
+	{
+		coll_pos_x -= 40;
+		punch_direction = 1;
+	}
+	else
+	{
+		coll_pos_x += 40;
+		punch_direction = -1;
+	}
+
+	for (int j = 0; j < no_players; j++)
+	{
+		if (_i != j)
+		{
+			float player_width = m_player[j]->Width();
+			float distance_1 = collision_width - player_width;
+			float distance_2 = collision_width + player_width;
+			float distance_x = coll_pos_x - (m_player[j]->GetPos().x + (m_player[j]->Width() / 2));
+			float distance_y = coll_pos_y - (m_player[j]->GetPos().y + (m_player[j]->Height() / 2));
+
+			if (distance_1*distance_1 <= (distance_x*distance_x) + (distance_y*distance_y)
+				&& (distance_x * distance_x) + (distance_y * distance_y) <= distance_2 * distance_2)
+			{
+				m_player[j]->Hit(_GSD, punch_direction);
+			}
+		}
+	}
+	m_player[_i]->Attack(false);
 }
 

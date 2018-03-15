@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "ArenaSelectScene.h"
+#include "RenderData.h"
+#include "GameObject2D.h"
+#include "GameStateData.h"
 
 ArenaSelectScene::ArenaSelectScene()
 {
@@ -23,4 +26,9 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 
 void ArenaSelectScene::ReadInput(GameStateData * gsd)
 {
+	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
+	{
+		gsd->gameState = INGAME;
+	}
 }

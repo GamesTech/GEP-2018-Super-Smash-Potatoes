@@ -9,7 +9,7 @@ public:
 	Physics2D(RenderData* _RD, string _filename);
 	~Physics2D();
 
-	void AddForce(Vector2 _push) { m_acc += (_push / m_mass) / m_speed_limit; }
+	void AddForce(Vector2 _push) { m_acc += (_push / m_mass); }
 	void AddGravity(bool _grounded);
 
 	Vector2 GetVel() { return m_vel; }
@@ -20,7 +20,7 @@ public:
 	float GetDrag() { return m_drag; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 
-	virtual void Tick(GameStateData* _GSD);
+	virtual void Tick(GameStateData* _GSD, bool _coll_y, bool _coll_x, float _new_pos, bool _grabbing);
 
 protected:
 	Vector2 m_vel;
