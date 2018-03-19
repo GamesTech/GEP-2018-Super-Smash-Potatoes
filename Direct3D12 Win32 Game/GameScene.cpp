@@ -101,22 +101,25 @@ void GameScene::update(GameStateData* gsd)
 	{
 		if (m_player[i]->getDead() == false)
 		{
-			if (platform->GetLayer() == 1)
+			for (auto& platform : platforms)
 			{
-				if (platform->GetType() == 0)
+				if (platform->GetLayer() == 1)
 				{
-					if (MainCollision(platform.get(), i) && !m_anim_grounded[i])
+					if (platform->GetType() == 0)
 					{
-						m_anim_grounded[i] = true;
-						break;
+						if (MainCollision(platform.get(), i) && !m_anim_grounded[i])
+						{
+							m_anim_grounded[i] = true;
+							break;
+						}
 					}
-				}
-				else 
-				{
-					if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
+					else
 					{
-						m_anim_grounded[i] = true;
-						break;
+						if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
+						{
+							m_anim_grounded[i] = true;
+							break;
+						}
 					}
 				}
 			}
