@@ -35,6 +35,7 @@ private:
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;
+	Text2D* damage_text;
 	std::unique_ptr<ImageGO2D> platform_side;
 
 	ImageGO2D* player_UI_Boxes;

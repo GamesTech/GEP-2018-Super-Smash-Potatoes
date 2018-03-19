@@ -69,14 +69,24 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	objects.emplace_back(timer_text);
 
 	player_UI_Boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
-	player_UI_Boxes->SetPos(Vector2(640, 620));
+	player_UI_Boxes->SetPos(Vector2(640, 640));
 	player_UI_Boxes->SetRect(1, 1, 723, 180);
 	player_UI_Boxes->SetLayer(0.1f);
 	player_UI_Boxes->CentreOrigin();
+	player_UI_Boxes->SetScale(Vector2(0.75f, 0.75f));
 	player_UI_Boxes->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 0.5f));
 	objects.emplace_back(player_UI_Boxes);
 
+
 	/*add lives, damage taken and kills to boxes*/
+	for (int i = 0; i < no_players; i++)
+	{
+		damage_text = new Text2D("xxx%");
+		damage_text->SetPos(Vector2(375 + (i * 135), 660));
+		damage_text->SetLayer(1.0f);
+		damage_text->CentreOrigin();
+		objects.emplace_back(damage_text);
+	}
 }
 
 void GameScene::update(GameStateData* gsd)
@@ -252,7 +262,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		m_player[i]->setPlayerNo(i);
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
-		temp_player_UI->SetPos(Vector2(330 + (i * 180), 640));
+		temp_player_UI->SetPos(Vector2(415 + (i * 135), 650));
 		temp_player_UI->SetRect(1, 1, 60, 75);
 		temp_player_UI->SetLayer(0.0f);
 		temp_player_UI->CentreOrigin();
