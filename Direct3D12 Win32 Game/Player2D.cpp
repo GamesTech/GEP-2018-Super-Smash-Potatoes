@@ -253,6 +253,9 @@ void Player2D::controller(GameStateData * _GSD)
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
 			m_upwards_punch = true;
+			Punch();
+			m_punch = true;
+			m_timer_punch = 0;
 		}
 	}
 	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
@@ -279,6 +282,17 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	m_coll_state = Collision::COLNONE;
 	AddForce(-m_jumpForce * Vector2::UnitY * m_damage);
 	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
+	m_damage *= 1.1;
+	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	m_hit = true;
+	m_timer_hit = 0;
+}
+
+void Player2D::UpHit(GameStateData * _GSD)
+{
+	m_grounded = false;
+	m_coll_state = Collision::COLNONE;
+	AddForce(-m_jumpForce * Vector2::UnitY * m_damage * 1.1);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_hit = true;

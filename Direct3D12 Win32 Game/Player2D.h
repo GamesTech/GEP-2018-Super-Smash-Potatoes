@@ -46,11 +46,13 @@ public:
 
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool Attack() { return m_attack; };
+	bool UpPuch() { return m_upwards_punch; };
 	void Attack(bool _attack) { m_attack = _attack; };
 
 	void Hit(GameStateData * _GSD, int _dir);
 	float GetDamage() { return m_damage; };
 
+	void UpHit(GameStateData * _GSD);
 	bool GetOrientation();
 
 	void SetLivesRemaining(int lives) { lives_remaining = lives; };

@@ -387,7 +387,11 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
 	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
-	if (m_player[_i]->GetOrientation())
+	if (m_player[_i]->UpPuch())
+	{
+		y1 -= 30;
+	}
+	else if (m_player[_i]->GetOrientation())
 	{
 		x1 += 40;
 		punch_direction = 1;
@@ -410,7 +414,14 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 
 			if (r1 > sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))))
 			{
-				m_player[j]->Hit(_GSD, punch_direction);
+				if (m_player[_i]->UpPuch())
+				{
+					m_player[j]->UpHit(_GSD);
+				}
+				else
+				{
+					m_player[j]->Hit(_GSD, punch_direction);
+				}
 			}
 		}
 	}
