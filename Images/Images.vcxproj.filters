@@ -64,6 +64,7 @@
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="lives.png" />
+    <ImageContentTask Include="Background\blackground_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
