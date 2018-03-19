@@ -96,7 +96,7 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 	if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
 		|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
 	{
-		if (level_selected < (total_levels))
+		if (level_selected < total_levels-1)
 		{
 			new_level = true;
 			level_selected++;

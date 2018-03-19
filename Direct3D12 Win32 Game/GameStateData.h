@@ -24,8 +24,11 @@ struct GameStateData
 
 	static GameState state;
 
+	int player_selected[4];
+
 	//length of time since last frame
 	float m_dt;
+
 	int no_players;
 	int arena_selected;
 
