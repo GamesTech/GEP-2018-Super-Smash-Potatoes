@@ -33,6 +33,7 @@ public:
 	Color GetColour() { return m_colour; }
 	Vector2 GetScale() { return m_scale; }
 	float GetLayer() { return m_layer;  }
+	int GetType() { return m_type; }
 	std::string GetTag() { return tag; }
 	void SetPos(Vector2 _pos) { m_pos = _pos; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
@@ -40,6 +41,7 @@ public:
 	void SetColour(Color _col) { m_colour = _col; }
 	void SetScale(Vector2 _scale) { m_scale = _scale; }
 	void SetLayer(float _layer) { m_layer = _layer;  }
+	void SetType(int _type) { m_type = _type; }
 	void SetRect(float left, float top, float right, float bottom);
 
 
@@ -55,6 +57,7 @@ protected:
 	Vector2 m_center = Vector2::Zero;
 	float m_orientation = 0.0f;
 	float m_layer = 0.0f;
+	int m_type = 0;
 	Color m_colour = Colors::White;
 	Vector2 m_scale = Vector2::One;
 	Vector2 m_min = Vector2::Zero;

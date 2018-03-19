@@ -26,6 +26,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		platform->SetScale(level->getObj(i).scale);
 		platform->SetOri(level->getObj(i).orientation);
 		platform->SetLayer(level->getObj(i).layer);
+		platform->SetType(level->getObj(i).type);
 
 		platform->SetRect(level->getObj(i).sprite_size_min.x, level->getObj(i).sprite_size_min.y, level->getObj(i).sprite_size_max.x, level->getObj(i).sprite_size_max.y);
 		platforms.emplace_back(platform);
@@ -53,10 +54,24 @@ void GameScene::update(GameStateData* gsd)
 	{
 		for (auto& platform : platforms)
 		{
-			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
+			if (platform->GetLayer() == 1)
 			{
-				m_anim_grounded[i] = true;
-				break;
+				if (platform->GetType() == 0)
+				{
+					if (MainCollision(platform.get(), i) && !m_anim_grounded[i])
+					{
+						m_anim_grounded[i] = true;
+						break;
+					}
+				}
+				else 
+				{
+					if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
+					{
+						m_anim_grounded[i] = true;
+						break;
+					}
+				}
 			}
 		}
 		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
@@ -107,7 +122,7 @@ void GameScene::ReadInput(GameStateData* gsd)
 	}
 }
 
-bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
+bool GameScene::MainCollision(GameObject2D *_obj, int _i)
 {
 	GameObject2D* object = _obj;
 
@@ -189,6 +204,59 @@ bool GameScene::CheckCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
+		}
+	}
+	else
+	{
+		m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+		return false;
+	}
+}
+
+
+bool GameScene::OtherCollision(GameObject2D *_obj, int _i)
+{
+	GameObject2D* object = _obj;
+
+	float width = 0.5 * (m_player[_i]->Width() + object->Width());
+	float height = 0.5 * (m_player[_i]->Height() + object->Height());
+	float distance_x = m_player[_i]->CenterX() - object->CenterX();
+	float distance_y = m_player[_i]->CenterY() - object->CenterY();
+
+	if (abs(distance_x) <= width && abs(distance_y) <= height)
+	{
+		// collision occured
+
+		float collision_width = width * distance_y;
+		float collision_height = height * distance_x;
+
+		if (collision_width < collision_height)
+		{
+			if (collision_width < -collision_height)
+			{
+				if (m_player[_i]->GetCurrVel().y >= 0)
+				{
+					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
+					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
+					return true;
+					// at the top 
+				}
+				else
+				{
+					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+					return false;
+				}
+			}
+			else
+			{
+				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+				return false;
+			}
+		}
+		else
+		{
+			m_player[_i]->SetCollState(m_player[_i]->COLNONE);
+			return false;
 		}
 	}
 	else

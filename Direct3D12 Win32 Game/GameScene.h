@@ -18,7 +18,8 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(RenderData* m_RD, int no_players);
 	void CheckAttackPos(GameStateData * _GSD, int _i);
-	bool CheckCollision(GameObject2D * _obj, int _i);
+	bool MainCollision(GameObject2D * _obj, int _i);
+	bool OtherCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
 
