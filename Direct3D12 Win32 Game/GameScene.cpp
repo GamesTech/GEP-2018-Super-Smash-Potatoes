@@ -81,11 +81,12 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	/*add lives, damage taken and kills to boxes*/
 	for (int i = 0; i < no_players; i++)
 	{
-		damage_text = new Text2D("xxx%");
-		damage_text->SetPos(Vector2(375 + (i * 135), 660));
-		damage_text->SetLayer(1.0f);
-		damage_text->CentreOrigin();
-		objects.emplace_back(damage_text);
+		damage_text[i] = new Text2D("xxx%");
+		damage_text[i]->SetPos(Vector2(385 + (i * 135), 660));
+		damage_text[i]->SetLayer(1.0f);
+		damage_text[i]->CentreOrigin();
+		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
+		objects.emplace_back(damage_text[i]);
 	}
 }
 
@@ -112,15 +113,15 @@ void GameScene::update(GameStateData* gsd)
 		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
 		m_player[i]->Tick(gsd, i);
 
+		m_anim_grounded[i] = false;
+
+		damage_text[i]->SetText(std::to_string(m_player[i]->GetDamage()) + "%");
+
 		if (m_player[i]->Attack())
 		{
 			CheckAttackPos(gsd, i);
 		}
-	}
-	for (int i = 0; i < no_players; i++)
-	{
-		m_anim_grounded[i] = false;
-	}
+	}	
 }
 
 void GameScene::render(RenderData* m_RD,

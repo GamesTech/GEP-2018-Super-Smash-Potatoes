@@ -46,6 +46,7 @@ public:
 	void Attack(bool _attack) { m_attack = _attack; };
 	void Hit(GameStateData * _GSD, int _dir);
 	bool GetOrientation();
+	float GetDamage() { return m_damage; };
 
 protected:
 	void ProcessCollision();
