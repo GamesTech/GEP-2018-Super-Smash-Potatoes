@@ -708,6 +708,8 @@ void Game::checkIfNewScene()
 			//gameover man, GAMEOVER
 			break;
 		}
+
+		m_RD->m_resourceCount = 10;
 		scene->init(m_RD, m_GSD);
 		prevScene = m_GSD->gameState;
 	}

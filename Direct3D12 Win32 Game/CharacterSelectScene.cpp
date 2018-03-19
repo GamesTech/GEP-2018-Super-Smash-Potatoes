@@ -113,6 +113,10 @@ void CharacterSelectScene::update(GameStateData * gsd)
 	//all players ready, next scene
 	if (no_players == players_ready)
 	{
+		for (int i = 0; i < no_players; i++)
+		{
+			gsd->player_selected[i] = selection_player[i];
+		}
 		gsd->gameState = ARENASELECT;
 	}
 }

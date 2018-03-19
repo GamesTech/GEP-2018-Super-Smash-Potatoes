@@ -41,10 +41,13 @@
     <ImageContentTask Include="Scenes\platform.png" />
     <ImageContentTask Include="Scenes\platform_large.png" />
     <ImageContentTask Include="PlayerPreviewBoxes.png" />
-    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\Mario_UI_Sprite.png">
+    <ImageContentTask Include="Arrow.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Arrow.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
