@@ -22,6 +22,7 @@ public:
 	void SetBoundingBoxes();
 	void CentreOrigin();
 	void BottomOrigin();
+	void SetOrientation(float new_orientation);
 	
 
 protected:

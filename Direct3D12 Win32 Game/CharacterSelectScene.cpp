@@ -21,6 +21,26 @@ CharacterSelectScene::~CharacterSelectScene()
 			object = nullptr;
 		}
 	}
+	for (auto sprite : grid_sprites)
+	{
+		if (sprite)
+		{
+			delete sprite;
+			sprite = nullptr;
+		}
+	}
+	for (auto player_prev : player_previews)
+	{
+		if (player_prev)
+		{
+			delete player_prev;
+			player_prev = nullptr;
+		}
+	}
+
+	sprite_names.clear();
+	grid_sprites.clear();
+	player_previews.clear();
 	game_objects.clear();
 }
 
@@ -93,6 +113,10 @@ void CharacterSelectScene::update(GameStateData * gsd)
 	//all players ready, next scene
 	if (no_players == players_ready)
 	{
+		for (int i = 0; i < no_players; i++)
+		{
+			gsd->player_selected[i] = selection_player[i];
+		}
 		gsd->gameState = ARENASELECT;
 	}
 }
