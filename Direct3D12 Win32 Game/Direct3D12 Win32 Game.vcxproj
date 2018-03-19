@@ -177,6 +177,7 @@
     <ClInclude Include="CharacterSelectScene.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="CharacterSelectScene.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameStateData.cpp" />
     <ClCompile Include="LevelFile.cpp" />

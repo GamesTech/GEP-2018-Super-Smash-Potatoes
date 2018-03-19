@@ -82,7 +82,7 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	for (int i = 0; i < no_players; i++)
 	{
 		damage_text[i] = new Text2D("xxx%");
-		damage_text[i]->SetPos(Vector2(385 + (i * 135), 660));
+		damage_text[i]->SetPos(Vector2(385 + (i * 135), 655));
 		damage_text[i]->SetLayer(1.0f);
 		damage_text[i]->CentreOrigin();
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
@@ -95,33 +95,47 @@ void GameScene::update(GameStateData* gsd)
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
 
-	if (time_remaining <= 0)
-	{
-		//gsd->state = GAMEOVER;
-	}
-
+	int players_dead = 0;
 	for (int i = 0; i < no_players; i++)
 	{
-		for (auto& platform : platforms)
+		if (m_player[i]->getDead() == false)
 		{
-			if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
+			for (auto& platform : platforms)
 			{
-				m_anim_grounded[i] = true;
-				break;
+				if (CheckCollision(platform.get(), i) && !m_anim_grounded[i])
+				{
+					m_anim_grounded[i] = true;
+					break;
+				}
+			}
+			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+			m_player[i]->Tick(gsd, i);
+
+			m_anim_grounded[i] = false;
+			int player_damage = (m_player[i]->GetDamage() * 100) - 100;
+
+			damage_text[i]->SetText(std::to_string(player_damage) + "%");
+
+			for (int j = 0; j < max_lives - (m_player[i]->GetLivesRemaining()); j++)
+			{
+				lives_button_sprite[(i * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
+			}
+
+
+			if (m_player[i]->Attack())
+			{
+				CheckAttackPos(gsd, i);
 			}
 		}
-		m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-		m_player[i]->Tick(gsd, i);
-
-		m_anim_grounded[i] = false;
-
-		damage_text[i]->SetText(std::to_string(m_player[i]->GetDamage()) + "%");
-
-		if (m_player[i]->Attack())
+		else
 		{
-			CheckAttackPos(gsd, i);
+			players_dead++;
 		}
-	}	
+	}
+	if (time_remaining <= 0 || (no_players - 1) <= players_dead)
+	{
+		gsd->gameState = GAMEOVER;
+	}
 }
 
 void GameScene::render(RenderData* m_RD,
@@ -263,11 +277,23 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		m_player[i]->setPlayerNo(i);
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
-		temp_player_UI->SetPos(Vector2(415 + (i * 135), 650));
+		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
 		temp_player_UI->SetRect(1, 1, 60, 75);
 		temp_player_UI->SetLayer(0.0f);
 		temp_player_UI->CentreOrigin();
 		objects.emplace_back(temp_player_UI);
+
+		max_lives = m_player[0]->GetLivesRemaining();
+		for (int j = 0; j < max_lives; j++)
+		{
+			int lives_no = (i * max_lives) + j;
+			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives");
+			lives_button_sprite[lives_no]->SetPos(Vector2(480 + (i * 135), 595 + (j * 30)));
+			lives_button_sprite[lives_no]->SetRect(1, 1, 20, 20);
+			lives_button_sprite[lives_no]->SetLayer(0.0f);
+			lives_button_sprite[lives_no]->CentreOrigin();
+			objects.emplace_back(lives_button_sprite[lives_no]);
+		}
 	}	
 }
 

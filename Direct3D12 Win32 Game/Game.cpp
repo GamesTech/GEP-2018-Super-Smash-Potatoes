@@ -14,6 +14,7 @@
 #include "ArenaSelectScene.h"
 #include "SettingsScene.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 
 extern void ExitGame();
 
@@ -704,8 +705,8 @@ void Game::checkIfNewScene()
 			scene = std::make_unique<GameScene>();
 			break;
 		case GAMEOVER:
-			//scene.reset();
-			//gameover man, GAMEOVER
+			scene.reset();
+			scene = std::make_unique<GameOverScene>();
 			break;
 		}
 
