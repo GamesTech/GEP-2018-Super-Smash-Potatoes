@@ -48,6 +48,22 @@
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="lives.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

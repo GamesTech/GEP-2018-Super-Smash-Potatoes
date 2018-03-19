@@ -104,7 +104,7 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 	}
 
 	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 	{
 		gsd->arena_selected = level_selected;
 		gsd->gameState = INGAME;

@@ -25,6 +25,7 @@ private:
 	int no_players = 0;
 
 	float time_remaining = 0;
+	int max_lives = 0;
 
 	std::unique_ptr<Player2D> m_player[4];
 	std::unique_ptr <LevelFile> level;
@@ -36,6 +37,8 @@ private:
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;
+	Text2D* damage_text[4];
+	ImageGO2D* lives_button_sprite[12];
 	std::unique_ptr<ImageGO2D> platform_side;
 
 	ImageGO2D* player_UI_Boxes;
