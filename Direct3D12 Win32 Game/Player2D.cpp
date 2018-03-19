@@ -16,74 +16,17 @@ Player2D::~Player2D()
 
 void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 {
-	//Push the guy around in the directions for the key presses
-	//if (m_coll_state == Collision::COLTOP || m_coll_state == Collision::COLBOTTOM)
-	//{
-	//	m_y_coll = true;
-	//}
-	//else
-	//{
-	//	m_y_coll = false;
-	//}
-	//if (m_coll_state == Collision::COLLEFT || m_coll_state == Collision::COLRIGHT)
-	//{
-	//	m_x_coll = true;
-	//}
-	//else
-	//{
-	//	m_x_coll = false;
-	//}
-
 	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
 	{
 		m_ledge_jump = false;
 	}
-
-
-
 	SetBoundingBoxes();
-	//if (_test == 0)
-	//{
+	if (!m_hit)
+	{
 	controller(_GSD);
-	//}
+	}
 	ProcessCollision();
-
-	if(m_punch)
-	{
-		action_jump = PUNCH;
-	}
-	else
-	{
-		if (m_anim_grounded)
-		{
-			action_jump = GROUND;
-		}
-		else
-		{
-			if (m_vel.y < 300)
-			{
-				if (m_jumping)
-				{
-					action_jump = JUMP;
-				}
-				else if (m_upwards_punch)
-				{
-					action_jump = UPWARDPUNCH;
-				}
-			}
-			else if (m_vel.y > 300)
-			{
-				action_jump = FALL;
-				m_upwards_punch = false;
-			}
-
-		}
-	}
-
-	Grabbing();
-	PunchTimer(_GSD);
-	AnimationTick(_GSD);
-
+	AnimationChecks(_GSD);
 	AddGravity(m_grounded);
 	//GEP:: Lets go up the inheritence and share our functionality
 	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
@@ -95,9 +38,68 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	deathZone();
 }
 
+void Player2D::AnimationChecks(GameStateData * _GSD)
+{
+	if (m_punch)
+	{
+		action_jump = PUNCH;
+	}
+	else
+	{
+		if (m_anim_grounded)
+		{
+			action_jump = GROUND;
+		}
+		else
+		{
+			if (m_hit)
+			{
+				action_jump = HIT;
+			}
+			else
+			{
+				if (m_vel.y < 300)
+				{
+					if (m_jumping)
+					{
+						action_jump = JUMP;
+					}
+					else if (m_upwards_punch)
+					{
+						action_jump = UPWARDPUNCH;
+					}
+				}
+				else if (m_vel.y > 300)
+				{
+					action_jump = FALL;
+					m_upwards_punch = false;
+				}
+			}
+
+		}
+	}
+
+	HitTimer(_GSD);
+	Grabbing();
+	PunchTimer(_GSD);
+	AnimationTick(_GSD);
+}
+
+void Player2D::HitTimer(GameStateData * _GSD)
+{
+	if (m_timer_hit >= 0.8)
+	{
+		m_hit = false;
+	}
+	else
+	{
+		m_timer_hit += _GSD->m_dt;
+	}
+}
+
 void Player2D::PunchTimer(GameStateData * _GSD)
 {
-	if (m_timer_punch >= 0.6)
+	if (m_timer_punch >= 0.3)
 	{
 		if (m_punch)
 		{
@@ -155,6 +157,7 @@ void Player2D::Grabbing()
 			direction = RIGHT;
 		}
 		m_grabing_side = true;
+		m_upwards_punch = false;
 		//m_grounded = true;
 		action_movement = GRAB;
 	}
@@ -270,6 +273,8 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	m_hit = true;
+	m_timer_hit = 0;
 }
 
 

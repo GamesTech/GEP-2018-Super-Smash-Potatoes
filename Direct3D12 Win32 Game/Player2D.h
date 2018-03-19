@@ -49,6 +49,8 @@ public:
 
 protected:
 	void ProcessCollision();
+	void AnimationChecks(GameStateData * _GSD);
+	void HitTimer(GameStateData * _GSD);
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
 	void deathZone();
@@ -73,8 +75,10 @@ protected:
 	bool m_y_coll = false;
 	bool m_x_coll = false;
 	bool m_attack = false;
+	bool m_hit = false;
 
 	float m_timer_punch = 4;
+	float m_timer_hit = 4;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;
