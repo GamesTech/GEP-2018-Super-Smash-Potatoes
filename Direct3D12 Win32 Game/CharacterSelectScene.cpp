@@ -143,8 +143,6 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 	}
 
 	m_RD->m_spriteBatch->End();
-
-	//m_RD->m_resourceCount--;
 }
 
 
