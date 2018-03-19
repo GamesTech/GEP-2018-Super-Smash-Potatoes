@@ -26,23 +26,23 @@ ArenaSelectScene::~ArenaSelectScene()
 void ArenaSelectScene::init(RenderData * m_RD, GameStateData * gsd)
 {
 	title_text = new Text2D("Arena Select!");
-	title_text->SetLayer(1.0f);
+	title_text->SetLayer(0.5f);
 	game_objects.push_back(title_text);
 	
 	level_name_text = new Text2D("Level X");
-	level_name_text->SetLayer(1.0f);
+	level_name_text->SetLayer(0.5f);
 	level_name_text->SetPos(Vector2(500, 50));
 	game_objects.push_back(level_name_text);
 
 	left_arrow = new ImageGO2D(m_RD, "Arrow");
-	left_arrow->SetLayer(1.0f);
+	left_arrow->SetLayer(0.5f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
 	game_objects.push_back(left_arrow);
 
 	right_arrow = new ImageGO2D(m_RD, "Arrow");
-	right_arrow->SetLayer(1.0f);
+	right_arrow->SetLayer(0.5f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
 	right_arrow->CentreOrigin();
