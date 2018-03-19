@@ -178,7 +178,11 @@
     <ImageContentTask Include="PlayerPreviewBoxes.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\Mario_UI_Sprite.png" />
+    <ImageContentTask Include="Arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

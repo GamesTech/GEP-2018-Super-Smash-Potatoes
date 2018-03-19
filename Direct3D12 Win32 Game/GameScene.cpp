@@ -7,14 +7,28 @@
 
 GameScene::~GameScene()
 {	
+	for (auto object : game_objects)
+	{
+		if (object)
+		{
+			delete object;
+			object = nullptr;
+		}
+	}
+	game_objects.clear();
+
 	platforms.shrink_to_fit();
 	objects.shrink_to_fit();
 }
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
+	time_remaining = 60.0f;
+
 	level = std::make_unique<LevelFile>();
-	level->read("test2", ".lvl");
+	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
+
+	loadCharactersFile("PlayerSprites.txt");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
@@ -33,23 +47,49 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 
 	objects.emplace_back(new Text2D("Super Trash Potatoes"));
+
 	for (auto& object : objects)
 	{
 		object->SetLayer(1.0f);
 	}
 
 	no_players = gsd->no_players;
-	if (no_players == 0 || no_players == 1)
+	if (no_players == 0)
 	{
 		//for playtesting
-		no_players = 2;
+		no_players = 1;
+
 	}
 
-	spawnPlayers(m_RD, no_players);
+	spawnPlayers(gsd, m_RD, no_players);
+
+	//UI
+	timer_text = new Text2D("Time Remaining: xxxs");
+	timer_text->SetPos(Vector2(750, 10));
+	timer_text->SetLayer(1.0f);
+	objects.emplace_back(timer_text);
+
+	player_UI_Boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
+	player_UI_Boxes->SetPos(Vector2(640, 620));
+	player_UI_Boxes->SetRect(1, 1, 723, 180);
+	player_UI_Boxes->SetLayer(0.1f);
+	player_UI_Boxes->CentreOrigin();
+	player_UI_Boxes->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 0.5f));
+	objects.emplace_back(player_UI_Boxes);
+
+	/*add lives, damage taken and kills to boxes*/
 }
 
 void GameScene::update(GameStateData* gsd)
 {
+	time_remaining = time_remaining - gsd->m_dt;
+	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
+
+	if (time_remaining <= 0)
+	{
+		//gsd->state = GAMEOVER;
+	}
+
 	for (int i = 0; i < no_players; i++)
 	{
 		for (auto& platform : platforms)
@@ -266,19 +306,42 @@ bool GameScene::OtherCollision(GameObject2D *_obj, int _i)
 	}
 }
 
-void GameScene::spawnPlayers(RenderData* m_RD, int no_players)
+void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = "kirby_sprite_batch_" + std::to_string(i);
+		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(1.0f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);
-		m_player[i]->LoadSprites("KirbySpriteBatch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
+
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
+		temp_player_UI->SetPos(Vector2(330 + (i * 180), 640));
+		temp_player_UI->SetRect(1, 1, 60, 75);
+		temp_player_UI->SetLayer(0.0f);
+		temp_player_UI->CentreOrigin();
+		objects.emplace_back(temp_player_UI);
+	}	
+}
+
+void GameScene::loadCharactersFile(string _filename)
+{
+	std::ifstream character_sprites_loading;
+	character_sprites_loading.open(_filename);
+	if (character_sprites_loading.is_open())
+	{
+		while (!character_sprites_loading.eof())
+		{
+			std::string temp_string;
+			character_sprites_loading >> temp_string;
+			sprite_names.push_back(temp_string);
+		}
 	}
+	character_sprites_loading.close();
 }
 
 void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
