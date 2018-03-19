@@ -27,6 +27,7 @@ struct GameStateData
 	//length of time since last frame
 	float m_dt;
 	int no_players;
+	int arena_selected;
 
 	GameState gameState;
 };

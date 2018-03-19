@@ -74,3 +74,8 @@ void ImageGO2D::BottomOrigin()
 	m_origin.x = float(m_size.x / 2);
 	m_origin.y = float(m_size.y);
 }
+
+void ImageGO2D::SetOrientation(float new_orientation)
+{
+	m_orientation = m_orientation + new_orientation;
+}

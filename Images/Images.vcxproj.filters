@@ -44,6 +44,7 @@
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\Mario_UI_Sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

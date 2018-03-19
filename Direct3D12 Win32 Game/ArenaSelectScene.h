@@ -17,6 +17,10 @@ public:
 
 private:
 	Text2D* title_text;
+	Text2D* level_name_text;
+
+	ImageGO2D* left_arrow;
+	ImageGO2D* right_arrow;
 
 	std::unique_ptr <LevelFile> level;
 
@@ -28,4 +32,5 @@ private:
 
 	bool new_level = false;
 	int level_selected = 0;
+	int total_levels = 0;
 };

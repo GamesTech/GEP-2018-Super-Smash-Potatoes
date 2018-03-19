@@ -14,7 +14,9 @@ GameScene::~GameScene()
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
 	level = std::make_unique<LevelFile>();
-	level->read("test2", ".lvl");
+	string level_string = "level";
+	string debugTest = level_string + std::to_string(gsd->arena_selected);
+	level->read(level_string + std::to_string(gsd->arena_selected), ".lvl");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
