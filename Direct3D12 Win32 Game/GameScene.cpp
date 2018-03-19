@@ -76,12 +76,18 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	player_UI_Boxes->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 0.5f));
 	objects.emplace_back(player_UI_Boxes);
 
+	/*add lives, damage taken and kills to boxes*/
 }
 
 void GameScene::update(GameStateData* gsd)
 {
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
+
+	if (time_remaining <= 0)
+	{
+		//gsd->state = GAMEOVER;
+	}
 
 	for (int i = 0; i < no_players; i++)
 	{
