@@ -23,7 +23,7 @@ GameScene::~GameScene()
 
 void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 {
-	time_remaining = 60.0f;
+	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();
 	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
@@ -103,7 +103,7 @@ void GameScene::update(GameStateData* gsd)
 		{
 			for (auto& platform : platforms)
 			{
-				if (platform->GetLayer() == 1)
+				if (platform->GetLayer() == 0.5)
 				{
 					if (platform->GetType() == 0)
 					{

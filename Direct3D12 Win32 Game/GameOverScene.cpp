@@ -25,7 +25,7 @@ void GameOverScene::init(RenderData * m_RD, GameStateData * gsd)
 {
 	game_over_text = new Text2D("Game Ogre");
 	game_over_text->SetLayer(1.0f);
-	game_over_text->SetPos(Vector2(0, 0));
+	game_over_text->SetPos(Vector2(500, 360));
 	game_over_text->CentreOrigin();
 	game_objects.push_back(game_over_text);
 }

@@ -23,7 +23,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	SetBoundingBoxes();
 	if (!m_hit)
 	{
-	controller(_GSD);
+		controller(_GSD);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -67,6 +67,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 					else if (m_upwards_punch)
 					{
 						action_jump = UPWARDPUNCH;
+						m_attack = true;
 					}
 				}
 				else if (m_vel.y > 300)
@@ -119,7 +120,7 @@ void Player2D::deathZone()
 	{
 		respawn();
 	}
-	if (m_pos.y < 0.0f - 200)
+	if (m_pos.y < 0.0f - 400)
 	{
 		respawn();
 	}
@@ -253,9 +254,6 @@ void Player2D::controller(GameStateData * _GSD)
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
 			m_upwards_punch = true;
-			Punch();
-			m_punch = true;
-			m_timer_punch = 0;
 		}
 	}
 	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 

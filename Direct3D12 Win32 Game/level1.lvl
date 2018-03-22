@@ -11,7 +11,7 @@ blackground_1
 }
 {
 platform
-200, 500
+340, 250
 1, 1
 1, 1
 0
@@ -22,7 +22,7 @@ platform
 }
 {
 platform_large
-300, 100
+240, 500
 1, 1
 1, 1
 0
