@@ -53,6 +53,7 @@ public:
 	float GetDamage() { return m_damage; };
 
 	void UpHit(GameStateData * _GSD);
+	void Block(GameStateData * _GSD, int _dir);
 	bool GetOrientation();
 
 	void SetLivesRemaining(int lives) { lives_remaining = lives; };

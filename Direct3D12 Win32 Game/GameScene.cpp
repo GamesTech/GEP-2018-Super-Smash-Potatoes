@@ -54,10 +54,10 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 
 	no_players = gsd->no_players;
-	if (no_players == 0)
+	if (no_players == 1)
 	{
 		//for playtesting
-		no_players = 1;
+		no_players = 2;
 
 	}
 
@@ -97,6 +97,8 @@ void GameScene::update(GameStateData* gsd)
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
 
 	int players_dead = 0;
+
+	// movement loop
 	for (int i = 0; i < no_players; i++)
 	{
 		if (m_player[i]->getDead() == false)
@@ -135,19 +137,23 @@ void GameScene::update(GameStateData* gsd)
 			{
 				lives_button_sprite[(i * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
 			}
-
-
-			if (m_player[i]->Attack())
-			{
-				CheckAttackPos(gsd, i);
-			}
 		}
 		else
 		{
 			players_dead++;
 		}
 	}
-	if (time_remaining <= 0 || (no_players - 1) <= players_dead)
+
+	// attack loop
+	for (int i = 0; i < no_players; i++)
+	{
+		if (m_player[i]->Attack())
+		{
+			CheckAttackPos(gsd, i);
+		}
+	}
+
+	if (time_remaining <= 0 || (no_players) <= players_dead)
 	{
 		gsd->gameState = GAMEOVER;
 	}
@@ -335,16 +341,16 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
+		std::string str_player_no = "ghost_kirby_sprite_batch_0"/*sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i)*/;
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);
-		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
+		m_player[i]->LoadSprites(/*sprite_names[gsd->player_selected[i]] +*/"ghost_kirby_sprite_batch.txt");
 		m_player[i]->setPlayerNo(i);
 
-		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, "ghost_kirby_sprite");
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
 		temp_player_UI->SetRect(1, 1, 60, 75);
 		temp_player_UI->SetLayer(0.0f);
@@ -387,6 +393,7 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
 	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
+	float block = false;
 	if (m_player[_i]->UpPuch())
 	{
 		y1 -= 30;
@@ -402,25 +409,55 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 		punch_direction = -1;
 	}
 
+	//block
 	for (int j = 0; j < no_players; j++)
 	{
 		if (_i != j)
 		{
-			float r2 = m_player[j]->Width();
-			//float distance_1 = collision_width - player_width;
-			//float distance_2 = collision_width + player_width;
-			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-
-			if (r1 > sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))))
+			if (m_player[j]->Attack() && punch_direction != m_player[j]->GetOrientation())
 			{
-				if (m_player[_i]->UpPuch())
+				float r2 = m_player[j]->Width();
+				//float distance_1 = collision_width - player_width;
+				//float distance_2 = collision_width + player_width;
+				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+
+				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 				{
-					m_player[j]->UpHit(_GSD);
+					m_player[j]->Block(_GSD, punch_direction);
+					m_player[j]->Attack(false);
+					block = true;
 				}
-				else
+			}
+		}
+	}
+	if (block)
+	{
+		m_player[_i]->Block(_GSD, -punch_direction);
+	}
+	else
+	{
+		// standard punch
+		for (int j = 0; j < no_players; j++)
+		{
+			if (_i != j)
+			{
+				float r2 = m_player[j]->Width();
+				//float distance_1 = collision_width - player_width;
+				//float distance_2 = collision_width + player_width;
+				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+
+				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 				{
-					m_player[j]->Hit(_GSD, punch_direction);
+					if (m_player[_i]->UpPuch())
+					{
+						m_player[j]->UpHit(_GSD);
+					}
+					else
+					{
+						m_player[j]->Hit(_GSD, punch_direction);
+					}
 				}
 			}
 		}
