@@ -22,7 +22,7 @@
     <RootNamespace>Direct3D12_Win32_Game</RootNamespace>
     <ProjectGuid>{48d1b087-0658-4dcc-a845-655543ce48a4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -171,10 +171,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation2D.h" />
+    <ClInclude Include="ArenaSelectScene.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterSelectScene.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
@@ -204,10 +207,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
+    <ClCompile Include="ArenaSelectScene.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterSelectScene.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameStateData.cpp" />
     <ClCompile Include="LevelFile.cpp" />
@@ -252,6 +258,9 @@
     <ProjectReference Include="..\DirectXTK12-master\DirectXTK_Desktop_2017_Win10.vcxproj">
       <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

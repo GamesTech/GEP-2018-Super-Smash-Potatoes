@@ -37,18 +37,33 @@ public:
 	void SetLimit(Vector2 _lim) { m_limit = _lim; }
 	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
+
 	Vector2 GetLimit() { return m_limit; };
 	Vector2 GetCurrVel() { return m_vel; };
+
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	Collision GetCollState() { return m_coll_state; };
+
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool Attack() { return m_attack; };
+	bool UpPuch() { return m_upwards_punch; };
 	void Attack(bool _attack) { m_attack = _attack; };
+
 	void Hit(GameStateData * _GSD, int _dir);
+	float GetDamage() { return m_damage; };
+
+	void UpHit(GameStateData * _GSD);
 	bool GetOrientation();
+
+	void SetLivesRemaining(int lives) { lives_remaining = lives; };
+	int GetLivesRemaining() { return lives_remaining; };
+
+	bool getDead() { return m_dead; };
 
 protected:
 	void ProcessCollision();
+	void AnimationChecks(GameStateData * _GSD);
+	void HitTimer(GameStateData * _GSD);
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
 	void deathZone();
@@ -60,6 +75,7 @@ protected:
 	float m_damage = 1;
 	//float m_gravity = 980;
 	int player_no = 0;
+	int lives_remaining = 3;
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
@@ -73,8 +89,11 @@ protected:
 	bool m_y_coll = false;
 	bool m_x_coll = false;
 	bool m_attack = false;
+	bool m_hit = false;
+	bool m_dead = false;
 
 	float m_timer_punch = 4;
+	float m_timer_hit = 4;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;

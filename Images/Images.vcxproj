@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{0BBB1E26-9C74-4C06-A541-9F396B0248EF}</ProjectGuid>
     <RootNamespace>Images</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -146,9 +146,6 @@
     <ImageContentTask Include="Buttons.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="platform.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageContentTask Include="gens2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +158,6 @@
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="platform_side.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +168,34 @@
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Scenes\platform.png" />
+    <ImageContentTask Include="Scenes\platform_large.png" />
+    <ImageContentTask Include="Scenes\platform_side.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="PlayerPreviewBoxes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="lives.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Background\blackground_1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

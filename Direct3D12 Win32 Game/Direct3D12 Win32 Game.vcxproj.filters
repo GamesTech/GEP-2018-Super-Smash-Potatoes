@@ -139,7 +139,14 @@
     <ClInclude Include="Animation2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LevelFile.h">
+    <ClInclude Include="LevelFile.h" />
+    <ClInclude Include="ArenaSelectScene.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectScene.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -225,9 +232,14 @@
     <ClCompile Include="SettingsScene.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="LevelFile.cpp">
+    <ClCompile Include="LevelFile.cpp" />
+    <ClCompile Include="ArenaSelectScene.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterSelectScene.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -247,5 +259,8 @@
     <Manifest Include="settings.manifest">
       <Filter>Assets</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels.txt" />
   </ItemGroup>
 </Project>

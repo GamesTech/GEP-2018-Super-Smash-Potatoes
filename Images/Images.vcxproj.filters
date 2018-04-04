@@ -9,7 +9,6 @@
     <ImageContentTask Include="Quit_Button.png" />
     <ImageContentTask Include="Buttons.png" />
     <ImageContentTask Include="Main_Menu_Button.png" />
-    <ImageContentTask Include="platform.png" />
     <ImageContentTask Include="gens2.png" />
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png">
       <Filter>Character Sprites</Filter>
@@ -26,7 +25,6 @@
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="platform_side.png" />
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
@@ -39,6 +37,34 @@
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_side.png" />
+    <ImageContentTask Include="Scenes\platform.png" />
+    <ImageContentTask Include="Scenes\platform_large.png" />
+    <ImageContentTask Include="PlayerPreviewBoxes.png" />
+    <ImageContentTask Include="Arrow.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="lives.png" />
+    <ImageContentTask Include="Background\blackground_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
