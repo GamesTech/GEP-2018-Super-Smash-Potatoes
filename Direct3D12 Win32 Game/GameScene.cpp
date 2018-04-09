@@ -54,12 +54,12 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 
 	no_players = gsd->no_players;
-	if (no_players == 1)
-	{
-		//for playtesting
-		no_players = 2;
+	//if (no_players == 1)
+	//{
+	//	//for playtesting
+	//	no_players = 2;
 
-	}
+	//}
 
 	spawnPlayers(gsd, m_RD, no_players);
 
@@ -147,13 +147,16 @@ void GameScene::update(GameStateData* gsd)
 	// attack loop
 	for (int i = 0; i < no_players; i++)
 	{
-		if (m_player[i]->Attack())
+		if (m_player[i]->getDead() == false)
 		{
-			CheckAttackPos(gsd, i);
+			if (m_player[i]->Attack())
+			{
+				CheckAttackPos(gsd, i);
+			}
 		}
 	}
 
-	if (time_remaining <= 0 || (no_players) <= players_dead)
+	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		gsd->gameState = GAMEOVER;
 	}

@@ -65,6 +65,7 @@
     </ImageContentTask>
     <ImageContentTask Include="lives.png" />
     <ImageContentTask Include="Background\blackground_1.png" />
+    <ImageContentTask Include="Background\background_2.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
