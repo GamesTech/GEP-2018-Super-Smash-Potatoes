@@ -297,6 +297,17 @@ void Player2D::UpHit(GameStateData * _GSD)
 	m_timer_hit = 0;
 }
 
+void Player2D::Block(GameStateData * _GSD, int _dir)
+{
+	m_grounded = false;
+	m_coll_state = Collision::COLNONE;
+	AddForce(25000 * Vector2::UnitX * _dir);
+	//m_damage *= 1.1;
+	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	m_hit = true;
+	m_timer_hit = 0;
+}
+
 
 void Player2D::ProcessCollision()
 {
