@@ -7,7 +7,7 @@ public:
 	CharacterSelectScene();
 	~CharacterSelectScene();
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd) override;
+	void virtual init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
 	void virtual update(GameStateData* gsd) override;
 	void virtual render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;

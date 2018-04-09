@@ -19,6 +19,8 @@ public:
 	Player2D(RenderData* _RD, string _filename);
 	virtual ~Player2D();
 
+	//void init(AudioManager* am);
+
 	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
@@ -102,5 +104,6 @@ protected:
 	Collision m_coll_state = COLNONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
+	//AudioManager* audio_manager = nullptr;
 };
 

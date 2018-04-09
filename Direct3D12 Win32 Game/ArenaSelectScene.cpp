@@ -23,7 +23,7 @@ ArenaSelectScene::~ArenaSelectScene()
 	game_objects.clear();
 }
 
-void ArenaSelectScene::init(RenderData * m_RD, GameStateData * gsd)
+void ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	title_text = new Text2D("Arena Select!");
 	title_text->SetLayer(0.5f);

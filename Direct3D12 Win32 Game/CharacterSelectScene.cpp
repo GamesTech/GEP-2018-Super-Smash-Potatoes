@@ -45,7 +45,7 @@ CharacterSelectScene::~CharacterSelectScene()
 }
 
 
-void CharacterSelectScene::init(RenderData * m_RD, GameStateData * gsd)
+void CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	no_players = gsd->no_players;
 	loadCharactersFile("PlayerSprites.txt");

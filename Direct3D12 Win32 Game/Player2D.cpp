@@ -9,10 +9,14 @@ Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
 	//SetMass(100);
 }
 
-
 Player2D::~Player2D()
 {
 }
+
+//void Player2D::init(AudioManager * am)
+//{
+//	audio_manager = am;
+//}
 
 void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 {
@@ -181,6 +185,7 @@ void Player2D::respawn()
 	{
 		m_dead = true;
 	}
+	//audio_manager->playSound(EXPLOSION);
 }
 
 void Player2D::controller(GameStateData * _GSD)
@@ -284,6 +289,7 @@ void Player2D::Hit(GameStateData * _GSD, int _dir)
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_hit = true;
 	m_timer_hit = 0;
+	//audio_manager->playSound(SLAPSOUND);
 }
 
 void Player2D::UpHit(GameStateData * _GSD)
@@ -295,6 +301,7 @@ void Player2D::UpHit(GameStateData * _GSD)
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_hit = true;
 	m_timer_hit = 0;
+	//audio_manager->playSound(SLAPSOUND);
 }
 
 void Player2D::Block(GameStateData * _GSD, int _dir)

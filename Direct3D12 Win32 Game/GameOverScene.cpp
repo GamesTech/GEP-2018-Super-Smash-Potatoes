@@ -21,7 +21,7 @@ GameOverScene::~GameOverScene()
 	game_objects.clear();
 }
 
-void GameOverScene::init(RenderData * m_RD, GameStateData * gsd)
+void GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	game_over_text = new Text2D("Game Ogre");
 	game_over_text->SetLayer(1.0f);

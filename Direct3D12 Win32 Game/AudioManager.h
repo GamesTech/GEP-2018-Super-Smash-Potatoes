@@ -2,6 +2,18 @@
 #include "Audio.h"
 #include <vector>
 
+enum Track
+{
+	EXPLOSION,
+	NIGHTAMBIENCE,
+	TOBYSOUNDTRACK,
+	TOBYSOUNDTRACK2,
+	TOBYSOUNDTRACK3,
+	TOBYMENUCLICK1,
+	QUESTCOMPLETE,
+	SLAPSOUND
+};
+
 class AudioManager
 {
 public:
@@ -11,8 +23,8 @@ public:
 	void updateAudioManager(GameStateData* gsd);
 	void suspendAudioManager();
 	void resumeAudioManager();
-	void playSound(int effect_no);
-	void changeLoopTrack(int track);
+	void playSound(Track track);
+	void changeLoopTrack(Track track);
 
 private:
 	void loadAllSounds();

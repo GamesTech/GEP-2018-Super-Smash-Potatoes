@@ -4,5 +4,10 @@
     <Media Include="Explo1.wav" />
     <Media Include="NightAmbienceSimple_02.wav" />
     <Media Include="TobySoundtrack.wav" />
+    <Media Include="Quest_Completion.wav" />
+    <Media Include="TobyMenuClick1.wav" />
+    <Media Include="TobySoundtrack2.wav" />
+    <Media Include="TobySoundtrack3.wav" />
+    <Media Include="SlapSound.wav" />
   </ItemGroup>
 </Project>

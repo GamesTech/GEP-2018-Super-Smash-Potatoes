@@ -78,8 +78,9 @@ void AudioManager::resumeAudioManager()
 	m_audEngine->Resume();
 }
 
-void AudioManager::playSound(int effect_no)
+void AudioManager::playSound(Track track)
 {
+	int effect_no = track;
 	if (effect_no < sound_effect_vector.size())
 	{
 		m_sounds.push_back(sound_effect_vector[effect_no]);
@@ -87,34 +88,48 @@ void AudioManager::playSound(int effect_no)
 }
 
 
-void AudioManager::changeLoopTrack(int track)
+void AudioManager::changeLoopTrack(Track track)
 {
-	if (track < loop_vector.size() && track != track_being_played)
+	int loop_track = track;
+	if (loop_track < loop_vector.size() && loop_track != track_being_played)
 	{
 		if (track_being_played > -1)
 		{
 			prev_track_played = track_being_played;
 		}
 
-		loop_vector[track]->Play();
+		loop_vector[loop_track]->Play();
 		//if not first track
 		if (track_being_played != -1)
 		{
-			loop_vector[track]->SetVolume(0);
+			loop_vector[loop_track]->SetVolume(0);
 		}
-		m_sounds.push_back(loop_vector[track]);
+		m_sounds.push_back(loop_vector[loop_track]);
 
-		track_being_played = track;
+		track_being_played = loop_track;
 	}
 }
 
 void AudioManager::loadAllSounds()
 {
 	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "Explo1"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "NightAmbienceSimple_02"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "TobySoundtrack"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "TobySoundtrack2"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "TobySoundtrack3"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "TobyMenuClick1"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "Quest_Completion"));
+	sound_effect_vector.push_back(new SoundEffects(m_audEngine.get(), "SlapSound"));
 
+	loop_vector.push_back(new Loop(m_audEngine.get(), "Explo1"));
 	loop_vector.push_back(new Loop(m_audEngine.get(), "NightAmbienceSimple_02"));
 	loop_vector.push_back(new Loop(m_audEngine.get(), "TobySoundtrack"));
-	loop_vector.push_back(new Loop(m_audEngine.get(), "Explo1"));
+	loop_vector.push_back(new Loop(m_audEngine.get(), "TobySoundtrack2"));
+	loop_vector.push_back(new Loop(m_audEngine.get(), "TobySoundtrack3"));
+	loop_vector.push_back(new Loop(m_audEngine.get(), "TobyMenuClick1"));
+	loop_vector.push_back(new Loop(m_audEngine.get(), "Quest_Completion"));
+	loop_vector.push_back(new Loop(m_audEngine.get(), "SlapSound"));
 
 
+	//currently needs to duplicate like this due to currnet ENUM system
 }

@@ -21,7 +21,7 @@ GameScene::~GameScene()
 	objects.shrink_to_fit();
 }
 
-void GameScene::init(RenderData* m_RD, GameStateData* gsd)
+void GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	time_remaining = 180.0f;
 
@@ -89,6 +89,10 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
 		objects.emplace_back(damage_text[i]);
 	}
+
+	audio_manager = am;
+	audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
+	audio_manager->playSound(QUESTCOMPLETE);
 }
 
 void GameScene::update(GameStateData* gsd)
@@ -367,6 +371,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
+		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
@@ -477,10 +482,12 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 					if (m_player[_i]->UpPuch())
 					{
 						m_player[j]->UpHit(_GSD);
+						audio_manager->playSound(SLAPSOUND);
 					}
 					else
 					{
 						m_player[j]->Hit(_GSD, punch_direction);
+						audio_manager->playSound(SLAPSOUND);
 					}
 				}
 			}
