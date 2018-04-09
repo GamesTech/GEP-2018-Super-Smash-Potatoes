@@ -239,7 +239,9 @@
     <ClCompile Include="CharacterSelectScene.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

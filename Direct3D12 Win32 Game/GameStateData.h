@@ -13,6 +13,14 @@ enum GameState
 	GAMEOVER
 };
 
+enum Winner
+{
+	PLAYER1,
+	PLAYER2,
+	PLAYER3,
+	PLAYER4,
+};
+
 struct GameStateData
 {
 	Keyboard::State m_keyboardState;
@@ -23,6 +31,7 @@ struct GameStateData
 	GamePad::State m_prevGamePadState[4];
 
 	static GameState state;
+	static Winner winner;
 
 	int player_selected[4];
 
@@ -33,5 +42,6 @@ struct GameStateData
 	int arena_selected;
 
 	GameState gameState;
+	Winner winState;
 };
 

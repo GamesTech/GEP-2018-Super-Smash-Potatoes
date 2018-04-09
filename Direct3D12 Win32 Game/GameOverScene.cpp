@@ -28,6 +28,29 @@ void GameOverScene::init(RenderData * m_RD, GameStateData * gsd)
 	game_over_text->SetPos(Vector2(500, 360));
 	game_over_text->CentreOrigin();
 	game_objects.push_back(game_over_text);
+
+	switch (gsd->winState)
+	{
+	case PLAYER1:
+		winner_text = new Text2D("PLAYER 1 WINS");
+		break;
+	case PLAYER2:
+		winner_text = new Text2D("PLAYER 2 WINS");
+		break;
+	case PLAYER3:
+		winner_text = new Text2D("PLAYER 3 WINS");
+		break;
+	case PLAYER4:
+		winner_text = new Text2D("PLAYER 4 WINS");
+		break;
+	default:
+		winner_text = new Text2D("NO WINNER");
+		break;
+	}
+	winner_text->SetLayer(1.0f);
+	winner_text->SetPos(Vector2(500, 330));
+	winner_text->CentreOrigin();
+	game_objects.push_back(winner_text);
 }
 
 void GameOverScene::update(GameStateData * gsd)

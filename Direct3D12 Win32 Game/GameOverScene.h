@@ -15,4 +15,5 @@ public:
 
 private:
 	Text2D* game_over_text;
+	Text2D* winner_text;
 };

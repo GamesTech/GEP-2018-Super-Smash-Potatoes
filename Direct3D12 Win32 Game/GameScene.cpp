@@ -159,6 +159,27 @@ void GameScene::update(GameStateData* gsd)
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		gsd->gameState = GAMEOVER;
+		for (int i = 0; i < no_players; i++)
+		{
+			if (m_player[i]->getDead() == false)
+			{
+				switch (i)
+				{
+				case 1:
+					gsd->winState = PLAYER1;
+					break;
+				case 2:
+					gsd->winState = PLAYER2;
+					break;
+				case 3:
+					gsd->winState = PLAYER3;
+					break;
+				case 4:
+					gsd->winState = PLAYER4;
+					break;
+				}
+			}
+		}
 	}
 }
 
