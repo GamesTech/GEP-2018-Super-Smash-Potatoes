@@ -341,16 +341,16 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = "ghost_kirby_sprite_batch_0"/*sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i)*/;
+		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);
-		m_player[i]->LoadSprites(/*sprite_names[gsd->player_selected[i]] +*/"ghost_kirby_sprite_batch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
 
-		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, "ghost_kirby_sprite");
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
 		temp_player_UI->SetRect(1, 1, 60, 75);
 		temp_player_UI->SetLayer(0.0f);
