@@ -71,7 +71,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 					else if (m_upwards_punch)
 					{
 						action_jump = UPWARDPUNCH;
-						m_attack = true;
+						//m_attack = true;
 					}
 				}
 				else if (m_vel.y > 300)
@@ -87,6 +87,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
+	UpPunchTimer(_GSD);
 	AnimationTick(_GSD);
 }
 
@@ -116,6 +117,23 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		m_timer_punch += _GSD->m_dt;
 	}
+}
+
+void Player2D::UpPunchTimer(GameStateData * _GSD)
+{
+	if (m_up_timer_punch >= 0.05)
+	{
+		if (m_upwards_punch)
+		{
+			m_up_attack = true;
+		}
+		m_upwards_punch = false;
+	}
+	if (m_up_timer_punch >= 1)
+	{
+		m_up_attack = false;
+	}
+	m_up_timer_punch += _GSD->m_dt;
 }
 
 void Player2D::deathZone()
@@ -251,7 +269,7 @@ void Player2D::controller(GameStateData * _GSD)
 			&& (_GSD->m_gamePadState[player_no].IsDPadUpPressed() 
 				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
 	{
-		if (m_bonus_jump)
+		if (m_bonus_jump && !m_punch && !m_upwards_punch)
 		{
 			m_vel.y = 0;
 			AddForce(-m_jumpForce * Vector2::UnitY);
@@ -259,6 +277,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
 			m_upwards_punch = true;
+			m_up_timer_punch = 0;
 		}
 	}
 	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 

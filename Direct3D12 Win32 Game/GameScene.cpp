@@ -157,6 +157,10 @@ void GameScene::update(GameStateData* gsd)
 			{
 				CheckAttackPos(gsd, i);
 			}
+			else if(m_player[i]->UpPuch())
+			{
+				CheckUpAttackPos(gsd, i);
+			}
 		}
 	}
 
@@ -169,16 +173,16 @@ void GameScene::update(GameStateData* gsd)
 			{
 				switch (i)
 				{
-				case 1:
+				case 0:
 					gsd->winState = PLAYER1;
 					break;
-				case 2:
+				case 1:
 					gsd->winState = PLAYER2;
 					break;
-				case 3:
+				case 2:
 					gsd->winState = PLAYER3;
 					break;
-				case 4:
+				case 3:
 					gsd->winState = PLAYER4;
 					break;
 				}
@@ -423,11 +427,8 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
 	float block = false;
-	if (m_player[_i]->UpPuch())
-	{
-		y1 -= 30;
-	}
-	else if (m_player[_i]->GetOrientation())
+	
+	if (m_player[_i]->GetOrientation())
 	{
 		x1 += 40;
 		punch_direction = 1;
@@ -479,16 +480,8 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 
 				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 				{
-					if (m_player[_i]->UpPuch())
-					{
-						m_player[j]->UpHit(_GSD);
-						audio_manager->playSound(SLAPSOUND);
-					}
-					else
-					{
-						m_player[j]->Hit(_GSD, punch_direction);
-						audio_manager->playSound(SLAPSOUND);
-					}
+					m_player[j]->Hit(_GSD, punch_direction);
+					audio_manager->playSound(SLAPSOUND);
 				}
 			}
 		}
@@ -496,3 +489,35 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	m_player[_i]->Attack(false);
 }
 
+void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
+{
+	float r1 = m_player[_i]->Width() / 1.5;
+	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float punch_direction = 0;
+	float block = false;
+	if (m_player[_i]->UpPuch())
+	{
+		y1 -= 30;
+	}
+	// standard punch
+	for (int j = 0; j < no_players; j++)
+	{
+		if (_i != j)
+		{
+			float r2 = m_player[j]->Width();
+			//float distance_1 = collision_width - player_width;
+			//float distance_2 = collision_width + player_width;
+			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+
+			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+			{
+				m_player[j]->UpHit(_GSD);
+				audio_manager->playSound(SLAPSOUND);
+			}
+		}
+	}
+
+	//m_player[_i]->Attack(false);
+}
