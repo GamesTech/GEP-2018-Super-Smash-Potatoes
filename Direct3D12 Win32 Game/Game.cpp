@@ -140,8 +140,8 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::init();
 	Debug::output("hello", "world");
 
-	scene = std::make_unique<SceneManager>();
-	scene->init(m_RD, m_GSD, audio_manager);
+	scene_manager = std::make_unique<SceneManager>();
+	scene_manager->init(m_RD, m_GSD, audio_manager);
 
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
@@ -174,7 +174,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	if (!scene->update(m_RD, m_GSD, audio_manager))
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager))
 	{
 		PostQuitMessage(0);
 	}
@@ -208,7 +208,7 @@ void Game::Render()
 	// Prepare the command list to render a new frame.
 	Clear();
 
-	scene->render(m_RD, m_commandList);
+	scene_manager->render(m_RD, m_commandList);
 
 
 	// Show the new frame.
@@ -680,41 +680,4 @@ void Game::OnDeviceLost()
     CreateResources();
 }
 
-void Game::checkIfNewScene()
-{
-	if (m_GSD->gameState != prevScene)
-	{
-		switch (m_GSD->gameState)
-		{
-		case MENU:
-			scene.reset();
-			scene = std::make_unique<MenuScene>();
-			break;
-		case CHARACTERSELECT:
-			scene.reset();
-			scene = std::make_unique<CharacterSelectScene>();
-			break;
-		case ARENASELECT:
-			scene.reset();
-			scene = std::make_unique<ArenaSelectScene>();
-			break;
-		case SETTINGS:
-			scene.reset();
-			scene = std::make_unique<SettingsScene>();
-			scene->giveSwapChain(m_swapChain);
-			break;
-		case INGAME:
-			scene.reset();
-			scene = std::make_unique<GameScene>();
-			break;
-		case GAMEOVER:
-			scene.reset();
-			scene = std::make_unique<GameOverScene>();
-			break;
-		}
 
-		m_RD->m_resourceCount = 10;
-		scene->init(m_RD, m_GSD, audio_manager);
-		prevScene = m_GSD->gameState;
-	}
-}

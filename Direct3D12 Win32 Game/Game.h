@@ -117,7 +117,7 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	std::unique_ptr<SceneManager> scene;
+	std::unique_ptr<SceneManager> scene_manager;
 
 	//Debug
 	Text2D * stateText;
