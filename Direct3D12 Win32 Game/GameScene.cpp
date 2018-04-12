@@ -21,7 +21,7 @@ GameScene::~GameScene()
 	objects.shrink_to_fit();
 }
 
-void GameScene::init(RenderData* m_RD, GameStateData* gsd)
+void GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	time_remaining = 180.0f;
 
@@ -54,12 +54,12 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 	}
 
 	no_players = gsd->no_players;
-	if (no_players == 1)
-	{
-		//for playtesting
-		no_players = 2;
+	//if (no_players == 1)
+	//{
+	//	//for playtesting
+	//	no_players = 2;
 
-	}
+	//}
 
 	spawnPlayers(gsd, m_RD, no_players);
 
@@ -89,6 +89,10 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd)
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
 		objects.emplace_back(damage_text[i]);
 	}
+
+	audio_manager = am;
+	audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
+	audio_manager->playSound(QUESTCOMPLETE);
 }
 
 void GameScene::update(GameStateData* gsd)
@@ -147,15 +151,43 @@ void GameScene::update(GameStateData* gsd)
 	// attack loop
 	for (int i = 0; i < no_players; i++)
 	{
-		if (m_player[i]->Attack())
+		if (m_player[i]->getDead() == false)
 		{
-			CheckAttackPos(gsd, i);
+			if (m_player[i]->Attack())
+			{
+				CheckAttackPos(gsd, i);
+			}
+			else if(m_player[i]->UpPuch())
+			{
+				CheckUpAttackPos(gsd, i);
+			}
 		}
 	}
 
-	if (time_remaining <= 0 || (no_players) <= players_dead)
+	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		gsd->gameState = GAMEOVER;
+		for (int i = 0; i < no_players; i++)
+		{
+			if (m_player[i]->getDead() == false)
+			{
+				switch (i)
+				{
+				case 0:
+					gsd->winState = PLAYER1;
+					break;
+				case 1:
+					gsd->winState = PLAYER2;
+					break;
+				case 2:
+					gsd->winState = PLAYER3;
+					break;
+				case 3:
+					gsd->winState = PLAYER4;
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -341,16 +373,17 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = "ghost_kirby_sprite_batch_0"/*sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i)*/;
+		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
+		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.f);
-		m_player[i]->LoadSprites(/*sprite_names[gsd->player_selected[i]] +*/"ghost_kirby_sprite_batch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
 
-		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, "ghost_kirby_sprite");
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
 		temp_player_UI->SetRect(1, 1, 60, 75);
 		temp_player_UI->SetLayer(0.0f);
@@ -394,11 +427,8 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
 	float punch_direction = 0;
 	float block = false;
-	if (m_player[_i]->UpPuch())
-	{
-		y1 -= 30;
-	}
-	else if (m_player[_i]->GetOrientation())
+	
+	if (m_player[_i]->GetOrientation())
 	{
 		x1 += 40;
 		punch_direction = 1;
@@ -450,14 +480,8 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 
 				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 				{
-					if (m_player[_i]->UpPuch())
-					{
-						m_player[j]->UpHit(_GSD);
-					}
-					else
-					{
-						m_player[j]->Hit(_GSD, punch_direction);
-					}
+					m_player[j]->Hit(_GSD, punch_direction);
+					audio_manager->playSound(SLAPSOUND);
 				}
 			}
 		}
@@ -465,3 +489,35 @@ void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
 	m_player[_i]->Attack(false);
 }
 
+void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
+{
+	float r1 = m_player[_i]->Width() / 1.5;
+	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+	float punch_direction = 0;
+	float block = false;
+	if (m_player[_i]->UpPuch())
+	{
+		y1 -= 30;
+	}
+	// standard punch
+	for (int j = 0; j < no_players; j++)
+	{
+		if (_i != j)
+		{
+			float r2 = m_player[j]->Width();
+			//float distance_1 = collision_width - player_width;
+			//float distance_2 = collision_width + player_width;
+			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+
+			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+			{
+				m_player[j]->UpHit(_GSD);
+				audio_manager->playSound(SLAPSOUND);
+			}
+		}
+	}
+
+	//m_player[_i]->Attack(false);
+}

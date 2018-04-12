@@ -141,7 +141,7 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::output("hello", "world");
 
 	scene = std::make_unique<MenuScene>();
-	scene->init(m_RD, m_GSD);
+	scene->init(m_RD, m_GSD, audio_manager);
 
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
@@ -711,7 +711,7 @@ void Game::checkIfNewScene()
 		}
 
 		m_RD->m_resourceCount = 10;
-		scene->init(m_RD, m_GSD);
+		scene->init(m_RD, m_GSD, audio_manager);
 		prevScene = m_GSD->gameState;
 	}
 }

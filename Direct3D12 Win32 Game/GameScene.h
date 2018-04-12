@@ -9,7 +9,7 @@ public:
 	GameScene() = default;
 	virtual ~GameScene();
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd) override;
+	void virtual init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
 	void virtual update(GameStateData* gsd) override;
 	void virtual render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
@@ -19,6 +19,7 @@ private:
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
 	void CheckAttackPos(GameStateData * _GSD, int _i);
+	void CheckUpAttackPos(GameStateData * _GSD, int _i);
 	bool MainCollision(GameObject2D * _obj, int _i);
 	bool OtherCollision(GameObject2D * _obj, int _i);
 

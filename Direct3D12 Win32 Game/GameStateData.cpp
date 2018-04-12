@@ -2,3 +2,4 @@
 #include "GameStateData.h"
 
 GameState GameStateData::state;
+Winner GameStateData::winner;

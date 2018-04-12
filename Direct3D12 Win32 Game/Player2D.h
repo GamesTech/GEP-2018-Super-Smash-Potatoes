@@ -19,6 +19,8 @@ public:
 	Player2D(RenderData* _RD, string _filename);
 	virtual ~Player2D();
 
+	//void init(AudioManager* am);
+
 	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
@@ -46,8 +48,8 @@ public:
 
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool Attack() { return m_attack; };
-	bool UpPuch() { return m_upwards_punch; };
-	void Attack(bool _attack) { m_attack = _attack; };
+	bool UpPuch() { return m_up_attack; };
+	void Attack(bool _attack) { m_attack = _attack; m_up_attack = _attack;};
 
 	void Hit(GameStateData * _GSD, int _dir);
 	float GetDamage() { return m_damage; };
@@ -67,6 +69,7 @@ protected:
 	void HitTimer(GameStateData * _GSD);
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
+	void UpPunchTimer(GameStateData * _GSD);
 	void deathZone();
 	void respawn();
 	void controller(GameStateData * _GSD);
@@ -80,6 +83,7 @@ protected:
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
+	bool m_up_attack = false;
 	bool m_jumping = false;
 	bool m_upwards_punch = false;
 	bool m_punch = false;
@@ -94,6 +98,7 @@ protected:
 	bool m_dead = false;
 
 	float m_timer_punch = 4;
+	float m_up_timer_punch = 4;
 	float m_timer_hit = 4;
 
 	//bool m_jumping = false;
@@ -102,5 +107,6 @@ protected:
 	Collision m_coll_state = COLNONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
+	//AudioManager* audio_manager = nullptr;
 };
 

@@ -19,7 +19,7 @@ MenuScene::~MenuScene()
 	game_objects.clear();
 }
 
-void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
+void MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
@@ -45,6 +45,9 @@ void MenuScene::init(RenderData* m_RD, GameStateData* gsd)
 	game_objects.push_back(quit_button);
 
 	highlight_option_selected();
+
+	audio_manager = am;
+	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
 }
 
 void MenuScene::update(GameStateData* gsd)
@@ -103,6 +106,7 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		{
 			menu_option_selected++;
 			highlight_option_selected();
+			audio_manager->playSound(TOBYMENUCLICK1);
 		}
 	}
 	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
@@ -112,6 +116,7 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		{
 			menu_option_selected--;
 			highlight_option_selected();
+			audio_manager->playSound(TOBYMENUCLICK1);
 		}
 	}
 

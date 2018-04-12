@@ -1,4 +1,5 @@
 #pragma once
+#include "AudioManager.h"
 
 class Scene
 {
@@ -6,7 +7,7 @@ public:
 	Scene() = default;
 	virtual ~Scene() = default;
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd) {};
+	void virtual init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) {};
 	void virtual update(GameStateData* gsd) {};
 	void virtual render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) {};
@@ -18,4 +19,5 @@ public:
 
 protected:
 	std::vector<GameObject2D*> game_objects;
+	AudioManager* audio_manager = nullptr;
 };

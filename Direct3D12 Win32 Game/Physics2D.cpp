@@ -2,7 +2,6 @@
 #include "Physics2D.h"
 #include "GameStateData.h"
 
-
 Physics2D::Physics2D(RenderData* _RD, string _filename):Animation2D(_RD,_filename)
 {
 }

@@ -18,7 +18,7 @@ SettingsScene::~SettingsScene()
 	}
 }
 
-void SettingsScene::init(RenderData * m_RD, GameStateData* gsd)
+void SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	resolution_text = new Text2D("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
