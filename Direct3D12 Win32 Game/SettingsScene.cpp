@@ -18,7 +18,7 @@ SettingsScene::~SettingsScene()
 	}
 }
 
-void SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	resolution_text = new Text2D("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
@@ -40,12 +40,24 @@ void SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	highlight_option_selected();
 }
 
-void SettingsScene::update(GameStateData * gsd)
+Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 {
 	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
 	{
 		(*it)->Tick(gsd);
 	}
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+	case Action::START:
+	{
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::CHARACTER_SELECTION;
+		break;
+	}
+	}
+	action == Action::NONE;
+	return scene_change;
 }
 
 void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)

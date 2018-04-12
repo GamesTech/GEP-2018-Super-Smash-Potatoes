@@ -140,7 +140,7 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::init();
 	Debug::output("hello", "world");
 
-	scene = std::make_unique<MenuScene>();
+	scene = std::make_unique<SceneManager>();
 	scene->init(m_RD, m_GSD, audio_manager);
 
 	m_keyboard = std::make_unique<Keyboard>();
@@ -168,13 +168,16 @@ void Game::Update(DX::StepTimer const& timer)
 
 	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
 	m_GSD->m_keyboardState = m_keyboard->GetState();
-	scene->ReadInput(m_GSD);
+	//scene->ReadInput(m_GSD);
 
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	scene->update(m_GSD);
+	if (!scene->update(m_RD, m_GSD, audio_manager))
+	{
+		PostQuitMessage(0);
+	}
 
 	//// TODO: Gamepad
 	m_GSD->no_players = 0;

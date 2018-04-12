@@ -19,7 +19,7 @@ MenuScene::~MenuScene()
 	game_objects.clear();
 }
 
-void MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	title_text = new Text2D("Super Trash Potatoes");
 	title_text->SetLayer(1.0f);
@@ -48,9 +48,10 @@ void MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
+	return true;
 }
 
-void MenuScene::update(GameStateData* gsd)
+Scene::SceneChange MenuScene::update(GameStateData* gsd)
 {
 	//Add your game logic here.
 	
@@ -58,6 +59,27 @@ void MenuScene::update(GameStateData* gsd)
 	{
 		(*it)->Tick(gsd);
 	}
+
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+		case Action::START:
+		{
+			scene_change.change_type = ChangeType::ADD;
+			scene_change.scene = SceneEnum::CHARACTER_SELECTION;
+			break;
+		}
+
+		case Action::SETTINGS:
+		{
+			scene_change.change_type = ChangeType::ADD;
+			scene_change.scene = SceneEnum::SETTINGS;
+			break;
+		}
+	}
+	action == Action::NONE;
+	return scene_change;
+
 }
 
 void MenuScene::render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
@@ -126,14 +148,20 @@ void MenuScene::ReadInput(GameStateData* gsd)
 		switch (menu_option_selected)
 		{
 		case 1:
-			gsd->gameState = CHARACTERSELECT;
+		{
+			action = Action::START;
 			break;
+		}
 		case 2:
-			gsd->gameState = SETTINGS;
+		{
+			action = Action::SETTINGS;
 			break;
+		}
 		case 3:
-			PostQuitMessage(0);
+		{
+			action = Action::EXIT;
 			break;
+		}
 		}
 	}
 }

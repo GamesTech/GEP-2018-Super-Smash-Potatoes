@@ -11,7 +11,7 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
-#include "Scene.h"
+#include "SceneManager.h"
 #include "AudioManager.h"
 
 using std::vector;
@@ -117,7 +117,7 @@ private:
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	std::unique_ptr<Scene> scene;
+	std::unique_ptr<SceneManager> scene;
 
 	//Debug
 	Text2D * stateText;

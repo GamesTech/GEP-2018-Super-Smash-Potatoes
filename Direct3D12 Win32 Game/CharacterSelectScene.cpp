@@ -45,7 +45,7 @@ CharacterSelectScene::~CharacterSelectScene()
 }
 
 
-void CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	no_players = gsd->no_players;
 	loadCharactersFile("PlayerSprites.txt");
@@ -90,9 +90,11 @@ void CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	player_preview_boxes->CentreOrigin();
 	game_objects.push_back(player_preview_boxes);
 
+	return true;
+
 }
 
-void CharacterSelectScene::update(GameStateData * gsd)
+Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 {
 	no_players = gsd->no_players;
 
@@ -119,6 +121,24 @@ void CharacterSelectScene::update(GameStateData * gsd)
 		}
 		gsd->gameState = ARENASELECT;
 	}
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+	case Action::CONTINUE:
+	{
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::ARENA_SELECTION;
+		break;
+	}
+
+	case Action::BACK:
+	{
+		scene_change.change_type = ChangeType::REMOVE;
+		break;
+	}
+	}
+	action == Action::NONE;
+	return scene_change;
 }
 
 void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
