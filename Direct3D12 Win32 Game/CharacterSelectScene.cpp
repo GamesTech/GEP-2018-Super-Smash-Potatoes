@@ -119,7 +119,7 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 		{
 			gsd->player_selected[i] = selection_player[i];
 		}
-		gsd->gameState = ARENASELECT;
+		action == Action::CONTINUE;
 	}
 	Scene::SceneChange scene_change;
 	switch (action)
@@ -263,7 +263,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		gsd->gameState = MENU;
+		action == Action::BACK;
 	}
 }
 

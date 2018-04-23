@@ -47,6 +47,12 @@
     <Filter Include="Game Base\Source">
       <UniqueIdentifier>{c6145a56-6b6a-4cdf-aecf-c59fe5db8df0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Headers\SceneManager">
+      <UniqueIdentifier>{3a6e5c2a-ae3b-4104-a720-0c21ff01b345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\SceneManager\Scenes">
+      <UniqueIdentifier>{2325faa3-3964-4e29-a5d7-63763d9e8919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -121,33 +127,33 @@
     <ClInclude Include="File.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="LevelFile.h" />
-    <ClInclude Include="ArenaSelectScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CharacterSelectScene.h">
-      <Filter>Game Base\Headers</Filter>
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ArenaSelectScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="GameOverScene.h">
-      <Filter>Game Base\Headers</Filter>
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Game Base\Headers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Game Base\Headers\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

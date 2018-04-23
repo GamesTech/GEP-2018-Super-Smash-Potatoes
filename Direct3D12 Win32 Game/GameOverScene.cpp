@@ -21,7 +21,7 @@ GameOverScene::~GameOverScene()
 	game_objects.clear();
 }
 
-void GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	game_over_text = new Text2D("Game Ogre");
 	game_over_text->SetLayer(1.0f);
@@ -51,10 +51,23 @@ void GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	winner_text->SetPos(Vector2(500, 330));
 	winner_text->CentreOrigin();
 	game_objects.push_back(winner_text);
+	return true;
 }
 
-void GameOverScene::update(GameStateData * gsd)
+Scene::SceneChange GameOverScene::update(GameStateData * gsd)
 {
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+	case Action::BACK:
+	{
+		scene_change.change_type = ChangeType::REPLACE_ALL;
+		scene_change.scene = SceneEnum::MENU;
+		break;
+	}
+	}
+	action == Action::NONE;
+	return scene_change;
 }
 
 void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
@@ -76,6 +89,6 @@ void GameOverScene::ReadInput(GameStateData * gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		gsd->gameState = MENU;
+		action == Action::BACK;
 	}
 }

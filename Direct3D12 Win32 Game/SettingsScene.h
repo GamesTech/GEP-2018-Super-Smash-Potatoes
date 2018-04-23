@@ -14,10 +14,15 @@ public:
 	bool new_resolution = false;
 
 private:
-	enum action
+	enum Action
 	{
-
+		NONE,
+		FULLSCREEN,
+		SCREEN_RES,
+		EXIT
 	};
+
+	Action action = Action::NONE;
 	void virtual  ReadInput(GameStateData* gsd) override;
 	void newResolutionText(int new_resolution_option);
 	void highlight_option_selected();

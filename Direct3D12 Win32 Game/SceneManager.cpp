@@ -66,37 +66,37 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 	{
 		case SceneEnum::SceneEnum::MENU:
 		{
-			scene = std::unique_ptr<MenuScene>(new MenuScene);
+			scene = std::make_unique<MenuScene>();
 			break;
 		}
 
 		case SceneEnum::SceneEnum::SETTINGS:
 		{
-			scene = std::unique_ptr<SettingsScene>(new SettingsScene);
+			scene = std::make_unique<SettingsScene>();
 			break;
 		}
 
 		case SceneEnum::SceneEnum::CHARACTER_SELECTION:
 		{
-			scene = std::unique_ptr<CharacterSelectScene>(new CharacterSelectScene);
+			scene = std::make_unique<CharacterSelectScene>();
 			break;
 		}
 
 		case SceneEnum::SceneEnum::ARENA_SELECTION:
 		{
-			scene = std::unique_ptr<ArenaSelectScene>(new ArenaSelectScene);
+			scene = std::make_unique<ArenaSelectScene>();
 			break;
 		}
 
 		case SceneEnum::SceneEnum::GAME:
 		{
-			scene = std::unique_ptr<GameScene>(new GameScene);
+			scene = std::make_unique<GameScene>();
 			break;
 		}
 
 		case SceneEnum::SceneEnum::GAMEOVER:
 		{
-			scene = std::unique_ptr<GameOverScene>(new GameOverScene);
+			scene = std::make_unique<GameOverScene>();
 			break;
 		}
 	}

@@ -38,6 +38,7 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	game_objects.push_back(main_menu_button);
 
 	highlight_option_selected();
+	return true;
 }
 
 Scene::SceneChange SettingsScene::update(GameStateData * gsd)
@@ -49,10 +50,9 @@ Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
-	case Action::START:
+	case Action::EXIT:
 	{
-		scene_change.change_type = ChangeType::ADD;
-		scene_change.scene = SceneEnum::CHARACTER_SELECTION;
+		scene_change.change_type = ChangeType::REMOVE;
 		break;
 	}
 	}
@@ -137,7 +137,7 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
 			|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 		{
-			gsd->gameState = MENU;
+			action == Action::EXIT;
 		}
 	}
 	switch (resolution_option_selected)

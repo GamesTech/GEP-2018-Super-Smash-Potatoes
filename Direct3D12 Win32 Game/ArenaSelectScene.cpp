@@ -23,7 +23,7 @@ ArenaSelectScene::~ArenaSelectScene()
 	game_objects.clear();
 }
 
-void ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	title_text = new Text2D("Arena Select!");
 	title_text->SetLayer(0.5f);
@@ -51,11 +51,29 @@ void ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* 
 
 	loadLevelsFile("Levels.txt");
 	loadLevel(m_RD, level_names[0]);
+	return true;
 }
 
-void ArenaSelectScene::update(GameStateData * gsd)
+Scene::SceneChange ArenaSelectScene::update(GameStateData * gsd)
 {
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+	case Action::CONTINUE:
+	{
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::GAME;
+		break;
+	}
 
+	case Action::BACK:
+	{
+		scene_change.change_type = ChangeType::REMOVE;
+		break;
+	}
+	}
+	action == Action::NONE;
+	return scene_change;
 }
 
 void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
@@ -107,13 +125,13 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 	{
 		gsd->arena_selected = level_selected;
-		gsd->gameState = INGAME;
+		action == Action::CONTINUE;
 	}
 
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
-		gsd->gameState = CHARACTERSELECT;
+		action == Action::BACK;
 	}
 }
 

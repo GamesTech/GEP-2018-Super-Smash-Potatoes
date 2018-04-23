@@ -9,12 +9,20 @@ public:
 	GameScene() = default;
 	virtual ~GameScene();
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
-	void virtual update(GameStateData* gsd) override;
-	void virtual render(RenderData* m_RD,
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual SceneChange update(GameStateData* gsd) override;
+	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
 
 private:
+	enum Action
+	{
+		NONE,
+		BACK,
+		CONTINUE
+	};
+	Action action = Action::NONE;
+
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
