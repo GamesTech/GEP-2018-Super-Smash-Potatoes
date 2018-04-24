@@ -12,7 +12,7 @@
 
 void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am)
 {
-	std::unique_ptr<MenuScene> scene = std::make_unique<MenuScene>(new MenuScene);
+	std::unique_ptr<Scene> scene = std::make_unique<MenuScene>();
 	scene->init(m_RD, gsd, am);
 	scenes.push_back(std::move(scene));
 }
@@ -117,5 +117,3 @@ void SceneManager::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphi
 		scenes.back()->render(m_RD, m_commandList);
 	}
 }
-
-
