@@ -20,6 +20,6 @@ private:
 		BACK
 	};
 	Action action = Action::NONE;
-	Text2D* game_over_text;
-	Text2D* winner_text;
+	std::unique_ptr<Text2D> game_over_text = nullptr;
+	std::unique_ptr<Text2D> winner_text = nullptr;
 };

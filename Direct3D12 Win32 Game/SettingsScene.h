@@ -34,9 +34,9 @@ private:
 	int new_outputHeight = 0;
 	bool fullscreen = false;
 
-	Text2D* resolution_text;
-	Text2D* fullscreen_text;
-	ImageGO2D* main_menu_button;
+	std::unique_ptr<Text2D> resolution_text = nullptr;
+	std::unique_ptr<Text2D> fullscreen_text = nullptr;
+	std::unique_ptr<ImageGO2D> main_menu_button = nullptr;
 
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain;
 };

@@ -7,14 +7,6 @@
 
 GameScene::~GameScene()
 {	
-	for (auto object : game_objects)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
 	game_objects.clear();
 
 	platforms.shrink_to_fit();
@@ -169,7 +161,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		action == Action::CONTINUE;
+		action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_player[i]->getDead() == false)
@@ -208,7 +200,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		break;
 	}
 	}
-	action == Action::NONE;
+	action = Action::NONE;
 	return scene_change;
 }
 
@@ -242,7 +234,7 @@ void GameScene::ReadInput(GameStateData* gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		action == Action::BACK;
+		action = Action::BACK;
 	}
 }
 

@@ -20,15 +20,18 @@ private:
 		NONE,
 		START,
 		SETTINGS,
-		EXIT
+		EXIT,
+		BUTTON_UP,
+		BUTTON_DOWN,
+		BUTTON_PRESSED
 	};
 
 	Action action = Action::NONE;
 
-	Text2D* title_text;
-	ImageGO2D* start_game_button;
-	ImageGO2D* settings_button;
-	ImageGO2D* quit_button;
+	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> start_game_button = nullptr;
+	std::unique_ptr<ImageGO2D> settings_button = nullptr;
+	std::unique_ptr<ImageGO2D> quit_button = nullptr;
 
 	int menu_option_selected = 1;
 

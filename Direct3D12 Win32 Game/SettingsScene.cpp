@@ -6,36 +6,27 @@
 
 SettingsScene::~SettingsScene()
 {
-	if (resolution_text)
-	{
-		delete(resolution_text);
-		resolution_text = nullptr;
-	}
-	if (main_menu_button)
-	{
-		delete main_menu_button;
-		main_menu_button = nullptr;
-	}
+
 }
 
 bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	resolution_text = new Text2D("Resolution Text");
+	resolution_text = std::make_unique<Text2D>("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
 	resolution_text->SetLayer(1.0f);
-	game_objects.push_back(resolution_text);
+	game_objects.push_back(std::move(resolution_text));
 	newResolutionText(3);
 	resolution_option_selected = 3;
 
-	fullscreen_text = new Text2D("Fullscreen: False");
+	fullscreen_text = std::make_unique<Text2D>("Fullscreen: False");
 	fullscreen_text->SetPos(Vector2(300, 300));
 	fullscreen_text->SetLayer(1.0f);
-	game_objects.push_back(fullscreen_text);
+	game_objects.push_back(std::move(fullscreen_text));
 
-	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
+	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Main_Menu_Button");
 	main_menu_button->SetPos(Vector2(300, 400));
 	main_menu_button->SetRect(1, 1, 240, 80);
-	game_objects.push_back(main_menu_button);
+	game_objects.push_back(std::move(main_menu_button));
 
 	highlight_option_selected();
 	return true;
@@ -43,9 +34,9 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 {
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Tick(gsd);
+		it->Tick(gsd);
 	}
 	Scene::SceneChange scene_change;
 	switch (action)
@@ -56,7 +47,7 @@ Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 		break;
 	}
 	}
-	action == Action::NONE;
+	action = Action::NONE;
 	return scene_change;
 }
 
@@ -67,9 +58,9 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Render(m_RD);
+		it->Render(m_RD);
 	}
 
 	m_RD->m_spriteBatch->End();
@@ -137,7 +128,7 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
 			|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 		{
-			action == Action::EXIT;
+			action = Action::EXIT;
 		}
 	}
 	switch (resolution_option_selected)
@@ -171,16 +162,16 @@ void SettingsScene::newResolutionText(int new_resolution_option)
 	switch (new_resolution_option)
 	{
 	case 1:
-		resolution_text->SetText("Resolution: 800 x 600 ->");
+		//resolution_text->SetText("Resolution: 800 x 600 ->");
 		break;
 	case 2:
-		resolution_text->SetText("Resolution: <- 1024 x 768 ->"); //Arcade Machine Reso
+		//resolution_text->SetText("Resolution: <- 1024 x 768 ->"); //Arcade Machine Reso
 		break;
 	case 3:
-		resolution_text->SetText("Resolution: <- 1280 x 720 ->");
+		//resolution_text->SetText("Resolution: <- 1280 x 720 ->");
 		break;
 	case 4:
-		resolution_text->SetText("Resolution: <- 1440 x 1080");
+		//resolution_text->SetText("Resolution: <- 1440 x 1080");
 		break;
 	}
 }
@@ -190,19 +181,19 @@ void SettingsScene::highlight_option_selected()
 	switch (menu_option_selected)
 	{
 	case 1:
-		resolution_text->SetColour(Color(1, 0, 0));
-		fullscreen_text->SetColour(Color(1, 1, 1));
-		main_menu_button->SetColour(Color(1, 1, 1));
+		//resolution_text->SetColour(Color(1, 0, 0));
+		//fullscreen_text->SetColour(Color(1, 1, 1));
+		//main_menu_button->SetColour(Color(1, 1, 1));
 		break;
 	case 2:
-		resolution_text->SetColour(Color(1, 1, 1));
-		fullscreen_text->SetColour(Color(1, 0, 0));
-		main_menu_button->SetColour(Color(1, 1, 1));
+		//resolution_text->SetColour(Color(1, 1, 1));
+		//fullscreen_text->SetColour(Color(1, 0, 0));
+		//main_menu_button->SetColour(Color(1, 1, 1));
 		break;
 	case 3:
-		resolution_text->SetColour(Color(1, 1, 1));
-		fullscreen_text->SetColour(Color(1, 1, 1));
-		main_menu_button->SetColour(Color(1, 0, 0));
+		//resolution_text->SetColour(Color(1, 1, 1));
+		//fullscreen_text->SetColour(Color(1, 1, 1));
+		//main_menu_button->SetColour(Color(1, 0, 0));
 		break;
 	}
 }

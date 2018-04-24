@@ -51,6 +51,6 @@ public:
 	GameObject2D& getObjectByTag(std::string tag) const;
 
 protected:
-	std::vector<GameObject2D*> game_objects;
+	std::vector<std::unique_ptr<GameObject2D>> game_objects;
 	AudioManager* audio_manager = nullptr;
 };

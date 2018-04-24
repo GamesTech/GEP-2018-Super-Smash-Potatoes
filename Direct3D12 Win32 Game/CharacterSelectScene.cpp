@@ -13,31 +13,6 @@ CharacterSelectScene::CharacterSelectScene()
 
 CharacterSelectScene::~CharacterSelectScene()
 {
-	for (auto object : game_objects)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
-	for (auto sprite : grid_sprites)
-	{
-		if (sprite)
-		{
-			delete sprite;
-			sprite = nullptr;
-		}
-	}
-	for (auto player_prev : player_previews)
-	{
-		if (player_prev)
-		{
-			delete player_prev;
-			player_prev = nullptr;
-		}
-	}
-
 	sprite_names.clear();
 	grid_sprites.clear();
 	player_previews.clear();
@@ -50,9 +25,9 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	no_players = gsd->no_players;
 	loadCharactersFile("PlayerSprites.txt");
 
-	title_text = new Text2D("Character Select!");
+	title_text = std::make_unique<Text2D>("Character Select!");
 	title_text->SetLayer(1.0f);
-	game_objects.push_back(title_text);
+	game_objects.push_back(std::move(title_text));
 
 	sprites_per_row = 12;
 	int current_sprites_on_row = 0;
@@ -60,18 +35,18 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 
 	for (int i = 0; i < sprite_names.size(); i++)
 	{
-		grid_sprite_temp = new ImageGO2D(m_RD, sprite_names[i]);
+		grid_sprite_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
 		grid_sprite_temp->SetPos(Vector2(100 + (current_sprites_on_row * 100), 100 + (row_no * 100)));
 		grid_sprite_temp->SetRect(1, 1, 60, 75);
 		grid_sprite_temp->SetLayer(1.0f);
 		grid_sprite_temp->CentreOrigin();
-		grid_sprites.push_back(grid_sprite_temp);
+		grid_sprites.push_back(std::move(grid_sprite_temp));
 
-		player_preview_temp = new ImageGO2D(m_RD, sprite_names[i]);
+		player_preview_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
 		player_preview_temp->SetRect(1, 1, 60, 75);
 		player_preview_temp->SetLayer(0.0f);
 		player_preview_temp->CentreOrigin();
-		player_previews.push_back(player_preview_temp);
+		player_previews.push_back(std::move(player_preview_temp));
 
 		//new row
 		current_sprites_on_row++;
@@ -83,12 +58,12 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 		}
 	}
 
-	player_preview_boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
+	player_preview_boxes = std::make_unique<ImageGO2D>(m_RD, "PlayerPreviewBoxes");
 	player_preview_boxes->SetPos(Vector2(640, 620));
 	player_preview_boxes->SetRect(1, 1, 723, 180);
 	player_preview_boxes->SetLayer(1.0f);
 	player_preview_boxes->CentreOrigin();
-	game_objects.push_back(player_preview_boxes);
+	game_objects.push_back(std::move(player_preview_boxes));
 
 	return true;
 
@@ -107,9 +82,9 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 		}
 	}
 
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Tick(gsd);
+		it->Tick(gsd);
 	}
 
 	//all players ready, next scene
@@ -119,7 +94,7 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 		{
 			gsd->player_selected[i] = selection_player[i];
 		}
-		action == Action::CONTINUE;
+		action = Action::CONTINUE;
 	}
 	Scene::SceneChange scene_change;
 	switch (action)
@@ -137,7 +112,7 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 		break;
 	}
 	}
-	action == Action::NONE;
+	action = Action::NONE;
 	return scene_change;
 }
 
@@ -148,13 +123,13 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Render(m_RD);
+		it->Render(m_RD);
 	}
-	for (std::vector<ImageGO2D*>::iterator it = grid_sprites.begin(); it != grid_sprites.end(); it++)
+	for (auto& it : grid_sprites)
 	{
-		(*it)->Render(m_RD);
+		it->Render(m_RD);
 	}
 
 	for (int i = 0; i < no_players; i++)
@@ -263,7 +238,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		action == Action::BACK;
+		action = Action::BACK;
 	}
 }
 

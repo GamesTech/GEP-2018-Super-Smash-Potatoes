@@ -24,14 +24,14 @@ private:
 
 	void loadCharactersFile(string _filename);
 
-	Text2D* title_text;
-	ImageGO2D* player_preview_boxes;
+	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> player_preview_boxes = nullptr;
 
-	ImageGO2D* grid_sprite_temp;
-	std::vector<ImageGO2D*> grid_sprites;
+	std::unique_ptr<ImageGO2D> grid_sprite_temp = nullptr;
+	std::vector<std::unique_ptr<ImageGO2D>> grid_sprites;
 
-	ImageGO2D* player_preview_temp;
-	std::vector<ImageGO2D*> player_previews;
+	std::unique_ptr<ImageGO2D> player_preview_temp = nullptr;
+	std::vector<std::unique_ptr<ImageGO2D>> player_previews;
 
 	int sprites_per_row = 0;
 

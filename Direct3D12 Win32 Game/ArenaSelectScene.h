@@ -24,11 +24,11 @@ private:
 	};
 	Action action = Action::NONE;
 
-	Text2D* title_text;
-	Text2D* level_name_text;
+	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<Text2D> level_name_text = nullptr;
 
-	ImageGO2D* left_arrow;
-	ImageGO2D* right_arrow;
+	std::unique_ptr<ImageGO2D> left_arrow = nullptr;
+	std::unique_ptr<ImageGO2D> right_arrow = nullptr;
 
 	std::unique_ptr <LevelFile> level;
 

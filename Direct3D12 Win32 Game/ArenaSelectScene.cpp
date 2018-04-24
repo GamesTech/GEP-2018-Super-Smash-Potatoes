@@ -10,44 +10,35 @@ ArenaSelectScene::ArenaSelectScene()
 
 ArenaSelectScene::~ArenaSelectScene()
 {
-	for (auto object : game_objects)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
-
 	platforms.clear();
 	game_objects.clear();
 }
 
 bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	title_text = new Text2D("Arena Select!");
+	title_text = std::make_unique<Text2D>("Arena Select!");
 	title_text->SetLayer(0.5f);
-	game_objects.push_back(title_text);
+	game_objects.push_back(std::move(title_text));
 	
-	level_name_text = new Text2D("Level X");
+	level_name_text = std::make_unique<Text2D>("Level X");
 	level_name_text->SetLayer(0.5f);
 	level_name_text->SetPos(Vector2(500, 50));
-	game_objects.push_back(level_name_text);
+	game_objects.push_back(std::move(level_name_text));
 
-	left_arrow = new ImageGO2D(m_RD, "Arrow");
+	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
 	left_arrow->SetLayer(0.5f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
-	game_objects.push_back(left_arrow);
+	game_objects.push_back(std::move(left_arrow));
 
-	right_arrow = new ImageGO2D(m_RD, "Arrow");
+	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
 	right_arrow->SetLayer(0.5f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
 	right_arrow->CentreOrigin();
 	right_arrow->SetOrientation(3.14f);
-	game_objects.push_back(right_arrow);
+	game_objects.push_back(std::move(right_arrow));
 
 	loadLevelsFile("Levels.txt");
 	loadLevel(m_RD, level_names[0]);
@@ -72,7 +63,7 @@ Scene::SceneChange ArenaSelectScene::update(GameStateData * gsd)
 		break;
 	}
 	}
-	action == Action::NONE;
+	action = Action::NONE;
 	return scene_change;
 }
 
@@ -89,9 +80,9 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Render(m_RD);
+		it->Render(m_RD);
 	}
 	for (auto& platform : platforms)
 	{
@@ -125,13 +116,13 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
 	{
 		gsd->arena_selected = level_selected;
-		action == Action::CONTINUE;
+		action = Action::CONTINUE;
 	}
 
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
-		action == Action::BACK;
+		action = Action::BACK;
 	}
 }
 
