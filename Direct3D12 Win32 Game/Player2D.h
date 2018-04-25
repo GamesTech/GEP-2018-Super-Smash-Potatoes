@@ -26,47 +26,51 @@ public:
 	void setPlayerNo(int player_number);
 
 	void SetDrive(float _drive) { m_drive = _drive; }
-	float GetDrive() { return m_drive; }
-	bool GetGrounded() { return m_grounded; };
+	//float GetDrive() { return m_drive; }
+	//bool GetGrounded() { return m_grounded; };
 	
-	void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
-	void SetVelX(float _vel_x) { m_vel.x = _vel_x; }
+	//void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
+	//void SetVelX(float _vel_x) { m_vel.x = _vel_x; }
 	
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 
-	void TestCollision() { SetBoundingBoxes(); }
-	void SetLimit(Vector2 _lim) { m_limit = _lim; }
-	void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
+	//void TestCollision() { SetBoundingBoxes(); }
+	//void SetLimit(Vector2 _lim) { m_limit = _lim; }
+	//void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
 	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
 
-	Vector2 GetLimit() { return m_limit; };
+	//Vector2 GetLimit() { return m_limit; };
 	Vector2 GetCurrVel() { return m_vel; };
 
 	void SetCollState(Collision _col) { m_coll_state = _col; };
-	Collision GetCollState() { return m_coll_state; };
+	//Collision GetCollState() { return m_coll_state; };
 
 	bool GetLedgeJump() { return m_ledge_jump; };
-	bool Attack() { return m_attack; };
-	bool UpPuch() { return m_up_attack; };
-	void Attack(bool _attack) { m_attack = _attack; m_up_attack = _attack;};
+	bool IsPunching() { return m_execute_punch; };
+	bool IsUpPuching() { return m_execute_up_punch; };
+	void ResetAttacks(bool _attack) { m_execute_punch = _attack; m_execute_up_punch = _attack;};
 	bool IgnoreCollision() { return m_ignore_collision; };
 
-	void Hit(GameStateData * _GSD, int _dir);
+	void GotHit(GameStateData * _GSD, int _dir);
+	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
+	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
 	float GetDamage() { return m_damage; };
 
-	void UpHit(GameStateData * _GSD);
-	void Block(GameStateData * _GSD, int _dir);
+	void GotUpHit(GameStateData * _GSD);
+	void Block(GameStateData * _GSD);
 	bool GetOrientation();
-	bool GetUpHit() { return m_up_hit; }
+	bool GetUpHit() { return m_got_up_hit; }
+	bool GetInvincibility() { return false; };
 
-	void SetLivesRemaining(int lives) { lives_remaining = lives; };
+	//void SetLivesRemaining(int lives) { lives_remaining = lives; };
 	int GetLivesRemaining() { return lives_remaining; };
 
 	bool getDead() { return m_dead; };
 
 protected:
 	void ProcessCollision();
+	void updateOrientation();
 	void AnimationChecks(GameStateData * _GSD);
 	void HitTimer(GameStateData * _GSD);
 	void Grabbing();
@@ -85,25 +89,27 @@ protected:
 	Vector2 m_max_speed = Vector2(400, 400);
 
 	bool m_grounded = false;
-	bool m_up_attack = false;
+	bool m_execute_up_punch = false;
 	bool m_jumping = false;
-	bool m_upwards_punch = false;
-	bool m_punch = false;
+	bool m_up_punching = false;
+	bool m_punching = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
 	bool m_ledge_jump = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
-	bool m_attack = false;
-	bool m_hit = false;
+	bool m_execute_punch = false;
+	bool m_remove_controll = false;
 	bool m_dead = false;
 	bool m_ignore_collision = false;
-	bool m_up_hit = false;
+	bool m_got_up_hit = false;
 
 	float m_timer_punch = 4;
 	float m_up_timer_punch = 4;
 	float m_timer_hit = 4;
+
+	int m_direction = 1;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;
