@@ -22,14 +22,14 @@ bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* 
 	game_objects.push_back(std::move(title_boarder));
 
 	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
-	left_arrow->SetLayer(0.5f);
+	left_arrow->SetLayer(0.1f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
 	game_objects.push_back(std::move(left_arrow));
 
 	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
-	right_arrow->SetLayer(0.5f);
+	right_arrow->SetLayer(0.1f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
 	right_arrow->CentreOrigin();
