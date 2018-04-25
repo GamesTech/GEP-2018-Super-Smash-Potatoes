@@ -37,6 +37,10 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 
 	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
+	if (m_vel.y > 700 || m_vel.y < 0)
+	{
+		m_ignore_collision = false;
+	}
 
 	//after that as updated my position let's lock it inside my limits
 	deathZone();
@@ -78,6 +82,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 				{
 					action_jump = FALL;
 					m_upwards_punch = false;
+					m_up_attack = false;
 				}
 			}
 
@@ -93,14 +98,17 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 void Player2D::HitTimer(GameStateData * _GSD)
 {
+	if (m_timer_hit >= 0.2)
+	{
+		m_up_hit = false;
+	}
 	if (m_timer_hit >= 0.8)
 	{
 		m_hit = false;
+
 	}
-	else
-	{
-		m_timer_hit += _GSD->m_dt;
-	}
+	m_timer_hit += _GSD->m_dt;
+
 }
 
 void Player2D::PunchTimer(GameStateData * _GSD)
@@ -129,7 +137,7 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 		}
 		m_upwards_punch = false;
 	}
-	if (m_up_timer_punch >= 1)
+	if (m_up_timer_punch >= 0.3)
 	{
 		m_up_attack = false;
 	}
@@ -242,7 +250,19 @@ void Player2D::controller(GameStateData * _GSD)
 
 
 	// Jump
-	if ((_GSD->m_keyboardState.Space 
+	if ((_GSD->m_keyboardState.S
+		&& _GSD->m_keyboardState.Space)
+		|| ((_GSD->m_gamePadState[player_no].IsAPressed()
+			&& !_GSD->m_prevGamePadState[player_no].IsAPressed())
+			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
+				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	{
+		//m_vel.y = 0;
+		AddForce(100 * Vector2::UnitY);
+		m_ignore_collision = true;
+		m_coll_state = Collision::COLNONE;
+	}
+	else if ((_GSD->m_keyboardState.Space 
 		&& !_GSD->m_prevKeyboardState.Space) 
 		|| (_GSD->m_gamePadState[player_no].IsAPressed() 
 			&& !_GSD->m_prevGamePadState[player_no].IsAPressed()))
@@ -260,6 +280,7 @@ void Player2D::controller(GameStateData * _GSD)
 			}
 		}
 	}
+
 
 	// Bonus Jump
 	if ((_GSD->m_keyboardState.X 
@@ -319,6 +340,7 @@ void Player2D::UpHit(GameStateData * _GSD)
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_hit = true;
+	m_up_hit = true;
 	m_timer_hit = 0;
 	//audio_manager->playSound(SLAPSOUND);
 }

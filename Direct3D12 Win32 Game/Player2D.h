@@ -50,6 +50,7 @@ public:
 	bool Attack() { return m_attack; };
 	bool UpPuch() { return m_up_attack; };
 	void Attack(bool _attack) { m_attack = _attack; m_up_attack = _attack;};
+	bool IgnoreCollision() { return m_ignore_collision; };
 
 	void Hit(GameStateData * _GSD, int _dir);
 	float GetDamage() { return m_damage; };
@@ -57,6 +58,7 @@ public:
 	void UpHit(GameStateData * _GSD);
 	void Block(GameStateData * _GSD, int _dir);
 	bool GetOrientation();
+	bool GetUpHit() { return m_up_hit; }
 
 	void SetLivesRemaining(int lives) { lives_remaining = lives; };
 	int GetLivesRemaining() { return lives_remaining; };
@@ -96,6 +98,8 @@ protected:
 	bool m_attack = false;
 	bool m_hit = false;
 	bool m_dead = false;
+	bool m_ignore_collision = false;
+	bool m_up_hit = false;
 
 	float m_timer_punch = 4;
 	float m_up_timer_punch = 4;

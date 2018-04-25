@@ -116,10 +116,13 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 					}
 					else
 					{
-						if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
+						if (!m_player[i]->IgnoreCollision())
 						{
-							m_anim_grounded[i] = true;
-							break;
+							if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
+							{
+								m_anim_grounded[i] = true;
+								break;
+							}
 						}
 					}
 				}
@@ -526,8 +529,11 @@ void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
 
 			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 			{
-				m_player[j]->UpHit(_GSD);
-				audio_manager->playSound(SLAPSOUND);
+				if (!m_player[j]->GetUpHit())
+				{
+					m_player[j]->UpHit(_GSD);
+					audio_manager->playSound(SLAPSOUND);
+				}
 			}
 		}
 	}
