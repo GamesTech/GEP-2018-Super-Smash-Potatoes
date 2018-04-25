@@ -7,21 +7,13 @@
 
 GameScene::~GameScene()
 {	
-	for (auto object : game_objects)
-	{
-		if (object)
-		{
-			delete object;
-			object = nullptr;
-		}
-	}
 	game_objects.clear();
 
 	platforms.shrink_to_fit();
 	objects.shrink_to_fit();
 }
 
-void GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	time_remaining = 180.0f;
 
@@ -93,9 +85,12 @@ void GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	audio_manager = am;
 	audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
+
+	return true;
+
 }
 
-void GameScene::update(GameStateData* gsd)
+Scene::SceneChange GameScene::update(GameStateData* gsd)
 {
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
@@ -169,7 +164,7 @@ void GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		gsd->gameState = GAMEOVER;
+		action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_player[i]->getDead() == false)
@@ -192,6 +187,24 @@ void GameScene::update(GameStateData* gsd)
 			}
 		}
 	}
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+	case Action::CONTINUE:
+	{
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::GAMEOVER;
+		break;
+	}
+
+	case Action::BACK:
+	{
+		scene_change.change_type = ChangeType::REMOVE;
+		break;
+	}
+	}
+	action = Action::NONE;
+	return scene_change;
 }
 
 void GameScene::render(RenderData* m_RD,
@@ -224,7 +237,7 @@ void GameScene::ReadInput(GameStateData* gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		gsd->gameState = MENU;
+		action = Action::BACK;
 	}
 }
 
