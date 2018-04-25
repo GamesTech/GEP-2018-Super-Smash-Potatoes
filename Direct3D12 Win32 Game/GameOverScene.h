@@ -20,6 +20,10 @@ private:
 		BACK
 	};
 	Action action = Action::NONE;
-	std::unique_ptr<Text2D> game_over_text = nullptr;
-	std::unique_ptr<Text2D> winner_text = nullptr;
+
+	RECT number_pos[4] = { {0,0,66,60},{ 72,0,136,60 },{ 186,0,252,60 },{ 300,0,366,60 } };
+
+	std::unique_ptr<ImageGO2D> winner_number = nullptr;
+	std::unique_ptr<ImageGO2D> winner_text = nullptr;
+
 };

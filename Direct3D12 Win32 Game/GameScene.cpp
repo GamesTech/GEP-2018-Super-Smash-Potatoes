@@ -50,7 +50,6 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//{
 	//	//for playtesting
 	//	no_players = 2;
-
 	//}
 
 	spawnPlayers(gsd, m_RD, no_players);

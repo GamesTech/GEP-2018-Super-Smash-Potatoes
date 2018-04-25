@@ -196,7 +196,7 @@ void Player2D::Grabbing()
 
 void Player2D::respawn()
 {
-	if (lives_remaining > 0)
+	if (lives_remaining > 1)
 	{
 		lives_remaining--;
 		action_jump = GROUND;

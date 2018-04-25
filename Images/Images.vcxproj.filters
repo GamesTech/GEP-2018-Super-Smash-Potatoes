@@ -54,6 +54,18 @@
     </ImageContentTask>
     <ImageContentTask Include="Background\blackground_1.png" />
     <ImageContentTask Include="Background\background_2.jpg" />
+    <ImageContentTask Include="Menu\Arrow.png" />
+    <ImageContentTask Include="Menu\Buttons.png" />
+    <ImageContentTask Include="Menu\lives.png" />
+    <ImageContentTask Include="Menu\PlayerPreviewBoxes.png" />
+    <ImageContentTask Include="Menu\Logo.png" />
+    <ImageContentTask Include="Menu\Arena Selection.png" />
+    <ImageContentTask Include="Menu\numbers.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Player wins.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
@@ -65,25 +77,5 @@
     <Filter Include="Menu">
       <UniqueIdentifier>{d35873c1-67be-4a23-b0f4-477d800a71ce}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Menu\PlayerPreviewBoxes.png">
-      <Filter>Menu</Filter>
-    </Image>
-    <Image Include="Menu\Arrow.png">
-      <Filter>Menu</Filter>
-    </Image>
-    <Image Include="Menu\Buttons.png">
-      <Filter>Menu</Filter>
-    </Image>
-    <Image Include="Menu\lives.png">
-      <Filter>Menu</Filter>
-    </Image>
-    <Image Include="Menu\Logo.png">
-      <Filter>Menu</Filter>
-    </Image>
-    <Image Include="Menu\Arena Selection.png">
-      <Filter>Menu</Filter>
-    </Image>
   </ItemGroup>
 </Project>
