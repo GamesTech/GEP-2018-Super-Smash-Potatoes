@@ -28,10 +28,15 @@ private:
 
 	Action action = Action::NONE;
 
-	std::unique_ptr<Text2D> title_text = nullptr;
-	std::unique_ptr<ImageGO2D> start_game_button = nullptr;
-	std::unique_ptr<ImageGO2D> settings_button = nullptr;
-	std::unique_ptr<ImageGO2D> quit_button = nullptr;
+	std::unique_ptr<ImageGO2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> button[3] = { nullptr, nullptr, nullptr };
+	struct ButtonInfo
+	{
+		RECT m_rect;
+		Vector2 pos;
+	};
+
+	ButtonInfo button_info[3] = { {{ 1, 1, 240, 80 },{ 150, 200 }},{{ 1, 81, 240, 160 },{ 150, 300 }},{{ 1, 161, 240, 240 },{ 150, 400 }} };
 
 	int menu_option_selected = 1;
 

@@ -134,7 +134,7 @@ void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 	level = std::make_unique<LevelFile>();
 	level->read(lvlname, ".lvl");
 
-	level_name_text->SetText(lvlname);
+	//level_name_text->SetText(lvlname);
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{

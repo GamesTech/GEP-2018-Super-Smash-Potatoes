@@ -3,16 +3,6 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
-enum GameState
-{
-	MENU,
-	CHARACTERSELECT,
-	ARENASELECT,
-	SETTINGS,
-	INGAME,
-	GAMEOVER
-};
-
 enum Winner
 {
 	PLAYER1,
@@ -30,7 +20,6 @@ struct GameStateData
 	GamePad::State m_gamePadState[4];
 	GamePad::State m_prevGamePadState[4];
 
-	static GameState state;
 	static Winner winner;
 
 	int player_selected[4];
@@ -41,7 +30,6 @@ struct GameStateData
 	int no_players;
 	int arena_selected;
 
-	GameState gameState;
 	Winner winState;
 };
 

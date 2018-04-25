@@ -23,9 +23,9 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	fullscreen_text->SetLayer(1.0f);
 	game_objects.push_back(std::move(fullscreen_text));
 
-	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Main_Menu_Button");
+	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
 	main_menu_button->SetPos(Vector2(300, 400));
-	main_menu_button->SetRect(1, 1, 240, 80);
+	main_menu_button->SetRect(1, 241, 240, 320);
 	game_objects.push_back(std::move(main_menu_button));
 
 	highlight_option_selected();
@@ -153,7 +153,7 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 
 	DXGI_MODE_DESC newTargetParams = {new_outputWidth, new_outputHeight, 60, 1,
 		DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED, DXGI_MODE_SCALING_UNSPECIFIED };
-	m_swapChain->ResizeTarget(&newTargetParams);
+	//m_swapChain->ResizeTarget(&newTargetParams);
 }
 
 

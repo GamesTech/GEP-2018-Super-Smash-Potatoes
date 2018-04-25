@@ -13,28 +13,21 @@ MenuScene::~MenuScene()
 
 bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	title_text = std::make_unique<Text2D>("Super Trash Potatoes");
+	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo");
 	title_text->SetLayer(1.0f);
+	title_text->SetPos({0, 0});
+	title_text->SetRect({ 0, 0, 1280, 720 });
 	game_objects.push_back(std::move(title_text));
 
-	start_game_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
-	start_game_button->SetPos(Vector2(300, 200));
-	start_game_button->SetRect(1, 1, 240, 80);
-	start_game_button->SetLayer(1.0f);
-	start_game_button->CentreOrigin();
-	game_objects.push_back(std::move(start_game_button));
-
-	settings_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
-	settings_button->SetPos(Vector2(300, 300));
-	settings_button->SetRect(1, 81, 240, 160);
-	settings_button->CentreOrigin();
-	game_objects.push_back(std::move(settings_button));
-
-	quit_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
-	quit_button->SetPos(Vector2(300, 400));
-	quit_button->SetRect(1, 161, 240, 240);
-	quit_button->CentreOrigin();
-	game_objects.push_back(std::move(quit_button));
+	for (int i = 0; i < 3; ++i)
+	{
+		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons");
+		button[i]->SetPos(button_info[i].pos);
+		button[i]->SetRect(button_info[i].m_rect);
+		button[i]->SetLayer(1.0f);
+		button[i]->CentreOrigin();
+		game_objects.push_back(std::move(button[i]));
+	}
 
 	highlight_option_selected();
 
@@ -127,19 +120,19 @@ void MenuScene::highlight_option_selected()
 	switch (menu_option_selected)
 	{
 	case 1:
-		//start_game_button->SetColour(Color(1, 0, 0));
-		//settings_button->SetColour(Color(1, 1, 1));
-		//quit_button->SetColour(Color(1, 1, 1));
+		game_objects[1]->SetColour(Color(1, 0, 0));
+		game_objects[2]->SetColour(Color(1, 1, 1));
+		game_objects[3]->SetColour(Color(1, 1, 1));
 		break;
 	case 2:
-		//start_game_button->SetColour(Color(1, 1, 1));
-		//settings_button->SetColour(Color(1, 0, 0));
-		//quit_button->SetColour(Color(1, 1, 1));
+		game_objects[1]->SetColour(Color(1, 1, 1));
+		game_objects[2]->SetColour(Color(1, 0, 0));
+		game_objects[3]->SetColour(Color(1, 1, 1));
 		break;
 	case 3:
-		//start_game_button->SetColour(Color(1, 1, 1));
-		//settings_button->SetColour(Color(1, 1, 1));
-		//quit_button->SetColour(Color(1, 0, 0));
+		game_objects[1]->SetColour(Color(1, 1, 1));
+		game_objects[2]->SetColour(Color(1, 1, 1));
+		game_objects[3]->SetColour(Color(1, 0, 0));
 		break;
 	}
 }
