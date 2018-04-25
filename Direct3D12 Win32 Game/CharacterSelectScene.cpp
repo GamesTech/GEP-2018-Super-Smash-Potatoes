@@ -103,6 +103,10 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 	{
 		scene_change.change_type = ChangeType::ADD;
 		scene_change.scene = SceneEnum::ARENA_SELECTION;
+		for (int i = 0; i < no_players; i++)
+		{
+			players_locked[i] = false;
+		}
 		break;
 	}
 

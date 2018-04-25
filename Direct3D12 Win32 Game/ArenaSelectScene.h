@@ -24,9 +24,7 @@ private:
 	};
 	Action action = Action::NONE;
 
-	std::unique_ptr<Text2D> title_text = nullptr;
-	std::unique_ptr<Text2D> level_name_text = nullptr;
-
+	std::unique_ptr<ImageGO2D> title_boarder = nullptr;
 	std::unique_ptr<ImageGO2D> left_arrow = nullptr;
 	std::unique_ptr<ImageGO2D> right_arrow = nullptr;
 

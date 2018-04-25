@@ -82,5 +82,8 @@
     <Image Include="Menu\Logo.png">
       <Filter>Menu</Filter>
     </Image>
+    <Image Include="Menu\Arena Selection.png">
+      <Filter>Menu</Filter>
+    </Image>
   </ItemGroup>
 </Project>
