@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ImageContentTask Include="guides_logo.png" />
-    <ImageContentTask Include="twist.png" />
-    <ImageContentTask Include="gens.png" />
-    <ImageContentTask Include="Start_Game_Button.png" />
-    <ImageContentTask Include="Settings_Button.png" />
-    <ImageContentTask Include="Quit_Button.png" />
-    <ImageContentTask Include="Buttons.png" />
-    <ImageContentTask Include="Main_Menu_Button.png" />
-    <ImageContentTask Include="gens2.png" />
     <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
@@ -40,8 +31,6 @@
     <ImageContentTask Include="Scenes\platform_side.png" />
     <ImageContentTask Include="Scenes\platform.png" />
     <ImageContentTask Include="Scenes\platform_large.png" />
-    <ImageContentTask Include="PlayerPreviewBoxes.png" />
-    <ImageContentTask Include="Arrow.png" />
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
@@ -63,7 +52,6 @@
     <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="lives.png" />
     <ImageContentTask Include="Background\blackground_1.png" />
     <ImageContentTask Include="Background\background_2.jpg" />
   </ItemGroup>
@@ -74,5 +62,28 @@
     <Filter Include="Character Sprites">
       <UniqueIdentifier>{0f67ae62-bf43-4997-9823-44e178a25f93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{d35873c1-67be-4a23-b0f4-477d800a71ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Menu\PlayerPreviewBoxes.png">
+      <Filter>Menu</Filter>
+    </Image>
+    <Image Include="Menu\Arrow.png">
+      <Filter>Menu</Filter>
+    </Image>
+    <Image Include="Menu\Buttons.png">
+      <Filter>Menu</Filter>
+    </Image>
+    <Image Include="Menu\lives.png">
+      <Filter>Menu</Filter>
+    </Image>
+    <Image Include="Menu\Logo.png">
+      <Filter>Menu</Filter>
+    </Image>
+    <Image Include="Menu\Arena Selection.png">
+      <Filter>Menu</Filter>
+    </Image>
   </ItemGroup>
 </Project>

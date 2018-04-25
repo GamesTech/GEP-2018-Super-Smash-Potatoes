@@ -20,3 +20,10 @@ void GameObject2D::SetRect(float left, float top, float right, float bottom)
 	m_size.x = m_rect.right - m_rect.left;
 	m_size.y = m_rect.bottom - m_rect.top;
 }
+
+void GameObject2D::SetRect(RECT _rect)
+{
+	m_rect = _rect;
+	m_size.x = m_rect.right - m_rect.left;
+	m_size.y = m_rect.bottom - m_rect.top;
+}

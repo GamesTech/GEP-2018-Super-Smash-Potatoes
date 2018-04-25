@@ -43,6 +43,7 @@ public:
 	void SetLayer(float _layer) { m_layer = _layer;  }
 	void SetType(int _type) { m_type = _type; }
 	void SetRect(float left, float top, float right, float bottom);
+	void SetRect(RECT m_rect);
 
 
 	virtual void CentreOrigin() = 0;

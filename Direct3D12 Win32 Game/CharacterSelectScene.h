@@ -7,23 +7,31 @@ public:
 	CharacterSelectScene();
 	~CharacterSelectScene();
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
-	void virtual update(GameStateData* gsd) override;
-	void virtual render(RenderData* m_RD,
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
-	void virtual ReadInput(GameStateData* gsd) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual SceneChange update(GameStateData* gsd) override;
+	virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
+	virtual void ReadInput(GameStateData* gsd) override;
 
 private:
+	enum Action
+	{
+		NONE,
+		CONTINUE,
+		BACK
+	};
+
+	Action action = Action::NONE;
+
 	void loadCharactersFile(string _filename);
 
-	Text2D* title_text;
-	ImageGO2D* player_preview_boxes;
+	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> player_preview_boxes = nullptr;
 
-	ImageGO2D* grid_sprite_temp;
-	std::vector<ImageGO2D*> grid_sprites;
+	std::unique_ptr<ImageGO2D> grid_sprite_temp = nullptr;
+	std::vector<std::unique_ptr<ImageGO2D>> grid_sprites;
 
-	ImageGO2D* player_preview_temp;
-	std::vector<ImageGO2D*> player_previews;
+	std::unique_ptr<ImageGO2D> player_preview_temp = nullptr;
+	std::vector<std::unique_ptr<ImageGO2D>> player_previews;
 
 	int sprites_per_row = 0;
 
