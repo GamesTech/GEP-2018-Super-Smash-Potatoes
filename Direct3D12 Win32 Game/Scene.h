@@ -53,4 +53,5 @@ public:
 protected:
 	std::vector<std::unique_ptr<GameObject2D>> game_objects;
 	AudioManager* audio_manager = nullptr;
+	int no_players;
 };

@@ -11,6 +11,8 @@ SettingsScene::~SettingsScene()
 
 bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
+	no_players = gsd->no_players;
+
 	resolution_text = std::make_unique<Text2D>("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
 	resolution_text->SetLayer(1.0f);
@@ -154,52 +156,55 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 
 void SettingsScene::ReadInput(GameStateData* gsd)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
+	for (int i = 0; i < no_players; i++)
 	{
-		action = Action::BUTTON_DOWN;
-	}
-	else if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
-	{
-		action = Action::BUTTON_UP;
-	}
+		if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
+			|| (gsd->m_gamePadState[i].IsDPadDownPressed() && !gsd->m_prevGamePadState[i].IsDPadDownPressed()))
+		{
+			action = Action::BUTTON_DOWN;
+		}
+		else if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
+			|| (gsd->m_gamePadState[i].IsDPadUpPressed() && !gsd->m_prevGamePadState[i].IsDPadUpPressed()))
+		{
+			action = Action::BUTTON_UP;
+		}
 
-	switch (menu_option_selected)
-	{
-	case 1:
-		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
+		switch (menu_option_selected)
 		{
-			action = Action::SCREEN_RES_LEFT;
+		case 1:
+			if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
+				|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
+			{
+				action = Action::SCREEN_RES_LEFT;
+			}
+			else if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
+				|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
+			{
+				action = Action::SCREEN_RES_RIGHT;
+			}
+			break;
+		case 2:
+			if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left && fullscreen == true)
+				|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
+			{
+				fullscreen = false;
+				action = Action::FULLSCREEN;
+			}
+			else if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right && fullscreen == false)
+				|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
+			{
+				fullscreen = true;
+				action = Action::FULLSCREEN;
+			}
+			break;
+		case 3:
+			if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+				|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
+			{
+				action = Action::EXIT;
+			}
+			break;
 		}
-		else if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-		{
-			action = Action::SCREEN_RES_RIGHT;
-		}
-		break;
-	case 2:
-		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left && fullscreen == true)
-			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
-		{
-			fullscreen = false;
-			action = Action::FULLSCREEN;
-		}
-		else if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right && fullscreen == false)
-			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-		{
-			fullscreen = true;
-			action = Action::FULLSCREEN;
-		}
-		break;
-	case 3:
-		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
-		{
-			action = Action::EXIT;
-		}
-		break;
 	}
 }
 

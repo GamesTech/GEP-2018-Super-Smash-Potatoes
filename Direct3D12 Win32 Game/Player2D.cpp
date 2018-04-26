@@ -206,8 +206,8 @@ void Player2D::respawn()
 	{
 		lives_remaining--;
 		action_jump = GROUND;
-		m_pos.x = 400.0f;
-		m_pos.y = 300.0f;
+		m_pos.x = 600.0f;
+		m_pos.y = 250.0f;
 		m_vel.x = 0.0f;
 		m_vel.y = 301.0f;
 		m_damage = 1;

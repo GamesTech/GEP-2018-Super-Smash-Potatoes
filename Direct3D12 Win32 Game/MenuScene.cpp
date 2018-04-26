@@ -13,6 +13,8 @@ MenuScene::~MenuScene()
 
 bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
+	//no_players = gsd->no_players;
+
 	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo");
 	title_text->SetLayer(1.0f);
 	title_text->SetPos({0, 0});
@@ -139,7 +141,7 @@ void MenuScene::highlight_option_selected()
 
 void MenuScene::ReadInput(GameStateData* gsd)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down) 
+	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
 		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
 	{
 		action = Action::BUTTON_DOWN;

@@ -8,6 +8,7 @@
 Animation2D::Animation2D(RenderData* _RD, string _filename) :ImageGO2D(_RD, _filename)
 {
 	action_movement = STILL;
+	direction = LEFT;
 }
 
 Animation2D::~Animation2D()

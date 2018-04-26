@@ -16,6 +16,7 @@ ArenaSelectScene::~ArenaSelectScene()
 
 bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
+	no_players = gsd->no_players;
 	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection");
 	title_boarder->SetLayer(0.0f);
 	title_boarder->SetRect(1, 1, 1280, 720);
@@ -89,36 +90,39 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 
 void ArenaSelectScene::ReadInput(GameStateData * gsd)
 {
-	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-		|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
+	for (int i = 0; i < no_players; i++)
 	{
-		if (level_selected > 0)
+		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
+			|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
 		{
-			new_level = true;
-			level_selected--;
+			if (level_selected > 0)
+			{
+				new_level = true;
+				level_selected--;
+			}
 		}
-	}
-	if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-		|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-	{
-		if (level_selected < total_levels-1)
+		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
+			|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
 		{
-			new_level = true;
-			level_selected++;
+			if (level_selected < total_levels - 1)
+			{
+				new_level = true;
+				level_selected++;
+			}
 		}
-	}
 
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
-	{
-		gsd->arena_selected = level_selected;
-		action = Action::CONTINUE;
-	}
+		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
+		{
+			gsd->arena_selected = level_selected;
+			action = Action::CONTINUE;
+		}
 
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
-	{
-		action = Action::BACK;
+		if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+			|| (gsd->m_gamePadState[i].IsBPressed() && !gsd->m_prevGamePadState[i].IsBPressed()))
+		{
+			action = Action::BACK;
+		}
 	}
 }
 
