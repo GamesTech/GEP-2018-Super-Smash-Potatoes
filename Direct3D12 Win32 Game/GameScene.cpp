@@ -569,7 +569,7 @@ void GameScene::loadCharactersFile(string _filename)
 //
 //			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 //			{
-//				if (!m_player[j]->GetUpHit())
+//				if (!m_player[j]->GetImmune())
 //				{
 //					m_player[j]->GotUpHit(_GSD);
 //					audio_manager->playSound(SLAPSOUND);

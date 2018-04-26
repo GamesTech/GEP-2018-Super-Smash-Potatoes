@@ -58,11 +58,11 @@ public:
 	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
 	bool ExectueUpPunch(GameStateData * _GSD, Player2D* other_player);
 	void GotHit(GameStateData * _GSD, int _dir, int y_force);
-	void GotUpHit();
+	void SetImmune(bool _immune) { m_immune = _immune; };
 	void Block(GameStateData * _GSD);
 	bool GetOrientation();
-	bool GetUpHit() { return m_got_up_hit; }
-	bool GetInvincibility() { return false; };
+	bool GetImmune() { return m_immune; }
+	bool GetInvincibility() { return m_invincibility; };
 
 	//void SetLivesRemaining(int lives) { lives_remaining = lives; };
 	int GetLivesRemaining() { return lives_remaining; };
@@ -79,6 +79,7 @@ protected:
 	void UpPunchTimer(GameStateData * _GSD);
 	void deathZone();
 	void respawn();
+	void RespawnTimer(GameStateData * _GSD);
 	void controller(GameStateData * _GSD);
 
 	float m_jumpForce = 60000;
@@ -104,11 +105,13 @@ protected:
 	bool m_remove_controll = false;
 	bool m_dead = false;
 	bool m_ignore_collision = false;
-	bool m_got_up_hit = false;
+	bool m_immune = false;
+	bool m_invincibility = false;
 
 	float m_timer_punch = 4;
 	float m_up_timer_punch = 4;
 	float m_timer_hit = 4;
+	float m_respawn_timer = 3;
 
 	int m_direction = 1;
 
