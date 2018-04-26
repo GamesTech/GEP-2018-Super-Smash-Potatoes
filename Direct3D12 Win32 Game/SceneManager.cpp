@@ -17,7 +17,7 @@ void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * a
 	scenes.push_back(std::move(scene));
 }
 
-bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain)
 {
 	if (scenes.size() == 0)
 	{
@@ -73,6 +73,7 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 		case SceneEnum::SceneEnum::SETTINGS:
 		{
 			scene = std::make_unique<SettingsScene>();
+			scene->giveSwapChain(swapChain);
 			break;
 		}
 

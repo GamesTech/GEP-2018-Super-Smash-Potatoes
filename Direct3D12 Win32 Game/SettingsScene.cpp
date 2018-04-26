@@ -52,14 +52,14 @@ Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 		new_outputHeight = 720;
 		break;
 	case 4:
-		new_outputWidth = 1440;
+		new_outputWidth = 1920;
 		new_outputHeight = 1080;
 		break;
 	}
 
 	DXGI_MODE_DESC newTargetParams = { new_outputWidth, new_outputHeight, 60, 1,
 		DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED, DXGI_MODE_SCALING_UNSPECIFIED };
-	//m_swapChain->ResizeTarget(&newTargetParams);
+	m_swapChain->ResizeTarget(&newTargetParams);
 
 	Scene::SceneChange scene_change;
 	switch (action)
@@ -218,7 +218,7 @@ void SettingsScene::newResolutionText(int new_resolution_option)
 		resolution_text->SetText("Resolution: <- 1280 x 720 ->");
 		break;
 	case 4:
-		resolution_text->SetText("Resolution: <- 1440 x 1080");
+		resolution_text->SetText("Resolution: <- 1920 x 1080");
 		break;
 	}
 }
