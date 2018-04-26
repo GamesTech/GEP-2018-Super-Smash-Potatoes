@@ -80,9 +80,16 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 				}
 				else if (m_vel.y > 300)
 				{
-					action_jump = FALL;
-					m_upwards_punch = false;
-					m_up_attack = false;
+					if (m_downwards_punch)
+					{
+						action_jump = DOWNWARDPUNCH;
+					}
+					else
+					{
+						action_jump = FALL;
+						m_upwards_punch = false;
+						m_up_attack = false;
+					}
 				}
 			}
 

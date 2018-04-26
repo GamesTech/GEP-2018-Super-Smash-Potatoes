@@ -12,7 +12,7 @@ void PlayerTags::Init(RenderData * m_RD)
 		m_player_tag[i] = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
 		m_player_tag[i]->SetPos(Vector2(250, 200));
 		m_player_tag[i]->SetRect(m_player_tag_sprite[i]);
-		m_player_tag[i]->SetLayer(0.3f);
+		m_player_tag[i]->SetLayer(0.0f);
 		m_player_tag[i]->CentreOrigin();
 	}
 }
@@ -21,24 +21,24 @@ void PlayerTags::Update()
 {
 	for (int i = 0; i < player; ++i)
 	{
-		if (player_pos[i].x < 30)
+		if (player_pos[i].x < 0)
 		{
-			player_pos[i].x = 30;
+			player_pos[i].x = 0;
 		}
-		if (player_pos[i].x > 1250)
+		if (player_pos[i].x > 1210)
 		{
-			player_pos[i].x = 1250;
+			player_pos[i].x = 1210;
 		}
 
-		if (player_pos[i].y < 30)
+		if (player_pos[i].y < 50)
 		{
-			player_pos[i].y = 30;
+			player_pos[i].y = 50;
 		}
-		if (player_pos[i].y > 690)
+		if (player_pos[i].y > 680)
 		{
-			player_pos[i].y = 690;
+			player_pos[i].y = 680;
 		}
-		m_player_tag[i]->SetPos(player_pos[i]);
+		m_player_tag[i]->SetPos(player_pos[i] + Vector2{40,-25});
 	}
 }
 
@@ -50,11 +50,11 @@ void PlayerTags::Render(RenderData * m_RD)
 	}
 }
 
-void PlayerTags::SetPlayerPos(int player, Vector2 pos)
+void PlayerTags::SetPlayerPos(int players, Vector2 pos)
 {
 	for (int i = 0; i < player; ++i)
 	{
-		if (player == i)
+		if (players == i)
 		{
 			player_pos[i] = pos;
 		}

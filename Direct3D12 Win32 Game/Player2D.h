@@ -88,6 +88,7 @@ protected:
 	bool m_up_attack = false;
 	bool m_jumping = false;
 	bool m_upwards_punch = false;
+	bool m_downwards_punch = false;
 	bool m_punch = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;

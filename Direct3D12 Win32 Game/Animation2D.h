@@ -12,6 +12,7 @@ enum ActionJump
 	GROUND,
 	JUMP,
 	UPWARDPUNCH,
+	DOWNWARDPUNCH,
 	PUNCH,
 	FALL,
 	HIT
@@ -35,6 +36,7 @@ public:
 
 	void LoadSprites(string _filename);
 	void AnimationTick(GameStateData * _GSD);
+	void AnimationTimers(GameStateData * _GSD);
 	void AnimationOn();
 	void Punch();
 
@@ -49,6 +51,7 @@ private:
 	void SetAnimationSprite(int action);
 	void SetJump();
 	void SetJumpPunch();
+	void SetDownPunch();
 	void SetWalk(int animation);
 	void SetRun();
 	void SetFall();
@@ -82,7 +85,9 @@ private:
 		LKick3,
 		RKick3,
 		LHit,
-		RHit
+		RHit,
+		LDownwardPunch,
+		RDownwardPunch
 	};
 
 
@@ -94,5 +99,5 @@ private:
 	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[26][4];
+	float sprite_batch[28][4];
 };

@@ -102,6 +102,8 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	// movement loop
 	for (int i = 0; i < no_players; i++)
 	{
+		Vector2 temp = m_player[i]->GetPos();
+		m_player_tag->SetPlayerPos(i, temp);
 		if (m_player[i]->getDead() == false)
 		{
 			for (auto& platform : platforms)
@@ -146,7 +148,6 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		{
 			players_dead++;
 		}
-		m_player_tag->SetPlayerPos(i, m_player[i]->GetPos());
 	}
 	m_player_tag->Update();
 
