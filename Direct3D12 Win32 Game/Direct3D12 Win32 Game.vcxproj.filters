@@ -167,6 +167,9 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Game Base\Headers\AudioManager</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerTags.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>Game Base\Source\AudioManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTags.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
