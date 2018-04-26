@@ -46,6 +46,7 @@ protected:
 
 private:
 	void SetDefault(int animation);
+	void SetAnimationSprite(int action);
 	void SetJump();
 	void SetJumpPunch();
 	void SetWalk(int animation);

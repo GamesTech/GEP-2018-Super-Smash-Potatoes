@@ -103,6 +103,10 @@ Scene::SceneChange CharacterSelectScene::update(GameStateData * gsd)
 	{
 		scene_change.change_type = ChangeType::ADD;
 		scene_change.scene = SceneEnum::ARENA_SELECTION;
+		for (int i = 0; i < no_players; i++)
+		{
+			players_locked[i] = false;
+		}
 		break;
 	}
 
@@ -134,6 +138,15 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 	for (int i = 0; i < no_players; i++)
 	{
+		player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
+		if (players_locked[i] == true)
+		{
+			player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(0, 1, 0));
+		}
+		else
+		{
+			player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
+		}
 		player_previews[selection_player[i]]->Render(m_RD);
 	}
 
@@ -217,20 +230,12 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
 
 		grid_sprites[selection_player[i]]->SetScale(Vector2(1.2f, 1.2f));
-		player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
+		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
 		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
 			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
 		{
 			players_locked[i] = !players_locked[i];
-			if (players_locked[i] == true)
-			{
-				player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(0, 1, 0));
-			}
-			else
-			{
-				player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
-			}
 		}
 	}
 

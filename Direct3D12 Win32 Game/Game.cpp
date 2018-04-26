@@ -172,7 +172,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	if (!scene_manager->update(m_RD, m_GSD, audio_manager))
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, m_swapChain))
 	{
 		PostQuitMessage(0);
 	}

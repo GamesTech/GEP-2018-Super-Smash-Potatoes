@@ -124,11 +124,11 @@ void Animation2D::SetDefault(int animation)
 		{
 			if (direction == LEFT)
 			{
-				SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
+				SetAnimationSprite(LDefault);
 			}
 			if (direction == RIGHT)
 			{
-				SetRect(sprite_batch[RDefault][0], sprite_batch[RDefault][1], sprite_batch[RDefault][2], sprite_batch[RDefault][3]);
+				SetAnimationSprite(RDefault);
 			}
 		}
 	}
@@ -138,11 +138,11 @@ void Animation2D::SetDefault(int animation)
 		{
 			if (direction == LEFT)
 			{
-				SetRect(sprite_batch[LDefault2][0], sprite_batch[LDefault2][1], sprite_batch[LDefault2][2], sprite_batch[LDefault2][3]);
+				SetAnimationSprite(LDefault2);
 			}
 			if (direction == RIGHT)
 			{
-				SetRect(sprite_batch[RDefault2][0], sprite_batch[RDefault2][1], sprite_batch[RDefault2][2], sprite_batch[RDefault2][3]);
+				SetAnimationSprite(RDefault2);
 			}
 		}
 	}
@@ -152,17 +152,17 @@ void Animation2D::SetJump()
 {
 	if (direction == LEFT)
 	{
-		SetRect(sprite_batch[LJump][0], sprite_batch[LJump][1], sprite_batch[LJump][2], sprite_batch[LJump][3]);
+		SetAnimationSprite(LJump);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(sprite_batch[RJump][0], sprite_batch[RJump][1], sprite_batch[RJump][2], sprite_batch[RJump][3]);
+		SetAnimationSprite(RJump);
 	}
 }
 
 void Animation2D::SetJumpPunch()
 {
-	SetRect(sprite_batch[UpwardJump][0], sprite_batch[UpwardJump][1], sprite_batch[UpwardJump][2], sprite_batch[UpwardJump][3]);
+	SetAnimationSprite(UpwardJump);
 }
 
 void Animation2D::SetWalk(int animation)
@@ -171,33 +171,33 @@ void Animation2D::SetWalk(int animation)
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LWalk1][0], sprite_batch[LWalk1][1], sprite_batch[LWalk1][2], sprite_batch[LWalk1][3]);
+			SetAnimationSprite(LWalk1);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RWalk1][0], sprite_batch[RWalk1][1], sprite_batch[RWalk1][2], sprite_batch[RWalk1][3]);
+			SetAnimationSprite(RWalk1);
 		}
 	}
 	else if (animation == 2)
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LWalk2][0], sprite_batch[LWalk2][1], sprite_batch[LWalk2][2], sprite_batch[LWalk2][3]);
+			SetAnimationSprite(LWalk2);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RWalk2][0], sprite_batch[RWalk2][1], sprite_batch[RWalk2][2], sprite_batch[RWalk2][3]);
+			SetAnimationSprite(RWalk2);
 		}
 	}
 	else
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LWalk3][0], sprite_batch[LWalk3][1], sprite_batch[LWalk3][2], sprite_batch[LWalk3][3]);
+			SetAnimationSprite(LWalk3);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RWalk3][0], sprite_batch[RWalk3][1], sprite_batch[RWalk3][2], sprite_batch[RWalk3][3]);
+			SetAnimationSprite(RWalk3);
 		}
 	}
 }
@@ -211,11 +211,11 @@ void Animation2D::SetFall()
 {
 	if (direction == LEFT)
 	{
-		SetRect(sprite_batch[LFall][0], sprite_batch[LFall][1], sprite_batch[LFall][2], sprite_batch[LFall][3]);
+		SetAnimationSprite(LFall);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(sprite_batch[RFall][0], sprite_batch[RFall][1], sprite_batch[RFall][2], sprite_batch[RFall][3]);
+		SetAnimationSprite(RFall);
 	}
 }
 
@@ -225,33 +225,33 @@ void Animation2D::SetPunch(int animation)
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LKick1][0], sprite_batch[LKick1][1], sprite_batch[LKick1][2], sprite_batch[LKick1][3]);
+			SetAnimationSprite(LKick1);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RKick1][0], sprite_batch[RKick1][1], sprite_batch[RKick1][2], sprite_batch[RKick1][3]);
+			SetAnimationSprite(RKick1);
 		}
 	}
 	else if (animation == 2)
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LKick2][0], sprite_batch[LKick2][1], sprite_batch[LKick2][2], sprite_batch[LKick2][3]);
+			SetAnimationSprite(LKick3);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RKick2][0], sprite_batch[RKick2][1], sprite_batch[RKick2][2], sprite_batch[RKick2][3]);
+			SetAnimationSprite(RKick2);
 		}
 	}
 	else
 	{
 		if (direction == LEFT)
 		{
-			SetRect(sprite_batch[LKick3][0], sprite_batch[LKick3][1], sprite_batch[LKick3][2], sprite_batch[LKick3][3]);
+			SetAnimationSprite(LKick3);
 		}
 		if (direction == RIGHT)
 		{
-			SetRect(sprite_batch[RKick3][0], sprite_batch[RKick3][1], sprite_batch[RKick3][2], sprite_batch[RKick3][3]);
+			SetAnimationSprite(RKick3);
 		}
 	}
 }
@@ -260,11 +260,11 @@ void Animation2D::SetGrab()
 {
 	if (direction == LEFT)
 	{
-		SetRect(sprite_batch[LGrab][0], sprite_batch[LGrab][1], sprite_batch[LGrab][2], sprite_batch[LGrab][3]);
+		SetAnimationSprite(LGrab);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(sprite_batch[RGrab][0], sprite_batch[RGrab][1], sprite_batch[RGrab][2], sprite_batch[RGrab][3]);
+		SetAnimationSprite(RGrab);
 	}
 }
 
@@ -272,12 +272,17 @@ void Animation2D::SetHit()
 {
 	if (direction == LEFT)
 	{
-		SetRect(sprite_batch[LHit][0], sprite_batch[LHit][1], sprite_batch[LHit][2], sprite_batch[LHit][3]);
+		SetAnimationSprite(LHit);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(sprite_batch[RHit][0], sprite_batch[RHit][1], sprite_batch[RHit][2], sprite_batch[RHit][3]);
+		SetAnimationSprite(RHit);
 	}
+}
+
+void Animation2D::SetAnimationSprite(int action)
+{
+	SetRect(sprite_batch[action][0], sprite_batch[action][1], sprite_batch[action][2], sprite_batch[action][3]);
 }
 
 void Animation2D::LoadSprites(string _filename)
@@ -298,5 +303,5 @@ void Animation2D::LoadSprites(string _filename)
 		}
 	}
 	sprite_position_batching.close();
-	SetRect(sprite_batch[LDefault][0], sprite_batch[LDefault][1], sprite_batch[LDefault][2], sprite_batch[LDefault][3]);
+	SetAnimationSprite(LDefault);
 }

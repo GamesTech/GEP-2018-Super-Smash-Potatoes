@@ -177,6 +177,16 @@
   <ItemGroup>
     <ImageContentTask Include="Menu\Logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Arena Selection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\numbers.png" />
+    <ImageContentTask Include="Menu\Player wins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\PlayerTags.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

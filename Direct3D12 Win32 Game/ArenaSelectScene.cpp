@@ -16,24 +16,20 @@ ArenaSelectScene::~ArenaSelectScene()
 
 bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	title_text = std::make_unique<Text2D>("Arena Select!");
-	title_text->SetLayer(0.5f);
-	game_objects.push_back(std::move(title_text));
-	
-	level_name_text = std::make_unique<Text2D>("Level X");
-	level_name_text->SetLayer(0.5f);
-	level_name_text->SetPos(Vector2(500, 50));
-	game_objects.push_back(std::move(level_name_text));
+	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection");
+	title_boarder->SetLayer(0.0f);
+	title_boarder->SetRect(1, 1, 1280, 720);
+	game_objects.push_back(std::move(title_boarder));
 
 	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
-	left_arrow->SetLayer(0.5f);
+	left_arrow->SetLayer(0.1f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
 	game_objects.push_back(std::move(left_arrow));
 
 	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
-	right_arrow->SetLayer(0.5f);
+	right_arrow->SetLayer(0.1f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
 	right_arrow->CentreOrigin();

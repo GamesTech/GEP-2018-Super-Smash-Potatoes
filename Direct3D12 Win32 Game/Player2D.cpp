@@ -193,7 +193,7 @@ void Player2D::Grabbing()
 
 void Player2D::respawn()
 {
-	if (lives_remaining > 0)
+	if (lives_remaining > 1)
 	{
 		lives_remaining--;
 		action_jump = GROUND;
@@ -426,7 +426,7 @@ void Player2D::Block(GameStateData * _GSD)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
-	AddForce(2500 * Vector2::UnitX * -m_direction);
+	AddForce(25000 * Vector2::UnitX * -m_direction);
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_remove_controll = true;
 	m_timer_hit = 0;

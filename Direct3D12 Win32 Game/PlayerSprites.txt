@@ -1,10 +1,2 @@
 kirby_sprite
 ghost_kirby_sprite
-kirby_sprite
-ghost_kirby_sprite
-kirby_sprite
-ghost_kirby_sprite
-kirby_sprite
-ghost_kirby_sprite
-kirby_sprite
-ghost_kirby_sprite

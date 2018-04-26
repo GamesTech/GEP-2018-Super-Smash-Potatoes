@@ -8,13 +8,13 @@
 GameScene::~GameScene()
 {	
 	game_objects.clear();
-
 	platforms.shrink_to_fit();
 	objects.shrink_to_fit();
 }
 
 bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
+	m_RD->m_resourceCount = 30;
 	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();
@@ -50,7 +50,6 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//{
 	//	//for playtesting
 	//	no_players = 2;
-
 	//}
 
 	spawnPlayers(gsd, m_RD, no_players);
@@ -144,6 +143,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		{
 			players_dead++;
 		}
+		m_player_tag[i]->SetPos(m_player[i]->GetPos() + Vector2{50,-25});
 	}
 
 	// attack loop
@@ -269,6 +269,7 @@ void GameScene::render(RenderData* m_RD,
 	for (int i = 0; i < no_players; i++)
 	{
 		m_player[i]->Render(m_RD);
+		m_player_tag[i]->Render(m_RD);
 	}
 
 	m_RD->m_spriteBatch->End();
@@ -437,9 +438,15 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		m_player[i]->SetPos(Vector2(250, 200));
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
-		m_player[i]->SetDrag(3.f);
+		m_player[i]->SetDrag(3.0f);
 		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
+
+		m_player_tag[i] = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
+		m_player_tag[i]->SetPos(Vector2(250, 200));
+		m_player_tag[i]->SetRect(m_player_tag_sprite[i]);
+		m_player_tag[i]->SetLayer(0.3f);
+		m_player_tag[i]->CentreOrigin();
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));

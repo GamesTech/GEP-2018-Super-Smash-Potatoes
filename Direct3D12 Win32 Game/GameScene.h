@@ -38,6 +38,8 @@ private:
 	int max_lives = 0;
 
 	std::unique_ptr<Player2D> m_player[4];
+	std::unique_ptr<ImageGO2D> m_player_tag[4];
+	RECT m_player_tag_sprite[4] = { {0,0,32,35},{ 49,0,95,35 },{ 114,0,160,35 },{ 172,0,218,35 } };
 	std::unique_ptr <LevelFile> level;
 
 	std::vector<string> sprite_names;

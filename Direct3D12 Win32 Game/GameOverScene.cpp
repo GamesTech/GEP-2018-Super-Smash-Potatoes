@@ -15,32 +15,17 @@ GameOverScene::~GameOverScene()
 
 bool GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	game_over_text = std::make_unique<Text2D>("Game Ogre");
-	game_over_text->SetLayer(1.0f);
-	game_over_text->SetPos(Vector2(500, 360));
-	game_over_text->CentreOrigin();
-	game_objects.push_back(std::move(game_over_text));
-
-	switch (gsd->winState)
-	{
-	case PLAYER1:
-		winner_text = std::make_unique<Text2D>("PLAYER 1 WINS");
-		break;
-	case PLAYER2:
-		winner_text = std::make_unique<Text2D>("PLAYER 2 WINS");
-		break;
-	case PLAYER3:
-		winner_text = std::make_unique<Text2D>("PLAYER 3 WINS");
-		break;
-	case PLAYER4:
-		winner_text = std::make_unique<Text2D>("PLAYER 4 WINS");
-		break;
-	default:
-		winner_text = std::make_unique<Text2D>("NO WINNER");
-		break;
-	}
+	winner_number = std::make_unique<ImageGO2D>(m_RD, "numbers");
+	winner_number->SetLayer(1.0f);
+	winner_number->SetPos(Vector2(700, 330));
+	winner_number->SetRect(number_pos[gsd->winState]);
+	winner_number->CentreOrigin();
+	game_objects.push_back(std::move(winner_number));
+	
+	winner_text = std::make_unique<ImageGO2D>(m_RD, "Player wins");
 	winner_text->SetLayer(1.0f);
-	winner_text->SetPos(Vector2(500, 330));
+	winner_text->SetRect(1,1,924,60);
+	winner_text->SetPos(Vector2(640, 330));
 	winner_text->CentreOrigin();
 	game_objects.push_back(std::move(winner_text));
 	return true;
