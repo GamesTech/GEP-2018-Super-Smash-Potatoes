@@ -45,6 +45,10 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		SetJumpPunch();
 	}
+	else if (action_jump == DOWNWARDPUNCH)
+	{
+		SetDownPunch();
+	}
 	else if (action_jump == HIT)
 	{
 		SetHit();
@@ -54,7 +58,12 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 		SetFall();
 	}
 
+	AnimationTimers(_GSD);
+}
 
+void Animation2D::AnimationTimers(GameStateData * _GSD)
+{
+	//Timer for the walk animation
 	if (timer >= 0.2)
 	{
 		if (m_change_animation < 3)
@@ -71,6 +80,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		timer += _GSD->m_dt;
 	}
+	//Timer for the character to blink
 	if (timer2 >= 10)
 	{
 		if (m_change_animation2 < 2)
@@ -83,13 +93,13 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 			m_change_animation2 = 1;
 			timer2 -= rand() % 10;
 		}
-		
+
 	}
 	else
 	{
 		timer2 += _GSD->m_dt;
 	}
-
+	//Timer for the punch animation
 	if (timer_punch >= 0.1)
 	{
 		if (m_change_punch_animation < 4)
@@ -102,7 +112,6 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 	{
 		timer_punch += _GSD->m_dt;
 	}
-
 }
 
 void Animation2D::AnimationOn()
@@ -163,6 +172,18 @@ void Animation2D::SetJump()
 void Animation2D::SetJumpPunch()
 {
 	SetAnimationSprite(UpwardJump);
+}
+
+void Animation2D::SetDownPunch()
+{
+	if (direction == LEFT)
+	{
+		SetAnimationSprite(LDownwardPunch);
+	}
+	if (direction == RIGHT)
+	{
+		SetAnimationSprite(RDownwardPunch);
+	}
 }
 
 void Animation2D::SetWalk(int animation)
