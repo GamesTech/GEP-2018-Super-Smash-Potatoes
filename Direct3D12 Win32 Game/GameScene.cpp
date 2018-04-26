@@ -149,51 +149,9 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	// attack loop
 	for (int i = 0; i < no_players; i++)
 	{
-		if (m_player[i]->getDead() == false)
+		if (!m_player[i]->getDead())
 		{
-			if (m_player[i]->IsPunching())
-			{
-				bool block = false;
-				for (int j = 0; j < no_players; j++)
-				{
-					if (i != j)
-					{
-						if (m_player[i]->CheckBlocking(gsd, m_player[j].get()))
-						{
-							block = true;
-						}
-					}
-				}
-				if (block)
-				{
-					m_player[i]->Block(gsd);
-				}
-				else
-				{
-					for (int j = 0; j < no_players; j++)
-					{
-						if (i != j)
-						{
-							if (m_player[i]->ExectuePunch(gsd, m_player[j].get()))
-							{
-								audio_manager->playSound(SLAPSOUND);
-							}
-						}
-					}
-				}
-				m_player[i]->ResetAttacks(false);
-			}
-			else if(m_player[i]->IsUpPuching())
-			{
-				//for (int j = 0; j < no_players; j++)
-				//{
-				//	if (i != j)
-				//	{
-				//		ExecuteAttack(gsd, m_player[i].get(), m_player[j].get());
-				//	}
-				//}
-				CheckUpAttackPos(gsd, i);
-			}
+			Attacking(i, gsd);
 		}
 	}
 
@@ -240,6 +198,55 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	action = Action::NONE;
 	return scene_change;
+}
+
+void GameScene::Attacking(int i, GameStateData * gsd)
+{
+	if (m_player[i]->IsPunching())
+	{
+		bool block = false;
+		for (int j = 0; j < no_players; j++)
+		{
+			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			{
+				if (m_player[i]->CheckBlocking(gsd, m_player[j].get()))
+				{
+					block = true;
+				}
+			}
+		}
+		if (block)
+		{
+			m_player[i]->Block(gsd);
+		}
+		else
+		{
+			for (int j = 0; j < no_players; j++)
+			{
+				if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+				{
+					if (m_player[i]->ExectuePunch(gsd, m_player[j].get()))
+					{
+						audio_manager->playSound(SLAPSOUND);
+					}
+				}
+			}
+		}
+		m_player[i]->ResetAttacks(false);
+	}
+	else if (m_player[i]->IsUpPuching())
+	{
+		for (int j = 0; j < no_players; j++)
+		{
+			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			{
+				if (m_player[i]->ExectueUpPunch(gsd, m_player[j].get()))
+				{
+					audio_manager->playSound(SLAPSOUND);
+				}
+			}
+		}
+	}
 }
 
 void GameScene::render(RenderData* m_RD,
@@ -471,105 +478,105 @@ void GameScene::loadCharactersFile(string _filename)
 	character_sprites_loading.close();
 }
 
-void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
-{
-	float r1 = m_player[_i]->Width()/1.5;
-	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
-	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
-	float punch_direction = 0;
-	float block = false;
-	
-	if (m_player[_i]->GetOrientation())
-	{
-		x1 += 40;
-		punch_direction = 1;
-	}
-	else
-	{
-		x1 -= 40;
-		punch_direction = -1;
-	}
-
-	//block
-	for (int j = 0; j < no_players; j++)
-	{
-		if (_i != j)
-		{
-			if (m_player[j]->IsPunching() && punch_direction != m_player[j]->GetOrientation())
-			{
-				float r2 = m_player[j]->Width();
-				//float distance_1 = collision_width - player_width;
-				//float distance_2 = collision_width + player_width;
-				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-
-				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-				{
-					m_player[j]->Block(_GSD);
-					m_player[j]->ResetAttacks(false);
-					block = true;
-				}
-			}
-		}
-	}
-	if (block)
-	{
-		m_player[_i]->Block(_GSD);
-	}
-	else
-	{
-		// standard punch
-		for (int j = 0; j < no_players; j++)
-		{
-			if (_i != j && !m_player[j]->GetInvincibility())
-			{
-				float r2 = m_player[j]->Width();
-				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-
-				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-				{
-					m_player[j]->GotHit(_GSD, punch_direction);
-					audio_manager->playSound(SLAPSOUND);
-				}
-			}
-		}
-	}
-	m_player[_i]->ResetAttacks(false);
-}
-
-void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
-{
-	float r1 = m_player[_i]->Width() / 1.5;
-	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
-	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
-	float punch_direction = 0;
-	float block = false;
-	if (m_player[_i]->IsUpPuching())
-	{
-		y1 -= 30;
-	}
-	// standard punch
-	for (int j = 0; j < no_players; j++)
-	{
-		if (_i != j)
-		{
-			float r2 = m_player[j]->Width();
-			//float distance_1 = collision_width - player_width;
-			//float distance_2 = collision_width + player_width;
-			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-
-			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-			{
-				if (!m_player[j]->GetUpHit())
-				{
-					m_player[j]->GotUpHit(_GSD);
-					audio_manager->playSound(SLAPSOUND);
-				}
-			}
-		}
-	}
-
-	//m_player[_i]->Attack(false);
-}
+//void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
+//{
+//	float r1 = m_player[_i]->Width()/1.5;
+//	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+//	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+//	float punch_direction = 0;
+//	float block = false;
+//	
+//	if (m_player[_i]->GetOrientation())
+//	{
+//		x1 += 40;
+//		punch_direction = 1;
+//	}
+//	else
+//	{
+//		x1 -= 40;
+//		punch_direction = -1;
+//	}
+//
+//	//block
+//	for (int j = 0; j < no_players; j++)
+//	{
+//		if (_i != j)
+//		{
+//			if (m_player[j]->IsPunching() && punch_direction != m_player[j]->GetOrientation())
+//			{
+//				float r2 = m_player[j]->Width();
+//				//float distance_1 = collision_width - player_width;
+//				//float distance_2 = collision_width + player_width;
+//				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+//				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+//
+//				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+//				{
+//					m_player[j]->Block(_GSD);
+//					m_player[j]->ResetAttacks(false);
+//					block = true;
+//				}
+//			}
+//		}
+//	}
+//	if (block)
+//	{
+//		m_player[_i]->Block(_GSD);
+//	}
+//	else
+//	{
+//		// standard punch
+//		for (int j = 0; j < no_players; j++)
+//		{
+//			if (_i != j && !m_player[j]->GetInvincibility())
+//			{
+//				float r2 = m_player[j]->Width();
+//				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+//				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+//
+//				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+//				{
+//					m_player[j]->GotHit(_GSD, punch_direction);
+//					audio_manager->playSound(SLAPSOUND);
+//				}
+//			}
+//		}
+//	}
+//	m_player[_i]->ResetAttacks(false);
+//}
+//
+//void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
+//{
+//	float r1 = m_player[_i]->Width() / 1.5;
+//	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
+//	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
+//	float punch_direction = 0;
+//	float block = false;
+//	if (m_player[_i]->IsUpPuching())
+//	{
+//		y1 -= 30;
+//	}
+//	// standard punch
+//	for (int j = 0; j < no_players; j++)
+//	{
+//		if (_i != j)
+//		{
+//			float r2 = m_player[j]->Width();
+//			//float distance_1 = collision_width - player_width;
+//			//float distance_2 = collision_width + player_width;
+//			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
+//			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
+//
+//			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+//			{
+//				if (!m_player[j]->GetUpHit())
+//				{
+//					m_player[j]->GotUpHit(_GSD);
+//					audio_manager->playSound(SLAPSOUND);
+//				}
+//			}
+//		}
+//	}
+//
+//	//m_player[_i]->Attack(false);
+//}

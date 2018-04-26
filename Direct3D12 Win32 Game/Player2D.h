@@ -52,12 +52,13 @@ public:
 	void ResetAttacks(bool _attack) { m_execute_punch = _attack; m_execute_up_punch = _attack;};
 	bool IgnoreCollision() { return m_ignore_collision; };
 
-	void GotHit(GameStateData * _GSD, int _dir);
-	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
-	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
 	float GetDamage() { return m_damage; };
 
-	void GotUpHit(GameStateData * _GSD);
+	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
+	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
+	bool ExectueUpPunch(GameStateData * _GSD, Player2D* other_player);
+	void GotHit(GameStateData * _GSD, int _dir, int y_force);
+	void GotUpHit();
 	void Block(GameStateData * _GSD);
 	bool GetOrientation();
 	bool GetUpHit() { return m_got_up_hit; }

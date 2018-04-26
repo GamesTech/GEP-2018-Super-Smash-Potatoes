@@ -30,8 +30,8 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 
 	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
 
-	if (m_vel.x > m_max_speed.x) { m_vel.x = m_max_speed.x; }
-	if (m_vel.x < -m_max_speed.x) { m_vel.x = -m_max_speed.x; }
+	if (m_vel.x > m_max_speed.x && !m_remove_controll) { m_vel.x = m_max_speed.x; }
+	if (m_vel.x < -m_max_speed.x && !m_remove_controll) { m_vel.x = -m_max_speed.x; }
 	if (m_vel.y > 700 || m_vel.y < 0)
 	{
 		m_ignore_collision = false;
@@ -103,7 +103,6 @@ void Player2D::HitTimer(GameStateData * _GSD)
 
 	}
 	m_timer_hit += _GSD->m_dt;
-
 }
 
 void Player2D::PunchTimer(GameStateData * _GSD)
@@ -313,20 +312,6 @@ void Player2D::controller(GameStateData * _GSD)
 	//	m_attack = true;
 	//}
 }
-
-void Player2D::GotHit(GameStateData * _GSD, int _dir)
-{
-	m_grounded = false;
-	m_coll_state = Collision::COLNONE;
-	AddForce(-m_jumpForce * Vector2::UnitY * m_damage);
-	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
-	m_damage *= 1.1;
-	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
-	m_remove_controll = true;
-	m_timer_hit = 0;
-	//audio_manager->playSound(SLAPSOUND);
-}
-
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
 	float r1 = Width() / 1.5;
@@ -341,20 +326,18 @@ bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 	{
 		x1 -= 40;
 	}
-	if (!other_player->GetInvincibility())
-	{
-		float r2 = other_player->Width();
-		float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-		float y2 = other_player->GetPos().y + (other_player->Height() / 2);
 
-		if (other_player->IsPunching() && GetOrientation() != other_player->GetOrientation())
+	float r2 = other_player->Width();
+	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
+	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
+
+	if (other_player->IsPunching() && GetOrientation() != other_player->GetOrientation())
+	{
+		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
-			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-			{
-				other_player->Block(_GSD);
-				other_player->ResetAttacks(false);
-				return true;
-			}
+			other_player->Block(_GSD);
+			other_player->ResetAttacks(false);
+			return true;
 		}
 	}
 	return false;
@@ -382,32 +365,57 @@ bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 
 		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
-			other_player->GotHit(_GSD, m_direction);
+			other_player->GotHit(_GSD, m_direction, 1);
 			return true;
 		}
 	}
 	return false;
 }
 
-void Player2D::GotUpHit(GameStateData * _GSD)
+bool Player2D::ExectueUpPunch(GameStateData * _GSD, Player2D * other_player)
+{
+	float r1 = Width() / 1.5;
+	float x1 = GetPos().x + (Width() / 2);
+	float y1 = GetPos().y + (Height() / 2) - 30;
+
+	float r2 = other_player->Width();
+	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
+	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
+	
+	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+	{
+		if (!other_player->GetUpHit())
+		{				
+			other_player->GotUpHit();
+			other_player->GotHit(_GSD, 0, 1);
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player2D::GotHit(GameStateData * _GSD, int _dir, int y_force)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
-	AddForce(-m_jumpForce * Vector2::UnitY * m_damage * 1.1);
+	AddForce(-m_jumpForce * Vector2::UnitY * m_damage * y_force);
+	AddForce(m_jumpForce/2 * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_remove_controll = true;
-	m_got_up_hit = true;
 	m_timer_hit = 0;
-	//audio_manager->playSound(SLAPSOUND);
+}
+
+void Player2D::GotUpHit()
+{
+	m_got_up_hit = true;
 }
 
 void Player2D::Block(GameStateData * _GSD)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
-	AddForce(25000 * Vector2::UnitX * -m_direction);
-	//m_damage *= 1.1;
+	AddForce(2500 * Vector2::UnitX * -m_direction);
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_remove_controll = true;
 	m_timer_hit = 0;
