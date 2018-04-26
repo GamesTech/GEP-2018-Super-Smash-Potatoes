@@ -94,6 +94,7 @@ protected:
 	bool m_execute_up_punch = false;
 	bool m_jumping = false;
 	bool m_up_punching = false;
+	bool m_down_punching = false;
 	bool m_punching = false;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;

@@ -55,6 +55,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		if (m_anim_grounded)
 		{
 			action_jump = GROUND;
+			m_down_punching = false;
 		}
 		else
 		{
@@ -78,9 +79,16 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 				}
 				else if (m_vel.y > 300)
 				{
-					action_jump = FALL;
-					m_up_punching = false;
-					m_execute_up_punch = false;
+					if (m_down_punching)
+					{
+						action_jump = DOWNWARDPUNCH;
+					}
+					else
+					{
+						action_jump = FALL;
+						m_up_punching = false;
+						m_execute_up_punch = false;
+					}
 				}
 			}
 
@@ -186,6 +194,7 @@ void Player2D::Grabbing()
 		}
 		m_grabing_side = true;
 		m_up_punching = false;
+		m_down_punching = false;
 		//m_grounded = true;
 		action_movement = GRAB;
 	}
@@ -205,6 +214,7 @@ void Player2D::respawn()
 		m_invincibility = true;
 		m_respawn_timer = 0;
 		m_up_punching = false;
+		m_down_punching = false;
 	}
 	else
 	{
@@ -314,6 +324,25 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punching = true;
 			m_up_timer_punch = 0;
+		}
+	}
+	else if ((_GSD->m_keyboardState.X
+		&& _GSD->m_keyboardState.S)
+		|| ((_GSD->m_gamePadState[player_no].IsXPressed()
+			&& !_GSD->m_prevGamePadState[player_no].IsXPressed())
+			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
+				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	{
+		if ( !m_punching && !m_up_punching)
+		{
+			m_invincibility = false;
+			m_vel.y = 0;
+			AddForce(m_jumpForce * Vector2::UnitY);
+			m_bonus_jump = false;
+			m_coll_state = Collision::COLNONE;
+			m_jumping = false;
+			m_down_punching = true;
+			//m_up_timer_punch = 0;
 		}
 	}
 	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
