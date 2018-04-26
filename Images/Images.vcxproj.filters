@@ -28,9 +28,6 @@
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Scenes\platform_side.png" />
-    <ImageContentTask Include="Scenes\platform.png" />
-    <ImageContentTask Include="Scenes\platform_large.png" />
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
@@ -52,19 +49,47 @@
     <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Background\blackground_1.png" />
-    <ImageContentTask Include="Background\background_2.jpg" />
-    <ImageContentTask Include="Menu\Arrow.png" />
-    <ImageContentTask Include="Menu\Buttons.png" />
-    <ImageContentTask Include="Menu\lives.png" />
-    <ImageContentTask Include="Menu\PlayerPreviewBoxes.png" />
-    <ImageContentTask Include="Menu\Logo.png" />
-    <ImageContentTask Include="Menu\Arena Selection.png" />
     <ImageContentTask Include="Menu\numbers.png">
       <Filter>Menu</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Menu\Player wins.png">
       <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_2.jpg">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\blackground_1.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Arena Selection.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Arrow.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Buttons.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\lives.png">
+      <Filter>Game\UI</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Logo.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_large.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_side.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\PlayerPreviewBoxes.png">
+      <Filter>Game\UI</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\PlayerTags.png">
+      <Filter>Game\UI</Filter>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +101,12 @@
     </Filter>
     <Filter Include="Menu">
       <UniqueIdentifier>{d35873c1-67be-4a23-b0f4-477d800a71ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{a2b54241-6d99-4478-8353-c9c540e3e9dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI">
+      <UniqueIdentifier>{45937e86-450b-4085-b177-11420f1257a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
