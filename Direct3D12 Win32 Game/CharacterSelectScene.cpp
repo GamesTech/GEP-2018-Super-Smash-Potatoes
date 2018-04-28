@@ -37,15 +37,16 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	{
 		grid_sprite_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
 		grid_sprite_temp->SetPos(Vector2(100 + (current_sprites_on_row * 100), 100 + (row_no * 100)));
-		grid_sprite_temp->SetRect(1, 1, 60, 75);
+		grid_sprite_temp->SetRect(1, 1, 64, 64);
 		grid_sprite_temp->SetLayer(1.0f);
 		grid_sprite_temp->CentreOrigin();
 		grid_sprites.push_back(std::move(grid_sprite_temp));
 
 		player_preview_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
-		player_preview_temp->SetRect(1, 1, 60, 75);
+		player_preview_temp->SetRect(1, 1, 64, 64);
 		player_preview_temp->SetLayer(0.0f);
 		player_preview_temp->CentreOrigin();
+		player_preview_temp->SetScale(Vector2{2,2});
 		player_previews.push_back(std::move(player_preview_temp));
 
 		//new row

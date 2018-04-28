@@ -11,6 +11,30 @@ GameObject2D::~GameObject2D()
 {
 }
 
+float GameObject2D::Width()
+{
+	if (m_width == 0)
+	{
+		return m_size.x;
+	}
+	else
+	{
+		return m_width;
+	}
+}
+
+float GameObject2D::Height()
+{
+	if (m_height == 0)
+	{
+		return m_size.y;
+	}
+	else
+	{
+		return m_height;
+	}
+}
+
 void GameObject2D::SetRect(float left, float top, float right, float bottom)
 {
 	m_rect.left = left;

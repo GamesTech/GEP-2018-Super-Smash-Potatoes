@@ -315,7 +315,7 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 27; ++j)
+			for (int j = 0; j < 28; ++j)
 			{
 				for (int i = 0; i < 4; ++i) //prints into array Default Left
 				{
@@ -326,4 +326,6 @@ void Animation2D::LoadSprites(string _filename)
 	}
 	sprite_position_batching.close();
 	SetAnimationSprite(LDefault);
+	//m_width = sprite_batch[CharacterWidth][2] - sprite_batch[CharacterWidth][0];
+	//m_height= sprite_batch[LDefault][3] - sprite_batch[LDefault][1];
 }

@@ -1,3 +1,2 @@
 kirby_sprite
-ghost_kirby_sprite
 knuckle_joe_sprite

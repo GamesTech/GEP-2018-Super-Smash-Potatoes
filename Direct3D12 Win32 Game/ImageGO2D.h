@@ -20,6 +20,7 @@ public:
 	void Render(RenderData* _RD);
 
 	void SetBoundingBoxes();
+	void SetBoundingBoxes(float left, float top, float right, float bottom);
 	void CentreOrigin();
 	void BottomOrigin();
 	void SetOrientation(float new_orientation);

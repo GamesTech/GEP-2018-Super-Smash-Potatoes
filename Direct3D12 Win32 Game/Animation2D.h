@@ -61,6 +61,7 @@ private:
 
 	enum SpriteStateData
 	{
+		CharacterWidth,
 		LDefault,
 		RDefault,
 		LDefault2,
@@ -99,5 +100,5 @@ private:
 	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[28][4];
+	float sprite_batch[29][4];
 };

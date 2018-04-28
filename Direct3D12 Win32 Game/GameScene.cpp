@@ -103,7 +103,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	for (int i = 0; i < no_players; i++)
 	{
 		Vector2 temp = m_player[i]->GetPos();
-		m_player_tag->SetPlayerPos(i, temp);
+		m_player_tag->SetPlayerPos(i, temp, m_player[i]->GetSize().x);
 		if (m_player[i]->getDead() == false)
 		{
 			for (auto& platform : platforms)
@@ -437,7 +437,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
+		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(m_spawn_pos[i]);
@@ -449,7 +449,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
-		temp_player_UI->SetRect(1, 1, 60, 75);
+		temp_player_UI->SetRect(1, 1, 64, 64);
 		temp_player_UI->SetLayer(0.0f);
 		temp_player_UI->CentreOrigin();
 		objects.emplace_back(temp_player_UI);
