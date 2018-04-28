@@ -24,7 +24,7 @@ private:
 
 	void loadCharactersFile(string _filename);
 
-	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> title_text = nullptr;
 	std::unique_ptr<ImageGO2D> player_preview_boxes = nullptr;
 
 	std::unique_ptr<ImageGO2D> grid_sprite_temp = nullptr;

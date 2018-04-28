@@ -1,2 +1,3 @@
 kirby_sprite
 knuckle_joe_sprite
+poppy_bro_jr_sprite

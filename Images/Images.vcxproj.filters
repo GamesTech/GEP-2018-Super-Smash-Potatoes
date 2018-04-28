@@ -97,6 +97,15 @@
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\knuckle_joe_sprite.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\poppy_bro_jr_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\poppy_bro_jr_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Character Selection.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

@@ -193,6 +193,15 @@
   <ItemGroup>
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\knuckle_joe_sprite.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\poppy_bro_jr_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\poppy_bro_jr_sprite_batch_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Character Selection.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
