@@ -24,11 +24,12 @@ public:
 	void CentreOrigin();
 	void BottomOrigin();
 	void SetOrientation(float new_orientation);
+	void FlipH(bool flip);
 	
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
 	int m_resourceNum = -1;
-	
+	SpriteEffects m_flip = SpriteEffects_None;
 };
 

@@ -19,19 +19,19 @@ Animation2D::~Animation2D()
 void Animation2D::AnimationTick(GameStateData * _GSD)
 {
 
-	if (action_jump == GROUND)
+	if (action_jump == GROUND) //if the character is on the ground
 	{
-		if (action_movement == WALK)
+		if (action_movement == WALK) 
 		{
-			SetWalk(m_change_animation);
+			SetWalk(m_change_animation); //take in a int to change which sprite is rendered
 		}
 		else if (action_movement == GRAB)
 		{
-			SetGrab();
+			SetGrab(); // Grabbing onto the side of the platform
 		}
 		else
 		{
-			SetDefault(m_change_animation2);
+			SetDefault(m_change_animation2); // idle animation which take a int for the blink animation
 		}
 	}
 	else if (action_jump == PUNCH)
@@ -59,6 +59,7 @@ void Animation2D::AnimationTick(GameStateData * _GSD)
 		SetFall();
 	}
 
+	//changes the animation of action based on deltatime
 	AnimationTimers(_GSD);
 }
 
@@ -69,7 +70,7 @@ void Animation2D::AnimationTimers(GameStateData * _GSD)
 	{
 		if (m_change_animation < 3)
 		{
-			m_change_animation++;
+			m_change_animation++; // Goes through the 3 animation for walking
 		}
 		else
 		{
@@ -92,7 +93,7 @@ void Animation2D::AnimationTimers(GameStateData * _GSD)
 		else
 		{
 			m_change_animation2 = 1;
-			timer2 -= rand() % 10;
+			timer2 -= rand() % 10; //random the time it takes to blink again
 		}
 
 	}
@@ -103,7 +104,7 @@ void Animation2D::AnimationTimers(GameStateData * _GSD)
 	//Timer for the punch animation
 	if (timer_punch >= 0.1)
 	{
-		if (m_change_punch_animation < 4)
+		if (m_change_punch_animation < 4) // goes through the 3 animations of puching in the animation sheet
 		{
 			m_change_punch_animation++;
 			timer2 -= 0.1;
@@ -117,10 +118,10 @@ void Animation2D::AnimationTimers(GameStateData * _GSD)
 
 void Animation2D::AnimationOn()
 {
-	m_animation_on = true;
+	m_animation_on = true; //turns animation on
 }
 
-void Animation2D::Punch()
+void Animation2D::Punch() // Starts the punch animation timer
 {
 	timer_punch = 0;
 	m_change_punch_animation = 1;
@@ -307,7 +308,7 @@ void Animation2D::SetAnimationSprite(int action)
 	SetRect(sprite_batch[action][0], sprite_batch[action][1], sprite_batch[action][2], sprite_batch[action][3]);
 }
 
-void Animation2D::LoadSprites(string _filename)
+void Animation2D::LoadSprites(string _filename) //load the sprite sheet location in the game
 {
 	std::ifstream sprite_position_batching;
 	sprite_position_batching.open(_filename);
@@ -315,9 +316,9 @@ void Animation2D::LoadSprites(string _filename)
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 28; ++j)
+			for (int j = 0; j < 28; ++j) // Different animations
 			{
-				for (int i = 0; i < 4; ++i) //prints into array Default Left
+				for (int i = 0; i < 4; ++i) //the four positions of the point
 				{
 					sprite_position_batching >> sprite_batch[j][i];
 				}
@@ -325,7 +326,8 @@ void Animation2D::LoadSprites(string _filename)
 		}
 	}
 	sprite_position_batching.close();
-	SetAnimationSprite(LDefault);
+	SetAnimationSprite(LDefault); // set the default animation
+
 	//m_width = sprite_batch[CharacterWidth][2] - sprite_batch[CharacterWidth][0];
 	//m_height= sprite_batch[LDefault][3] - sprite_batch[LDefault][1];
 }

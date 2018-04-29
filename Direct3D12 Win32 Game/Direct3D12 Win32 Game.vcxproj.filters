@@ -77,6 +77,9 @@
     <Filter Include="Game Base\Source\File">
       <UniqueIdentifier>{789b17d7-5f14-449e-92f4-d84852141c8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Headers\ParticleSystem\Particle Files">
+      <UniqueIdentifier>{fd922940-d7ba-4963-a139-6ef31f79d22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -325,7 +328,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="hit.particle">
-      <Filter>Game Base\Source\ParticleSystem</Filter>
+      <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
+    </None>
+    <None Include="upwards_punch.particle">
+      <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
   </ItemGroup>
 </Project>
