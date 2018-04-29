@@ -35,6 +35,10 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
+
+	
+	particle_system.init(m_RD);
+
 	return true;
 }
 
@@ -47,6 +51,8 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 		it->Tick(gsd);
 	}
 
+	particle_system.update(gsd);
+
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
@@ -58,6 +64,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 				highlight_option_selected();
 				audio_manager->playSound(TOBYMENUCLICK1);
 			}
+			particle_system.spawnParticle(3, "hit", {300,300});
 			break;
 		}
 
@@ -113,7 +120,7 @@ void MenuScene::render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCo
 	{
 		it->Render(m_RD);
 	}
-
+	particle_system.render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 

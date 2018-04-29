@@ -65,6 +65,18 @@
     <Filter Include="Game Base\Headers\AudioManager">
       <UniqueIdentifier>{1909651a-4601-4cdc-a2c0-92bad533d37a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Headers\ParticleSystem">
+      <UniqueIdentifier>{c33f2063-eb01-4e46-b6ba-4882a2c188db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\ParticleSystem">
+      <UniqueIdentifier>{d8c5edb6-6852-48b7-a4bd-dd544d98fea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\File">
+      <UniqueIdentifier>{3b97fbee-64c1-4404-813e-485494a3bc98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\File">
+      <UniqueIdentifier>{789b17d7-5f14-449e-92f4-d84852141c8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -133,13 +145,9 @@
     <ClInclude Include="Debug.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LevelFile.h" />
     <ClInclude Include="CharacterSelectScene.h">
       <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
     </ClInclude>
@@ -169,6 +177,21 @@
     </ClInclude>
     <ClInclude Include="PlayerTags.h">
       <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Game Base\Headers\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Game Base\Headers\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Game Base\Headers\File</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelFile.h">
+      <Filter>Game Base\Headers\File</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleFile.h">
+      <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -229,13 +252,9 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
-    <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="ArenaSelectScene.cpp">
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
@@ -266,6 +285,21 @@
     <ClCompile Include="PlayerTags.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Game Base\Source\File</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelFile.cpp">
+      <Filter>Game Base\Source\File</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleFile.cpp">
+      <Filter>Game Base\Source\File</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -288,5 +322,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Levels.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hit.particle">
+      <Filter>Game Base\Source\ParticleSystem</Filter>
+    </None>
   </ItemGroup>
 </Project>
