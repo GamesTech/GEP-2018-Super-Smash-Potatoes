@@ -40,7 +40,7 @@ void ImageGO2D::Render(RenderData* _RD)
 {
 	_RD->m_spriteBatch->Draw(_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
 		GetTextureSize(m_texture.Get()),
-		m_pos, &m_rect, m_colour, m_orientation, m_origin, m_scale, SpriteEffects_None, m_layer);
+		m_pos, &m_rect, m_colour, m_orientation, m_origin, m_scale, m_flip, m_layer);
 	//TODO::add sprite effects & layer Depth
 	//TODO::example stuff for sprite sheet
 }
@@ -53,6 +53,16 @@ void ImageGO2D::SetBoundingBoxes()
 	m_min.y = m_pos.y;
 	m_max.x = m_pos.x + m_size.x;
 	m_max.y = m_pos.y + m_size.y;
+
+}
+
+void ImageGO2D::SetBoundingBoxes(float left, float top, float right, float bottom)
+{
+
+	m_min.x = left;
+	m_min.y = top;
+	m_max.x = right;
+	m_max.y = bottom;
 
 }
 
@@ -75,22 +85,19 @@ void ImageGO2D::BottomOrigin()
 	m_origin.y = float(m_size.y);
 }
 
-void ImageGO2D::SetRect(float left, float top, float right, float bottom)
+void ImageGO2D::SetOrientation(float new_orientation)
 {
-	m_rect.left = left;
-	m_rect.top = top;
-	m_rect.right = right;
-	m_rect.bottom = bottom;
-	m_size.x = m_rect.right - m_rect.left;
-	m_size.y = m_rect.bottom - m_rect.top;
+	m_orientation = m_orientation + new_orientation;
 }
 
-void ImageGO2D::SetRect()
+void ImageGO2D::FlipH(bool flip)
 {
-	XMUINT2 size = GetTextureSize(m_texture.Get());
-	m_min.x = m_pos.x;
-	m_min.y = m_pos.y;
-	m_max.x = m_pos.x + size.x;
-	m_max.y = m_pos.y + size.y;
-	SetRect(m_min.x, m_min.y, m_max.x, m_max.y);
+	if (flip)
+	{
+		m_flip = SpriteEffects_FlipHorizontally;
+	}
+	else
+	{
+		m_flip = SpriteEffects_None;
+	}
 }

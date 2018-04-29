@@ -8,6 +8,7 @@
 Animation2D::Animation2D(RenderData* _RD, string _filename) :ImageGO2D(_RD, _filename)
 {
 	action_movement = STILL;
+	direction = LEFT;
 }
 
 Animation2D::~Animation2D()
@@ -17,79 +18,143 @@ Animation2D::~Animation2D()
 
 void Animation2D::AnimationTick(GameStateData * _GSD)
 {
-	
-	if (action_jump == GROUND)
+
+	if (action_jump == GROUND) //if the character is on the ground
 	{
-		if (action_movement == WALK)
+		if (action_movement == WALK) 
 		{
-			switch (change_animation)
-			{
-				case 1:
-				{
-					SetWalk();
-					break;
-				}
-				case 2:
-				{
-					SetWalk1();
-					break;
-				}
-				case 3:
-				{
-					SetWalk2();
-					break;
-				}
-			}
+			SetWalk(m_change_animation); //take in a int to change which sprite is rendered
+		}
+		else if (action_movement == GRAB)
+		{
+			SetGrab(); // Grabbing onto the side of the platform
 		}
 		else
 		{
-			SetDefault();
+			SetDefault(m_change_animation2); // idle animation which take a int for the blink animation
 		}
+	}
+	else if (action_jump == PUNCH)
+	{
+		SetPunch(m_change_punch_animation);
 	}
 	else if (action_jump == JUMP)
 	{
 		SetJump();
 	}
+	else if (action_jump == UPWARDPUNCH)
+	{
+		SetJumpPunch();
+	}
+	else if (action_jump == DOWNWARDPUNCH)
+	{
+		SetDownPunch();
+	}
+	else if (action_jump == HIT)
+	{
+		SetHit();
+	}
 	else if (action_jump == FALL)
 	{
 		SetFall();
 	}
-	
-	if (timer >= 0.3)
+
+	//changes the animation of action based on deltatime
+	AnimationTimers(_GSD);
+}
+
+void Animation2D::AnimationTimers(GameStateData * _GSD)
+{
+	//Timer for the walk animation
+	if (timer >= 0.2)
 	{
-		if (change_animation < 3)
+		if (m_change_animation < 3)
 		{
-			change_animation++;
+			m_change_animation++; // Goes through the 3 animation for walking
 		}
 		else
 		{
-			change_animation = 1;
+			m_change_animation = 1;
 		}
-		timer -= 0.3;
+		timer -= 0.2;
 	}
 	else
 	{
 		timer += _GSD->m_dt;
 	}
+	//Timer for the character to blink
+	if (timer2 >= 10)
+	{
+		if (m_change_animation2 < 2)
+		{
+			m_change_animation2++;
+			timer2 -= 0.3;
+		}
+		else
+		{
+			m_change_animation2 = 1;
+			timer2 -= rand() % 10; //random the time it takes to blink again
+		}
 
+	}
+	else
+	{
+		timer2 += _GSD->m_dt;
+	}
+	//Timer for the punch animation
+	if (timer_punch >= 0.1)
+	{
+		if (m_change_punch_animation < 4) // goes through the 3 animations of puching in the animation sheet
+		{
+			m_change_punch_animation++;
+			timer2 -= 0.1;
+		}
+	}
+	else
+	{
+		timer_punch += _GSD->m_dt;
+	}
 }
 
 void Animation2D::AnimationOn()
 {
-	m_animation_on = true;
+	m_animation_on = true; //turns animation on
 }
 
-void Animation2D::SetDefault()
+void Animation2D::Punch() // Starts the punch animation timer
 {
-	if (action_movement == STILL)
+	timer_punch = 0;
+	m_change_punch_animation = 1;
+}
+
+void Animation2D::SetDefault(int animation)
+{
+	if (animation == 1)
 	{
-		if (direction == LEFT)
+		if (action_movement == STILL)
 		{
-			SetRect(left_default_positions[0], left_default_positions[1], left_default_positions[2], left_default_positions[3]);
+			if (direction == LEFT)
+			{
+				SetAnimationSprite(LDefault);
+			}
+			if (direction == RIGHT)
+			{
+				SetAnimationSprite(RDefault);
+			}
 		}
-		if (direction == RIGHT)
+	}
+	else
+	{
+		if (action_movement == STILL)
 		{
-			SetRect(right_default_positions[0], right_default_positions[1], right_default_positions[2], right_default_positions[3]);
+			if (direction == LEFT)
+			{
+				SetAnimationSprite(LDefault2);
+			}
+			if (direction == RIGHT)
+			{
+				SetAnimationSprite(RDefault2);
+			}
 		}
 	}
 }
@@ -98,49 +163,68 @@ void Animation2D::SetJump()
 {
 	if (direction == LEFT)
 	{
-		SetRect(left_jump_positions[0], left_jump_positions[1], left_jump_positions[2], left_jump_positions[3]);
+		SetAnimationSprite(LJump);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(right_jump_positions[0], right_jump_positions[1], right_jump_positions[2], right_jump_positions[3]);
+		SetAnimationSprite(RJump);
 	}
 }
 
-void Animation2D::SetWalk()
+void Animation2D::SetJumpPunch()
+{
+	SetAnimationSprite(UpwardJump);
+}
+
+void Animation2D::SetDownPunch()
 {
 	if (direction == LEFT)
 	{
-		SetRect(left_walk_positions[0], left_walk_positions[1], left_walk_positions[2], left_walk_positions[3]);
+		SetAnimationSprite(LDownwardPunch);
 	}
 	if (direction == RIGHT)
 	{
-		SetRect(right_walk_positions[0], right_walk_positions[1], right_walk_positions[2], right_walk_positions[3]);
+		SetAnimationSprite(RDownwardPunch);
 	}
 }
 
-void Animation2D::SetWalk1()
+void Animation2D::SetWalk(int animation)
 {
-	if (direction == LEFT)
+	if (animation == 1)
 	{
-		SetRect(left_walk_1_positions[0], left_walk_1_positions[1], left_walk_1_positions[2], left_walk_1_positions[3]);
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LWalk1);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RWalk1);
+		}
 	}
-	if (direction == RIGHT)
+	else if (animation == 2)
 	{
-		SetRect(right_walk_1_positions[0], right_walk_1_positions[1], right_walk_1_positions[2], right_walk_1_positions[3]);
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LWalk2);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RWalk2);
+		}
+	}
+	else
+	{
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LWalk3);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RWalk3);
+		}
 	}
 }
 
-void Animation2D::SetWalk2()
-{
-	if (direction == LEFT)
-	{
-		SetRect(left_walk_2_positions[0], left_walk_2_positions[1], left_walk_2_positions[2], left_walk_2_positions[3]);
-	}
-	if (direction == RIGHT)
-	{
-		SetRect(right_walk_2_positions[0], right_walk_2_positions[1], right_walk_2_positions[2], right_walk_2_positions[3]);
-	}
-}
 
 void Animation2D::SetRun()
 {
@@ -148,66 +232,102 @@ void Animation2D::SetRun()
 
 void Animation2D::SetFall()
 {
-	SetRect(fall_positions[0], fall_positions[1], fall_positions[2], fall_positions[3]);
+	if (direction == LEFT)
+	{
+		SetAnimationSprite(LFall);
+	}
+	if (direction == RIGHT)
+	{
+		SetAnimationSprite(RFall);
+	}
 }
 
-void Animation2D::SetPunch()
+void Animation2D::SetPunch(int animation)
 {
+	if (animation == 1)
+	{
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LKick1);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RKick1);
+		}
+	}
+	else if (animation == 2)
+	{
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LKick3);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RKick2);
+		}
+	}
+	else
+	{
+		if (direction == LEFT)
+		{
+			SetAnimationSprite(LKick3);
+		}
+		if (direction == RIGHT)
+		{
+			SetAnimationSprite(RKick3);
+		}
+	}
 }
 
-void Animation2D::loadSprites(string _filename)
+void Animation2D::SetGrab()
+{
+	if (direction == LEFT)
+	{
+		SetAnimationSprite(LGrab);
+	}
+	if (direction == RIGHT)
+	{
+		SetAnimationSprite(RGrab);
+	}
+}
+
+void Animation2D::SetHit()
+{
+	if (direction == LEFT)
+	{
+		SetAnimationSprite(LHit);
+	}
+	if (direction == RIGHT)
+	{
+		SetAnimationSprite(RHit);
+	}
+}
+
+void Animation2D::SetAnimationSprite(int action)
+{
+	SetRect(sprite_batch[action][0], sprite_batch[action][1], sprite_batch[action][2], sprite_batch[action][3]);
+}
+
+void Animation2D::LoadSprites(string _filename) //load the sprite sheet location in the game
 {
 	std::ifstream sprite_position_batching;
 	sprite_position_batching.open(_filename);
-	if (sprite_position_batching.is_open()) 
+	if (sprite_position_batching.is_open())
 	{
-		while (!sprite_position_batching.eof()) 
+		while (!sprite_position_batching.eof())
 		{
-			for (int i = 0; i < 4; i++) //prints into array Default Left
+			for (int j = 0; j < 28; ++j) // Different animations
 			{
-				sprite_position_batching >> left_default_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Default Right
-			{
-				sprite_position_batching >> right_default_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Left
-			{
-				sprite_position_batching >> left_jump_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Jump Right
-			{
-				sprite_position_batching >> right_jump_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_1_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_1_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Left
-			{
-				sprite_position_batching >> left_walk_2_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Walk Right
-			{
-				sprite_position_batching >> right_walk_2_positions[i];
-			}
-			for (int i = 0; i < 4; i++) //prints into array Falling
-			{
-				sprite_position_batching >> fall_positions[i];
-			}
+				for (int i = 0; i < 4; ++i) //the four positions of the point
+				{
+					sprite_position_batching >> sprite_batch[j][i];
+				}
+			}			
 		}
 	}
 	sprite_position_batching.close();
+	SetAnimationSprite(LDefault); // set the default animation
+
+	//m_width = sprite_batch[CharacterWidth][2] - sprite_batch[CharacterWidth][0];
+	//m_height= sprite_batch[LDefault][3] - sprite_batch[LDefault][1];
 }

@@ -11,7 +11,7 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
-#include "Scene.h"
+#include "SceneManager.h"
 #include "AudioManager.h"
 
 using std::vector;
@@ -66,6 +66,7 @@ private:
 
     // Application state
     HWND                                                m_window;
+	HWND												new_window;
     int                                                 m_outputWidth;
     int                                                 m_outputHeight;
 
@@ -111,10 +112,12 @@ private:
 	bool settings_menu_open = false;
 	int prevScene = 0;
 
+	const int MAX_PLAYERS = 4;
+
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	std::unique_ptr<Scene> scene;
+	std::unique_ptr<SceneManager> scene_manager;
 
 	//Debug
 	Text2D * stateText;

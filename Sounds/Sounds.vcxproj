@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{1D819396-5244-454C-82E9-AA9BA5F54EFF}</ProjectGuid>
     <RootNamespace>Sounds</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -113,7 +113,12 @@
   <ItemGroup>
     <Media Include="Explo1.wav" />
     <Media Include="NightAmbienceSimple_02.wav" />
+    <Media Include="Quest_Completion.wav" />
+    <Media Include="SlapSound.wav" />
+    <Media Include="TobyMenuClick1.wav" />
     <Media Include="TobySoundtrack.wav" />
+    <Media Include="TobySoundtrack2.wav" />
+    <Media Include="TobySoundtrack3.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,14 +11,19 @@ enum ActionJump
 {
 	GROUND,
 	JUMP,
-	FALL
+	UPWARDPUNCH,
+	DOWNWARDPUNCH,
+	PUNCH,
+	FALL,
+	HIT
 };
 
 enum ActionMovement
 {
 	STILL,
 	WALK,
-	RUN
+	RUN,
+	GRAB
 };
 
 //GEP:: Animation class
@@ -29,17 +34,11 @@ public:
 	Animation2D(RenderData* _RD, string _filename);
 	~Animation2D();
 
-	void loadSprites(string _filename);
+	void LoadSprites(string _filename);
 	void AnimationTick(GameStateData * _GSD);
+	void AnimationTimers(GameStateData * _GSD);
 	void AnimationOn();
-	void SetDefault();
-	void SetJump();
-	void SetWalk();
-	void SetWalk1();
-	void SetWalk2();
-	void SetRun();
-	void SetFall();
-	void SetPunch();
+	void Punch();
 
 protected:
 	Direction direction;
@@ -48,19 +47,58 @@ protected:
 	bool m_animation_on = false;
 
 private:
+	void SetDefault(int animation);
+	void SetAnimationSprite(int action);
+	void SetJump();
+	void SetJumpPunch();
+	void SetDownPunch();
+	void SetWalk(int animation);
+	void SetRun();
+	void SetFall();
+	void SetPunch(int animation);
+	void SetGrab();
+	void SetHit();
+
+	enum SpriteStateData
+	{
+		CharacterWidth,
+		LDefault,
+		RDefault,
+		LDefault2,
+		RDefault2,
+		LJump,
+		RJump,
+		LWalk1,
+		RWalk1,
+		LWalk2,
+		RWalk2,
+		LWalk3,
+		RWalk3,
+		LFall,
+		RFall,
+		RGrab,
+		LGrab,
+		UpwardJump,
+		LKick1,
+		RKick1,
+		LKick2,
+		RKick2,
+		LKick3,
+		RKick3,
+		LHit,
+		RHit,
+		LDownwardPunch,
+		RDownwardPunch
+	};
+
+
 	float timer = 0;
-	int change_animation = 1;
-
-	float left_default_positions[4] = { 0, 0, 0, 0 };
-	float right_default_positions[4] = { 0, 0, 0, 0 };
-	float left_jump_positions[4] = { 0, 0, 0, 0 };
-	float right_jump_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_1_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_1_positions[4] = { 0, 0, 0, 0 };
-	float left_walk_2_positions[4] = { 0, 0, 0, 0 };
-	float right_walk_2_positions[4] = { 0, 0, 0, 0 };
-	float fall_positions[4] = { 0, 0, 0, 0 };
-
+	float timer2 = 0;
+	float timer_punch = 0.1;
+	int m_change_punch_animation = 1;
+	int m_change_animation = 1;
+	int m_change_animation2 = 1;
+	int m_pixel_gap_colour = 0;
+	int m_player_number = 0;
+	float sprite_batch[29][4];
 };

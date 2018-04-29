@@ -1,19 +1,136 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ImageContentTask Include="guides_logo.png" />
-    <ImageContentTask Include="twist.png" />
-    <ImageContentTask Include="gens.png" />
-    <ImageContentTask Include="Start_Game_Button.png" />
-    <ImageContentTask Include="Settings_Button.png" />
-    <ImageContentTask Include="Quit_Button.png" />
-    <ImageContentTask Include="Buttons.png" />
-    <ImageContentTask Include="mario_sprite_batch.png" />
-    <ImageContentTask Include="Main_Menu_Button.png" />
-    <ImageContentTask Include="platform.png" />
-    <ImageContentTask Include="gens2.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\numbers.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Player wins.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_2.jpg">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\blackground_1.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Arena Selection.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Arrow.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Buttons.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\lives.png">
+      <Filter>Game\UI</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Logo.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_large.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_side.png">
+      <Filter>Game</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\PlayerPreviewBoxes.png">
+      <Filter>Game\UI</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\PlayerTags.png">
+      <Filter>Game\UI</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\knuckle_joe_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\knuckle_joe_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\poppy_bro_jr_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\poppy_bro_jr_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Menu\Character Selection.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\hit_particle.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\upwards_punch_particle.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Character Sprites">
+      <UniqueIdentifier>{0f67ae62-bf43-4997-9823-44e178a25f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{d35873c1-67be-4a23-b0f4-477d800a71ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{a2b54241-6d99-4478-8353-c9c540e3e9dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI">
+      <UniqueIdentifier>{45937e86-450b-4085-b177-11420f1257a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{d2b60a95-8837-4603-8f84-0213cc7246d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

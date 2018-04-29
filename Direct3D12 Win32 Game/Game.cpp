@@ -10,8 +10,11 @@
 #include "File.h"
 #include "Debug.h"
 #include "MenuScene.h"
+#include "CharacterSelectScene.h"
+#include "ArenaSelectScene.h"
 #include "SettingsScene.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 
 extern void ExitGame();
 
@@ -22,8 +25,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    m_outputWidth(1280),
-    m_outputHeight(960),
+    //m_outputWidth(1280),
+    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -47,6 +50,7 @@ Game::~Game()
 	delete m_GSD;
 	delete audio_manager;
 
+	m_swapChain->SetFullscreenState(false, NULL);
 	m_graphicsMemory.reset();
 }
 
@@ -56,6 +60,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
+	
 
     CreateDevice();
     CreateResources();
@@ -64,7 +69,6 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
-	m_GSD->gameState = MENU;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -135,8 +139,8 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::init();
 	Debug::output("hello", "world");
 
-	scene = std::make_unique<MenuScene>();
-	scene->init(m_RD);
+	scene_manager = std::make_unique<SceneManager>();
+	scene_manager->init(m_RD, m_GSD, audio_manager);
 
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
@@ -159,33 +163,35 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-	checkIfNewScene();
 
 	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
 	m_GSD->m_keyboardState = m_keyboard->GetState();
-	scene->ReadInput(m_GSD);
+	//scene->ReadInput(m_GSD);
 
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	scene->update(m_GSD);
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, m_swapChain))
+	{
+		PostQuitMessage(0);
+	}
 
 	//// TODO: Gamepad
-	m_GSD->m_gamePadState = m_gamePad->GetState(0);
-
-	//if (m_GSD->m_gamePadState.IsConnected())
-	//{
-	//	// TODO: Read controller 0 here
-	//	if (m_GSD->m_gamePadState.IsViewPressed())
-	//	{
-	//		PostQuitMessage(0);
-	//	}
-	//	else
-	//	{
-	//		m_gamePad->SetVibration(0, m_GSD->m_gamePadState.triggers.left, m_GSD->m_gamePadState.triggers.right);
-	//	}
-	//}	
+	m_GSD->no_players = 0;
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
+		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+		if (m_GSD->m_gamePadState[i].IsConnected())
+		{
+			m_GSD->no_players++;
+		}
+	}
+	if (m_GSD->no_players == 0)
+	{
+		m_GSD->no_players = 1;
+	}
 }
 
 //GEP:: Draws the scene.
@@ -200,7 +206,7 @@ void Game::Render()
 	// Prepare the command list to render a new frame.
 	Clear();
 
-	scene->render(m_RD, m_commandList);
+	scene_manager->render(m_RD, m_commandList);
 
 
 	// Show the new frame.
@@ -223,7 +229,7 @@ void Game::Clear()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::HotPink, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
@@ -247,6 +253,7 @@ void Game::Present()
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
+	WaitForGpu();
     HRESULT hr = m_swapChain->Present(1, 0);
 
     // If the device was reset we must completely reinitialize the renderer.
@@ -304,6 +311,7 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // Properties
+//Called on init
 void Game::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
@@ -670,27 +678,4 @@ void Game::OnDeviceLost()
     CreateResources();
 }
 
-void Game::checkIfNewScene()
-{
-	if (m_GSD->gameState != prevScene)
-	{
-		scene.release();
-		switch (m_GSD->gameState)
-		{
-		case MENU:
-			scene = std::make_unique<MenuScene>();
-			break;
-		case SETTINGS:
-			scene = std::make_unique<SettingsScene>();
-			break;
-		case INGAME:
-			scene = std::make_unique<GameScene>();
-			break;
-		case GAMEOVER:
-			//gameover man, GAMEOVER
-			break;
-		}
-		scene->init(m_RD);
-		prevScene = m_GSD->gameState;
-	}
-}
+

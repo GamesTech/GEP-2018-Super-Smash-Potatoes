@@ -3,12 +3,12 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
-enum GameState
+enum Winner
 {
-	MENU,
-	SETTINGS,
-	INGAME,
-	GAMEOVER
+	PLAYER1,
+	PLAYER2,
+	PLAYER3,
+	PLAYER4,
 };
 
 struct GameStateData
@@ -16,13 +16,20 @@ struct GameStateData
 	Keyboard::State m_keyboardState;
 	Keyboard::State m_prevKeyboardState;
 	Mouse::State m_mouseState;
-	GamePad::State m_gamePadState;
 
-	static GameState state;
+	GamePad::State m_gamePadState[4];
+	GamePad::State m_prevGamePadState[4];
+
+	static Winner winner;
+
+	int player_selected[4];
 
 	//length of time since last frame
 	float m_dt;
 
-	GameState gameState;
+	int no_players;
+	int arena_selected;
+
+	Winner winState;
 };
 

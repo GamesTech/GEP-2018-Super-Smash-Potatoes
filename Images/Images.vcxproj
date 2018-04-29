@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{0BBB1E26-9C74-4C06-A541-9F396B0248EF}</ProjectGuid>
     <RootNamespace>Images</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -123,36 +123,90 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ImageContentTask Include="guides_logo.png" />
-    <ImageContentTask Include="twist.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="gens.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="READ_ME.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Start_Game_Button.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Quit_Button.png" />
-    <ImageContentTask Include="Settings_Button.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png" />
+    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="mario_sprite_batch.png" />
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Main_Menu_Button.png" />
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Buttons.png" />
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="platform.png" />
+    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="gens2.png" />
+    <ImageContentTask Include="Scenes\platform.png" />
+    <ImageContentTask Include="Scenes\platform_large.png" />
+    <ImageContentTask Include="Scenes\platform_side.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\kirby_sprite.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png" />
+    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Background\blackground_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Background\background_2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Arrow.png" />
+    <ImageContentTask Include="Menu\Buttons.png" />
+    <ImageContentTask Include="Menu\lives.png" />
+    <ImageContentTask Include="Menu\PlayerPreviewBoxes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Arena Selection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\numbers.png" />
+    <ImageContentTask Include="Menu\Player wins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\PlayerTags.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\knuckle_joe_sprite_batch_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\knuckle_joe_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\poppy_bro_jr_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\poppy_bro_jr_sprite_batch_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Character Selection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\hit_particle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\upwards_punch_particle.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

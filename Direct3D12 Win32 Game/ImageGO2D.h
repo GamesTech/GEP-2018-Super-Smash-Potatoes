@@ -20,14 +20,16 @@ public:
 	void Render(RenderData* _RD);
 
 	void SetBoundingBoxes();
+	void SetBoundingBoxes(float left, float top, float right, float bottom);
 	void CentreOrigin();
 	void BottomOrigin();
-	void SetRect(float left, float top, float right, float bottom);
-	void SetRect();
+	void SetOrientation(float new_orientation);
+	void FlipH(bool flip);
+	
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
 	int m_resourceNum = -1;
-	RECT m_rect;
+	SpriteEffects m_flip = SpriteEffects_None;
 };
 

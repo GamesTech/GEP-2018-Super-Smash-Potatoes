@@ -5,25 +5,16 @@
 class SceneManager
 {
 public:
-	static SceneManager & getInstance();
-
 	SceneManager() = default;
-	~SceneManager();
+	~SceneManager() = default;
 
-	void init();
-	void update();
+	void init(RenderData* m_RD, GameStateData* gsd, AudioManager* am);
+	bool update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain);
+	void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList);
 
-	
-	//Adds a scene to the top of the stack
-	void pushScene(const Scene &scene);
-
-	//Will pop the current scene from the stack
-	void popScene();
 
 private:
 
-	static SceneManager* instance;
-
-	std::stack<Scene> scene_stack;
+	std::vector<std::unique_ptr<Scene>> scenes;
 };
 

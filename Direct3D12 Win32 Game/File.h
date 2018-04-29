@@ -14,8 +14,13 @@ public:
 
 	bool write();
 
-	std::vector<std::string> getBlock(int index) const;
+	const std::vector<std::string>& getBlock(int index) const;
+	int getNumberOfBlocks() const;
+
 	void addBlock(std::vector<std::string> & block);
+
+
+	static Vector2 parseVector2(std::string s);
 private:
 	std::ifstream inFile;
 	std::ofstream outFile;
