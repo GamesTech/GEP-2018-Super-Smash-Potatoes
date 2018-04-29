@@ -1,31 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
@@ -35,18 +11,6 @@
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Menu\numbers.png">

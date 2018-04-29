@@ -324,6 +324,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punching = true;
 			m_up_timer_punch = 0;
+			particle_system->spawnParticle(1, "upwards_punch", GetPos(), GetFlipH());
 		}
 	}
 	else if ((_GSD->m_keyboardState.X

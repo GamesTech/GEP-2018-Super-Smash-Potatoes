@@ -11,7 +11,7 @@ public:
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 
-	void spawnParticle(int amount, std::string type, Vector2 pos);
+	void spawnParticle(int amount, std::string type, Vector2 pos, bool flipH);
 
 private:
 	RenderData * m_RD = nullptr;

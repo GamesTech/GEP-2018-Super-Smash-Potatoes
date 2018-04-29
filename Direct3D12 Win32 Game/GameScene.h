@@ -29,8 +29,6 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
-	void CheckAttackPos(GameStateData * _GSD, int _i);
-	void CheckUpAttackPos(GameStateData * _GSD, int _i);
 	bool MainCollision(GameObject2D * _obj, int _i);
 	bool OtherCollision(GameObject2D * _obj, int _i);
 
@@ -39,7 +37,7 @@ private:
 	float time_remaining = 0;
 	int max_lives = 0;
 
-	std::unique_ptr<ParticleSystem> particle_system = nullptr;
+	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 
 	std::unique_ptr<Player2D> m_player[4];
 	Vector2 m_spawn_pos[4] = { {300, 250},{400, 250},{ 600, 250 },{ 700, 250 } };

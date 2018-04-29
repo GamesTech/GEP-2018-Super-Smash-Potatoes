@@ -32,12 +32,12 @@ void ParticleSystem::render(RenderData * m_RD)
 	}
 }
 
-void ParticleSystem::spawnParticle(int amount, std::string type, Vector2 pos)
+void ParticleSystem::spawnParticle(int amount, std::string type, Vector2 pos, bool flipH)
 {
 	for (int i = 0; i < amount; ++i)
 	{
 		std::unique_ptr<Particle> p = std::unique_ptr<Particle>(new Particle); // Create a new particle 
-		p->init(m_RD, type, pos); // The type is what particle file is loaded
+		p->init(m_RD, type, pos, flipH); // The type is what particle file is loaded
 
 		particles.push_back(std::move(p));
 	}

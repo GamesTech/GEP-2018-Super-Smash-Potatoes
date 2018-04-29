@@ -2,7 +2,7 @@
 #include "Particle.h"
 #include "GameStateData.h"
 
-void Particle::init(RenderData * m_RD, std::string type, Vector2 pos)
+void Particle::init(RenderData * m_RD, std::string type, Vector2 pos, bool flipH)
 {
 	particle_file = std::make_unique<ParticleFile>(); //loads the type of particle it is
 	particle_file->read(type, ".particle"); 
@@ -11,6 +11,7 @@ void Particle::init(RenderData * m_RD, std::string type, Vector2 pos)
 	sprite->SetRect(particle_file->getObj(0).x_min_max.x, particle_file->getObj(0).y_min_max.x, particle_file->getObj(0).x_min_max.y, particle_file->getObj(0).y_min_max.y); //Set the rect of image for rendering
 	sprite->SetPos(pos); //set the position
 	sprite->SetLayer(particle_file->getObj(0).layer);
+	sprite->FlipH(flipH);
 
 	position = pos;
 	velocity = particle_file->getObj(0).velocity; // velocity loaded from file

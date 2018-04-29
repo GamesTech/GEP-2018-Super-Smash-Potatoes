@@ -8,7 +8,7 @@ public:
 	Particle() = default;
 	~Particle() = default;
 
-	void init(RenderData* m_RD, std::string type, Vector2 pos);
+	void init(RenderData* m_RD, std::string type, Vector2 pos, bool flipH);
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 

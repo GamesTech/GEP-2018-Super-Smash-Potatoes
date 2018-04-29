@@ -52,6 +52,9 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//	no_players = 2;
 	//}
 
+	particle_system = std::make_shared<ParticleSystem>();
+	particle_system->init(m_RD);
+
 	m_player_tag = std::make_unique<PlayerTags>(no_players);
 	m_player_tag->Init(m_RD);
 
@@ -84,8 +87,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 		objects.emplace_back(damage_text[i]);
 	}
 	
-	particle_system = std::make_unique<ParticleSystem>();
-	particle_system->init(m_RD);
+	
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
@@ -246,7 +248,6 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 	{
 		for (int j = 0; j < no_players; j++)
 		{
-			particle_system->spawnParticle(1, "upwards_punch", m_player[j]->GetPos());
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
 			{
 				if (m_player[i]->ExectueUpPunch(gsd, m_player[j].get()))
@@ -451,6 +452,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		m_player[i]->SetDrag(3.0f);
 		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
+		m_player[i]->SetParticleSystem(particle_system);
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
 		temp_player_UI->SetPos(Vector2(415 + (i * 135), 630));
