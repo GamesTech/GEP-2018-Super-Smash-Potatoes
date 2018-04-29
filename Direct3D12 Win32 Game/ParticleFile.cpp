@@ -27,6 +27,8 @@ void ParticleFile::read(std::string file, std::string ext)
 		obj.accelaration = File::parseVector2(lines.at(2));
 		obj.lifetime = std::stof(lines.at(3));
 		obj.layer = std::stof(lines.at(4));
+		obj.x_min_max = File::parseVector2(lines.at(5));
+		obj.y_min_max = File::parseVector2(lines.at(6));
 
 		object_data.push_back(obj);
 	}

@@ -83,7 +83,9 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
 		objects.emplace_back(damage_text[i]);
 	}
-
+	
+	particle_system = std::make_unique<ParticleSystem>();
+	particle_system->init(m_RD);
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
@@ -98,6 +100,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
 
 	int players_dead = 0;
+	particle_system->update(gsd);
 
 	// movement loop
 	for (int i = 0; i < no_players; i++)
@@ -160,7 +163,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		}
 	}
 
-	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
+	/*if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
@@ -184,7 +187,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				}
 			}
 		}
-	}
+	}*/
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
@@ -243,6 +246,7 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 	{
 		for (int j = 0; j < no_players; j++)
 		{
+			particle_system->spawnParticle(1, "upwards_punch", m_player[j]->GetPos());
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
 			{
 				if (m_player[i]->ExectueUpPunch(gsd, m_player[j].get()))
@@ -276,6 +280,7 @@ void GameScene::render(RenderData* m_RD,
 		m_player[i]->Render(m_RD);
 	}
 	m_player_tag->Render(m_RD);
+	particle_system->render(m_RD);
 
 	m_RD->m_spriteBatch->End();
 }

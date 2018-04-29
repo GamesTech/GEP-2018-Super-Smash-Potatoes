@@ -9,6 +9,8 @@ struct ParticleObjectData
 	Vector2 accelaration = { 0, 0 };
 	float lifetime = 0;
 	float layer = 0;
+	Vector2 x_min_max;
+	Vector2 y_min_max;
 };
 
 class ParticleFile

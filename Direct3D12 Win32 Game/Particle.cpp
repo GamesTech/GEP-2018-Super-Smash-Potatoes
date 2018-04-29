@@ -8,6 +8,7 @@ void Particle::init(RenderData * m_RD, std::string type, Vector2 pos)
 	particle_file->read(type, ".particle");
 	
 	sprite = std::make_unique<ImageGO2D>(m_RD, particle_file->getObj(0).image_file);
+	sprite->SetRect(particle_file->getObj(0).x_min_max.x, particle_file->getObj(0).y_min_max.x, particle_file->getObj(0).x_min_max.y, particle_file->getObj(0).y_min_max.y);
 	sprite->SetPos(pos);
 	sprite->SetLayer(particle_file->getObj(0).layer);
 
@@ -24,6 +25,7 @@ void Particle::update(GameStateData* gsd)
 	velocity.y = (velocity.y + accelaration.y * gsd->m_dt);
 	position.x = (position.x + velocity.x * gsd->m_dt);
 	position.y = (position.y + velocity.y * gsd->m_dt);
+	sprite->SetPos(position);
 }
 
 void Particle::render(RenderData * m_RD)

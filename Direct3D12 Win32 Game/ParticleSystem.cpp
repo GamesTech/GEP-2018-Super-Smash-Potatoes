@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ParticleSystem.h"
+#include "RenderData.h"
 
 bool ParticleSystem::init(RenderData * _m_RD)
 {
@@ -15,6 +16,7 @@ void ParticleSystem::update(GameStateData * gsd)
 
 		if (particles[i]->isDead())
 		{
+			m_RD->m_resourceCount--;
 			particles.erase(particles.begin() + i);
 		}
 	}

@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "ParticleSystem.h"
 
 class MenuScene : public Scene
 {
@@ -42,7 +41,5 @@ private:
 	int menu_option_selected = 1;
 
 	void highlight_option_selected();
-
-	ParticleSystem particle_system;
 };
 

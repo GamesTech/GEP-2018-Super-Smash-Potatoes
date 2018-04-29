@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "LevelFile.h"
 #include "PlayerTags.h"
+#include "ParticleSystem.h"
 
 class GameScene : public Scene
 {
@@ -37,6 +38,8 @@ private:
 
 	float time_remaining = 0;
 	int max_lives = 0;
+
+	std::unique_ptr<ParticleSystem> particle_system = nullptr;
 
 	std::unique_ptr<Player2D> m_player[4];
 	Vector2 m_spawn_pos[4] = { {300, 250},{400, 250},{ 600, 250 },{ 700, 250 } };

@@ -205,6 +205,9 @@
   <ItemGroup>
     <ImageContentTask Include="Particle\hit_particle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\upwards_punch_particle.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
