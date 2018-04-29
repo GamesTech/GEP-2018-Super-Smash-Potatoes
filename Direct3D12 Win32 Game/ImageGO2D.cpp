@@ -101,3 +101,15 @@ void ImageGO2D::FlipH(bool flip)
 		m_flip = SpriteEffects_None;
 	}
 }
+
+bool ImageGO2D::GetFlipH()
+{
+	if (m_flip == SpriteEffects_FlipHorizontally)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

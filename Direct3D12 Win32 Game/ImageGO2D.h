@@ -25,6 +25,7 @@ public:
 	void BottomOrigin();
 	void SetOrientation(float new_orientation);
 	void FlipH(bool flip);
+	bool GetFlipH();
 	
 
 protected:

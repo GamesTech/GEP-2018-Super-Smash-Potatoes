@@ -186,11 +186,11 @@ void Player2D::Grabbing()
 		
 		if (m_coll_state == COLRIGHT)
 		{
-			direction = LEFT;
+			FlipH(false);
 		}
 		else
 		{
-			direction = RIGHT;
+			FlipH(true);
 		}
 		m_grabing_side = true;
 		m_up_punching = false;
@@ -246,7 +246,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
-		direction = LEFT;
+		FlipH(true);
 		if (!m_grabing_side)
 		{
 			action_movement = WALK;
@@ -258,7 +258,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
-		direction = RIGHT;
+		FlipH(false);
 		if (!m_grabing_side)
 		{
 			action_movement = WALK;
@@ -508,7 +508,7 @@ void Player2D::ProcessCollision()
 
 void Player2D::updateOrientation()
 {
-	if (direction == RIGHT)
+	if (!GetFlipH())
 	{
 		m_direction = 1;
 	}
@@ -520,7 +520,7 @@ void Player2D::updateOrientation()
 
 bool Player2D::GetOrientation()
 {
-	if (direction == RIGHT)
+	if (!GetFlipH())
 	{
 		return true;
 	}
