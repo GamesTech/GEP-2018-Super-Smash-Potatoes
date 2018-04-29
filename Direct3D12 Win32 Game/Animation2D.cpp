@@ -8,7 +8,6 @@
 Animation2D::Animation2D(RenderData* _RD, string _filename) :ImageGO2D(_RD, _filename)
 {
 	action_movement = STILL;
-	direction = LEFT;
 }
 
 Animation2D::~Animation2D()
@@ -133,42 +132,21 @@ void Animation2D::SetDefault(int animation)
 	{
 		if (action_movement == STILL)
 		{
-			if (direction == LEFT)
-			{
-				SetAnimationSprite(LDefault);
-			}
-			if (direction == RIGHT)
-			{
-				SetAnimationSprite(RDefault);
-			}
+			SetAnimationSprite(Default);
 		}
 	}
 	else
 	{
 		if (action_movement == STILL)
 		{
-			if (direction == LEFT)
-			{
-				SetAnimationSprite(LDefault2);
-			}
-			if (direction == RIGHT)
-			{
-				SetAnimationSprite(RDefault2);
-			}
+			SetAnimationSprite(Default2);
 		}
 	}
 }
 
 void Animation2D::SetJump()
 {
-	if (direction == LEFT)
-	{
-		SetAnimationSprite(LJump);
-	}
-	if (direction == RIGHT)
-	{
-		SetAnimationSprite(RJump);
-	}
+	SetAnimationSprite(Jump);
 }
 
 void Animation2D::SetJumpPunch()
@@ -178,50 +156,22 @@ void Animation2D::SetJumpPunch()
 
 void Animation2D::SetDownPunch()
 {
-	if (direction == LEFT)
-	{
-		SetAnimationSprite(LDownwardPunch);
-	}
-	if (direction == RIGHT)
-	{
-		SetAnimationSprite(RDownwardPunch);
-	}
+	SetAnimationSprite(DownwardPunch);
 }
 
 void Animation2D::SetWalk(int animation)
 {
 	if (animation == 1)
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LWalk1);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RWalk1);
-		}
+		SetAnimationSprite(Walk1);
 	}
 	else if (animation == 2)
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LWalk2);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RWalk2);
-		}
+		SetAnimationSprite(Walk2);
 	}
 	else
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LWalk3);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RWalk3);
-		}
+		SetAnimationSprite(Walk3);
 	}
 }
 
@@ -232,75 +182,33 @@ void Animation2D::SetRun()
 
 void Animation2D::SetFall()
 {
-	if (direction == LEFT)
-	{
-		SetAnimationSprite(LFall);
-	}
-	if (direction == RIGHT)
-	{
-		SetAnimationSprite(RFall);
-	}
+	SetAnimationSprite(Fall);
 }
 
 void Animation2D::SetPunch(int animation)
 {
 	if (animation == 1)
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LKick1);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RKick1);
-		}
+		SetAnimationSprite(Kick1);
 	}
 	else if (animation == 2)
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LKick3);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RKick2);
-		}
+		SetAnimationSprite(Kick2);
 	}
 	else
 	{
-		if (direction == LEFT)
-		{
-			SetAnimationSprite(LKick3);
-		}
-		if (direction == RIGHT)
-		{
-			SetAnimationSprite(RKick3);
-		}
+		SetAnimationSprite(Kick3);
 	}
 }
 
 void Animation2D::SetGrab()
 {
-	if (direction == LEFT)
-	{
-		SetAnimationSprite(LGrab);
-	}
-	if (direction == RIGHT)
-	{
-		SetAnimationSprite(RGrab);
-	}
+	SetAnimationSprite(Grab);
 }
 
 void Animation2D::SetHit()
 {
-	if (direction == LEFT)
-	{
-		SetAnimationSprite(LHit);
-	}
-	if (direction == RIGHT)
-	{
-		SetAnimationSprite(RHit);
-	}
+	SetAnimationSprite(Hit);
 }
 
 void Animation2D::SetAnimationSprite(int action)
@@ -316,7 +224,7 @@ void Animation2D::LoadSprites(string _filename) //load the sprite sheet location
 	{
 		while (!sprite_position_batching.eof())
 		{
-			for (int j = 0; j < 28; ++j) // Different animations
+			for (int j = 0; j < 15; ++j) // Different animations
 			{
 				for (int i = 0; i < 4; ++i) //the four positions of the point
 				{
@@ -326,7 +234,7 @@ void Animation2D::LoadSprites(string _filename) //load the sprite sheet location
 		}
 	}
 	sprite_position_batching.close();
-	SetAnimationSprite(LDefault); // set the default animation
+	SetAnimationSprite(Default); // set the default animation
 
 	//m_width = sprite_batch[CharacterWidth][2] - sprite_batch[CharacterWidth][0];
 	//m_height= sprite_batch[LDefault][3] - sprite_batch[LDefault][1];
