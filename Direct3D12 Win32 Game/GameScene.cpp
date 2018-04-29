@@ -165,7 +165,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		}
 	}
 
-	/*if (time_remaining <= 0 || (no_players) <= players_dead + 1)
+	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
@@ -189,7 +189,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				}
 			}
 		}
-	}*/
+	}
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
