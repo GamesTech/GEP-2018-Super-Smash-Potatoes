@@ -17,6 +17,7 @@ CharacterSelectScene::~CharacterSelectScene()
 	grid_sprites.clear();
 	player_previews.clear();
 	game_objects.clear();
+	selection_numbers.clear();
 }
 
 
@@ -30,6 +31,16 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	title_text->SetRect(1,1,1280,720);
 	game_objects.push_back(std::move(title_text));
 
+	for (int i = 0; i < 4; i++)
+	{
+		//4 = max players
+		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
+		player_numbers->SetLayer(0.0f);
+		player_numbers->SetRect(number_pos[i]);
+		player_numbers->CentreOrigin();
+		selection_numbers.push_back(std::move(player_numbers));
+	}
+
 	sprites_per_row = 9;
 	int current_sprites_on_row = 0;
 	int row_no = 0;
@@ -37,18 +48,18 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	for (int i = 0; i < sprite_names.size(); i++)
 	{
 		grid_sprite_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
-		grid_sprite_temp->SetPos(Vector2(150 + (current_sprites_on_row * 150), 150 + (row_no * 150)));
-		grid_sprite_temp->SetRect(1, 1, 64, 64);
+		grid_sprite_temp->SetPos(Vector2(sprite_pixel_gap + (current_sprites_on_row * sprite_pixel_gap), sprite_pixel_gap + (row_no * sprite_pixel_gap)));
+		grid_sprite_temp->SetRect(1, 1, grid_sprite_pixel_size, grid_sprite_pixel_size);
 		grid_sprite_temp->SetLayer(1.0f);
 		grid_sprite_temp->CentreOrigin();
 		grid_sprite_temp->SetScale(Vector2{ 2,2 });
 		grid_sprites.push_back(std::move(grid_sprite_temp));
 
 		player_preview_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
-		player_preview_temp->SetRect(1, 1, 64, 64);
+		player_preview_temp->SetRect(1, 1, grid_sprite_pixel_size, grid_sprite_pixel_size);
 		player_preview_temp->SetLayer(0.0f);
 		player_preview_temp->CentreOrigin();
-		player_preview_temp->SetScale(Vector2{2,2});
+		player_preview_temp->SetScale(Vector2{2.25,2.25});
 		player_previews.push_back(std::move(player_preview_temp));
 
 		//new row
@@ -61,12 +72,13 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 		}
 	}
 
-	//player_preview_boxes = std::make_unique<ImageGO2D>(m_RD, "PlayerPreviewBoxes");
-	//player_preview_boxes->SetPos(Vector2(640, 620));
-	//player_preview_boxes->SetRect(1, 1, 723, 180);
-	//player_preview_boxes->SetLayer(1.0f);
-	//player_preview_boxes->CentreOrigin();
-	//game_objects.push_back(std::move(player_preview_boxes));
+	player_preview_boxes = std::make_unique<ImageGO2D>(m_RD, "PlayerPreviewBoxes");
+	player_preview_boxes->SetPos(Vector2(640, 600));
+	player_preview_boxes->SetRect(1, 1, 723, 180);
+	player_preview_boxes->SetLayer(1.0f);
+	player_preview_boxes->CentreOrigin();
+	player_preview_boxes->SetScale(Vector2{ 1.02, 1 });
+	game_objects.push_back(std::move(player_preview_boxes));
 
 	return true;
 
@@ -141,7 +153,7 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 	for (int i = 0; i < no_players; i++)
 	{
-		player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 610));
+		player_previews[selection_player[i]]->SetPos(Vector2(352 + (i * 184), 607));
 		if (players_locked[i] == true)
 		{
 			player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(0, 1, 0));
@@ -151,6 +163,10 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 			player_previews[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 		}
 		player_previews[selection_player[i]]->Render(m_RD);
+
+		//numbers!
+		selection_numbers[i]->SetPos((grid_sprites[selection_player[i]]->GetPos()) - (Vector2(grid_sprite_pixel_size - (i * (sprite_pixel_gap / 3.5)), sprite_pixel_gap - grid_sprite_pixel_size)));
+		selection_numbers[i]->Render(m_RD);
 	}
 
 	m_RD->m_spriteBatch->End();
@@ -214,6 +230,8 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 			}
 		}
 
+		/*
+		don't know if we'll want this back?
 		float red = 0;
 		float green = 0;
 		float blue = 0;
@@ -235,6 +253,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 		}
 
 		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
+		*/
 
 		grid_sprites[selection_player[i]]->SetScale(Vector2(2.2f, 2.2f));
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
