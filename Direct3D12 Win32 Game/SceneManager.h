@@ -14,7 +14,6 @@ public:
 
 
 private:
-
 	std::vector<std::unique_ptr<Scene>> scenes;
 };
 

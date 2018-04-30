@@ -38,8 +38,6 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 		platforms.emplace_back(platform);
 	}
 
-	objects.emplace_back(new Text2D("Super Trash Potatoes"));
-
 	for (auto& object : objects)
 	{
 		object->SetLayer(1.0f);
@@ -312,7 +310,6 @@ bool GameScene::MainCollision(GameObject2D *_obj, int _i)
 					return false;
 				}
 			}
-			
 		}
 		else if(collision_width > collision_height)
 		{
