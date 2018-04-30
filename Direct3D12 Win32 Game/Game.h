@@ -112,8 +112,6 @@ private:
 	bool settings_menu_open = false;
 	int prevScene = 0;
 
-	const int MAX_PLAYERS = 4;
-
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 

@@ -181,6 +181,9 @@
     <ClInclude Include="PlayerTags.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="UserInterface2D.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Game Base\Headers\ParticleSystem</Filter>
     </ClInclude>
@@ -288,6 +291,7 @@
     <ClCompile Include="PlayerTags.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
+    <ClCompile Include="UserInterface2D.cpp" />
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>

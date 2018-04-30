@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "LevelFile.h"
 #include "PlayerTags.h"
+#include "UserInterface2D.h"
 #include "ParticleSystem.h"
 
 class GameScene : public Scene
@@ -43,6 +44,7 @@ private:
 	Vector2 m_spawn_pos[4] = { {300, 250},{400, 250},{ 600, 250 },{ 700, 250 } };
 	std::unique_ptr<PlayerTags> m_player_tag = nullptr;
 	std::unique_ptr <LevelFile> level;
+	std::unique_ptr <UserInterface> UI;
 
 	std::vector<string> sprite_names;
 
@@ -50,11 +52,7 @@ private:
 	std::vector<std::unique_ptr<GameObject2D>> objects;
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
-	Text2D* timer_text;
-	Text2D* damage_text[4];
-	ImageGO2D* lives_button_sprite[12];
-	std::unique_ptr<ImageGO2D> platform_side;
 
-	ImageGO2D* player_UI_Boxes;
+	std::unique_ptr<ImageGO2D> platform_side;
 };
 

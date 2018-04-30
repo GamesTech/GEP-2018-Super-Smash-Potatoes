@@ -179,7 +179,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	//// TODO: Gamepad
 	m_GSD->no_players = 0;
-	for (int i = 0; i < MAX_PLAYERS; i++)
+	for (int i = 0; i < m_GSD->MAX_PLAYERS; i++)
 	{
 		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
 		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);

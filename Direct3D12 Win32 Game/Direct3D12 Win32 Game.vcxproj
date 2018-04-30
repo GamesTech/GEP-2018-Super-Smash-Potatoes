@@ -208,6 +208,7 @@
     <ClInclude Include="SoundEffects.h" />
     <ClInclude Include="Text2D.h" />
     <ClInclude Include="GameStateData.h" />
+    <ClInclude Include="UserInterface2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="TestPBGO3D.cpp" />
     <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="Text2D.cpp" />
+    <ClCompile Include="UserInterface2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
