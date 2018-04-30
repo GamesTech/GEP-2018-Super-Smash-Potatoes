@@ -12,8 +12,10 @@ enum ActionJump
 	GROUND,
 	JUMP,
 	UPWARDPUNCH,
+	DOWNWARDPUNCH,
 	PUNCH,
-	FALL
+	FALL,
+	HIT
 };
 
 enum ActionMovement
@@ -34,6 +36,7 @@ public:
 
 	void LoadSprites(string _filename);
 	void AnimationTick(GameStateData * _GSD);
+	void AnimationTimers(GameStateData * _GSD);
 	void AnimationOn();
 	void Punch();
 
@@ -45,16 +48,20 @@ protected:
 
 private:
 	void SetDefault(int animation);
+	void SetAnimationSprite(int action);
 	void SetJump();
 	void SetJumpPunch();
+	void SetDownPunch();
 	void SetWalk(int animation);
 	void SetRun();
 	void SetFall();
 	void SetPunch(int animation);
 	void SetGrab();
+	void SetHit();
 
 	enum SpriteStateData
 	{
+		CharacterWidth,
 		LDefault,
 		RDefault,
 		LDefault2,
@@ -77,7 +84,11 @@ private:
 		LKick2,
 		RKick2,
 		LKick3,
-		RKick3
+		RKick3,
+		LHit,
+		RHit,
+		LDownwardPunch,
+		RDownwardPunch
 	};
 
 
@@ -89,5 +100,5 @@ private:
 	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[24][4];
+	float sprite_batch[29][4];
 };

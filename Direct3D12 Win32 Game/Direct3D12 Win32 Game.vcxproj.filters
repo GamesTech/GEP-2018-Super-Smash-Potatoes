@@ -47,6 +47,24 @@
     <Filter Include="Game Base\Source">
       <UniqueIdentifier>{c6145a56-6b6a-4cdf-aecf-c59fe5db8df0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Headers\SceneManager">
+      <UniqueIdentifier>{3a6e5c2a-ae3b-4104-a720-0c21ff01b345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\SceneManager\Scenes">
+      <UniqueIdentifier>{2325faa3-3964-4e29-a5d7-63763d9e8919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\SceneManager">
+      <UniqueIdentifier>{494fa280-950e-4fb3-af81-e314779db48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\SceneManager\Scene">
+      <UniqueIdentifier>{e31713e5-b009-4bf8-a450-d6e56ce4ffb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\AudioManager">
+      <UniqueIdentifier>{395af9bb-a958-4035-8c10-1c18365e4882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\AudioManager">
+      <UniqueIdentifier>{1909651a-4601-4cdc-a2c0-92bad533d37a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -109,9 +127,6 @@
     <ClInclude Include="Physics2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="SoundEffects.h">
       <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
@@ -121,30 +136,39 @@
     <ClInclude Include="File.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="LevelFile.h" />
-    <ClInclude Include="ArenaSelectScene.h">
-      <Filter>Game Base\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CharacterSelectScene.h">
-      <Filter>Game Base\Headers</Filter>
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ArenaSelectScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Game Base\Headers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Game Base\Headers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Game Base\Headers\AudioManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTags.h">
+      <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -199,9 +223,6 @@
     <ClCompile Include="GameStateData.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
     <ClCompile Include="SoundEffects.cpp">
       <Filter>GameObjects\Sounds\Source</Filter>
     </ClCompile>
@@ -211,30 +232,39 @@
     <ClCompile Include="File.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuScene.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsScene.cpp">
-      <Filter>Game Base\Source</Filter>
-    </ClCompile>
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="ArenaSelectScene.cpp">
-      <Filter>Game Base\Source</Filter>
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="CharacterSelectScene.cpp">
-      <Filter>Game Base\Source</Filter>
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Game Base\Source\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Game Base\Source\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Game Base\Source\AudioManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTags.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

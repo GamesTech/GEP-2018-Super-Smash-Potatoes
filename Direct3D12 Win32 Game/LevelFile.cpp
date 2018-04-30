@@ -15,6 +15,7 @@ void LevelFile::read(std::string file, std::string ext)
 		Vector2 scale;
 		float orientation;
 		float layer;
+		int type;
 		string image_file;
 	*/
 	
@@ -29,8 +30,9 @@ void LevelFile::read(std::string file, std::string ext)
 		obj.scale = File::parseVector2(lines.at(3));
 		obj.orientation = std::stof(lines.at(4));
 		obj.layer = std::stof(lines.at(5));
-		obj.sprite_size_min = File::parseVector2(lines.at(6));
-		obj.sprite_size_max = File::parseVector2(lines.at(7));
+		obj.type = std::stof(lines.at(6));
+		obj.sprite_size_min = File::parseVector2(lines.at(7));
+		obj.sprite_size_max = File::parseVector2(lines.at(8));
 
 		object_data.push_back(obj);
 	}

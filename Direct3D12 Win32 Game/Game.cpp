@@ -14,6 +14,7 @@
 #include "ArenaSelectScene.h"
 #include "SettingsScene.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 
 extern void ExitGame();
 
@@ -68,7 +69,6 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
-	m_GSD->gameState = MENU;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -139,8 +139,8 @@ void Game::Initialize(HWND window, int width, int height)
 	Debug::init();
 	Debug::output("hello", "world");
 
-	scene = std::make_unique<MenuScene>();
-	scene->init(m_RD, m_GSD);
+	scene_manager = std::make_unique<SceneManager>();
+	scene_manager->init(m_RD, m_GSD, audio_manager);
 
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
@@ -163,17 +163,19 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-	checkIfNewScene();
 
 	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
 	m_GSD->m_keyboardState = m_keyboard->GetState();
-	scene->ReadInput(m_GSD);
+	//scene->ReadInput(m_GSD);
 
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	scene->update(m_GSD);
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, m_swapChain))
+	{
+		PostQuitMessage(0);
+	}
 
 	//// TODO: Gamepad
 	m_GSD->no_players = 0;
@@ -204,7 +206,7 @@ void Game::Render()
 	// Prepare the command list to render a new frame.
 	Clear();
 
-	scene->render(m_RD, m_commandList);
+	scene_manager->render(m_RD, m_commandList);
 
 
 	// Show the new frame.
@@ -227,7 +229,7 @@ void Game::Clear()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::HotPink, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
@@ -676,39 +678,4 @@ void Game::OnDeviceLost()
     CreateResources();
 }
 
-void Game::checkIfNewScene()
-{
-	if (m_GSD->gameState != prevScene)
-	{
-		switch (m_GSD->gameState)
-		{
-		case MENU:
-			scene.reset();
-			scene = std::make_unique<MenuScene>();
-			break;
-		case CHARACTERSELECT:
-			scene.reset();
-			scene = std::make_unique<CharacterSelectScene>();
-			break;
-		case ARENASELECT:
-			scene.reset();
-			scene = std::make_unique<ArenaSelectScene>();
-			break;
-		case SETTINGS:
-			scene.reset();
-			scene = std::make_unique<SettingsScene>();
-			scene->giveSwapChain(m_swapChain);
-			break;
-		case INGAME:
-			scene.reset();
-			scene = std::make_unique<GameScene>();
-			break;
-		case GAMEOVER:
-			//scene.reset();
-			//gameover man, GAMEOVER
-			break;
-		}
-		scene->init(m_RD, m_GSD);
-		prevScene = m_GSD->gameState;
-	}
-}
+
