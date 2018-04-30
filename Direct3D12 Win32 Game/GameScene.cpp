@@ -17,6 +17,9 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	m_RD->m_resourceCount = 30;
 	time_remaining = 180.0f;
 
+	x_resolution = gsd->x_resolution;
+	y_resolution = gsd->y_resolution;
+
 	level = std::make_unique<LevelFile>();
 	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
 
@@ -72,7 +75,29 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 Scene::SceneChange GameScene::update(GameStateData* gsd)
 {
+	float top_left_x;
+	float top_left_y;
+
+	for (int i = 0; i < gsd->no_players; i++)
+	{
+		Vector2 player_pos = m_player[0]->GetPos();
+		top_left_x = player_pos.x-100;
+		top_left_y = player_pos.y+100;
+	}
+
+	gsd->camera_view_width = 1280;
+	gsd->camera_view_height = 720;
+
+
+	top_left_x = -1.0f;
+	top_left_y = 0.5f;
+
+	viewport = { 0.0f, 0.0f,
+		static_cast<float>(gsd->camera_view_width), static_cast<float>(gsd->camera_view_height),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
 	UI->update(gsd, m_player, time_remaining);
+
 	
 	int players_dead = 0;
 	particle_system->update(gsd);
@@ -230,6 +255,9 @@ void GameScene::render(RenderData* m_RD,
 	//finally draw all 2D objects
 	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+
+	m_RD->m_spriteBatch->SetViewport(viewport);
+
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
 	for (auto& object : objects)
@@ -248,8 +276,16 @@ void GameScene::render(RenderData* m_RD,
 	m_player_tag->Render(m_RD);
 	particle_system->render(m_RD);
 
-	UI->render(m_RD);
+	m_RD->m_spriteBatch->End();
 
+
+	//Now UI sprite Batch
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	viewport = { 0.0f, 0.0f,
+		static_cast<float>(x_resolution), static_cast<float>(y_resolution),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+	m_RD->m_spriteBatch->SetViewport(viewport);
+	UI->render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 

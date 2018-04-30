@@ -54,5 +54,9 @@ private:
 	bool m_anim_grounded[4] = { false,false,false,false };
 
 	std::unique_ptr<ImageGO2D> platform_side;
+
+	D3D12_VIEWPORT viewport;
+	int x_resolution = 0;
+	int y_resolution = 0;
 };
 
