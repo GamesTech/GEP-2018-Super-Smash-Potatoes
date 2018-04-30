@@ -23,6 +23,7 @@ public:
 	void render(RenderData* m_RD);
 
 	bool isDead() { return lifetime <= 0.0f; };
+	void setPlayerVel(Vector2 player) { player_vel = player; };
 
 private:
 	std::unique_ptr<ParticleFile> particle_file = nullptr;
@@ -32,6 +33,7 @@ private:
 	Vector2 position = {0, 0};
 	Vector2 velocity = { 0, 0 };
 	Vector2 accelaration = { 0, 0 };
+	Vector2 player_vel = {0, 0};
 
 	float lifetime = 0;
 };

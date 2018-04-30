@@ -118,19 +118,24 @@ void Player2D::HitTimer(GameStateData * _GSD)
 
 void Player2D::PunchTimer(GameStateData * _GSD)
 {
-	if (m_timer_punch >= 0.3)
+	if (m_timer_punch >= 0.18 && m_timer_punch <= 0.22)
+	{
+		if (punch_particle)
+		{
+			particle_system->spawnParticle(1, Type::ATTACK, GetPos() + Vector2{ m_size.x / 3, 0 }, GetFlipH(), m_vel);
+			punch_particle = false;
+		}
+	}
+	else if (m_timer_punch >= 0.3)
 	{
 		if (m_punching)
 		{
 			m_execute_punch = true;
-			particle_system->spawnParticle(1, Type::ATTACK, GetPos(), GetFlipH());
 		}
 		m_punching = false;
+		punch_particle = true;
 	}
-	else
-	{
-		m_timer_punch += _GSD->m_dt;
-	}
+	m_timer_punch += _GSD->m_dt;
 }
 
 void Player2D::UpPunchTimer(GameStateData * _GSD)
@@ -522,12 +527,5 @@ void Player2D::updateOrientation()
 
 bool Player2D::GetOrientation()
 {
-	if (!GetFlipH())
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return !GetFlipH();
 }

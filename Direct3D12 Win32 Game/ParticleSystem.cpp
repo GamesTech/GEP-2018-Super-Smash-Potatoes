@@ -42,3 +42,14 @@ void ParticleSystem::spawnParticle(int amount, Type::Type type, Vector2 pos, boo
 		particles.push_back(std::move(p));
 	}
 }
+
+void ParticleSystem::spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH, Vector2 player_vel)
+{
+	for (int i = 0; i < amount; ++i)
+	{
+		std::unique_ptr<Particle> p = std::unique_ptr<Particle>(new Particle); // Create a new particle 
+		p->init(m_RD, type, pos, flipH); // The type is what particle file is loaded
+		p->setPlayerVel(player_vel);
+		particles.push_back(std::move(p));
+	}
+}

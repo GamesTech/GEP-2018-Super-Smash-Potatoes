@@ -26,6 +26,7 @@ void Particle::init(RenderData * m_RD, Type::Type type, Vector2 pos, bool flipH)
 	sprite->SetPos(pos); //set the position
 	sprite->SetLayer(particle_file->getObj(0).layer);
 	sprite->FlipH(flipH);
+	sprite->CenterX();
 
 	position = pos;
 	velocity = particle_file->getObj(0).velocity; // velocity loaded from file
@@ -45,6 +46,7 @@ void Particle::update(GameStateData* gsd)
 	//Velocity and accelaration maths
 	velocity.x = ( velocity.x + accelaration.x * gsd->m_dt);
 	velocity.y = (velocity.y + accelaration.y * gsd->m_dt);
+	velocity.x = velocity.x + player_vel.x;
 	position.x = (position.x + velocity.x * gsd->m_dt);
 	position.y = (position.y + velocity.y * gsd->m_dt);
 	//updates position

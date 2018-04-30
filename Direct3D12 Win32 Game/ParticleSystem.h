@@ -12,6 +12,7 @@ public:
 	void render(RenderData* m_RD);
 
 	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH);
+	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH, Vector2 player_vel);
 
 private:
 	RenderData * m_RD = nullptr;

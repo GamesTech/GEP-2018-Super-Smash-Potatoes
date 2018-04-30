@@ -100,6 +100,7 @@ protected:
 	bool m_up_punching = false;
 	bool m_down_punching = false;
 	bool m_punching = false;
+	bool punch_particle = true;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
