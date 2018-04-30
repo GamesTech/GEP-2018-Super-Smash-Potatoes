@@ -54,6 +54,10 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 	{
 		if (m_anim_grounded)
 		{
+			if (!action_jump == GROUND)
+			{
+				particle_system->createEmitter(300, "dust", m_pos + Vector2{ m_size.x/2, m_size.y }, GetFlipH());
+			}
 			action_jump = GROUND;
 			m_down_punching = false;
 		}

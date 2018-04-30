@@ -79,6 +79,9 @@
     <ImageContentTask Include="Particle\attack.png">
       <Filter>Particle</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Particle\dust.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

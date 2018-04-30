@@ -189,6 +189,9 @@
   <ItemGroup>
     <ImageContentTask Include="Particle\attack.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\dust.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

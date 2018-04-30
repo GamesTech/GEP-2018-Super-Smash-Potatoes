@@ -14,7 +14,7 @@ GameScene::~GameScene()
 
 bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	m_RD->m_resourceCount = 30;
+	
 	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();
@@ -260,7 +260,7 @@ void GameScene::ReadInput(GameStateData* gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		action = Action::BACK;
+		//action = Action::BACK;
 	}
 }
 
@@ -414,7 +414,6 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(m_spawn_pos[i]);
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
@@ -441,105 +440,3 @@ void GameScene::loadCharactersFile(string _filename)
 	character_sprites_loading.close();
 }
 
-//void GameScene::CheckAttackPos(GameStateData * _GSD, int _i)
-//{
-//	float r1 = m_player[_i]->Width()/1.5;
-//	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
-//	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
-//	float punch_direction = 0;
-//	float block = false;
-//	
-//	if (m_player[_i]->GetOrientation())
-//	{
-//		x1 += 40;
-//		punch_direction = 1;
-//	}
-//	else
-//	{
-//		x1 -= 40;
-//		punch_direction = -1;
-//	}
-//
-//	//block
-//	for (int j = 0; j < no_players; j++)
-//	{
-//		if (_i != j)
-//		{
-//			if (m_player[j]->IsPunching() && punch_direction != m_player[j]->GetOrientation())
-//			{
-//				float r2 = m_player[j]->Width();
-//				//float distance_1 = collision_width - player_width;
-//				//float distance_2 = collision_width + player_width;
-//				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-//				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-//
-//				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-//				{
-//					m_player[j]->Block(_GSD);
-//					m_player[j]->ResetAttacks(false);
-//					block = true;
-//				}
-//			}
-//		}
-//	}
-//	if (block)
-//	{
-//		m_player[_i]->Block(_GSD);
-//	}
-//	else
-//	{
-//		// standard punch
-//		for (int j = 0; j < no_players; j++)
-//		{
-//			if (_i != j && !m_player[j]->GetInvincibility())
-//			{
-//				float r2 = m_player[j]->Width();
-//				float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-//				float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-//
-//				if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-//				{
-//					m_player[j]->GotHit(_GSD, punch_direction);
-//					audio_manager->playSound(SLAPSOUND);
-//				}
-//			}
-//		}
-//	}
-//	m_player[_i]->ResetAttacks(false);
-//}
-//
-//void GameScene::CheckUpAttackPos(GameStateData * _GSD, int _i)
-//{
-//	float r1 = m_player[_i]->Width() / 1.5;
-//	float x1 = m_player[_i]->GetPos().x + (m_player[_i]->Width() / 2);
-//	float y1 = m_player[_i]->GetPos().y + (m_player[_i]->Height() / 2);
-//	float punch_direction = 0;
-//	float block = false;
-//	if (m_player[_i]->IsUpPuching())
-//	{
-//		y1 -= 30;
-//	}
-//	// standard punch
-//	for (int j = 0; j < no_players; j++)
-//	{
-//		if (_i != j)
-//		{
-//			float r2 = m_player[j]->Width();
-//			//float distance_1 = collision_width - player_width;
-//			//float distance_2 = collision_width + player_width;
-//			float x2 = m_player[j]->GetPos().x + (m_player[j]->Width() / 2);
-//			float y2 = m_player[j]->GetPos().y + (m_player[j]->Height() / 2);
-//
-//			if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-//			{
-//				if (!m_player[j]->GetImmune())
-//				{
-//					m_player[j]->GotUpHit(_GSD);
-//					audio_manager->playSound(SLAPSOUND);
-//				}
-//			}
-//		}
-//	}
-//
-//	//m_player[_i]->Attack(false);
-//}

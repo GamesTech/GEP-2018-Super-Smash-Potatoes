@@ -13,8 +13,9 @@ GameOverScene::~GameOverScene()
 	game_objects.clear();
 }
 
-bool GameOverScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am)
 {
+	m_RD = _RD;
 	winner_number = std::make_unique<ImageGO2D>(m_RD, "numbers");
 	winner_number->SetLayer(1.0f);
 	winner_number->SetPos(Vector2(700, 330));
@@ -39,6 +40,7 @@ Scene::SceneChange GameOverScene::update(GameStateData * gsd)
 	case Action::BACK:
 	{
 		scene_change.change_type = ChangeType::REPLACE_ALL;
+		m_RD->m_resourceCount = 1;
 		scene_change.scene = SceneEnum::MENU;
 		break;
 	}
@@ -64,7 +66,7 @@ void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 void GameOverScene::ReadInput(GameStateData * gsd)
 {
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
 		action = Action::BACK;
 	}

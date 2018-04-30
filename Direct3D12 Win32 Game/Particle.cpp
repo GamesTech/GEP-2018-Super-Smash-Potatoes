@@ -32,6 +32,7 @@ void Particle::init(RenderData * m_RD, Type::Type type, Vector2 pos, bool flipH)
 	velocity = particle_file->getObj(0).velocity; // velocity loaded from file
 	accelaration = particle_file->getObj(0).accelaration; // accelaration loaded from file too
 	lifetime = particle_file->getObj(0).lifetime;
+	max_lifetime = lifetime;
 
 	if (flipH)
 	{
@@ -51,6 +52,10 @@ void Particle::update(GameStateData* gsd)
 	position.y = (position.y + velocity.y * gsd->m_dt);
 	//updates position
 	sprite->SetPos(position);
+	if (lifetime < 0.05)
+	{
+		sprite->SetOpacity(0.8 * (0.05 - lifetime) + 1 * lifetime);
+	}
 }
 
 void Particle::render(RenderData * m_RD)

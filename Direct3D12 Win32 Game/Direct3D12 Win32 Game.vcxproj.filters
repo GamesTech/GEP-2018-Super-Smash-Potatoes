@@ -199,6 +199,9 @@
     <ClInclude Include="ParticleFile.h">
       <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
+    <ClInclude Include="Emitter.h">
+      <Filter>Game Base\Headers\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -291,7 +294,6 @@
     <ClCompile Include="PlayerTags.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
-    <ClCompile Include="UserInterface2D.cpp" />
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
@@ -305,6 +307,12 @@
       <Filter>Game Base\Source\File</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Emitter.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
@@ -328,9 +336,6 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Levels.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="hit.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
@@ -340,5 +345,10 @@
     <None Include="attack.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels.txt">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </Text>
   </ItemGroup>
 </Project>

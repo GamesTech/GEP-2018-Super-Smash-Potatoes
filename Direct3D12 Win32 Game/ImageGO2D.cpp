@@ -113,3 +113,8 @@ bool ImageGO2D::GetFlipH()
 		return false;
 	}
 }
+
+void ImageGO2D::SetOpacity(float amount)
+{
+	m_colour.w = amount;
+}
