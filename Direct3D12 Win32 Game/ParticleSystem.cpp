@@ -10,6 +10,11 @@ ParticleSystem::~ParticleSystem()
 bool ParticleSystem::init(RenderData * _m_RD)
 {
 	m_RD = _m_RD;
+
+	std::unique_ptr<Emitter> dust_emitter = std::make_unique<Emitter>(m_RD, "dust"); // Create a new particle 
+	dust_emitter->init(m_RD); // The type is what particle file is loaded
+	emitter.push_back(std::move(dust_emitter));
+
 	return true;
 }
 
@@ -25,12 +30,9 @@ void ParticleSystem::update(GameStateData * gsd)
 			particles.erase(particles.begin() + i);
 		}
 	}
-	for (int i = 0; i < emitter.size(); ++i)
+	for (auto& e : emitter)
 	{
-		if (emitter[i]->update(gsd)) // Updates the emiiter till it is empty 
-		{
-			emitter.erase(emitter.begin() + i);
-		}
+		e->update(gsd); // Updates the emiiter till it is empty 
 	}
 }
 
@@ -69,9 +71,15 @@ void ParticleSystem::spawnParticle(int amount, Type::Type type, Vector2 pos, boo
 	}
 }
 
-void ParticleSystem::createEmitter(int amount, std::string image_name, Vector2 pos, bool flipH)
+void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime = 1, float layer = 0.0f, bool fade = true, bool flipH = false)
 {
-	std::unique_ptr<Emitter> e = std::make_unique<Emitter>(m_RD, image_name); // Create a new particle 
-	e->init(m_RD, amount, pos, flipH); // The type is what particle file is loaded
-	emitter.push_back(std::move(e));
+	switch (type)
+	{
+	case Particle_Type::DUST:
+	{
+		emitter[0]->addParticles(amount, pos, lifetime, layer, fade, flipH);
+		break;
+	}
+
+	}
 }

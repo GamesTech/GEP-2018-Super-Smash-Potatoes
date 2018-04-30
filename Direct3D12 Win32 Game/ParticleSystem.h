@@ -3,6 +3,15 @@
 #include "Particle.h"
 #include "Emitter.h"
 
+namespace Particle_Type
+{
+	enum Type
+	{
+		DUST,
+		ATTACK
+	};
+}
+
 class ParticleSystem
 {
 public:
@@ -15,7 +24,7 @@ public:
 	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH);
 	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH, Vector2 player_vel);
 
-	void createEmitter(int amount, std::string image_name, Vector2 pos, bool flipH);
+	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH);
 
 private:
 	RenderData * m_RD = nullptr;
