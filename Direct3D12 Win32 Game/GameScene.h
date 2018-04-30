@@ -4,6 +4,7 @@
 #include "PlayerTags.h"
 #include "UserInterface2D.h"
 #include "ParticleSystem.h"
+#include "CollisionSystem.h"
 
 class GameScene : public Scene
 {
@@ -30,8 +31,6 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
-	bool MainCollision(GameObject2D * _obj, int _i);
-	bool OtherCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
 
@@ -52,6 +51,11 @@ private:
 	std::vector<std::unique_ptr<GameObject2D>> objects;
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
+	Text2D* timer_text;
+	Text2D* damage_text[4];
+	ImageGO2D* lives_button_sprite[12];
+	std::unique_ptr<ImageGO2D> platform_side;
+	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
 	std::unique_ptr<ImageGO2D> platform_side;
 };
