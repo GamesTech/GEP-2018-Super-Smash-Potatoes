@@ -49,11 +49,11 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	}
 
 	no_players = gsd->no_players;
-	//if (no_players == 1)
-	//{
-	//	//for playtesting
-	//	no_players = 2;
-	//}
+	if (no_players == 1)
+	{
+		//for playtesting
+		no_players = 3;
+	}
 
 	particle_system = std::make_shared<ParticleSystem>();
 	particle_system->init(m_RD);
@@ -79,22 +79,24 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 {
 	float top_left_x;
 	float top_left_y;
-
-	for (int i = 0; i < gsd->no_players; i++)
+	Vector2 position;
+	int j = 0;
+	for (int i = 0; i < no_players; i++)
 	{
-		Vector2 player_pos = m_player[0]->GetPos();
-		top_left_x = player_pos.x-100;
-		top_left_y = player_pos.y+100;
+		if (!m_player[i]->getDead())
+		{
+			position += m_player[i]->GetPos();
+			j++;
+		}
 	}
-
 	gsd->camera_view_width = 1280;
 	gsd->camera_view_height = 720;
 
+	Vector2 centre = Vector2(position.x / j, position.y / j);
+	top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
+	top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
 
-	top_left_x = -1.0f;
-	top_left_y = 0.5f;
-
-	viewport = { 0.0f, 0.0f,
+	viewport = { -1 + top_left_x, -1 + top_left_y,
 		static_cast<float>(gsd->camera_view_width), static_cast<float>(gsd->camera_view_height),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
@@ -109,7 +111,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	{
 		Vector2 temp = m_player[i]->GetPos();
 		m_player_tag->SetPlayerPos(i, temp, m_player[i]->GetSize().x);
-		if (m_player[i]->getDead() == false)
+		if (!m_player[i]->getDead())
 		{
 			for (auto& platform : platforms)
 			{
@@ -283,7 +285,7 @@ void GameScene::render(RenderData* m_RD,
 
 	//Now UI sprite Batch
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
-	viewport = { 0.0f, 0.0f,
+	viewport = { -1.f, -1.f,
 		static_cast<float>(x_resolution), static_cast<float>(y_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 	m_RD->m_spriteBatch->SetViewport(viewport);
@@ -304,14 +306,14 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
+		std::string str_player_no = sprite_names[gsd->player_selected[0]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(m_spawn_pos[i]);
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.0f);
-		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[0]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
 		m_player[i]->SetParticleSystem(particle_system);
 	}	
