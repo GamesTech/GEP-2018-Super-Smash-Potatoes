@@ -20,6 +20,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	level = std::make_unique<LevelFile>();
 	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
 
+
 	loadCharactersFile("PlayerSprites.txt");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
@@ -108,6 +109,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		{
 			for (auto& platform : platforms)
 			{
+				
 				if (platform->GetLayer() == 0.5)
 				{
 					if (platform->GetType() == 0)
@@ -207,9 +209,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 void GameScene::Attacking(int i, GameStateData * gsd)
 {
-	if (m_player[i]->IsPunching())
+	bool block = false;
+	switch (m_player[i]->GetAttackType())
 	{
-		bool block = false;
+	case Attack::FIRST:
 		for (int j = 0; j < no_players; j++)
 		{
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
@@ -237,10 +240,9 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 				}
 			}
 		}
-		m_player[i]->ResetAttacks(false);
-	}
-	else if (m_player[i]->IsUpPuching())
-	{
+		m_player[i]->ResetAttacks();
+		break;
+	case Attack::SECOND:
 		for (int j = 0; j < no_players; j++)
 		{
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
@@ -251,6 +253,22 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 				}
 			}
 		}
+		break;
+	case Attack::THIRD:
+		for (int j = 0; j < no_players; j++)
+		{
+			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			{
+				if (m_player[i]->ExectueDownPunch(gsd, m_player[j].get()))
+				{
+					audio_manager->playSound(SLAPSOUND);
+				}
+			}
+		}
+		m_player[i]->ResetAttacks();
+		break;
+	default:
+		break;
 	}
 }
 
