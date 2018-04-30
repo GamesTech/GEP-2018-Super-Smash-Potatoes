@@ -181,6 +181,11 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		
 	}
 
+	for (auto& item : items)
+	{
+		item->update();
+	}
+
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
 		action = Action::CONTINUE;

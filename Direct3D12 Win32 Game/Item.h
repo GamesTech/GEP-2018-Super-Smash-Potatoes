@@ -14,6 +14,9 @@ class Item : public ImageGO2D
 		void collided(Player2D* player, GameStateData * _GSD);
 		void update();
 	private:
+		static const int yOffset = 50;
+
 		Type type;
-		boolean active = true;
+		Player2D* player = nullptr;
+		boolean active = false;
 };
