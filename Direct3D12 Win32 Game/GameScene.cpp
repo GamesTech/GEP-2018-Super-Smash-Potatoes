@@ -48,11 +48,11 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	}
 
 	no_players = gsd->no_players;
-	//if (no_players == 1)
-	//{
-	//	//for playtesting
-	//	no_players = 2;
-	//}
+	if (no_players == 1)
+	{
+		//for playtesting
+		no_players = 2;
+	}
 
 	m_player_tag = std::make_unique<PlayerTags>(no_players);
 	m_player_tag->Init(m_RD);
@@ -295,14 +295,14 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + std::to_string(i);
+		std::string str_player_no = sprite_names[gsd->player_selected[0]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(m_spawn_pos[i]);
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.0f);
-		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[0]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
 
 		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
