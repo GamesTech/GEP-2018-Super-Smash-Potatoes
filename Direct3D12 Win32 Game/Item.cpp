@@ -18,8 +18,10 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 {
 	if (type == BOMB) {
 		if (active) {
-			player->GotHit(_GSD, 4, 1);
-			//player->AddForce(Vector2(1000000, 1000));
+			int dir = player->GetPos().x - GetPos().x;
+			if (dir > 2)dir = 2;
+			if (dir < -2)dir = -2;
+			player->GotHit(_GSD, dir, 1);
 		}
 		else {
 		
