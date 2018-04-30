@@ -279,7 +279,6 @@ void Player2D::controller(GameStateData * _GSD)
 	{
 		if (item != nullptr) {
 			item->setActive(true);
-			item->AddForce(100 * Vector2::UnitY);
 			item->resetPlayer();
 			item = nullptr;
 		}

@@ -4,13 +4,15 @@
 Item::Item(RenderData * _RD, string _filename, Type type)
 	: Physics2D(_RD, _filename)
 {
+	
 	this->type = type;
 }
 
 void Item::update()
 {
 	if (type == BOMB) {
-		if(player != nullptr)m_pos = player->GetPos() - Vector2(0, yOffset);
+		if (player != nullptr)
+			m_pos = player->GetPos() - Vector2(0, yOffset);
 	}
 }
 

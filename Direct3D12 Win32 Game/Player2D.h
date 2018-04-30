@@ -19,7 +19,7 @@ public:
 	//TODO: add a 3d player and modes to switch between different views and basic physics
 	Player2D(RenderData* _RD, string _filename);
 	virtual ~Player2D();
-
+	
 	//void init(AudioManager* am);
 
 	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
