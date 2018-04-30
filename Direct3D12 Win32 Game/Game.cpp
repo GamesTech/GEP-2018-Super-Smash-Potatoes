@@ -102,7 +102,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	auto uploadResourcesFinished = resourceUpload.End(m_commandQueue.Get());
 
-	D3D12_VIEWPORT viewport = { 0.0f, 0.0f,
+	//viewport coordinates -1,-1 = top left corner, 1,1 = bottom right corner
+	D3D12_VIEWPORT viewport = { -1.f, -1.f,
 		static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
@@ -237,7 +238,7 @@ void Game::Clear()
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
-    D3D12_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+    D3D12_VIEWPORT viewport = { -1.f, -1.f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
     D3D12_RECT scissorRect = { 0, 0, m_outputWidth, m_outputHeight };
     m_commandList->RSSetViewports(1, &viewport);
     m_commandList->RSSetScissorRects(1, &scissorRect);
