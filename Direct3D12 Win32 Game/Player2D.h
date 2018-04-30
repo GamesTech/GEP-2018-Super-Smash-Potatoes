@@ -125,7 +125,7 @@ protected:
 	float m_timer_hit = 4;
 	float m_respawn_timer = 3;
 
-	int m_direction = 1;
+	float m_direction = 1;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;

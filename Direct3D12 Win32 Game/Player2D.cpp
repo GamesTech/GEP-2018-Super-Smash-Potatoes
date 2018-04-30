@@ -431,7 +431,7 @@ bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 
 		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
-			other_player->GotHit(_GSD, m_direction, -1);
+			other_player->GotHit(_GSD, (m_direction/2), -1);
 			return true;
 		}
 	}
