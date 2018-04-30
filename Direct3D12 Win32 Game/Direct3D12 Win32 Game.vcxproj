@@ -271,6 +271,7 @@
     <Text Include="Levels.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="attack.particle" />
     <None Include="hit.particle" />
     <None Include="upwards_punch.particle" />
   </ItemGroup>

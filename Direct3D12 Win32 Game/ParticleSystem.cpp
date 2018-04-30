@@ -32,7 +32,7 @@ void ParticleSystem::render(RenderData * m_RD)
 	}
 }
 
-void ParticleSystem::spawnParticle(int amount, std::string type, Vector2 pos, bool flipH)
+void ParticleSystem::spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH)
 {
 	for (int i = 0; i < amount; ++i)
 	{

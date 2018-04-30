@@ -333,5 +333,8 @@
     <None Include="upwards_punch.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
+    <None Include="attack.particle">
+      <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

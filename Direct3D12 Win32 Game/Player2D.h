@@ -1,6 +1,7 @@
 #pragma once
 #include "Physics2D.h"
 #include "ParticleSystem.h"
+#include "Particle.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 class Player2D :

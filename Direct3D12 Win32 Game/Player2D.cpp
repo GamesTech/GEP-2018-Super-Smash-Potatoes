@@ -123,6 +123,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 		if (m_punching)
 		{
 			m_execute_punch = true;
+			particle_system->spawnParticle(1, Type::ATTACK, GetPos(), GetFlipH());
 		}
 		m_punching = false;
 	}
@@ -324,7 +325,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punching = true;
 			m_up_timer_punch = 0;
-			particle_system->spawnParticle(1, "upwards_punch", GetPos(), GetFlipH());
+			particle_system->spawnParticle(1, Type::UPWARDS_PUNCH, GetPos(), !GetFlipH());
 		}
 	}
 	else if ((_GSD->m_keyboardState.X

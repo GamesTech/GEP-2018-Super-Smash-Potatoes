@@ -80,7 +80,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	for (int i = 0; i < no_players; i++)
 	{
 		damage_text[i] = new Text2D("xxx%");
-		damage_text[i]->SetPos(Vector2(385 + (i * 135), 655));
+		damage_text[i]->SetPos(Vector2(430 + (i * 135), 620));
 		damage_text[i]->SetLayer(1.0f);
 		damage_text[i]->CentreOrigin();
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(0, 0, 0, 1));
@@ -167,7 +167,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		action = Action::CONTINUE;
+		//action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_player[i]->getDead() == false)
@@ -466,7 +466,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		{
 			int lives_no = (i * max_lives) + j;
 			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives");
-			lives_button_sprite[lives_no]->SetPos(Vector2(480 + (i * 135), 595 + (j * 30)));
+			lives_button_sprite[lives_no]->SetPos(Vector2(400 + (i * 135) + (j * 30), 680));
 			lives_button_sprite[lives_no]->SetRect(1, 1, 20, 20);
 			lives_button_sprite[lives_no]->SetLayer(0.0f);
 			lives_button_sprite[lives_no]->CentreOrigin();
