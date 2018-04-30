@@ -1,12 +1,6 @@
 #pragma once
 #include "ImageGO2D.h"
 
-enum Direction
-{
-	LEFT,
-	RIGHT
-};
-
 enum ActionJump
 {
 	GROUND,
@@ -41,7 +35,6 @@ public:
 	void Punch();
 
 protected:
-	Direction direction;
 	ActionJump action_jump;
 	ActionMovement action_movement;
 	bool m_animation_on = false;
@@ -62,33 +55,20 @@ private:
 	enum SpriteStateData
 	{
 		CharacterWidth,
-		LDefault,
-		RDefault,
-		LDefault2,
-		RDefault2,
-		LJump,
-		RJump,
-		LWalk1,
-		RWalk1,
-		LWalk2,
-		RWalk2,
-		LWalk3,
-		RWalk3,
-		LFall,
-		RFall,
-		RGrab,
-		LGrab,
+		Default,
+		Default2,
+		Jump,
+		Walk1,
+		Walk2,
+		Walk3,
+		Fall,
+		Grab,
 		UpwardJump,
-		LKick1,
-		RKick1,
-		LKick2,
-		RKick2,
-		LKick3,
-		RKick3,
-		LHit,
-		RHit,
-		LDownwardPunch,
-		RDownwardPunch
+		Kick1,
+		Kick2,
+		Kick3,
+		Hit,
+		DownwardPunch
 	};
 
 
@@ -100,5 +80,5 @@ private:
 	int m_change_animation2 = 1;
 	int m_pixel_gap_colour = 0;
 	int m_player_number = 0;
-	float sprite_batch[29][4];
+	float sprite_batch[15][4];
 };

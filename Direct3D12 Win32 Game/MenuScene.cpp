@@ -35,6 +35,9 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
+
+	
+
 	return true;
 }
 
@@ -113,7 +116,6 @@ void MenuScene::render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCo
 	{
 		it->Render(m_RD);
 	}
-
 	m_RD->m_spriteBatch->End();
 }
 
