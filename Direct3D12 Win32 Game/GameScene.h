@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "LevelFile.h"
 #include "PlayerTags.h"
+#include "CollisionSystem.h"
 
 class GameScene : public Scene
 {
@@ -28,10 +29,6 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
-	void CheckAttackPos(GameStateData * _GSD, int _i);
-	void CheckUpAttackPos(GameStateData * _GSD, int _i);
-	bool MainCollision(GameObject2D * _obj, int _i);
-	bool OtherCollision(GameObject2D * _obj, int _i);
 
 	int no_players = 0;
 
@@ -53,6 +50,7 @@ private:
 	Text2D* damage_text[4];
 	ImageGO2D* lives_button_sprite[12];
 	std::unique_ptr<ImageGO2D> platform_side;
+	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
 	ImageGO2D* player_UI_Boxes;
 };
