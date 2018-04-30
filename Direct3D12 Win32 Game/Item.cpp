@@ -2,7 +2,7 @@
 #include "Item.h"
 
 Item::Item(RenderData * _RD, string _filename, Type type)
-	: ImageGO2D(_RD, _filename)
+	: Physics2D(_RD, _filename)
 {
 	this->type = type;
 }
@@ -12,6 +12,16 @@ void Item::update()
 	if (type == BOMB) {
 		if(player != nullptr)m_pos = player->GetPos() - Vector2(0, yOffset);
 	}
+}
+
+void Item::resetPlayer()
+{
+	player = nullptr;
+}
+
+void Item::setActive(bool active)
+{
+	this->active = active;
 }
 
 void Item::collided(Player2D* player, GameStateData *  _GSD)
@@ -25,6 +35,7 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 		}
 		else {
 			this->player = player;
+			player->setItem(this);
 			m_pos = player->GetPos() - Vector2(0, yOffset);
 		}
 	}

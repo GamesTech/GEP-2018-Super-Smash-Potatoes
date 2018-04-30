@@ -1,5 +1,6 @@
 #pragma once
 #include "Physics2D.h"
+#include "Item.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 class Player2D :
@@ -45,6 +46,7 @@ public:
 
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	//Collision GetCollState() { return m_coll_state; };
+	void setItem(Item* item);
 
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool IsPunching() { return m_execute_punch; };
@@ -89,6 +91,7 @@ protected:
 	int player_no = 0;
 	int lives_remaining = 3;
 	Vector2 m_max_speed = Vector2(400, 400);
+	Item* item = nullptr;
 
 	bool m_grounded = false;
 	bool m_execute_up_punch = false;

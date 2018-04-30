@@ -273,6 +273,19 @@ void Player2D::controller(GameStateData * _GSD)
 	}
 
 
+	//Item Throw
+	if ((_GSD->m_keyboardState.B
+		|| ((_GSD->m_gamePadState[player_no].IsBPressed()))))
+	{
+		if (item != nullptr) {
+			item->setActive(true);
+			item->AddForce(100 * Vector2::UnitY);
+			item->resetPlayer();
+			item = nullptr;
+		}
+	}
+
+
 	// Jump
 	if ((_GSD->m_keyboardState.S
 		&& _GSD->m_keyboardState.Space)
@@ -357,6 +370,12 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 }
+
+void Player2D::setItem(Item * item)
+{
+	this->item = item;
+}
+
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
 	float r1 = Width() / 1.5;
