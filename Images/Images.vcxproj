@@ -202,6 +202,9 @@
   <ItemGroup>
     <ImageContentTask Include="Menu\Character Selection.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Items\bomb.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

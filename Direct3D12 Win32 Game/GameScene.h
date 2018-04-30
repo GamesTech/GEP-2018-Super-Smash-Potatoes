@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "LevelFile.h"
 #include "PlayerTags.h"
+#include "Item.h"
 
 class GameScene : public Scene
 {
@@ -47,6 +48,7 @@ private:
 
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
 	std::vector<std::unique_ptr<GameObject2D>> objects;
+	std::vector<std::unique_ptr<Item>> items;
 	//Player2D* m_player;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;

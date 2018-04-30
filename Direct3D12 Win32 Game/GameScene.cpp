@@ -88,6 +88,18 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
 
+	auto item = new Item(m_RD, "bomb", Item::BOMB);
+
+	item->SetPos(Vector2(200, 100));
+	item->CentreOrigin();
+	item->SetScale(Vector2(0.3, 0.3));
+	
+	//item->SetOri(level->getObj(i).orientation);
+	item->SetLayer(0.1f);
+
+	item->SetRect(1, 1, 220, 220);
+	items.emplace_back(item);
+
 	return true;
 
 }
@@ -151,13 +163,22 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	m_player_tag->Update();
 
-	// attack loop
+	// attack loop and items col
 	for (int i = 0; i < no_players; i++)
 	{
 		if (!m_player[i]->getDead())
 		{
 			Attacking(i, gsd);
 		}
+
+		for (auto& item : items)
+		{
+			if (OtherCollision(item.get(), i) && !m_anim_grounded[i])
+			{
+				item->collided(m_player[i].get(), gsd);
+			}
+		}
+		
 	}
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
@@ -190,8 +211,8 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	{
 	case Action::CONTINUE:
 	{
-		scene_change.change_type = ChangeType::ADD;
-		scene_change.scene = SceneEnum::GAMEOVER;
+		//todo: scene_change.change_type = ChangeType::ADD;
+		//scene_change.scene = SceneEnum::GAMEOVER;
 		break;
 	}
 
@@ -269,6 +290,10 @@ void GameScene::render(RenderData* m_RD,
 	for (auto& platform : platforms)
 	{
 		platform->Render(m_RD);
+	}
+	for (auto& item : items)
+	{
+		item->Render(m_RD);
 	}
 
 	for (int i = 0; i < no_players; i++)

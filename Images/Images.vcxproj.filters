@@ -106,6 +106,9 @@
     <ImageContentTask Include="Menu\Character Selection.png">
       <Filter>Menu</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Items\bomb.png">
+      <Filter>Items</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
@@ -122,6 +125,9 @@
     </Filter>
     <Filter Include="Game\UI">
       <UniqueIdentifier>{45937e86-450b-4085-b177-11420f1257a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{6df49d46-4731-4bf7-bcb2-0a2ec6e96bd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
