@@ -23,8 +23,8 @@ public:
 	float Right () { return m_max.x; }
 	float Top() { return m_min.y; }
 	float Bottom() { return m_max.y; }
-	float Width() { return m_size.x; }
-	float Height() { return m_size.y; }
+	float Width(); //{ return m_size.x; }
+	float Height(); //{ return m_size.y; }
 	float CenterX() { return (m_pos.x + m_size.x / 2); }
 	float CenterY() { return (m_pos.y + m_size.y / 2); }
 
@@ -32,6 +32,7 @@ public:
 	float GetOri() { return m_orientation; }
 	Color GetColour() { return m_colour; }
 	Vector2 GetScale() { return m_scale; }
+	Vector2 GetSize() { return m_size; }
 	float GetLayer() { return m_layer;  }
 	int GetType() { return m_type; }
 	std::string GetTag() { return tag; }
@@ -65,6 +66,8 @@ protected:
 	Vector2 m_max = Vector2::Zero;
 	Vector2 m_size = Vector2::Zero;
 	RECT m_rect;
+	float m_width = 0;
+	float m_height = 0;
 
 	std::string tag;
 	//bool m_grounded = false;

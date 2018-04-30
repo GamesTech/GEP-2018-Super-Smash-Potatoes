@@ -127,7 +127,7 @@ void Player2D::HitTimer(GameStateData * _GSD)
 
 void Player2D::PunchTimer(GameStateData * _GSD)
 {
-	if (m_timer_punch >= 0.3)
+	if (m_timer_punch >= 0.18 && m_timer_punch <= 0.22)
 	{
 		if (punch_particle)
 		{
@@ -144,10 +144,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 		m_punch_anim = false;
 		punch_particle = true;
 	}
-	else
-	{
-		m_timer_punch += _GSD->m_dt;
-	}
+	m_timer_punch += _GSD->m_dt;
 }
 
 void Player2D::UpPunchTimer(GameStateData * _GSD)
@@ -172,7 +169,7 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 
 void Player2D::deathZone()
 {
-	if (m_pos.x < 0.0f - 500)
+	if (m_pos.x < 0.0f - 800)
 	{
 		respawn();
 	}
@@ -207,11 +204,11 @@ void Player2D::Grabbing()
 		
 		if (m_coll_state == COLRIGHT)
 		{
-			direction = LEFT;
+			FlipH(false);
 		}
 		else
 		{
-			direction = RIGHT;
+			FlipH(true);
 		}
 		m_grabing_side = true;
 		m_up_punch_anim = false;
@@ -268,7 +265,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
 	{
 		AddForce(-m_drive * Vector2::UnitX);
-		direction = LEFT;
+		FlipH(true);
 		if (!m_grabing_side)
 		{
 			action_movement = WALK;
@@ -280,7 +277,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
 	{
 		AddForce(m_drive * Vector2::UnitX);
-		direction = RIGHT;
+		FlipH(false);
 		if (!m_grabing_side)
 		{
 			action_movement = WALK;
@@ -346,6 +343,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
+			particle_system->spawnParticle(1, Type::UPWARDS_PUNCH, GetPos(), !GetFlipH());
 		}
 	}
 	//slam
@@ -568,7 +566,7 @@ void Player2D::ProcessCollision()
 
 void Player2D::updateOrientation()
 {
-	if (direction == RIGHT)
+	if (!GetFlipH())
 	{
 		m_direction = 1;
 	}
@@ -580,12 +578,5 @@ void Player2D::updateOrientation()
 
 bool Player2D::GetOrientation()
 {
-	if (direction == RIGHT)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return !GetFlipH();
 }

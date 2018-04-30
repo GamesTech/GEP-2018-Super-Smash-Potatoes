@@ -1,5 +1,7 @@
 #pragma once
 #include "Physics2D.h"
+#include "ParticleSystem.h"
+#include "Particle.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 enum Attack
@@ -53,6 +55,8 @@ public:
 
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	//Collision GetCollState() { return m_coll_state; };
+
+	void SetParticleSystem(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
 
 	bool GetLedgeJump() { return m_ledge_jump; };
 	Attack GetAttackType() { return m_execute_attack; };
@@ -130,6 +134,6 @@ protected:
 	Attack m_execute_attack = NONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
-	//AudioManager* audio_manager = nullptr;
+	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };
 

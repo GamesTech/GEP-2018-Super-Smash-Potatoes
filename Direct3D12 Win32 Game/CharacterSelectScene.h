@@ -24,7 +24,7 @@ private:
 
 	void loadCharactersFile(string _filename);
 
-	std::unique_ptr<Text2D> title_text = nullptr;
+	std::unique_ptr<ImageGO2D> title_text = nullptr;
 	std::unique_ptr<ImageGO2D> player_preview_boxes = nullptr;
 
 	std::unique_ptr<ImageGO2D> grid_sprite_temp = nullptr;
@@ -33,12 +33,19 @@ private:
 	std::unique_ptr<ImageGO2D> player_preview_temp = nullptr;
 	std::vector<std::unique_ptr<ImageGO2D>> player_previews;
 
+	std::vector<std::unique_ptr<ImageGO2D>> selection_numbers;
+
 	int sprites_per_row = 0;
+	int grid_sprite_pixel_size = 64;
+	int sprite_pixel_gap = 150;
 
 	std::vector<string> sprite_names;
 
 	int selection_player[4] = { 0,0,0,0 };
 	bool players_locked[4] = { false, false, false, false };
+
+	RECT number_pos[4] = { { 0,0,32,35 },{ 49,0,95,35 },{ 114,0,160,35 },{ 172,0,218,35 } };
+	std::unique_ptr<ImageGO2D> player_numbers = nullptr;
 
 	int no_players = 0;
 
