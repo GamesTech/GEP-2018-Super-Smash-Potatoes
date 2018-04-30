@@ -1,5 +1,7 @@
 #pragma once
 #include "Physics2D.h"
+#include "ParticleSystem.h"
+#include "Particle.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 class Player2D :
@@ -45,6 +47,8 @@ public:
 
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	//Collision GetCollState() { return m_coll_state; };
+
+	void SetParticleSystem(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
 
 	bool GetLedgeJump() { return m_ledge_jump; };
 	bool IsPunching() { return m_execute_punch; };
@@ -96,6 +100,7 @@ protected:
 	bool m_up_punching = false;
 	bool m_down_punching = false;
 	bool m_punching = false;
+	bool punch_particle = true;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
@@ -122,6 +127,6 @@ protected:
 	Collision m_coll_state = COLNONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
-	//AudioManager* audio_manager = nullptr;
+	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };
 

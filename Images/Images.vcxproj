@@ -126,25 +126,7 @@
     <Text Include="READ_ME.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png" />
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png" />
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png" />
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Scenes\platform.png" />
@@ -156,10 +138,6 @@
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png" />
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png" />
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png" />
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png" />
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +179,15 @@
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Menu\Character Selection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\hit_particle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\upwards_punch_particle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\attack.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -52,6 +52,9 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//	no_players = 2;
 	//}
 
+	particle_system = std::make_shared<ParticleSystem>();
+	particle_system->init(m_RD);
+
 	m_player_tag = std::make_unique<PlayerTags>(no_players);
 	m_player_tag->Init(m_RD);
 
@@ -74,6 +77,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	UI->update(gsd, m_player, time_remaining);
 	
 	int players_dead = 0;
+	particle_system->update(gsd);
 
 	// movement loop
 	for (int i = 0; i < no_players; i++)
@@ -130,7 +134,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		action = Action::CONTINUE;
+		//action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_player[i]->getDead() == false)
@@ -244,6 +248,7 @@ void GameScene::render(RenderData* m_RD,
 		m_player[i]->Render(m_RD);
 	}
 	m_player_tag->Render(m_RD);
+	particle_system->render(m_RD);
 
 	UI->render(m_RD);
 
@@ -416,6 +421,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 		m_player[i]->SetDrag(3.0f);
 		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
+		m_player[i]->SetParticleSystem(particle_system);
 	}	
 }
 

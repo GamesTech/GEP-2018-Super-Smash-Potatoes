@@ -1,13 +1,15 @@
-0 0 0 0 /Left Still
-0 0 0 0 /Right Still
-0 0 0 0 /Left Jump
-0 0 0 0 /Right Jump
-0 0 0 0 /Left Walk 1
-0 0 0 0 /Right Walk 1
-0 0 0 0 /Left Walk 2
-0 0 0 0 /Right Walk 2
-0 0 0 0 /Left Walk 3
-0 0 0 0 /Right Walk 3
-0 0 0 0 /Fall
-0 0 0 0 /Left Wall Grab
-0 0 0 0 /Right Wall Grab
+CharacterWidth,
+Default,
+Default2,
+Jump,
+Walk1,
+Walk2,
+Walk3,
+Fall,
+Grab,
+UpwardJump,
+Kick1,
+Kick2,
+Kick3,
+Hit,
+DownwardPunch
