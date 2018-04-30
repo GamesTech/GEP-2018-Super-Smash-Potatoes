@@ -57,6 +57,6 @@ private:
 	std::unique_ptr<ImageGO2D> platform_side;
 	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
-	std::unique_ptr<ImageGO2D> platform_side;
+	//std::unique_ptr<ImageGO2D> platform_side;
 };
 
