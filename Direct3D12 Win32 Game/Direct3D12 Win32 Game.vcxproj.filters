@@ -80,6 +80,12 @@
     <Filter Include="Game Base\Headers\ParticleSystem\Particle Files">
       <UniqueIdentifier>{fd922940-d7ba-4963-a139-6ef31f79d22a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Headers\Collision">
+      <UniqueIdentifier>{9b6aeed1-2d88-426a-ab31-57058595ee95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\Collision">
+      <UniqueIdentifier>{2b226947-42f0-40f2-af72-985d026d4c9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -199,6 +205,12 @@
     <ClInclude Include="ParticleFile.h">
       <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
+    <ClInclude Include="Emitter.h">
+      <Filter>Game Base\Headers\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>Game Base\Headers\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -291,7 +303,6 @@
     <ClCompile Include="PlayerTags.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
-    <ClCompile Include="UserInterface2D.cpp" />
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
@@ -306,6 +317,15 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface2D.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Emitter.cpp">
+      <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>Game Base\Source\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,9 +348,6 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Levels.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="hit.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
@@ -340,5 +357,10 @@
     <None Include="attack.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels.txt">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </Text>
   </ItemGroup>
 </Project>

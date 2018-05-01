@@ -36,4 +36,5 @@ private:
 	Vector2 player_vel = {0, 0};
 
 	float lifetime = 0;
+	float max_lifetime = 0;
 };

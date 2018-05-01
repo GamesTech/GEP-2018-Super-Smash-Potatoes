@@ -14,7 +14,7 @@ GameScene::~GameScene()
 
 bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	m_RD->m_resourceCount = 30;
+	
 	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();
@@ -260,7 +260,7 @@ void GameScene::ReadInput(GameStateData* gsd)
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
-		action = Action::BACK;
+		//action = Action::BACK;
 	}
 }
 
@@ -270,7 +270,6 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		//m_player[i]->init(audio_manager);
 		m_player[i]->SetPos(m_spawn_pos[i]);
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);

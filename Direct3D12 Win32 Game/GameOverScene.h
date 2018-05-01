@@ -26,4 +26,6 @@ private:
 	std::unique_ptr<ImageGO2D> winner_number = nullptr;
 	std::unique_ptr<ImageGO2D> winner_text = nullptr;
 
+	RenderData* m_RD;
+
 };

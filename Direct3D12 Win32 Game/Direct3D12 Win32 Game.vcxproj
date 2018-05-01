@@ -177,6 +177,7 @@
     <ClInclude Include="CharacterSelectScene.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="CharacterSelectScene.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />

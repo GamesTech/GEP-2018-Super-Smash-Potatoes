@@ -26,6 +26,7 @@ public:
 	void SetOrientation(float new_orientation);
 	void FlipH(bool flip);
 	bool GetFlipH();
+	void SetOpacity(float amount);
 	
 
 protected:

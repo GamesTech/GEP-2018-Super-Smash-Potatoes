@@ -267,7 +267,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 
 	//only player1
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
 		action = Action::BACK;
 	}
