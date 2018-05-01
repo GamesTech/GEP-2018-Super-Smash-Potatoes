@@ -12,7 +12,9 @@ public:
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 
-	void addParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH);
+	void addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH);
+	void addShootSideParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Vector2 vel, Vector2 acc);
+
 
 private:
 

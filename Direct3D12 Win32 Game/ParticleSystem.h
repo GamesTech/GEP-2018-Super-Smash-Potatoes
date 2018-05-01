@@ -8,7 +8,8 @@ namespace Particle_Type
 	enum Type
 	{
 		DUST,
-		ATTACK
+		ATTACK,
+		ATTACK_UPWARDS
 	};
 }
 
@@ -25,6 +26,7 @@ public:
 	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH, Vector2 player_vel);
 
 	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH);
+	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Vector2 velocity, Vector2 accelaration);
 
 private:
 	RenderData * m_RD = nullptr;

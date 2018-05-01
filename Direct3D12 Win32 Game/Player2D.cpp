@@ -40,6 +40,8 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	{
 		RespawnTimer(_GSD);
 	}
+
+
 	deathZone();
 	updateOrientation();
 }
@@ -54,12 +56,16 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 	{
 		if (m_anim_grounded)
 		{
-			if (!action_jump == GROUND)
+			if (action_jump != GROUND && action_jump != PUNCH)
 			{
 				particle_system->addParticlesToEmitter(300, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2, m_size.y }, 0.5f, 0.6f, true, true);
 			}
 			action_jump = GROUND;
-			m_down_punching = false;
+			if (m_down_punching_anim)
+			{
+				m_execute_attack = Attack::THIRD;
+			}
+			m_down_punching_anim = false;
 		}
 		else
 		{
@@ -83,7 +89,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 				}
 				else if (m_vel.y > 300)
 				{
-					if (m_down_punching)
+					if (m_down_punching_anim)
 					{
 						action_jump = DOWNWARDPUNCH;
 					}
@@ -91,7 +97,10 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 					{
 						action_jump = FALL;
 						m_up_punching = false;
-						m_execute_up_punch = false;
+						if (m_execute_attack == Attack::SECOND)
+						{
+							m_execute_attack = Attack::NONE;
+						}
 					}
 				}
 			}
@@ -126,7 +135,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		if (punch_particle)
 		{
-			particle_system->spawnParticle(1, Type::ATTACK, GetPos() + Vector2{ m_size.x / 3, 0 }, GetFlipH(), m_vel);
+			particle_system->addParticlesToEmitter(5, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), Vector2{1000,0}, Vector2{ -100,0 });
 			punch_particle = false;
 		}
 	}
@@ -134,7 +143,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		if (m_punching)
 		{
-			m_execute_punch = true;
+			m_execute_attack = Attack::FIRST;
 		}
 		m_punching = false;
 		punch_particle = true;
@@ -148,13 +157,16 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 	{
 		if (m_up_punching)
 		{
-			m_execute_up_punch = true;
+			m_execute_attack = Attack::SECOND;
 		}
 		m_up_punching = false;
 	}
 	if (m_up_timer_punch >= 0.3)
 	{
-		m_execute_up_punch = false;
+		if (m_execute_attack == Attack::SECOND)
+		{
+			m_execute_attack = Attack::NONE;
+		}
 	}
 	m_up_timer_punch += _GSD->m_dt;
 }
@@ -204,7 +216,7 @@ void Player2D::Grabbing()
 		}
 		m_grabing_side = true;
 		m_up_punching = false;
-		m_down_punching = false;
+		m_down_punching_anim = false;
 		//m_grounded = true;
 		action_movement = GRAB;
 	}
@@ -221,10 +233,11 @@ void Player2D::respawn()
 		m_vel.x = 0.0f;
 		m_vel.y = 301.0f;
 		m_damage = 1;
+		m_execute_attack = Attack::NONE;
 		m_invincibility = true;
 		m_respawn_timer = 0;
 		m_up_punching = false;
-		m_down_punching = false;
+		m_down_punching_anim = false;
 	}
 	else
 	{
@@ -334,9 +347,10 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punching = true;
 			m_up_timer_punch = 0;
-			particle_system->spawnParticle(1, Type::UPWARDS_PUNCH, GetPos(), !GetFlipH());
+			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 0.3f, 0.0f, true, GetFlipH(), Vector2{ 0,-850 }, Vector2{ 0,-100 });
 		}
 	}
+	//slam
 	else if ((_GSD->m_keyboardState.X
 		&& _GSD->m_keyboardState.S)
 		|| ((_GSD->m_gamePadState[player_no].IsXPressed()
@@ -344,7 +358,7 @@ void Player2D::controller(GameStateData * _GSD)
 			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
 				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
 	{
-		if ( !m_punching && !m_up_punching)
+		if ( !m_punching && !m_up_punching && !m_grounded)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
@@ -352,7 +366,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
-			m_down_punching = true;
+			m_down_punching_anim = true;
 			//m_up_timer_punch = 0;
 		}
 	}
@@ -387,12 +401,12 @@ bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
 	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
 
-	if (other_player->IsPunching() && GetOrientation() != other_player->GetOrientation())
+	if (other_player->GetAttackType() != Attack::NONE && GetOrientation() != other_player->GetOrientation())
 	{
 		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
 			other_player->Block(_GSD);
-			other_player->ResetAttacks(false);
+			other_player->ResetAttacks();
 			return true;
 		}
 	}
@@ -421,7 +435,7 @@ bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 
 		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
-			other_player->GotHit(_GSD, m_direction, 1);
+			other_player->GotHit(_GSD, m_direction, -1);
 			return true;
 		}
 	}
@@ -443,7 +457,49 @@ bool Player2D::ExectueUpPunch(GameStateData * _GSD, Player2D * other_player)
 		if (!other_player->GetImmune())
 		{				
 			other_player->SetImmune(true);
-			other_player->GotHit(_GSD, 0, 1);
+			other_player->GotHit(_GSD, 0, -1);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
+{
+	float r1 = Width()*2;
+	float x1 = GetPos().x + (Width() / 2);
+	float y1 = GetPos().y + Height()*1.2;
+
+	float r2 = other_player->Width();
+	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
+	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
+
+
+
+	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+	{
+		if (!other_player->GetImmune())
+		{
+			Vector2 direction = Vector2(x2 - x1, y2 - y1);
+			direction.Normalize();
+			if (direction.x < 0.5 && direction.x >= 0)
+			{
+				direction.x = 0.5;
+			}
+			else if (direction.x < 0 && direction.x > -0.5)
+			{
+				direction.x = -0.5;
+			}
+			if (direction.y > 0)
+			{
+				direction.y *= -1;
+			}
+			if (direction.y <= 0 && direction.y > -0.5)
+			{
+				direction.y = -0.5;
+			}
+			//other_player->SetImmune(true);
+			other_player->GotHit(_GSD, direction.x, direction.y);
 			return true;
 		}
 	}
@@ -454,8 +510,9 @@ void Player2D::GotHit(GameStateData * _GSD, int _dir, int y_force)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
-	AddForce(-m_jumpForce * Vector2::UnitY * m_damage * y_force);
-	AddForce(m_jumpForce/3 * Vector2::UnitX * m_damage * _dir);
+	m_vel = Vector2::Zero;
+	AddForce(m_jumpForce * Vector2::UnitY * m_damage * y_force);
+	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_remove_controll = true;

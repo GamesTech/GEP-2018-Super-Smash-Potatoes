@@ -22,5 +22,11 @@ private:
 	ImageGO2D* player_UI_Boxes;
 	ImageGO2D* lives_button_sprite[12];
 
+	RECT number_pos[4] = { { 0,0,32,35 },{ 49,0,95,35 },{ 114,0,160,35 },{ 172,0,218,35 } };
+	std::unique_ptr<ImageGO2D> player_numbers = nullptr;
+
+	int character_gap = 160;
+	int UI_start_y = 630;
+
 	int max_lives;
 };

@@ -22,7 +22,7 @@
     <RootNamespace>Direct3D12_Win32_Game</RootNamespace>
     <ProjectGuid>{48d1b087-0658-4dcc-a845-655543ce48a4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -175,6 +175,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterSelectScene.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="File.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterSelectScene.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="File.cpp" />

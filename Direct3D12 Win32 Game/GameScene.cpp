@@ -20,6 +20,8 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	level = std::make_unique<LevelFile>();
 	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
 
+	m_collision_system = std::make_unique<CollisionSystem>();
+
 	loadCharactersFile("PlayerSprites.txt");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
@@ -37,8 +39,6 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 		platform->SetRect(level->getObj(i).sprite_size_min.x, level->getObj(i).sprite_size_min.y, level->getObj(i).sprite_size_max.x, level->getObj(i).sprite_size_max.y);
 		platforms.emplace_back(platform);
 	}
-
-	objects.emplace_back(new Text2D("Super Trash Potatoes"));
 
 	for (auto& object : objects)
 	{
@@ -88,27 +88,11 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		{
 			for (auto& platform : platforms)
 			{
-				if (platform->GetLayer() == 0.5)
+				if (m_collision_system->ResloveCollision(platform.get(), m_player[i].get())
+					&& !m_anim_grounded[i])
 				{
-					if (platform->GetType() == 0)
-					{
-						if (MainCollision(platform.get(), i) && !m_anim_grounded[i])
-						{
-							m_anim_grounded[i] = true;
-							break;
-						}
-					}
-					else
-					{
-						if (!m_player[i]->IgnoreCollision())
-						{
-							if (OtherCollision(platform.get(), i) && !m_anim_grounded[i])
-							{
-								m_anim_grounded[i] = true;
-								break;
-							}
-						}
-					}
+					m_anim_grounded[i] = true;
+					break;
 				}
 			}
 			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
@@ -179,9 +163,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 void GameScene::Attacking(int i, GameStateData * gsd)
 {
-	if (m_player[i]->IsPunching())
+	bool block = false;
+	switch (m_player[i]->GetAttackType())
 	{
-		bool block = false;
+	case Attack::FIRST:
 		for (int j = 0; j < no_players; j++)
 		{
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
@@ -209,10 +194,9 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 				}
 			}
 		}
-		m_player[i]->ResetAttacks(false);
-	}
-	else if (m_player[i]->IsUpPuching())
-	{
+		m_player[i]->ResetAttacks();
+		break;
+	case Attack::SECOND:
 		for (int j = 0; j < no_players; j++)
 		{
 			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
@@ -223,6 +207,22 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 				}
 			}
 		}
+		break;
+	case Attack::THIRD:
+		for (int j = 0; j < no_players; j++)
+		{
+			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			{
+				if (m_player[i]->ExectueDownPunch(gsd, m_player[j].get()))
+				{
+					audio_manager->playSound(SLAPSOUND);
+				}
+			}
+		}
+		m_player[i]->ResetAttacks();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -264,150 +264,6 @@ void GameScene::ReadInput(GameStateData* gsd)
 	}
 }
 
-bool GameScene::MainCollision(GameObject2D *_obj, int _i)
-{
-	GameObject2D* object = _obj;
-
-	float width = 0.5 * (m_player[_i]->Width() + object->Width());
-	float height = 0.5 * (m_player[_i]->Height() + object->Height());
-	float distance_x = m_player[_i]->CenterX() - object->CenterX();
-	float distance_y = m_player[_i]->CenterY() - object->CenterY();
-
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
-	{
-		// collision occured
-
-		float collision_width = width * distance_y;
-		float collision_height = height * distance_x;
-
-		if (collision_width < collision_height)
-		{
-			if (collision_width < -collision_height)
-			{
-				if (m_player[_i]->GetCurrVel().y >= 0)
-				{
-					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
-					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
-					return true;
-					// at the top 
-				}
-				else
-				{
-					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-					return false;
-				}
-			}
-			else if (collision_width > -collision_height)
-			{
-				if (!m_player[_i]->GetLedgeJump())
-				{
-					m_player[_i]->SetNewPos(object->GetPos().x + object->Width());
-					m_player[_i]->SetCollState(m_player[_i]->COLRIGHT);
-					return true;
-					// on the right 
-				}
-				else
-				{
-					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-					return false;
-				}
-			}
-			
-		}
-		else if(collision_width > collision_height)
-		{
-			if (collision_width > -collision_height)
-			{
-				if (m_player[_i]->GetCurrVel().y < 0)
-				{
-					m_player[_i]->SetNewPos(object->GetPos().y + object->Height());
-					m_player[_i]->SetCollState(m_player[_i]->COLBOTTOM);
-					return true;
-					// collision at the bottom 
-				}
-				else
-				{
-					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-					return false;
-				}
-			}
-			else if (collision_width < -collision_height)
-			{
-				if (!m_player[_i]->GetLedgeJump())
-				{
-					m_player[_i]->SetNewPos(object->GetPos().x - m_player[_i]->Width());
-					m_player[_i]->SetCollState(m_player[_i]->COLLEFT);
-					return true;
-					// on the left 
-				}
-				else
-				{
-					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-					return false;
-				}
-			}
-		}
-	}
-	else
-	{
-		m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-		return false;
-	}
-}
-
-
-bool GameScene::OtherCollision(GameObject2D *_obj, int _i)
-{
-	GameObject2D* object = _obj;
-
-	float width = 0.5 * (m_player[_i]->Width() + object->Width());
-	float height = 0.5 * (m_player[_i]->Height() + object->Height());
-	float distance_x = m_player[_i]->CenterX() - object->CenterX();
-	float distance_y = m_player[_i]->CenterY() - object->CenterY();
-
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
-	{
-		// collision occured
-
-		float collision_width = width * distance_y;
-		float collision_height = height * distance_x;
-
-		if (collision_width < collision_height)
-		{
-			if (collision_width < -collision_height)
-			{
-				if (m_player[_i]->GetCurrVel().y >= 0)
-				{
-					m_player[_i]->SetNewPos(object->GetPos().y - m_player[_i]->Height());
-					m_player[_i]->SetCollState(m_player[_i]->COLTOP);
-					return true;
-					// at the top 
-				}
-				else
-				{
-					m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-					return false;
-				}
-			}
-			else
-			{
-				m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-				return false;
-			}
-		}
-		else
-		{
-			m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-			return false;
-		}
-	}
-	else
-	{
-		m_player[_i]->SetCollState(m_player[_i]->COLNONE);
-		return false;
-	}
-}
-
 void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players)
 {
 	for (int i = 0; i < no_players; i++)
@@ -439,4 +295,3 @@ void GameScene::loadCharactersFile(string _filename)
 	}
 	character_sprites_loading.close();
 }
-

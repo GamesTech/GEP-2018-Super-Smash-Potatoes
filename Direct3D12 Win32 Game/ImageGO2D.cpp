@@ -7,7 +7,6 @@
 
 ImageGO2D::ImageGO2D(RenderData* _RD, string _filename)
 {
-
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	string fullpath = "../DDS/" + _filename + ".dds";
 	std::wstring wFilename = converter.from_bytes(fullpath.c_str());
