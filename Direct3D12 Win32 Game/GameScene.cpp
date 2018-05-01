@@ -181,9 +181,17 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		
 	}
 
+	//Update items loop
 	for (auto& item : items)
 	{
 		item->update();
+	}
+
+	//Delete used items
+	for (int i = 0; i < items.size(); i++) {
+		if (items[i]->getMarked()) {
+			items.erase(items.begin() + i);
+		}
 	}
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)

@@ -26,6 +26,11 @@ void Item::setActive(bool active)
 	this->active = active;
 }
 
+boolean Item::getMarked() const
+{
+	return marked_for_deletion;
+}
+
 void Item::collided(Player2D* player, GameStateData *  _GSD)
 {
 	if (type == BOMB) {
@@ -34,6 +39,9 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 			if (dir > 4)dir = 4;
 			if (dir < -4)dir = -4;
 			player->GotHit(_GSD, dir, 1.5);
+			// todo: Spawn Effect Explosion
+			// todo: Play sound Explosion
+			marked_for_deletion = true;
 		}
 		else {
 			this->player = player;
