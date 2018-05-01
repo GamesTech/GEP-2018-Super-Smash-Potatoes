@@ -58,7 +58,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		{
 			if (action_jump != GROUND && action_jump != PUNCH)
 			{
-				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2 - 20, m_size.y - 25}, 0.5f, 0.0f, true, true);
+				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x / 2 - 20, m_size.y - 25 }, 0.5f, 0.0f, true, true, {1,1,1,1}, 1.f);
 			}
 			action_jump = GROUND;
 			if (m_down_punching_anim)
@@ -135,7 +135,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		if (punch_particle)
 		{
-			particle_system->addParticlesToEmitter(5, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), Vector2{1000,0}, Vector2{ -100,0 });
+			particle_system->addParticlesToEmitter(5, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{1000,0}, Vector2{ -100,0 });
 			punch_particle = false;
 		}
 	}
@@ -347,7 +347,7 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
-			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 0.3f, 0.0f, true, GetFlipH(), Vector2{ 0,-850 }, Vector2{ 0,-100 });
+			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 0.3f, 0.0f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{ 0,-850 }, Vector2{ 0,-100 });
 		}
 	}
 	//slam
