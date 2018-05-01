@@ -89,15 +89,11 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	audio_manager->playSound(QUESTCOMPLETE);
 
 	auto item = new Item(m_RD, "bomb", Item::BOMB);
-
 	item->SetPos(Vector2(200, 100));
 	item->CentreOrigin();
-	item->SetScale(Vector2(0.3, 0.3));
-	
-	//item->SetOri(level->getObj(i).orientation);
+	item->SetScale(Vector2(1, 1));
 	item->SetLayer(0.1f);
-
-	item->SetRect(1, 1, 220, 220);
+	item->SetRect(1, 1, 64, 64);
 	items.emplace_back(item);
 
 	return true;
@@ -178,6 +174,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				item->collided(m_player[i].get(), gsd);
 			}
 		}
+		
+	}
+
+	if (items.size() == 0) {
 		
 	}
 
