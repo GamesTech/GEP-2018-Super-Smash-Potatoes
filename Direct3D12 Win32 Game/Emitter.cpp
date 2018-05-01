@@ -5,6 +5,7 @@
 #include <codecvt>
 #include "Emitter.h"
 #include <random>
+#include <array>
 
 Emitter::Emitter(RenderData * _RD, string _filename) :ImageGO2D(_RD, _filename)
 {
@@ -53,21 +54,35 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 {
 	for (int i = 0; i < amount; ++i)
 	{
-		std::random_device rd;
-		std::uniform_real_distribution<float> _velocity(-100, 100);
-		std::uniform_real_distribution<float> _acc(-100, 100);
 		Particles temp_p;
 		temp_p.offset_position = pos;
-		temp_p.velocity.x = _velocity(rd);
-		temp_p.velocity.y = -50 + _velocity(rd);
-		temp_p.accelaration.x = _acc(rd);
-		temp_p.accelaration.y = _acc(rd);
+		normalization(temp_p);
 		temp_p.lifetime = lifetime;
 		temp_p.fade = fade;
 		temp_p.flip = flipH;
 		temp_p.layer = layer;
 		particles.push_back(temp_p);
 	}
+}
+
+void Emitter::normalization(Particles& temp_p)
+{
+	std::random_device rd;
+	std::uniform_real_distribution<float> _velocity(-100, 100);
+	std::uniform_real_distribution<float> _acc(-100, 100);
+
+	std::array<float, 2> v = { _velocity(rd), -50 + _velocity(rd) };
+
+	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
+
+	v[0] /= mag;
+	v[1] /= mag;
+
+	temp_p.velocity.x = v[0] * _velocity(rd);
+	temp_p.velocity.y = -abs(v[1] * _velocity(rd));
+
+	temp_p.accelaration.x = _acc(rd);
+	temp_p.accelaration.y = _acc(rd);
 }
 
 void Emitter::addShootSideParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Vector2 vel, Vector2 acc)

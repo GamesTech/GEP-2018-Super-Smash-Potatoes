@@ -118,7 +118,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		//action = Action::CONTINUE;
+		action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_player[i]->getDead() == false)

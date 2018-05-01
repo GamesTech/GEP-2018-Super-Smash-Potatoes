@@ -189,9 +189,9 @@ void Game::Update(DX::StepTimer const& timer)
 			m_GSD->no_players++;
 		}
 	}
-	if (m_GSD->no_players == 0)
+	if (m_GSD->no_players <= 1)
 	{
-		m_GSD->no_players = 1;
+		m_GSD->no_players = 4;
 	}
 }
 

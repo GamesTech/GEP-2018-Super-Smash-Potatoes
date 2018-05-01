@@ -31,6 +31,8 @@ private:
 		float layer = 0.0f;
 	};
 
+	void normalization(Particles& temp_p);
+
 
 	std::vector<Particles> particles;
 };
