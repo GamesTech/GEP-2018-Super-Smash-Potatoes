@@ -15,13 +15,13 @@ class Item : public Physics2D
 		void update();
 		void resetPlayer();
 		void setActive(bool active);
-
-		boolean getMarked() const;
+		void setMarked(bool marked);
+		bool getMarked() const;
 	private:
 		static const int yOffset = 50;
 
 		Type type;
 		class Player2D * player = nullptr;
-		boolean active = false;
-		boolean marked_for_deletion = false;
+		bool active = true;
+		bool marked_for_deletion = false;
 };

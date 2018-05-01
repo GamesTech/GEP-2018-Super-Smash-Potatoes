@@ -26,7 +26,12 @@ void Item::setActive(bool active)
 	this->active = active;
 }
 
-boolean Item::getMarked() const
+void Item::setMarked(bool marked)
+{
+	marked_for_deletion = marked;
+}
+
+bool Item::getMarked() const
 {
 	return marked_for_deletion;
 }
