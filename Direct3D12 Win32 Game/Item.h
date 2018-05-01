@@ -5,7 +5,8 @@ class Item : public Physics2D
 {
 	public:
 		enum Type {
-			BOMB
+			BOMB,
+			HEAL,
 		};
 
 		Item(RenderData* _RD, string _filename, Type type, long life_span);

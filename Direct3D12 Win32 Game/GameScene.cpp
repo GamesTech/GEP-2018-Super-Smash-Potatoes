@@ -173,7 +173,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (spawner->getSize() == 0) {
 		for (int i = 0; i < 2; i++) {
-			spawner->addItem(Vector2(400 + (i * 100), 200), "bomb", Item::Type::BOMB, 1000);
+			spawner->addItem(Vector2(400 + (i * 100), 200), "bomb", Item::Type::HEAL, 1000);
 		}
 	}
 

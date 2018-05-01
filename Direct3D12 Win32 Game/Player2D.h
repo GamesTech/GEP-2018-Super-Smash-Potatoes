@@ -55,6 +55,7 @@ public:
 	bool IgnoreCollision() { return m_ignore_collision; };
 
 	float GetDamage() { return m_damage; };
+	void SetDamage(float damage) { m_damage = damage; };
 
 	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
 	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);

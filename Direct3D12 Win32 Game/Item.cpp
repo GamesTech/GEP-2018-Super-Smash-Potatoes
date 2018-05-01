@@ -63,8 +63,7 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 			// todo: Spawn Effect Explosion
 			// todo: Play sound Explosion
 			marked_for_deletion = true;
-		}
-		else {
+		} else {
 			if (player->getItem() == nullptr) 
 			{
 				this->player = player;
@@ -72,5 +71,11 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 				m_pos = player->GetPos() - Vector2(0, yOffset);
 			}
 		}
+	}
+	else if (type == HEAL) {
+		if (player->GetDamage() > 1.0f) {
+			player->SetDamage(player->GetDamage() - 1.0f);
+		}
+		marked_for_deletion = true;
 	}
 }
