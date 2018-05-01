@@ -287,10 +287,9 @@ void GameScene::render(RenderData* m_RD,
 	
 	spawner->render(m_RD);
 	if (spawner->getSize() == 0) {
-		spawner->addItem(Vector2(200, 200), m_RD, "bomb", Item::Type::BOMB);
-		spawner->addItem(Vector2(300, 200), m_RD, "bomb", Item::Type::BOMB);
-		spawner->addItem(Vector2(400, 200), m_RD, "bomb", Item::Type::BOMB);
-		spawner->addItem(Vector2(500, 200), m_RD, "bomb", Item::Type::BOMB);
+		for (int i = 0; i < 50; i++) {
+			spawner->addItem(Vector2(200 + (i * 10), 200), m_RD, "bomb", Item::Type::BOMB);
+		}
 	}
 
 	for (int i = 0; i < no_players; i++)

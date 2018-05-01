@@ -36,8 +36,10 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 	if (type == BOMB) {
 		if (active) {
 			int dir = player->GetPos().x - GetPos().x;
-			if (dir > 4)dir = 4;
-			if (dir < -4)dir = -4;
+			if (dir < 32 && dir >= 0)dir = 0;
+			else if (dir > -32 && dir <= 0)dir = 0;
+			else if (dir > 0) dir = 1;
+			else if (dir < 0)dir = -1;
 			player->GotHit(_GSD, dir, 1.5);
 			// todo: Spawn Effect Explosion
 			// todo: Play sound Explosion
