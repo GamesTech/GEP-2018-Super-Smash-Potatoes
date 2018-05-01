@@ -6,6 +6,11 @@ const std::vector<std::unique_ptr<Item>> &ItemSpawner::getItems() const
 	return items;
 }
 
+void ItemSpawner::init(RenderData * _RD)
+{
+	m_RD = _RD;
+}
+
 void ItemSpawner::update()
 {
 
@@ -25,7 +30,7 @@ void ItemSpawner::render(RenderData* _RD)
 	}
 }
 
-void ItemSpawner::addItem(Vector2 position, RenderData * _RD, string _filename, Item::Type type)
+void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type)
 {
 	//Find a spot in the list if there is one
 	for (auto& item : items)
@@ -43,7 +48,7 @@ void ItemSpawner::addItem(Vector2 position, RenderData * _RD, string _filename, 
 	}
 
 	//Otherwise add new spot
-	auto item = new Item(_RD, _filename, type);
+	auto item = new Item(m_RD, _filename, type);
 	item->SetPos(position);
 	item->CentreOrigin();
 	item->SetScale(Vector2(1, 1));

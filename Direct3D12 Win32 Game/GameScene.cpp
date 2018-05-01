@@ -89,8 +89,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	audio_manager->playSound(QUESTCOMPLETE);
 
 	spawner = std::make_unique<ItemSpawner>();
-	
-	spawner->addItem(Vector2(200, 200), m_RD, "bomb", Item::Type::BOMB);
+	spawner->init(m_RD);
 	return true;
 
 }
@@ -172,7 +171,14 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		
 	}
 
+	if (spawner->getSize() == 0) {
+		for (int i = 0; i < 50; i++) {
+			spawner->addItem(Vector2(200 + (i * 10), 200), "bomb", Item::Type::BOMB);
+		}
+	}
+
 	spawner->update();
+
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
@@ -286,12 +292,7 @@ void GameScene::render(RenderData* m_RD,
 	}
 	
 	spawner->render(m_RD);
-	if (spawner->getSize() == 0) {
-		for (int i = 0; i < 50; i++) {
-			spawner->addItem(Vector2(200 + (i * 10), 200), m_RD, "bomb", Item::Type::BOMB);
-		}
-	}
-
+	
 	for (int i = 0; i < no_players; i++)
 	{
 		m_player[i]->Render(m_RD);
