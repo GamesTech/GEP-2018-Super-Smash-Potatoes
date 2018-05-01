@@ -2,7 +2,7 @@
 #include "UserInterface2D.h"
 #include "GameStateData.h"
 
-void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr<Player2D> players[], std::vector<string> sprite_names)
+void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std::unique_ptr<Player2D>>& players, std::vector<string> sprite_names)
 {
 	timer_text = new Text2D("Time Remaining: xxxs");
 	timer_text->SetPos(Vector2(750, 10));
@@ -54,7 +54,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr
 	}
 }
 
-void UserInterface::update(GameStateData* gsd, std::unique_ptr<Player2D> players[], float time_remaining)
+void UserInterface::update(GameStateData* gsd, std::vector<std::unique_ptr<Player2D>> &players, float time_remaining)
 {
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");

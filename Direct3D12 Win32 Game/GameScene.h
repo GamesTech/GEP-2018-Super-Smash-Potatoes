@@ -39,7 +39,7 @@ private:
 
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 
-	std::unique_ptr<Player2D> m_player[4];
+	std::vector<std::unique_ptr<Player2D>> m_players;
 	Vector2 m_spawn_pos[4] = { {300, 250},{400, 250},{ 600, 250 },{ 700, 250 } };
 	std::unique_ptr<PlayerTags> m_player_tag = nullptr;
 	std::unique_ptr <LevelFile> level;
@@ -49,7 +49,7 @@ private:
 
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
 	std::vector<std::unique_ptr<GameObject2D>> objects;
-	//Player2D* m_player;
+	//Player2D* m_players;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;
 	Text2D* damage_text[4];

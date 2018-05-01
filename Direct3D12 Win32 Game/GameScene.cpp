@@ -50,11 +50,11 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	}
 
 	no_players = gsd->no_players;
-	if (no_players == 1)
-	{
-		//for playtesting
-		no_players = 4;
-	}
+	//if (no_players == 1)
+	//{
+	//	//for playtesting
+	//	no_players = 4;
+	//}
 
 	particle_system = std::make_shared<ParticleSystem>();
 	particle_system->init(m_RD);
@@ -66,7 +66,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	//UI
 	UI = std::make_unique<UserInterface>();
-	UI->init(m_RD, gsd, m_player, sprite_names);
+	UI->init(m_RD, gsd, m_players, sprite_names);
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
@@ -85,44 +85,48 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	float top_left_x = 0;
 	float top_left_y = 0;
 	//bool zoom = false;
-	//Vector2 position;
-	//int j = 0;
-	//for (int i = 0; i < no_players; i++)
-	//{
-	//	if (!m_player[i]->getDead())
-	//	{
-	//		position += m_player[i]->GetPos();
-	//		j++;
-	//	}
-	//}
-	//Vector2 centre = Vector2(position.x / j, position.y / j);
+	Vector2 position;
+	int j = 0;
+	for (int i = 0; i < no_players; i++)
+	{
+		if (!m_players[i]->getDead())
+		{
+			position += m_players[i]->GetPos();
+			j++;
+		}
+	}
+	Vector2 centre = Vector2(position.x / j, position.y / j);
 	//top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
 	//top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
 
 	// TEST BROKEN
 	{
-		Rectangle rect = Rectangle(m_player[0]->GetPos().x, m_player[0]->GetPos().y, 100, 1000);
+		Rectangle rect = Rectangle(m_players.back()->GetPos().x, m_players.back()->GetPos().y, 0, 0);
+		bool y_zoom_height = false;
+		bool x_zoom_width = false;
 		bool y_zoom = false;
 		bool x_zoom = false;
-		for(auto& player : m_player)
+		int i = 0;
+		for (auto& player : m_players)
 		{
 			if (!player->getDead())
 			{
-				float x = (float)player->GetPos().x;
-				float y = (float)player->GetPos().y;
-				if (x < rect.x) { rect.x = x; }
-				if (x > (rect.x + rect.width)) { rect.width = x - rect.x; x_zoom = true; }
-				else if (!x_zoom) { rect.width = x - rect.x; }
-				if (y < rect.y) { rect.y = y; }
-				if (y > (rect.y + rect.height)) { rect.height = y - rect.y; y_zoom = true; }
-				else if (!y_zoom) { rect.height = y - rect.y; }
+				i++;
+				float x = (int)player->GetPos().x;
+				float y = (int)player->GetPos().y;
+
+				if (x < rect.x) { rect.x = x; rect.width += rect.x - x; }
+				if (x >= (rect.x + rect.width)) { rect.width = x - rect.x;}
+
+				if (y < rect.y) { rect.y = y; rect.height += rect.y - y; }
+				if (y >= (rect.y + rect.height)) { rect.height = y - rect.y; }
 			}
 		}
 		{
-			rect.x -= 50;
-			rect.y -= 50;
-			rect.width += 200;
-			rect.height += 200;
+			rect.x -= 100;
+			rect.y -= 100;
+			rect.width += 400;
+			rect.height += 400;
 		}
 		Vector2 cameraPos = Vector2((float)rect.x, (float)rect.y);
 		cameraPos.x += (float)rect.width / 2;
@@ -139,13 +143,15 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		y_zoom_resolution *= zoom;
 		x_zoom_resolution *= zoom;
 
-		if (x_zoom_resolution < 680) { x_zoom_resolution = 680; }
+		if (x_zoom_resolution < 960) { x_zoom_resolution = 960; }
 		if (x_zoom_resolution > 1920) { x_zoom_resolution = 1920; }
-		if (y_zoom_resolution > 1280) { y_zoom_resolution = 1280; }
-		if (y_zoom_resolution < 360) { y_zoom_resolution = 360; }
+		if (y_zoom_resolution > 1080) { y_zoom_resolution = 1080; }
+		if (y_zoom_resolution < 540) { y_zoom_resolution = 540; }
 
-		top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
-		top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
+		//top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
+		//top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
+		top_left_x = -(centre.x * (2.f / x_zoom_resolution) - 1);
+		top_left_y = -(centre.y * (2.f / y_zoom_resolution) - 1);
 	}
 
 
@@ -158,7 +164,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
-	UI->update(gsd, m_player, time_remaining);
+	UI->update(gsd, m_players, time_remaining);
 
 	
 	int players_dead = 0;
@@ -167,21 +173,21 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	// movement loop
 	for (int i = 0; i < no_players; i++)
 	{
-		Vector2 temp = m_player[i]->GetPos();
-		m_player_tag->SetPlayerPos(i, temp, m_player[i]->GetSize().x);
-		if (!m_player[i]->getDead())
+		Vector2 temp = m_players[i]->GetPos();
+		m_player_tag->SetPlayerPos(i, temp, m_players[i]->GetSize().x);
+		if (!m_players[i]->getDead())
 		{
 			for (auto& platform : platforms)
 			{
-				if (m_collision_system->ResloveCollision(platform.get(), m_player[i].get())
+				if (m_collision_system->ResloveCollision(platform.get(), m_players[i].get())
 					&& !m_anim_grounded[i])
 				{
 					m_anim_grounded[i] = true;
 					break;
 				}
 			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd, i);
+			m_players[i]->SetAnimGrounded(m_anim_grounded[i]);
+			m_players[i]->Tick(gsd, i);
 
 			m_anim_grounded[i] = false;
 		}
@@ -195,7 +201,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	// attack loop
 	for (int i = 0; i < no_players; i++)
 	{
-		if (!m_player[i]->getDead())
+		if (!m_players[i]->getDead())
 		{
 			Attacking(i, gsd);
 		}
@@ -206,7 +212,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		//action = Action::CONTINUE;
 		for (int i = 0; i < no_players; i++)
 		{
-			if (m_player[i]->getDead() == false)
+			if (m_players[i]->getDead() == false)
 			{
 				switch (i)
 				{
@@ -249,14 +255,14 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 void GameScene::Attacking(int i, GameStateData * gsd)
 {
 	bool block = false;
-	switch (m_player[i]->GetAttackType())
+	switch (m_players[i]->GetAttackType())
 	{
 	case Attack::FIRST:
 		for (int j = 0; j < no_players; j++)
 		{
-			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
 			{
-				if (m_player[i]->CheckBlocking(gsd, m_player[j].get()))
+				if (m_players[i]->CheckBlocking(gsd, m_players[j].get()))
 				{
 					block = true;
 				}
@@ -264,29 +270,29 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 		}
 		if (block)
 		{
-			m_player[i]->Block(gsd);
+			m_players[i]->Block(gsd);
 		}
 		else
 		{
 			for (int j = 0; j < no_players; j++)
 			{
-				if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+				if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
 				{
-					if (m_player[i]->ExectuePunch(gsd, m_player[j].get()))
+					if (m_players[i]->ExectuePunch(gsd, m_players[j].get()))
 					{
 						audio_manager->playSound(SLAPSOUND);
 					}
 				}
 			}
 		}
-		m_player[i]->ResetAttacks();
+		m_players[i]->ResetAttacks();
 		break;
 	case Attack::SECOND:
 		for (int j = 0; j < no_players; j++)
 		{
-			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
 			{
-				if (m_player[i]->ExectueUpPunch(gsd, m_player[j].get()))
+				if (m_players[i]->ExectueUpPunch(gsd, m_players[j].get()))
 				{
 					audio_manager->playSound(SLAPSOUND);
 				}
@@ -296,15 +302,15 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 	case Attack::THIRD:
 		for (int j = 0; j < no_players; j++)
 		{
-			if (i != j && !m_player[j]->getDead() && !m_player[j]->GetInvincibility())
+			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
 			{
-				if (m_player[i]->ExectueDownPunch(gsd, m_player[j].get()))
+				if (m_players[i]->ExectueDownPunch(gsd, m_players[j].get()))
 				{
 					audio_manager->playSound(SLAPSOUND);
 				}
 			}
 		}
-		m_player[i]->ResetAttacks();
+		m_players[i]->ResetAttacks();
 		break;
 	default:
 		break;
@@ -333,7 +339,7 @@ void GameScene::render(RenderData* m_RD,
 
 	for (int i = 0; i < no_players; i++)
 	{
-		m_player[i]->Render(m_RD);
+		m_players[i]->Render(m_RD);
 	}
 	m_player_tag->Render(m_RD);
 	particle_system->render(m_RD);
@@ -364,16 +370,16 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[0]] + "_batch_" + "0";
-		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
-		//m_player[i]->init(audio_manager);
-		m_player[i]->SetPos(m_spawn_pos[i]);
-		m_player[i]->SetLayer(0.5f);
-		m_player[i]->SetDrive(900.0f);
-		m_player[i]->SetDrag(3.0f);
-		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[0]] + "_batch.txt");
-		m_player[i]->setPlayerNo(i);
-		m_player[i]->SetParticleSystem(particle_system);
+		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
+		m_players.emplace_back(new Player2D(m_RD, str_player_no));
+		//m_players[i]->init(audio_manager);
+		m_players.back()->SetPos(m_spawn_pos[i]);
+		m_players.back()->SetLayer(0.5f);
+		m_players.back()->SetDrive(900.0f);
+		m_players.back()->SetDrag(3.0f);
+		m_players.back()->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
+		m_players.back()->setPlayerNo(i);
+		m_players.back()->SetParticleSystem(particle_system);
 	}	
 }
 
