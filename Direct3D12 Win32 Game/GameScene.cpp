@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <cmath>
 #include "GameScene.h"
 #include "RenderData.h"
 #include "GameObject2D.h"
@@ -52,7 +53,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	if (no_players == 1)
 	{
 		//for playtesting
-		no_players = 3;
+		no_players = 4;
 	}
 
 	particle_system = std::make_shared<ParticleSystem>();
@@ -70,6 +71,10 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
+	gsd->camera_view_width = 1280;
+	gsd->camera_view_height = 720;
+	x_zoom_resolution = 1280;
+	y_zoom_resolution = 720;
 
 	return true;
 
@@ -77,27 +82,80 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 Scene::SceneChange GameScene::update(GameStateData* gsd)
 {
-	float top_left_x;
-	float top_left_y;
-	Vector2 position;
-	int j = 0;
-	for (int i = 0; i < no_players; i++)
-	{
-		if (!m_player[i]->getDead())
-		{
-			position += m_player[i]->GetPos();
-			j++;
-		}
-	}
-	gsd->camera_view_width = 1280;
-	gsd->camera_view_height = 720;
+	float top_left_x = 0;
+	float top_left_y = 0;
+	//bool zoom = false;
+	//Vector2 position;
+	//int j = 0;
+	//for (int i = 0; i < no_players; i++)
+	//{
+	//	if (!m_player[i]->getDead())
+	//	{
+	//		position += m_player[i]->GetPos();
+	//		j++;
+	//	}
+	//}
+	//Vector2 centre = Vector2(position.x / j, position.y / j);
+	//top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
+	//top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
 
-	Vector2 centre = Vector2(position.x / j, position.y / j);
-	top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
-	top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
+	// TEST BROKEN
+	{
+		Rectangle rect = Rectangle(m_player[0]->GetPos().x, m_player[0]->GetPos().y, 100, 1000);
+		bool y_zoom = false;
+		bool x_zoom = false;
+		for(auto& player : m_player)
+		{
+			if (!player->getDead())
+			{
+				float x = (float)player->GetPos().x;
+				float y = (float)player->GetPos().y;
+				if (x < rect.x) { rect.x = x; }
+				if (x > (rect.x + rect.width)) { rect.width = x - rect.x; x_zoom = true; }
+				else if (!x_zoom) { rect.width = x - rect.x; }
+				if (y < rect.y) { rect.y = y; }
+				if (y > (rect.y + rect.height)) { rect.height = y - rect.y; y_zoom = true; }
+				else if (!y_zoom) { rect.height = y - rect.y; }
+			}
+		}
+		{
+			rect.x -= 50;
+			rect.y -= 50;
+			rect.width += 200;
+			rect.height += 200;
+		}
+		Vector2 cameraPos = Vector2((float)rect.x, (float)rect.y);
+		cameraPos.x += (float)rect.width / 2;
+		cameraPos.y += (float)rect.height / 2;
+		float xZoomReq = (float)rect.width / x_zoom_resolution;
+		float yZoomReq = (float)rect.height / y_zoom_resolution;
+		float zoom = 0;
+		if (xZoomReq > yZoomReq) { zoom = xZoomReq; }
+		else{ zoom = yZoomReq; }
+		if (zoom == 0)
+		{
+			zoom = 1;
+		}
+		y_zoom_resolution *= zoom;
+		x_zoom_resolution *= zoom;
+
+		if (x_zoom_resolution < 680) { x_zoom_resolution = 680; }
+		if (x_zoom_resolution > 1920) { x_zoom_resolution = 1920; }
+		if (y_zoom_resolution > 1280) { y_zoom_resolution = 1280; }
+		if (y_zoom_resolution < 360) { y_zoom_resolution = 360; }
+
+		top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
+		top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
+	}
+
+
+	//if (top_left_y > 0.5){top_left_y = 0.5;}
+	//if (top_left_y < -0.5){top_left_y = -0.5;}
+	//if (top_left_x > 0.5) { top_left_x = 0.5; }
+	//if (top_left_x < -0.3) { top_left_x = -0.3; }
 
 	viewport = { -1 + top_left_x, -1 + top_left_y,
-		static_cast<float>(gsd->camera_view_width), static_cast<float>(gsd->camera_view_height),
+		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
 	UI->update(gsd, m_player, time_remaining);

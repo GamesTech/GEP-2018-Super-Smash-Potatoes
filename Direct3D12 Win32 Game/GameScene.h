@@ -59,7 +59,9 @@ private:
 
 
 	D3D12_VIEWPORT viewport;
-	int x_resolution = 0;
-	int y_resolution = 0;
+	float x_zoom_resolution = 0;
+	float y_zoom_resolution = 0;
+	float x_resolution = 0;
+	float y_resolution = 0;
 };
 

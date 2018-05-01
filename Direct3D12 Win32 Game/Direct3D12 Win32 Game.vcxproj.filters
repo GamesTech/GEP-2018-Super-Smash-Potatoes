@@ -199,6 +199,7 @@
     <ClInclude Include="ParticleFile.h">
       <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -307,6 +308,7 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
