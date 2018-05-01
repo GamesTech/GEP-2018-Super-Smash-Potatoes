@@ -173,6 +173,9 @@
     <ClInclude Include="Item.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ItemSpawner.h">
+      <Filter>GameObjects\2D\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -270,6 +273,7 @@
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

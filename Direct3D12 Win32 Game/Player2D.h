@@ -68,7 +68,7 @@ public:
 
 	//void SetLivesRemaining(int lives) { lives_remaining = lives; };
 	int GetLivesRemaining() { return lives_remaining; };
-
+	Item* getItem() const;
 	bool getDead() { return m_dead; };
 
 protected:

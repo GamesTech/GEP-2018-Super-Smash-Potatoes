@@ -44,9 +44,12 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 			marked_for_deletion = true;
 		}
 		else {
-			this->player = player;
-			player->setItem(this);
-			m_pos = player->GetPos() - Vector2(0, yOffset);
+			if (player->getItem() == nullptr) 
+			{
+				this->player = player;
+				player->setItem(this);
+				m_pos = player->GetPos() - Vector2(0, yOffset);
+			}
 		}
 	}
 }

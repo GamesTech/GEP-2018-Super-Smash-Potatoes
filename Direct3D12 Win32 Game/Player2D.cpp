@@ -480,6 +480,11 @@ void Player2D::Block(GameStateData * _GSD)
 }
 
 
+Item * Player2D::getItem() const
+{
+	return item;
+}
+
 void Player2D::ProcessCollision()
 {
 	switch (m_coll_state)

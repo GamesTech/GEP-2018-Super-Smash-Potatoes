@@ -88,14 +88,9 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
 
-	auto item = new Item(m_RD, "bomb", Item::BOMB);
-	item->SetPos(Vector2(200, 100));
-	item->CentreOrigin();
-	item->SetScale(Vector2(1, 1));
-	item->SetLayer(0.1f);
-	item->SetRect(1, 1, 64, 64);
-	items.emplace_back(item);
-
+	spawner = std::make_unique<ItemSpawner>();
+	
+	spawner->addItem(Vector2(200, 200), m_RD, "bomb", Item::Type::BOMB);
 	return true;
 
 }
@@ -167,7 +162,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 			Attacking(i, gsd);
 		}
 
-		for (auto& item : items)
+		for (auto& item : spawner->getItems())
 		{
 			if (OtherCollision(item.get(), i) && !m_anim_grounded[i])
 			{
@@ -177,22 +172,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		
 	}
 
-	if (items.size() == 0) {
-		
-	}
-
-	//Update items loop
-	for (auto& item : items)
-	{
-		item->update();
-	}
-
-	//Delete used items
-	for (int i = 0; i < items.size(); i++) {
-		if (items[i]->getMarked()) {
-			items.erase(items.begin() + i);
-		}
-	}
+	spawner->update();
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
@@ -304,9 +284,13 @@ void GameScene::render(RenderData* m_RD,
 	{
 		platform->Render(m_RD);
 	}
-	for (auto& item : items)
-	{
-		item->Render(m_RD);
+	
+	spawner->render(m_RD);
+	if (spawner->getSize() == 0) {
+		spawner->addItem(Vector2(200, 200), m_RD, "bomb", Item::Type::BOMB);
+		spawner->addItem(Vector2(300, 200), m_RD, "bomb", Item::Type::BOMB);
+		spawner->addItem(Vector2(400, 200), m_RD, "bomb", Item::Type::BOMB);
+		spawner->addItem(Vector2(500, 200), m_RD, "bomb", Item::Type::BOMB);
 	}
 
 	for (int i = 0; i < no_players; i++)
