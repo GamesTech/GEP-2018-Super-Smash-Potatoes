@@ -1,15 +1,24 @@
 #include "pch.h"
 #include "Item.h"
 
-Item::Item(RenderData * _RD, string _filename, Type type)
+Item::Item(RenderData * _RD, string _filename, Type type, long life_span)
 	: Physics2D(_RD, _filename)
 {
-	
+	this->life_span = life_span;
 	this->type = type;
 }
 
 void Item::update()
 {
+	if (time >= life_span)
+	{
+		marked_for_deletion = true;
+		time = 0;
+	}
+	else {
+		time++;
+	}
+
 	if (type == BOMB) {
 		if (player != nullptr)
 			m_pos = player->GetPos() - Vector2(0, yOffset);
@@ -29,6 +38,11 @@ void Item::setActive(bool active)
 void Item::setMarked(bool marked)
 {
 	marked_for_deletion = marked;
+}
+
+void Item::setLife(long life)
+{
+	life_span = life;
 }
 
 bool Item::getMarked() const

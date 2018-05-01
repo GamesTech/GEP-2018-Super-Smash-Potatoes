@@ -12,7 +12,7 @@ class ItemSpawner {
 		void init(RenderData* _RD);
 		void update();
 		void render(RenderData* _RD);
-		void addItem(Vector2 position, string _filename, Item::Type type);
+		void addItem(Vector2 position, string _filename, Item::Type type, long life_span);
 		int getSize() const;
 	private:
 		std::vector<std::unique_ptr<Item>> items;

@@ -30,7 +30,7 @@ void ItemSpawner::render(RenderData* _RD)
 	}
 }
 
-void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type)
+void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, long life_span)
 {
 	//Find a spot in the list if there is one
 	for (auto& item : items)
@@ -43,12 +43,14 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type)
 			item->SetLayer(0.1f);
 			item->SetRect(1, 1, 64, 64); //todo
 			item->setMarked(false);
+			item->setActive(false);
+			item->setLife(life_span);
 			return; //return if found spot
 		}
 	}
 
 	//Otherwise add new spot
-	auto item = new Item(m_RD, _filename, type);
+	auto item = new Item(m_RD, _filename, type, life_span);
 	item->SetPos(position);
 	item->CentreOrigin();
 	item->SetScale(Vector2(1, 1));
