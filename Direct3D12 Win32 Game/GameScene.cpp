@@ -46,11 +46,11 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	}
 
 	no_players = gsd->no_players;
-	//if (no_players == 1)
-	//{
-	//	//for playtesting
-	//	no_players = 2;
-	//}
+	if (no_players == 1)
+	{
+		//for playtesting
+		no_players = 2;
+	}
 
 	particle_system = std::make_shared<ParticleSystem>();
 	particle_system->init(m_RD);
@@ -268,13 +268,13 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
+		std::string str_player_no = sprite_names[gsd->player_selected[0]] + "_batch_" + "0";
 		m_player[i] = std::make_unique<Player2D>(m_RD, str_player_no);
 		m_player[i]->SetPos(m_spawn_pos[i]);
 		m_player[i]->SetLayer(0.5f);
 		m_player[i]->SetDrive(900.0f);
 		m_player[i]->SetDrag(3.0f);
-		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
+		m_player[i]->LoadSprites(sprite_names[gsd->player_selected[0]] + "_batch.txt");
 		m_player[i]->setPlayerNo(i);
 		m_player[i]->SetParticleSystem(particle_system);
 	}	

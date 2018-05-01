@@ -205,6 +205,9 @@
     <ClInclude Include="ParticleFile.h">
       <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Emitter.h">
       <Filter>Game Base\Headers\ParticleSystem</Filter>
     </ClInclude>
@@ -317,6 +320,9 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>Game Base\Source</Filter>
     </ClCompile>
     <ClCompile Include="UserInterface2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
