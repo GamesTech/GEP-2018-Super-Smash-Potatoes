@@ -93,6 +93,11 @@ void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type,
 		emitter[1]->addBurstOfParticles(amount, pos, lifetime, layer, fade, flipH);
 		break;
 	}
+	case Particle_Type::ATTACK_UPWARDS:
+	{
+		emitter[2]->addBurstOfParticles(amount, pos, lifetime, layer, fade, flipH);
+		break;
+	}
 	}
 }
 
