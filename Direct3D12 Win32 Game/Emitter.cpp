@@ -28,7 +28,9 @@ void Emitter::update(GameStateData * gsd)
 
 		if (particles[i].fade)
 		{
-			particles[i].opacity = 0.2 * (0.5 - particles[i].lifetime) + 1 * particles[i].lifetime;
+			float lifetime_percentage = (particles[i].max_lifetime - particles[i].lifetime) / particles[i].max_lifetime;
+
+			particles[i].opacity = 0.0 * lifetime_percentage + 1 * (1 - lifetime_percentage);
 		}
 
 		if (particles[i].lifetime <= 0.0f) // When the particle are dead they are deleted 
@@ -58,6 +60,7 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 		temp_p.offset_position = pos;
 		normalization(temp_p);
 		temp_p.lifetime = lifetime;
+		temp_p.max_lifetime = lifetime;
 		temp_p.fade = fade;
 		temp_p.flip = flipH;
 		temp_p.layer = layer;
@@ -71,7 +74,7 @@ void Emitter::normalization(Particles& temp_p)
 	std::uniform_real_distribution<float> _velocity(-100, 100);
 	std::uniform_real_distribution<float> _acc(-100, 100);
 
-	std::array<float, 2> v = { _velocity(rd), -50 + _velocity(rd) };
+	std::array<float, 2> v = { _velocity(rd), 0 };
 
 	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
 
@@ -92,6 +95,7 @@ void Emitter::addShootSideParticles(int amount, Vector2 pos, float lifetime, flo
 		Particles temp_p;
 		temp_p.offset_position = pos;
 		temp_p.lifetime = lifetime;
+		temp_p.max_lifetime = lifetime;
 		temp_p.fade = fade;
 		temp_p.flip = flipH;
 		temp_p.layer = layer;

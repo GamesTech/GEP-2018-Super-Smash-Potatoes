@@ -20,7 +20,8 @@ private:
 
 	struct Particles
 	{
-		float lifetime = 0;
+		float lifetime = 0.0f;
+		float max_lifetime = 0.0f;
 		Vector2 position = { 0, 0 };
 		Vector2 offset_position = { 0, 0 };
 		Vector2 velocity = { 0, 0 };
@@ -32,7 +33,6 @@ private:
 	};
 
 	void normalization(Particles& temp_p);
-
 
 	std::vector<Particles> particles;
 };

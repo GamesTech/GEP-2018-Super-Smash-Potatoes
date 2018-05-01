@@ -48,7 +48,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 
 void Player2D::AnimationChecks(GameStateData * _GSD)
 {
-	if (m_punching)
+	if (m_punch_anim)
 	{
 		action_jump = PUNCH;
 	}
@@ -58,7 +58,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		{
 			if (action_jump != GROUND && action_jump != PUNCH)
 			{
-				particle_system->addParticlesToEmitter(300, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2, m_size.y }, 0.5f, 0.0f, true, true);
+				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2 - 20, m_size.y - 25}, 0.5f, 0.0f, true, true);
 			}
 			action_jump = GROUND;
 			if (m_down_punching_anim)
@@ -81,7 +81,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 					{
 						action_jump = JUMP;
 					}
-					else if (m_up_punching)
+					else if (m_up_punch_anim)
 					{
 						action_jump = UPWARDPUNCH;
 						//m_attack = true;
@@ -96,7 +96,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 					else
 					{
 						action_jump = FALL;
-						m_up_punching = false;
+						m_up_punch_anim = false;
 						if (m_execute_attack == Attack::SECOND)
 						{
 							m_execute_attack = Attack::NONE;
@@ -141,11 +141,11 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	}
 	else if (m_timer_punch >= 0.3)
 	{
-		if (m_punching)
+		if (m_punch_anim)
 		{
 			m_execute_attack = Attack::FIRST;
 		}
-		m_punching = false;
+		m_punch_anim = false;
 		punch_particle = true;
 	}
 	m_timer_punch += _GSD->m_dt;
@@ -155,11 +155,11 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 {
 	if (m_up_timer_punch >= 0.05)
 	{
-		if (m_up_punching)
+		if (m_up_punch_anim)
 		{
 			m_execute_attack = Attack::SECOND;
 		}
-		m_up_punching = false;
+		m_up_punch_anim = false;
 	}
 	if (m_up_timer_punch >= 0.3)
 	{
@@ -177,7 +177,7 @@ void Player2D::deathZone()
 	{
 		respawn();
 	}
-	if (m_pos.y < 0.0f - 400)
+	if (m_pos.y < 0.0f - 600)
 	{
 		respawn();
 	}
@@ -215,7 +215,7 @@ void Player2D::Grabbing()
 			FlipH(true);
 		}
 		m_grabing_side = true;
-		m_up_punching = false;
+		m_up_punch_anim = false;
 		m_down_punching_anim = false;
 		//m_grounded = true;
 		action_movement = GRAB;
@@ -236,7 +236,7 @@ void Player2D::respawn()
 		m_execute_attack = Attack::NONE;
 		m_invincibility = true;
 		m_respawn_timer = 0;
-		m_up_punching = false;
+		m_up_punch_anim = false;
 		m_down_punching_anim = false;
 	}
 	else
@@ -319,7 +319,7 @@ void Player2D::controller(GameStateData * _GSD)
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
-			m_up_punching = false;
+			m_up_punch_anim = false;
 			m_jumping = true;
 			if (m_grabing_side)
 			{
@@ -337,15 +337,15 @@ void Player2D::controller(GameStateData * _GSD)
 			&& (_GSD->m_gamePadState[player_no].IsDPadUpPressed() 
 				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
 	{
-		if (m_bonus_jump && !m_punching && !m_up_punching)
+		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(-m_jumpForce * Vector2::UnitY);
+			AddForce(-100000 * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
-			m_up_punching = true;
+			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
 			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 0.3f, 0.0f, true, GetFlipH(), Vector2{ 0,-850 }, Vector2{ 0,-100 });
 		}
@@ -358,7 +358,7 @@ void Player2D::controller(GameStateData * _GSD)
 			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
 				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
 	{
-		if ( !m_punching && !m_up_punching && !m_grounded)
+		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
@@ -373,11 +373,11 @@ void Player2D::controller(GameStateData * _GSD)
 	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
 		|| (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
 	{
-		if (!m_punching && !m_up_punching && !m_grabing_side)
+		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{
 			Punch();
 			m_invincibility = false;
-			m_punching = true;
+			m_punch_anim = true;
 			m_timer_punch = 0;
 		}
 	}
@@ -435,7 +435,7 @@ bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 
 		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
 		{
-			other_player->GotHit(_GSD, m_direction, -1);
+			other_player->GotHit(_GSD, (m_direction/2), -1);
 			return true;
 		}
 	}
@@ -482,22 +482,16 @@ bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
 		{
 			Vector2 direction = Vector2(x2 - x1, y2 - y1);
 			direction.Normalize();
-			if (direction.x < 0.5 && direction.x >= 0)
-			{
-				direction.x = 0.5;
-			}
-			else if (direction.x < 0 && direction.x > -0.5)
-			{
-				direction.x = -0.5;
-			}
-			if (direction.y > 0)
-			{
-				direction.y *= -1;
-			}
-			if (direction.y <= 0 && direction.y > -0.5)
-			{
-				direction.y = -0.5;
-			}
+			//if (direction.x < 0.5 && direction.x >= 0)
+			//{
+			//	direction.x = 0.5;
+			//}
+			//else if (direction.x < 0 && direction.x > -0.5)
+			//{
+			//	direction.x = -0.5;
+			//}
+
+			//direction.y = -1;
 			//other_player->SetImmune(true);
 			other_player->GotHit(_GSD, direction.x, direction.y);
 			return true;
@@ -506,13 +500,13 @@ bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
 	return false;
 }
 
-void Player2D::GotHit(GameStateData * _GSD, int _dir, int y_force)
+void Player2D::GotHit(GameStateData * _GSD, float _dir, float y_force)
 {
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
 	m_vel = Vector2::Zero;
-	AddForce(m_jumpForce * Vector2::UnitY * m_damage * y_force);
-	AddForce(m_jumpForce * Vector2::UnitX * m_damage * _dir);
+	Vector2 impact(m_jumpForce * m_damage * _dir, m_jumpForce * m_damage * y_force);
+	AddForce(impact);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
 	m_remove_controll = true;
