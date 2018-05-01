@@ -58,7 +58,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		{
 			if (action_jump != GROUND && action_jump != PUNCH)
 			{
-				particle_system->addParticlesToEmitter(300, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2, m_size.y }, 0.5f, 0.0f, true, true);
+				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x/2 - 20, m_size.y - 25}, 0.5f, 0.0f, true, true);
 			}
 			action_jump = GROUND;
 			if (m_down_punching_anim)
@@ -177,7 +177,7 @@ void Player2D::deathZone()
 	{
 		respawn();
 	}
-	if (m_pos.y < 0.0f - 400)
+	if (m_pos.y < 0.0f - 600)
 	{
 		respawn();
 	}
@@ -341,7 +341,7 @@ void Player2D::controller(GameStateData * _GSD)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(-m_jumpForce * Vector2::UnitY);
+			AddForce(-100000 * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping = false;
