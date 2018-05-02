@@ -186,7 +186,7 @@ void Player2D::deathZone()
 	{
 		respawn();
 	}
-	if (m_pos.y > m_limit.y + 200)
+	if (m_pos.y > m_limit.y + 500)
 	{
 		respawn();
 	}
@@ -347,7 +347,8 @@ void Player2D::controller(GameStateData * _GSD)
 			m_jumping = false;
 			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
-			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 0.3f, 0.0f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{ 0,-850 }, Vector2{ 0,-100 });
+			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, 
+				0.3f, 0.0f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{ 0,-850 }, Vector2{ 0,-100 });
 		}
 	}
 	//slam
