@@ -12,15 +12,12 @@ bool ParticleSystem::init(RenderData * _m_RD)
 	m_RD = _m_RD;
 
 	std::unique_ptr<Emitter> dust_emitter = std::make_unique<Emitter>(m_RD, "dust"); // Create a new particle 
-	dust_emitter->init(m_RD); // The type is what particle file is loaded
 	emitter.push_back(std::move(dust_emitter));
 
 	std::unique_ptr<Emitter> attack_emitter = std::make_unique<Emitter>(m_RD, "attack"); // Create a new particle 
-	attack_emitter->init(m_RD); // The type is what particle file is loaded
 	emitter.push_back(std::move(attack_emitter));
 
 	std::unique_ptr<Emitter> attack_upwards_emitter = std::make_unique<Emitter>(m_RD, "upwards_punch_particle"); // Create a new particle 
-	attack_upwards_emitter->init(m_RD); // The type is what particle file is loaded
 	emitter.push_back(std::move(attack_upwards_emitter));
 
 	return true;
@@ -47,7 +44,7 @@ void ParticleSystem::render(RenderData * m_RD)
 
 void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale)
 {
-	switch (type)
+	switch (type) // Add the particles to the right emitter for the texture they entered.
 	{
 	case Particle_Type::DUST:
 	{
@@ -69,7 +66,7 @@ void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type,
 
 void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, Vector2 velocity, Vector2 accelaration)
 {
-	switch (type)
+	switch (type) // Add the particles to the right emitter for the texture they entered.
 	{
 	case Particle_Type::DUST:
 	{

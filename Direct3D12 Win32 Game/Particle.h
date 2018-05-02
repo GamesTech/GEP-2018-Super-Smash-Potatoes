@@ -6,14 +6,14 @@
 class Particle
 {
 public:
-	Particle(Vector2 pos, float _lifetime, float layer, bool fade, bool flip, Color colour, float scale);
+	Particle() = default;
 	~Particle() = default;
 
-	void init();
-	void init(Vector2 vel, Vector2 acc);
+	void init(Vector2 pos, float _lifetime, float layer, bool fade, bool flip, Color colour, float scale);
+	void init(Vector2 pos, float _lifetime, float layer, bool fade, bool flip, Color colour, float scale, Vector2 vel, Vector2 acc);
 	void update(GameStateData* gsd);
 
-	bool isDead() { return lifetime <= 0.0f; };
+	bool isDead() { return dead; };
 	Vector2 getPos() { return offset_position + position; };
 	bool getFlip() { return flip; };
 	float getLayer() { return layer; };
@@ -21,6 +21,8 @@ public:
 	Color getColour() { return colour; };
 
 private:
+
+	void SetVariables(DirectX::SimpleMath::Vector2 &pos, float _lifetime, float _layer, bool _fade, bool _flip, DirectX::SimpleMath::Color &_colour, float _scale);
 
 	float lifetime = 0.0f;
 	float max_lifetime = 0.0f;
@@ -35,4 +37,5 @@ private:
 	Color colour = Colors::White;
 	bool increase_size = true;
 	float scale = 1.f;
+	bool dead = false;
 };

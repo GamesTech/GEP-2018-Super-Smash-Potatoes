@@ -4,17 +4,15 @@
 #include <random>
 #include <array>
 
-Particle::Particle(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale) 
-	: offset_position(pos), lifetime(_lifetime), max_lifetime(_lifetime), layer(_layer), fade(_fade), flip(_flip), colour(_colour), scale(_scale)
-{
-}
 
-void Particle::init()
+void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale)
 {
+	SetVariables(pos, _lifetime, _layer, _fade, _flip, _colour, _scale);
 	std::random_device rd;
 	std::uniform_real_distribution<float> _velocity(-100, 100);
 	std::uniform_real_distribution<float> _acc(-100, 100);
 
+	//Normalises the vectors
 	std::array<float, 2> v = { _velocity(rd), 0 };
 
 	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
@@ -29,9 +27,11 @@ void Particle::init()
 	accelaration.y = _acc(rd);
 }
 
-void Particle::init(Vector2 vel, Vector2 acc)
+void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale, Vector2 vel, Vector2 acc)
 {
-	if (flip)
+	SetVariables(pos, _lifetime, _layer, _fade, _flip, _colour, _scale);
+
+	if (flip) // flips the direction of the particle
 	{
 		velocity.x = -vel.x;
 		velocity.y = vel.y;
@@ -47,10 +47,27 @@ void Particle::init(Vector2 vel, Vector2 acc)
 	}
 }
 
+//set the variables for the particle
+void Particle::SetVariables(Vector2 &pos, float _lifetime, float _layer, bool _fade, bool _flip, Color &_colour, float _scale)
+{
+	dead = false;
+	position = Vector2{ 0,0 };
+	offset_position = pos;
+	lifetime = _lifetime;
+	max_lifetime = _lifetime;
+	layer = _layer;
+	fade = _fade;
+	flip = _flip;
+	colour = _colour;
+	scale = _scale;
+}
+
 void Particle::update(GameStateData* gsd)
 {
-	lifetime -= gsd->m_dt; //reduces lifetime by deltatime, if hit zero it equals dead
-							//Velocity and accelaration maths
+	//reduces lifetime by deltatime, if hit zero it equals dead
+	lifetime -= gsd->m_dt; 
+
+	//Velocity and accelaration maths
 	velocity.x = (velocity.x + accelaration.x * gsd->m_dt);
 	velocity.y = (velocity.y + accelaration.y * gsd->m_dt);
 	position.x = (position.x + velocity.x * gsd->m_dt);
@@ -61,9 +78,13 @@ void Particle::update(GameStateData* gsd)
 		float lifetime_percentage = (max_lifetime - lifetime) / max_lifetime;
 		colour.w = 0.0 * lifetime_percentage + 1 * (1 - lifetime_percentage); 
 	}
-	if (increase_size)
+	if (increase_size) // Increases the scale over time
 	{
 		float dt = gsd->m_dt;
-		scale += dt; // 10;
+		scale += dt;
+	}
+	if (lifetime <= 0.0f) // Particles are set to dead after 
+	{
+		dead = true;
 	}
 }
