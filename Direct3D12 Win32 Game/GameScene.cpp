@@ -14,7 +14,6 @@ GameScene::~GameScene()
 
 bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
-	
 	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();

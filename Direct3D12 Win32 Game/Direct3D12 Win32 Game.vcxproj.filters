@@ -214,6 +214,9 @@
     <ClInclude Include="CollisionSystem.h">
       <Filter>Game Base\Headers\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -333,6 +336,7 @@
     <ClCompile Include="CollisionSystem.cpp">
       <Filter>Game Base\Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

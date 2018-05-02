@@ -143,11 +143,12 @@ void Game::Initialize(HWND window, int width, int height)
 	scene_manager = std::make_unique<SceneManager>();
 	scene_manager->init(m_RD, m_GSD, audio_manager);
 
-	m_keyboard = std::make_unique<Keyboard>();
-	m_gamePad = std::make_unique<GamePad>();
 	//m_mouse = std::make_unique<Mouse>();
 	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
 	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
+
+	input_manager = std::make_unique<Input>();
+	input_manager->init();
 }
 
 //GEP:: Executes the basic game loop.
@@ -164,11 +165,7 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-
-	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState = m_keyboard->GetState();
 	//scene->ReadInput(m_GSD);
-
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
@@ -178,21 +175,7 @@ void Game::Update(DX::StepTimer const& timer)
 		PostQuitMessage(0);
 	}
 
-	//// TODO: Gamepad
-	m_GSD->no_players = 0;
-	for (int i = 0; i < m_GSD->MAX_PLAYERS; i++)
-	{
-		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
-		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
-		if (m_GSD->m_gamePadState[i].IsConnected())
-		{
-			m_GSD->no_players++;
-		}
-	}
-	if (m_GSD->no_players <= 1)
-	{
-		m_GSD->no_players = 4;
-	}
+	input_manager->update(m_GSD);
 }
 
 //GEP:: Draws the scene.
@@ -274,21 +257,20 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	audio_manager->suspendAudioManager();
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnResuming()
@@ -297,8 +279,7 @@ void Game::OnResuming()
 	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
