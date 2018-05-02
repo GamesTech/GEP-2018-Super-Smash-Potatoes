@@ -214,6 +214,9 @@
     <ClInclude Include="CollisionSystem.h">
       <Filter>Game Base\Headers\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="LevelEditorScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -332,6 +335,9 @@
     </ClCompile>
     <ClCompile Include="CollisionSystem.cpp">
       <Filter>Game Base\Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEditorScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -26,6 +26,7 @@ ImageGO2D::ImageGO2D(RenderData* _RD, string _filename)
 	auto uploadResourcesFinished = resourceUpload.End(_RD->m_commandQueue.Get());
 
 	uploadResourcesFinished.wait();
+	image_name = _filename;
 }
 
 

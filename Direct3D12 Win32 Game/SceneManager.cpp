@@ -6,6 +6,7 @@
 #include "ArenaSelectScene.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
+#include "LevelEditorScene.h"
 
 
 
@@ -98,6 +99,11 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 		case SceneEnum::SceneEnum::GAMEOVER:
 		{
 			scene = std::make_unique<GameOverScene>();
+			break;
+		}
+		case SceneEnum::SceneEnum::LEVEL_EDITOR:
+		{
+			scene = std::make_unique<LevelEditor>();
 			break;
 		}
 	}

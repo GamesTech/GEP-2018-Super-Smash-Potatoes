@@ -22,7 +22,7 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	title_text->SetRect({ 0, 0, 1280, 720 });
 	game_objects.push_back(std::move(title_text));
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons");
 		button[i]->SetPos(button_info[i].pos);
@@ -67,7 +67,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 
 		case Action::BUTTON_DOWN:
 		{
-			if (menu_option_selected < 3)
+			if (menu_option_selected < 4)
 			{
 				menu_option_selected++;
 				highlight_option_selected();
@@ -89,10 +89,16 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 			case 2:
 			{
 				scene_change.change_type = ChangeType::ADD;
-				scene_change.scene = SceneEnum::SETTINGS;
+				scene_change.scene = SceneEnum::LEVEL_EDITOR;
 				break;
 			}
 			case 3:
+			{
+				scene_change.change_type = ChangeType::ADD;
+				scene_change.scene = SceneEnum::SETTINGS;
+				break;
+			}
+			case 4:
 			{
 				scene_change.change_type = ChangeType::REMOVE;
 				break;
@@ -128,16 +134,25 @@ void MenuScene::highlight_option_selected()
 		game_objects[1]->SetColour(Color(1, 0, 0));
 		game_objects[2]->SetColour(Color(1, 1, 1));
 		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 1, 1));
 		break;
 	case 2:
 		game_objects[1]->SetColour(Color(1, 1, 1));
 		game_objects[2]->SetColour(Color(1, 0, 0));
 		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 1, 1));
 		break;
 	case 3:
 		game_objects[1]->SetColour(Color(1, 1, 1));
 		game_objects[2]->SetColour(Color(1, 1, 1));
 		game_objects[3]->SetColour(Color(1, 0, 0));
+		game_objects[4]->SetColour(Color(1, 1, 1));
+		break;
+	case 4:
+		game_objects[1]->SetColour(Color(1, 1, 1));
+		game_objects[2]->SetColour(Color(1, 1, 1));
+		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 0, 0));
 		break;
 	}
 }

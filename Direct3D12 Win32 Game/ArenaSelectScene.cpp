@@ -128,7 +128,7 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 
 void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 {
-	m_RD->m_resourceCount = m_RD->m_resourceCount - platforms.size();
+	m_RD->m_resourceCount -= platforms.size();
 	platforms.clear();
 
 	level = std::make_unique<LevelFile>();

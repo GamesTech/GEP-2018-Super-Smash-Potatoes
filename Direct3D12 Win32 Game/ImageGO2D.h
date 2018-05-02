@@ -28,6 +28,7 @@ public:
 	bool GetFlipH();
 	void SetOpacity(float amount);
 	
+	
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;

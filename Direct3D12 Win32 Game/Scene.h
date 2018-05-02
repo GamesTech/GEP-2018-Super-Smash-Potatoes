@@ -24,6 +24,7 @@ namespace SceneEnum
 		SETTINGS,
 		GAME,
 		GAMEOVER,
+		LEVEL_EDITOR,
 		NONE
 	};
 }
