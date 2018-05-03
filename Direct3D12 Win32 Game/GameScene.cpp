@@ -292,7 +292,6 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
 		m_players.emplace_back(new Player2D(m_RD, str_player_no));
-		//m_players[i]->init(audio_manager);
 		m_players.back()->SetPos(m_spawn_pos[i]);
 		m_players.back()->SetLayer(0.5f);
 		m_players.back()->SetDrive(900.0f);

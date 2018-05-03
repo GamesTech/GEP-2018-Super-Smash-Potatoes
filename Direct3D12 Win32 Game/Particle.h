@@ -2,15 +2,6 @@
 #include "pch.h"
 #include "ParticleFile.h"
 
-namespace Type
-{
-	enum Type
-	{
-		HIT,
-		UPWARDS_PUNCH,
-		ATTACK
-	};
-}
 
 class Particle
 {
@@ -18,23 +9,33 @@ public:
 	Particle() = default;
 	~Particle() = default;
 
-	void init(RenderData* m_RD, Type::Type type, Vector2 pos, bool flipH);
+	void init(Vector2 pos, float _lifetime, float layer, bool fade, bool flip, Color colour, float scale);
+	void init(Vector2 pos, float _lifetime, float layer, bool fade, bool flip, Color colour, float scale, Vector2 vel, Vector2 acc);
 	void update(GameStateData* gsd);
-	void render(RenderData* m_RD);
 
-	bool isDead() { return lifetime <= 0.0f; };
-	void setPlayerVel(Vector2 player) { player_vel = player; };
+	bool isDead() { return dead; };
+	Vector2 getPos() { return offset_position + position; };
+	bool getFlip() { return flip; };
+	float getLayer() { return layer; };
+	float getScale() { return scale; };
+	Color getColour() { return colour; };
 
 private:
-	std::unique_ptr<ParticleFile> particle_file = nullptr;
-	std::unique_ptr<ImageGO2D> sprite = nullptr;
-	std::string file_name;
 
-	Vector2 position = {0, 0};
+	void SetVariables(DirectX::SimpleMath::Vector2 &pos, float _lifetime, float _layer, bool _fade, bool _flip, DirectX::SimpleMath::Color &_colour, float _scale);
+
+	float lifetime = 0.0f;
+	float max_lifetime = 0.0f;
+	Vector2 position = { 0, 0 };
+	Vector2 offset_position = { 0, 0 };
 	Vector2 velocity = { 0, 0 };
 	Vector2 accelaration = { 0, 0 };
-	Vector2 player_vel = {0, 0};
-
-	float lifetime = 0;
-	float max_lifetime = 0;
+	bool fade = true;
+	float opacity = 1;
+	bool flip = false;
+	float layer = 0.0f;
+	Color colour = Colors::White;
+	bool increase_size = true;
+	float scale = 1.f;
+	bool dead = false;
 };
