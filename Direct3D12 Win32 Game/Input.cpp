@@ -18,9 +18,12 @@ void Input::init()
 
 void Input::update(GameStateData* gsd)
 {
+	//for computer input(1 player)
 	gsd->m_prevKeyboardState = gsd->m_keyboardState;
 	gsd->m_keyboardState = m_keyboard->GetState();
 
+
+	//for controller input
 	gsd->no_players = 0;
 	for (int i = 0; i < gsd->MAX_PLAYERS; i++)
 	{
