@@ -181,6 +181,8 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ImageBuffer.h" />
+    <ClInclude Include="LevelEditorScene.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
     <ClInclude Include="MenuScene.h" />
@@ -225,6 +227,8 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameStateData.cpp" />
+    <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="LevelEditorScene.cpp" />
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="MenuScene.cpp" />

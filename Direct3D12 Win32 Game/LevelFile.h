@@ -20,11 +20,15 @@ public:
 	~LevelFile() = default;
 
 	void read(std::string file, std::string ext);
+	void write(std::string file, std::string ext);
+	void objectToWrite(GameObjectData object) { object_data_write.push_back(object); };
 	GameObjectData getObj(int index) { return object_data.at(index); };
 	int getObjListSize() { return object_data.size(); };
 
 private:
-	std::unique_ptr<File> level_file;
+	std::unique_ptr<File> level_file_read;
+	std::unique_ptr<File> level_file_write;
 	std::vector<GameObjectData> object_data;
+	std::vector<GameObjectData> object_data_write;
 };
 

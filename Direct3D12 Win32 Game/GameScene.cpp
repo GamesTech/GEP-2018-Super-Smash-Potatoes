@@ -13,8 +13,9 @@ GameScene::~GameScene()
 	objects.shrink_to_fit();
 }
 
-bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	
 	time_remaining = 180.0f;
 
@@ -31,7 +32,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
 		string temp_name = level->getObj(i).image_file;
- 		auto platform = new ImageGO2D(m_RD, temp_name);
+ 		auto platform = new ImageGO2D(m_RD, temp_name, image_buffer);
 
 		platform->SetPos(level->getObj(i).position);
 		platform->SetOrigin(level->getObj(i).origin);
@@ -57,16 +58,16 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	//}
 
 	particle_system = std::make_shared<ParticleSystem>();
-	particle_system->init(m_RD);
+	particle_system->init(m_RD, image_buffer);
 
 	m_player_tag = std::make_unique<PlayerTags>(no_players);
-	m_player_tag->Init(m_RD);
+	m_player_tag->Init(m_RD, image_buffer);
 
 	spawnPlayers(gsd, m_RD, no_players);
 
 	//UI
 	UI = std::make_unique<UserInterface>();
-	UI->init(m_RD, gsd, m_players, sprite_names);
+	UI->init(m_RD, gsd, m_players, sprite_names, image_buffer);
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
@@ -291,7 +292,7 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	for (int i = 0; i < no_players; i++)
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
-		m_players.emplace_back(new Player2D(m_RD, str_player_no));
+		m_players.emplace_back(new Player2D(m_RD, str_player_no, image_buffer));
 		m_players.back()->SetPos(m_spawn_pos[i]);
 		m_players.back()->SetLayer(0.5f);
 		m_players.back()->SetDrive(900.0f);

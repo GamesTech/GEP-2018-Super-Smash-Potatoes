@@ -26,7 +26,7 @@ public:
 	};
 
 	//TODO: add a 3d player and modes to switch between different views and basic physics
-	Player2D(RenderData* _RD, string _filename);
+	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	virtual ~Player2D();
 
 	//void init(AudioManager* am);

@@ -9,8 +9,9 @@ SettingsScene::~SettingsScene()
 
 }
 
-bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	no_players = gsd->no_players;
 
 	resolution_text = std::make_unique<Text2D>("Resolution Text");
@@ -23,7 +24,7 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 	fullscreen_text->SetPos(Vector2(300, 300));
 	fullscreen_text->SetLayer(1.0f);
 
-	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
+	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 	main_menu_button->SetPos(Vector2(300, 400));
 	main_menu_button->SetRect(1, 241, 240, 320);
 	game_objects.push_back(std::move(main_menu_button));

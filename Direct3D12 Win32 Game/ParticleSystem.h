@@ -18,7 +18,7 @@ class ParticleSystem
 public:
 	ParticleSystem() = default;
 	~ParticleSystem();
-	bool init(RenderData* m_RD);
+	bool init(RenderData* m_RD, std::shared_ptr<ImageBuffer> image_buffer);
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 

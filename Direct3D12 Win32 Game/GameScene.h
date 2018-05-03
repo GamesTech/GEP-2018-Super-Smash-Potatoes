@@ -13,7 +13,7 @@ public:
 	GameScene() = default;
 	virtual ~GameScene();
 
-	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	void Attacking(int i, GameStateData * gsd);
 	virtual void render(RenderData* m_RD,

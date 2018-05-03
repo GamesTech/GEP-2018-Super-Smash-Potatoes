@@ -6,7 +6,7 @@
 #include "Emitter.h"
 
 
-Emitter::Emitter(RenderData * _RD, string _filename) :ImageGO2D(_RD, _filename)
+Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	particles.reserve(50);
 }
@@ -29,8 +29,8 @@ void Emitter::render(RenderData * m_RD)
 		if (!p->isDead()) // If particle is dead, don't render it.
 		{
 			FlipH(p->getFlip());
-			m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
-				GetTextureSize(m_texture.Get()),
+			m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_texture_data.m_resourceNum),
+				GetTextureSize(m_texture_data.m_texture.Get()),
 				p->getPos(), nullptr, p->getColour(), m_orientation, m_origin, p->getScale(), m_flip, p->getLayer());
 		}
 	}

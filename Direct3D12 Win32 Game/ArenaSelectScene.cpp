@@ -14,22 +14,23 @@ ArenaSelectScene::~ArenaSelectScene()
 	game_objects.clear();
 }
 
-bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	no_players = gsd->no_players;
-	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection");
+	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection", image_buffer);
 	title_boarder->SetLayer(0.0f);
 	title_boarder->SetRect(1, 1, 1280, 720);
 	game_objects.push_back(std::move(title_boarder));
 
-	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
+	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow", image_buffer);
 	left_arrow->SetLayer(0.1f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
 	game_objects.push_back(std::move(left_arrow));
 
-	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
+	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow", image_buffer);
 	right_arrow->SetLayer(0.1f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
@@ -128,7 +129,6 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 
 void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 {
-	m_RD->m_resourceCount = m_RD->m_resourceCount - platforms.size();
 	platforms.clear();
 
 	level = std::make_unique<LevelFile>();
@@ -139,7 +139,7 @@ void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
 		string temp_name = level->getObj(i).image_file;
-		auto platform = new ImageGO2D(m_RD, temp_name);
+		auto platform = new ImageGO2D(m_RD, temp_name, image_buffer);
 
 		platform->SetPos(level->getObj(i).position);
 		platform->SetOrigin(level->getObj(i).origin);

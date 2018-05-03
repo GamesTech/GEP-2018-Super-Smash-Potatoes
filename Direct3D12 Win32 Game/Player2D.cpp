@@ -2,7 +2,7 @@
 #include "Player2D.h"
 #include "GameStateData.h"
 
-Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
+Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :Physics2D(_RD, _filename, image_buffer)
 {
 	//SetBoundingBoxes();
 	//BottomOrigin();
@@ -135,7 +135,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		if (punch_particle)
 		{
-			particle_system->addParticlesToEmitter(5, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{1000,0}, Vector2{ -100,0 });
+			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{1000,0}, Vector2{ -100,0 });
 			punch_particle = false;
 		}
 	}

@@ -86,6 +86,15 @@
     <Filter Include="Game Base\Source\Collision">
       <UniqueIdentifier>{2b226947-42f0-40f2-af72-985d026d4c9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\2D\Headers\Image">
+      <UniqueIdentifier>{8ee8ac39-81d5-4008-9a27-71a4cb92a200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Headers\UI">
+      <UniqueIdentifier>{150c14ad-8119-45ba-97a4-f34e7b2e3377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Headers\Player">
+      <UniqueIdentifier>{e773e571-7204-4192-ab39-0bf3ab5090c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -98,9 +107,6 @@
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObject2D.h">
-      <Filter>GameObjects\2D\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageGO2D.h">
       <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Text2D.h">
@@ -124,9 +130,6 @@
     <ClInclude Include="SDKMeshGO3D.h">
       <Filter>GameObjects\3D\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Player2D.h">
-      <Filter>GameObjects\2D\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
@@ -145,17 +148,11 @@
     <ClInclude Include="pch.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Physics2D.h">
-      <Filter>GameObjects\2D\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="SoundEffects.h">
       <Filter>GameObjects\Sounds\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Game Base\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation2D.h">
-      <Filter>GameObjects\2D\Headers</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSelectScene.h">
       <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
@@ -184,12 +181,6 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Game Base\Headers\AudioManager</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTags.h">
-      <Filter>GameObjects\2D\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="UserInterface2D.h">
-      <Filter>GameObjects\2D\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Game Base\Headers\ParticleSystem</Filter>
     </ClInclude>
@@ -213,6 +204,30 @@
     </ClInclude>
     <ClInclude Include="CollisionSystem.h">
       <Filter>Game Base\Headers\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEditorScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageGO2D.h">
+      <Filter>GameObjects\2D\Headers\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface2D.h">
+      <Filter>GameObjects\2D\Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTags.h">
+      <Filter>GameObjects\2D\Headers\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics2D.h">
+      <Filter>GameObjects\2D\Headers\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D.h">
+      <Filter>GameObjects\2D\Headers\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player2D.h">
+      <Filter>GameObjects\2D\Headers\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBuffer.h">
+      <Filter>GameObjects\2D\Headers\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +348,10 @@
     <ClCompile Include="CollisionSystem.cpp">
       <Filter>Game Base\Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="LevelEditorScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

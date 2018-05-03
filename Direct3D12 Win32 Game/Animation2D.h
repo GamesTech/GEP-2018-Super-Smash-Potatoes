@@ -25,7 +25,7 @@ class Animation2D :
 	public ImageGO2D
 {
 public:
-	Animation2D(RenderData* _RD, string _filename);
+	Animation2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	~Animation2D();
 
 	void LoadSprites(string _filename);
