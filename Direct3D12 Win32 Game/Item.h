@@ -11,9 +11,8 @@ class Item : public Physics2D
 
 		Item(RenderData* _RD, string _filename, Type type, long life_span);
 
-		
 		void collided(class Player2D* player, GameStateData * _GSD);
-		void update();
+		void update(GameStateData * _GSD);
 		void resetPlayer();
 		void setActive(bool active);
 		void setMarked(bool marked);

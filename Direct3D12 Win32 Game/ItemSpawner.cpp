@@ -11,14 +11,14 @@ void ItemSpawner::init(RenderData * _RD)
 	m_RD = _RD;
 }
 
-void ItemSpawner::update()
+void ItemSpawner::update(GameStateData * _GSD)
 {
 
 	//Update items loop
 	for (auto& item : items)
 	{
 		if(item->getMarked())item->SetPos(Vector2(-100, 0));
-		item->update();
+		item->update(_GSD);
 	}
 }
 

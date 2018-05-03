@@ -144,7 +144,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		}
 	}
 
-	spawner->update();
+	spawner->update(gsd);
 
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)

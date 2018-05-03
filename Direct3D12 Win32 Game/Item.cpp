@@ -8,7 +8,7 @@ Item::Item(RenderData * _RD, string _filename, Type type, long life_span)
 	this->type = type;
 }
 
-void Item::update()
+void Item::update(GameStateData * _GSD)
 {
 	if (time >= life_span)
 	{
@@ -23,6 +23,8 @@ void Item::update()
 		if (player != nullptr)
 			m_pos = player->GetPos() - Vector2(0, yOffset);
 	}
+	//AddGravity(false);
+	Tick(_GSD, false, false, 0.0f, false);
 }
 
 void Item::resetPlayer()

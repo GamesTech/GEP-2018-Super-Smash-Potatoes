@@ -301,6 +301,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| ((_GSD->m_gamePadState[player_no].IsBPressed()))))
 	{
 		if (item != nullptr) {
+			item->AddForce(Vector2(100.0f, 0));
 			item->setActive(true);
 			item->resetPlayer();
 			item = nullptr;

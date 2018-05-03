@@ -10,7 +10,7 @@ class ItemSpawner {
 
 		const std::vector<std::unique_ptr<Item>>& getItems() const;
 		void init(RenderData* _RD);
-		void update();
+		void update(GameStateData * _GSD);
 		void render(RenderData* _RD);
 		void addItem(Vector2 position, string _filename, Item::Type type, long life_span);
 		int getSize() const;
