@@ -11,12 +11,12 @@ MenuScene::~MenuScene()
 	game_objects.clear();
 }
 
-bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	//no_players = gsd->no_players;
-	m_RD->m_resourceCount = 1;
 
-	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo");
+	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo", image_buffer);
 	title_text->SetLayer(1.0f);
 	title_text->SetPos({0, 0});
 	title_text->SetRect({ 0, 0, 1280, 720 });
@@ -24,7 +24,7 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	for (int i = 0; i < 4; ++i)
 	{
-		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons");
+		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 		button[i]->SetPos(button_info[i].pos);
 		button[i]->SetRect(button_info[i].m_rect);
 		button[i]->SetLayer(1.0f);

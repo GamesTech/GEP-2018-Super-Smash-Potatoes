@@ -7,7 +7,7 @@ public:
 	GameOverScene();
 	~GameOverScene();
 
-	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;

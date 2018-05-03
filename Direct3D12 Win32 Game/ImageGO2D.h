@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject2D.h"
 #include <string>
+#include "ImageBuffer.h"
 
 using std::string;
 struct RenderData;
@@ -14,7 +15,7 @@ class ImageGO2D :
 	public GameObject2D
 {
 public:
-	ImageGO2D(RenderData* _RD, string _filename);
+	ImageGO2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	virtual ~ImageGO2D();
 
 	void Render(RenderData* _RD);
@@ -34,5 +35,6 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture;
 	int m_resourceNum = -1;
 	SpriteEffects m_flip = SpriteEffects_None;
+	ImageBuffer::TextureData m_texture_data;
 };
 

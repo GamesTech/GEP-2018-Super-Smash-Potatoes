@@ -9,8 +9,9 @@ LevelEditor::~LevelEditor()
 {
 }
 
-bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am)
+bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	m_RD = _RD;
 	return true;
 }
@@ -183,7 +184,7 @@ void LevelEditor::createNewObject(int type) //load a new object from the default
 	level->read("default_objects", ".objs");
 
 	string temp_name = level->getObj(type).image_file;
-	auto platform = new ImageGO2D(m_RD, temp_name);
+	auto platform = new ImageGO2D(m_RD, temp_name, image_buffer);
 
 	platform->SetPos(level->getObj(type).position);
 	platform->SetOrigin(level->getObj(type).origin);

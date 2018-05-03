@@ -2,7 +2,7 @@
 #include "UserInterface2D.h"
 #include "GameStateData.h"
 
-void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std::unique_ptr<Player2D>>& players, std::vector<string> sprite_names)
+void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std::unique_ptr<Player2D>>& players, std::vector<string> sprite_names, std::shared_ptr<ImageBuffer> image_buffer)
 {
 	timer_text = new Text2D("Time Remaining: xxxs");
 	timer_text->SetPos(Vector2(750, 10));
@@ -19,14 +19,14 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 
 	for (int i = 0; i < gsd->no_players; i++)
 	{
-		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]], image_buffer);
 		temp_player_UI->SetPos(Vector2(410 + (i * character_gap), UI_start_y + 35));
 		temp_player_UI->SetRect(1, 1, 64, 64);
 		temp_player_UI->SetLayer(0.0f);
 		temp_player_UI->CentreOrigin();
 		UI.emplace_back(temp_player_UI);
 
-		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
+		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags", image_buffer);
 		player_numbers->SetPos(Vector2(400 + (i * character_gap), UI_start_y));
 		player_numbers->SetLayer(0.0f);
 		player_numbers->SetRect(number_pos[i]);
@@ -44,7 +44,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 		for (int j = 0; j < max_lives; j++)
 		{
 			int lives_no = (i * max_lives) + j;
-			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives");
+			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives", image_buffer);
 			lives_button_sprite[lives_no]->SetPos(Vector2(390 + (i * character_gap) + (j * 30), UI_start_y + 80));
 			lives_button_sprite[lives_no]->SetRect(1, 1, 20, 20);
 			lives_button_sprite[lives_no]->SetLayer(0.0f);
