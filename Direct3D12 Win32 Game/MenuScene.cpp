@@ -15,7 +15,6 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 {
 	image_buffer = ib;
 	//no_players = gsd->no_players;
-	m_RD->m_resourceCount = 1;
 
 	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo", image_buffer);
 	title_text->SetLayer(1.0f);

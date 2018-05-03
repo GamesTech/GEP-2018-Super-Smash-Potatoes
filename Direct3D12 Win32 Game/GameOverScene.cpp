@@ -41,7 +41,6 @@ Scene::SceneChange GameOverScene::update(GameStateData * gsd)
 	case Action::BACK:
 	{
 		scene_change.change_type = ChangeType::REPLACE_ALL;
-		m_RD->m_resourceCount = 1;
 		scene_change.scene = SceneEnum::MENU;
 		break;
 	}
