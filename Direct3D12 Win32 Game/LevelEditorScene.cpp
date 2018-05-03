@@ -13,6 +13,16 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 {
 	image_buffer = ib;
 	m_RD = _RD;
+	viewport = { -0.675f, -0.7f,
+		static_cast<float>(1920), static_cast<float>(1080),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+	m_RD->m_spriteBatch->SetViewport(viewport);
+
+	ui = std::make_unique<ImageGO2D>(_RD, "Editor_UI", ib);
+	ui->SetLayer(0.f);
+	ui->SetPos(Vector2{-300, -150});
+	ui->SetRect(0,0,1920,1080);
+
 	return true;
 }
 
@@ -96,6 +106,10 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		case Action::BACK:
 		{
 			scene_change.change_type = ChangeType::REMOVE;
+			viewport = { -1.f, -1.f,
+				static_cast<float>(1280), static_cast<float>(720),
+				D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+			m_RD->m_spriteBatch->SetViewport(viewport);
 			break;
 		}
 	}
@@ -123,6 +137,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	{
 		object->Render(m_RD);
 	}
+	ui->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 
@@ -138,7 +153,7 @@ void LevelEditor::ReadInput(GameStateData * gsd)
 	{
 		action = Action::BUTTON_UP;
 	}
-	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Right)
+	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
 		|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
 	{
 		action = Action::BUTTON_LEFT;

@@ -82,6 +82,9 @@
     <ImageContentTask Include="Scenes\platform_side.png">
       <Filter>Game\GameObjects</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Menu\Editor_UI.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

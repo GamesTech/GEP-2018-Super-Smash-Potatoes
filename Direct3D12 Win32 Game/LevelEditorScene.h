@@ -42,6 +42,10 @@ private:
 
 
 private:
-	int object_type = 1;
+	
+	std::unique_ptr<ImageGO2D> ui = nullptr;
+
+	int object_type = 2;
+	D3D12_VIEWPORT viewport;
 
 };
