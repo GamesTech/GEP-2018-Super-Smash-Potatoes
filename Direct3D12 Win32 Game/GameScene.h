@@ -28,7 +28,7 @@ private:
 	};
 	Action action = Action::NONE;
 
-	virtual void ReadInput(GameStateData* gsd) override;
+	virtual void ReadInput(Input* input_manager) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
 
@@ -57,6 +57,7 @@ private:
 	std::unique_ptr<ImageGO2D> platform_side;
 	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
+	Input* input_manager;
 	//std::unique_ptr<ImageGO2D> platform_side;
 };
 

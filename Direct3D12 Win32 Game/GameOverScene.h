@@ -11,7 +11,7 @@ public:
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
-	void virtual ReadInput(GameStateData* gsd) override;
+	void virtual ReadInput(Input* input_manager) override;
 
 private:
 	enum Action

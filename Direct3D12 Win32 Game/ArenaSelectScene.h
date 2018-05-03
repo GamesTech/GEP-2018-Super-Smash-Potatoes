@@ -13,7 +13,7 @@ public:
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
-	virtual void ReadInput(GameStateData* gsd) override;
+	virtual void ReadInput(Input* input_manager) override;
 
 private:
 	enum Action
@@ -23,6 +23,8 @@ private:
 		CONTINUE
 	};
 	Action action = Action::NONE;
+
+	GameStateData* game_state_data;
 
 	std::unique_ptr<ImageGO2D> title_boarder = nullptr;
 	std::unique_ptr<ImageGO2D> left_arrow = nullptr;

@@ -13,7 +13,7 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
+void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
 {
 	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
 	{
@@ -22,7 +22,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	//SetBoundingBoxes();
 	if (!m_remove_controll)
 	{
-		controller(_GSD);
+		controller(input_manager);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -261,12 +261,10 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 	}
 }
 
-void Player2D::controller(GameStateData * _GSD)
+void Player2D::controller(Input * input_manager)
 {
 	// Walk
-	if (_GSD->m_keyboardState.A 
-		|| _GSD->m_gamePadState[player_no].IsDPadLeftPressed() 
-		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
+	if (input_manager->inputs[player_no] == DOWN)
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		FlipH(true);
@@ -276,9 +274,7 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 
 	}
-	else if (_GSD->m_keyboardState.D 
-		|| _GSD->m_gamePadState[player_no].IsDPadRightPressed() 
-		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
+	else if (input_manager->inputs[player_no] == DOWN)
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		FlipH(false);
@@ -297,22 +293,14 @@ void Player2D::controller(GameStateData * _GSD)
 
 
 	// Jump
-	if ((_GSD->m_keyboardState.S
-		&& _GSD->m_keyboardState.Space)
-		|| ((_GSD->m_gamePadState[player_no].IsAPressed()
-			&& !_GSD->m_prevGamePadState[player_no].IsAPressed())
-			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	if (input_manager->inputs[player_no] == DOWN_A)
 	{
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if ((_GSD->m_keyboardState.Space 
-		&& !_GSD->m_prevKeyboardState.Space) 
-		|| (_GSD->m_gamePadState[player_no].IsAPressed() 
-			&& !_GSD->m_prevGamePadState[player_no].IsAPressed()))
+	else if (input_manager->inputs[player_no] == DOWN)
 	{
 		if (m_grounded)
 		{
@@ -328,14 +316,8 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 
-
 	// Bonus Jump
-	if ((_GSD->m_keyboardState.X 
-		&& _GSD->m_keyboardState.W) 
-		|| ((_GSD->m_gamePadState[player_no].IsXPressed() 
-			&& !_GSD->m_prevGamePadState[player_no].IsXPressed()) 
-			&& (_GSD->m_gamePadState[player_no].IsDPadUpPressed() 
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
+	if (input_manager->inputs[player_no] == UP_X)
 	{
 		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
@@ -351,12 +333,7 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 	//slam
-	else if ((_GSD->m_keyboardState.X
-		&& _GSD->m_keyboardState.S)
-		|| ((_GSD->m_gamePadState[player_no].IsXPressed()
-			&& !_GSD->m_prevGamePadState[player_no].IsXPressed())
-			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	else if (input_manager->inputs[player_no] == DOWN_X)
 	{
 		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
@@ -370,8 +347,7 @@ void Player2D::controller(GameStateData * _GSD)
 			//m_up_timer_punch = 0;
 		}
 	}
-	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
-		|| (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
+	else if (input_manager->inputs[player_no] == X)
 	{
 		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{

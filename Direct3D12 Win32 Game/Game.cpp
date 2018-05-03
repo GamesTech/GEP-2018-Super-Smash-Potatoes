@@ -131,24 +131,18 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     
-
-//GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
 	
+	input_manager = std::make_unique<Input>();
+	input_manager->init();
+
 	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
 	Debug::output("hello", "world");
 
 	scene_manager = std::make_unique<SceneManager>();
 	scene_manager->init(m_RD, m_GSD, audio_manager);
-
-	//m_mouse = std::make_unique<Mouse>();
-	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
-	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
-
-	input_manager = std::make_unique<Input>();
-	input_manager->init();
 }
 
 //GEP:: Executes the basic game loop.
@@ -170,7 +164,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	if (!scene_manager->update(m_RD, m_GSD, audio_manager, m_swapChain))
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, input_manager.get(), m_swapChain))
 	{
 		PostQuitMessage(0);
 	}

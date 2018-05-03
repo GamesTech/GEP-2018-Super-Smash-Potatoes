@@ -16,6 +16,8 @@ ArenaSelectScene::~ArenaSelectScene()
 
 bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
+	game_state_data = gsd;
+
 	no_players = gsd->no_players;
 	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection");
 	title_boarder->SetLayer(0.0f);
@@ -88,12 +90,11 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 	m_RD->m_spriteBatch->End();
 }
 
-void ArenaSelectScene::ReadInput(GameStateData * gsd)
+void ArenaSelectScene::ReadInput(Input * input_manager)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-			|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
+		if (input_manager->inputs[i] == LEFT)
 		{
 			if (level_selected > 0)
 			{
@@ -101,8 +102,7 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 				level_selected--;
 			}
 		}
-		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-			|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
+		if (input_manager->inputs[i] == RIGHT)
 		{
 			if (level_selected < total_levels - 1)
 			{
@@ -111,15 +111,13 @@ void ArenaSelectScene::ReadInput(GameStateData * gsd)
 			}
 		}
 
-		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
+		if (input_manager->inputs[i] == A)
 		{
-			gsd->arena_selected = level_selected;
+			game_state_data->arena_selected = level_selected;
 			action = Action::CONTINUE;
 		}
 
-		if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-			|| (gsd->m_gamePadState[i].IsBPressed() && !gsd->m_prevGamePadState[i].IsBPressed()))
+		if (input_manager->inputs[i] == START)
 		{
 			action = Action::BACK;
 		}

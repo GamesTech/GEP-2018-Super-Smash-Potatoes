@@ -2,6 +2,7 @@
 #include "Physics2D.h"
 #include "ParticleSystem.h"
 #include "Particle.h"
+#include "Input.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 enum Attack
@@ -31,7 +32,7 @@ public:
 
 	//void init(AudioManager* am);
 
-	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
+	void Tick(GameStateData* _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
 
@@ -92,7 +93,7 @@ protected:
 	void deathZone();
 	void respawn();
 	void RespawnTimer(GameStateData * _GSD);
-	void controller(GameStateData * _GSD);
+	void controller(Input * input_manager);
 
 	float m_jumpForce = 60000;
 	float m_drive = 200.0f;

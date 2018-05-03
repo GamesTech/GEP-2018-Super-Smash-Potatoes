@@ -17,7 +17,7 @@ void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * a
 	scenes.push_back(std::move(scene));
 }
 
-bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain)
+bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Input* im, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain)
 {
 	if (scenes.size() == 0)
 	{
@@ -25,7 +25,7 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 	}
 
 	Scene::SceneChange change = scenes.back()->update(gsd);
-	scenes.back()->ReadInput(gsd);
+	scenes.back()->ReadInput(im);
 
 	switch (change.change_type)
 	{

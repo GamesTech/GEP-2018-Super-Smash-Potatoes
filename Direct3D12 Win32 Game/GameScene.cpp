@@ -95,7 +95,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				}
 			}
 			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_player[i]->Tick(gsd, i);
+			m_player[i]->Tick(gsd, i, input_manager);
 
 			m_anim_grounded[i] = false;
 		}
@@ -254,10 +254,10 @@ void GameScene::render(RenderData* m_RD,
 	m_RD->m_spriteBatch->End();
 }
 
-void GameScene::ReadInput(GameStateData* gsd)
+void GameScene::ReadInput(Input* im)
 {
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+	input_manager = im;
+	if (input_manager->inputs[0] == START)
 	{
 		//action = Action::BACK;
 	}

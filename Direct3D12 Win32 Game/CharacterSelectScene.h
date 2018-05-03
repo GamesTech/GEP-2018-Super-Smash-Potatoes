@@ -10,7 +10,7 @@ public:
 	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
-	virtual void ReadInput(GameStateData* gsd) override;
+	virtual void ReadInput(Input* input_manager) override;
 
 private:
 	enum Action

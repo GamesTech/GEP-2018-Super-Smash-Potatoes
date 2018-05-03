@@ -1,5 +1,6 @@
 #pragma once
 #include "AudioManager.h"
+#include "Input.h"
 
 namespace ChangeType
 {
@@ -44,7 +45,7 @@ public:
 	 virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) = 0;
 	 virtual SceneChange update(GameStateData* gsd) = 0;
 	 virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) = 0;
-	 virtual void ReadInput(GameStateData* gsd) {};
+	 virtual void ReadInput(Input* input_manager) {};
 	 virtual void giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain) {};
 
 	GameObject2D& getObjectByIndex(int index) const;
