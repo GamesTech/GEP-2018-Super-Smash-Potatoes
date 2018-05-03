@@ -23,19 +23,23 @@ void Item::update(GameStateData * _GSD)
 		if (player != nullptr)
 			m_pos = player->GetPos() - Vector2(0, yOffset);
 	}
-	//AddGravity(false);
-	Tick(_GSD, false, false, 0.0f, false);
-}
 
-void Item::resetPlayer()
-{
-	player = nullptr;
+	if (active)
+	{
+		AddGravity(false);
+		Tick(_GSD, false, false, 1.0f, false);
+	} else {
+		m_vel = Vector2(0, 0);
+		m_acc = Vector2(0, 0);
+	}
 }
 
 void Item::setActive(bool active)
 {
 	this->active = active;
 }
+
+
 
 void Item::setMarked(bool marked)
 {
@@ -45,6 +49,15 @@ void Item::setMarked(bool marked)
 void Item::setLife(long life)
 {
 	life_span = life;
+}
+
+void Item::throwItem(GameStateData* _GSD, Vector2 player_movement)
+{
+	float power = 100.0f;
+	active = true;
+	player = nullptr;
+	AddForce(player_movement * power);
+	Tick(_GSD, false, false, 1.0f, false);
 }
 
 bool Item::getMarked() const

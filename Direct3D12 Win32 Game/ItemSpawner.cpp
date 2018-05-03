@@ -17,7 +17,7 @@ void ItemSpawner::update(GameStateData * _GSD)
 	//Update items loop
 	for (auto& item : items)
 	{
-		if(item->getMarked())item->SetPos(Vector2(-100, 0));
+		if(item->getMarked())item->SetPos(Vector2(-100000, 0));		//set offscreen
 		item->update(_GSD);
 	}
 }
@@ -45,6 +45,7 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 			item->setMarked(false);
 			item->setActive(false);
 			item->setLife(life_span);
+		
 			return; //return if found spot
 		}
 	}

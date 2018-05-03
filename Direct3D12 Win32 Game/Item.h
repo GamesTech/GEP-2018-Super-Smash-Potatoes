@@ -13,14 +13,13 @@ class Item : public Physics2D
 
 		void collided(class Player2D* player, GameStateData * _GSD);
 		void update(GameStateData * _GSD);
-		void resetPlayer();
 		void setActive(bool active);
 		void setMarked(bool marked);
 		void setLife(long life);
-
+		void throwItem(GameStateData* _GSD, Vector2 player_movement);
 		bool getMarked() const;
 	private:
-		static const int yOffset = 50;
+		static const int yOffset = 100;
 
 		Type type;
 		class Player2D * player = nullptr;
