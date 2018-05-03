@@ -95,7 +95,7 @@ void Game::Initialize(HWND window, int width, int height)
 	pd.blendDesc = m_RD->m_states->NonPremultiplied;
 	m_RD->m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dDevice.Get(), resourceUpload, pd);
 	m_RD->m_font = std::make_unique<SpriteFont>(m_d3dDevice.Get(), resourceUpload,
-		L"courier.spritefont",
+		L"upheaval.spritefont",
 		m_RD->m_resourceDescriptors->GetCpuHandle(m_RD->m_resourceCount),
 		m_RD->m_resourceDescriptors->GetGpuHandle(m_RD->m_resourceCount));
 	m_RD->m_resourceCount++;
