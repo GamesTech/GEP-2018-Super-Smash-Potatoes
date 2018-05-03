@@ -53,7 +53,7 @@ void Item::setLife(long life)
 
 void Item::throwItem(GameStateData* _GSD, Vector2 player_movement)
 {
-	float power = 100.0f;
+	float power = 250.0f;
 	active = true;
 	player = nullptr;
 	AddForce(player_movement * power);
@@ -70,8 +70,8 @@ void Item::collided(Player2D* player, GameStateData *  _GSD)
 	if (type == BOMB) {
 		if (active) {
 			int dir = player->GetPos().x - GetPos().x;
-			if (dir < 32 && dir >= 0)dir = 0;
-			else if (dir > -32 && dir <= 0)dir = 0;
+			if (dir < 16 && dir >= 0)dir = 0;
+			else if (dir > -16 && dir <= 0)dir = 0;
 			else if (dir > 0) dir = 1;
 			else if (dir < 0)dir = -1;
 			player->GotHit(_GSD, dir, 1.5);

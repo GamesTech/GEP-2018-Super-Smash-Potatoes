@@ -301,7 +301,7 @@ void Player2D::controller(GameStateData * _GSD)
 		|| ((_GSD->m_gamePadState[player_no].IsBPressed()))))
 	{
 		if (item != nullptr) {
-			item->throwItem(_GSD, m_acc);
+			item->throwItem(_GSD, m_vel);
 			item = nullptr;
 		}
 	}
