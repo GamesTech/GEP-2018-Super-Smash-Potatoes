@@ -29,6 +29,15 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		case Action::ADD_BLOCK:
 		{
 			createNewObject(object_type);
+			break;
+		}
+		case Action::B:
+		{
+			if (platforms.size() != 0)
+			{
+				platforms.pop_back();
+			}
+			break;
 		}
 		case Action::BUTTON_UP:
 		{
@@ -67,7 +76,7 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		{
 			if (platforms.size() != 0)
 			{
-				if (object_type != 2)
+				if (object_type != 3)
 				{
 					object_type++;
 					platforms.pop_back();
@@ -82,7 +91,6 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			{
 				saveLevel();
 			}
-			break;
 		}
 		case Action::BACK:
 		{
@@ -140,18 +148,18 @@ void LevelEditor::ReadInput(GameStateData * gsd)
 		action = Action::BUTTON_RIGHT;
 	}
 
-	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Right)
+	if ((gsd->m_keyboardState.Q && !gsd->m_prevKeyboardState.Q)
 		|| (gsd->m_gamePadState[0].IsLeftShoulderPressed() && !gsd->m_prevGamePadState[0].IsLeftShoulderPressed()))
 	{
 		action = Action::LB;
 	}
-	if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
+	if ((gsd->m_keyboardState.E && !gsd->m_prevKeyboardState.E)
 		|| (gsd->m_gamePadState[0].IsRightShoulderPressed() && !gsd->m_prevGamePadState[0].IsRightShoulderPressed()))
 	{
 		action = Action::RB;
 	}
 
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
+	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
 		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
 	{
 		action = Action::PAUSE;
@@ -162,10 +170,10 @@ void LevelEditor::ReadInput(GameStateData * gsd)
 	{
 		action = Action::ADD_BLOCK;
 	}
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
+	if ((gsd->m_keyboardState.Back && !gsd->m_prevKeyboardState.Back)
 		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
-		action = Action::BACK;
+		action = Action::B;
 	}
 }
 

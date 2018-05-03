@@ -26,7 +26,8 @@ private:
 		BUTTON_RIGHT,
 		RB,
 		LB,
-		PAUSE
+		PAUSE,
+		B
 
 	};
 	Action action = Action::NONE;
