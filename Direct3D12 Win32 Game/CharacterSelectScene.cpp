@@ -31,9 +31,8 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 	title_text->SetRect(1,1,1280,720);
 	game_objects.push_back(std::move(title_text));
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < gsd->MAX_PLAYERS; i++)
 	{
-		//4 = max players
 		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
 		player_numbers->SetLayer(0.0f);
 		player_numbers->SetRect(number_pos[i]);
@@ -268,7 +267,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 
 	//only player1
 	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
 	{
 		action = Action::BACK;
 	}

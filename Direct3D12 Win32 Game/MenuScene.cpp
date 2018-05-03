@@ -14,6 +14,7 @@ MenuScene::~MenuScene()
 bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 {
 	//no_players = gsd->no_players;
+	m_RD->m_resourceCount = 1;
 
 	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo");
 	title_text->SetLayer(1.0f);
@@ -35,6 +36,9 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
+
+	
+
 	return true;
 }
 
@@ -113,7 +117,6 @@ void MenuScene::render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCo
 	{
 		it->Render(m_RD);
 	}
-
 	m_RD->m_spriteBatch->End();
 }
 

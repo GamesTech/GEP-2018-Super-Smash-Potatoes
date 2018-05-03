@@ -1,31 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_coloured.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\mario_sprite_batch_3.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Character Sprites\kirby_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\mario_sprite.png">
@@ -35,18 +11,6 @@
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Character Sprites\UI_Character_Sprites\ghost_kirby_sprite.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_0.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_1.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_2.png">
-      <Filter>Character Sprites</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Character Sprites\ghost_kirby_sprite_batch_3.png">
       <Filter>Character Sprites</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Menu\numbers.png">
@@ -106,6 +70,18 @@
     <ImageContentTask Include="Menu\Character Selection.png">
       <Filter>Menu</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Particle\hit_particle.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\upwards_punch_particle.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\attack.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\dust.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
     <ImageContentTask Include="Items\bomb.png">
       <Filter>Items</Filter>
     </ImageContentTask>
@@ -125,6 +101,9 @@
     </Filter>
     <Filter Include="Game\UI">
       <UniqueIdentifier>{45937e86-450b-4085-b177-11420f1257a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{d2b60a95-8837-4603-8f84-0213cc7246d7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Items">
       <UniqueIdentifier>{6df49d46-4731-4bf7-bcb2-0a2ec6e96bd2}</UniqueIdentifier>

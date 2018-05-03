@@ -7,7 +7,6 @@
 
 ImageGO2D::ImageGO2D(RenderData* _RD, string _filename)
 {
-
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	string fullpath = "../DDS/" + _filename + ".dds";
 	std::wstring wFilename = converter.from_bytes(fullpath.c_str());
@@ -40,7 +39,7 @@ void ImageGO2D::Render(RenderData* _RD)
 {
 	_RD->m_spriteBatch->Draw(_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
 		GetTextureSize(m_texture.Get()),
-		m_pos, &m_rect, m_colour, m_orientation, m_origin, m_scale, SpriteEffects_None, m_layer);
+		m_pos, &m_rect, m_colour, m_orientation, m_origin, m_scale, m_flip, m_layer);
 	//TODO::add sprite effects & layer Depth
 	//TODO::example stuff for sprite sheet
 }
@@ -88,4 +87,33 @@ void ImageGO2D::BottomOrigin()
 void ImageGO2D::SetOrientation(float new_orientation)
 {
 	m_orientation = m_orientation + new_orientation;
+}
+
+void ImageGO2D::FlipH(bool flip)
+{
+	if (flip)
+	{
+		m_flip = SpriteEffects_FlipHorizontally;
+	}
+	else
+	{
+		m_flip = SpriteEffects_None;
+	}
+}
+
+bool ImageGO2D::GetFlipH()
+{
+	if (m_flip == SpriteEffects_FlipHorizontally)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void ImageGO2D::SetOpacity(float amount)
+{
+	m_colour.w = amount;
 }

@@ -21,23 +21,23 @@ void PlayerTags::Update()
 {
 	for (int i = 0; i < player; ++i)
 	{
-		if (player_pos[i].x < 0)
-		{
-			player_pos[i].x = 0;
-		}
-		if (player_pos[i].x > 1210)
-		{
-			player_pos[i].x = 1210;
-		}
-
-		if (player_pos[i].y < 50)
-		{
-			player_pos[i].y = 50;
-		}
-		if (player_pos[i].y > 680)
-		{
-			player_pos[i].y = 680;
-		}
+		//if (player_pos[i].x < 0)
+		//{
+		//	player_pos[i].x = 0;
+		//}
+		//if (player_pos[i].x > 1210)
+		//{
+		//	player_pos[i].x = 1210;
+		//}
+		//
+		//if (player_pos[i].y < 50)
+		//{
+		//	player_pos[i].y = 50;
+		//}
+		//if (player_pos[i].y > 680)
+		//{
+		//	player_pos[i].y = 680;
+		//}
 		m_player_tag[i]->SetPos(player_pos[i] + Vector2{(width[i] /2),-25});
 	}
 }

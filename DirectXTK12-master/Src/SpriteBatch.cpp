@@ -951,6 +951,8 @@ XMMATRIX SpriteBatch::Impl::GetViewportTransform(_In_ DXGI_MODE_ROTATION rotatio
     if (!mSetViewport)
         throw std::exception("Viewport not set.");
 
+	float topLeftX = mViewPort.TopLeftX;
+	float topLeftY = mViewPort.TopLeftY;
     // Compute the matrix.
     float xScale = (mViewPort.Width > 0) ? 2.0f / mViewPort.Width : 0.0f;
     float yScale = (mViewPort.Height > 0) ? 2.0f / mViewPort.Height : 0.0f;
@@ -987,10 +989,10 @@ XMMATRIX SpriteBatch::Impl::GetViewportTransform(_In_ DXGI_MODE_ROTATION rotatio
     default:
         return XMMATRIX
             (
-                xScale, 0, 0, 0,
-                0, -yScale, 0, 0,
-                0, 0, 1, 0,
-                -1, 1, 0, 1
+                xScale,		0,			0,		0,
+                0,		  -yScale,		0,		0,
+                0,			0,			1,		0,
+				topLeftX, -topLeftY,	0,		1
                 );
     }
 }

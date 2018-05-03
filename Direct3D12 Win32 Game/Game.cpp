@@ -25,8 +25,6 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    //m_outputWidth(1280),
-    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -61,7 +59,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
 	
-
+	
     CreateDevice();
     CreateResources();
 
@@ -69,6 +67,11 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
+	m_GSD->x_resolution = m_outputWidth;
+	m_GSD->y_resolution = m_outputHeight;
+
+	m_GSD->camera_view_width = m_outputWidth;
+	m_GSD->camera_view_height = m_outputHeight;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -99,9 +102,11 @@ void Game::Initialize(HWND window, int width, int height)
 
 	auto uploadResourcesFinished = resourceUpload.End(m_commandQueue.Get());
 
-	D3D12_VIEWPORT viewport = { 0.0f, 0.0f,
+	//viewport coordinates -1,-1 = top left corner, 1,1 = bottom right corner
+	D3D12_VIEWPORT viewport = { -1.f, -1.f,
 		static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
 	m_RD->m_spriteBatch->SetViewport(viewport);
 
 	m_RD->m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(m_d3dDevice.Get());
@@ -126,10 +131,10 @@ void Game::Initialize(HWND window, int width, int height)
 
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
+    
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
+    
 
 //GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
@@ -179,7 +184,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	//// TODO: Gamepad
 	m_GSD->no_players = 0;
-	for (int i = 0; i < MAX_PLAYERS; i++)
+	for (int i = 0; i < m_GSD->MAX_PLAYERS; i++)
 	{
 		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
 		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
@@ -188,9 +193,9 @@ void Game::Update(DX::StepTimer const& timer)
 			m_GSD->no_players++;
 		}
 	}
-	if (m_GSD->no_players == 0)
+	if (m_GSD->no_players <= 1)
 	{
-		m_GSD->no_players = 1;
+		m_GSD->no_players = 3;
 	}
 }
 
@@ -233,7 +238,7 @@ void Game::Clear()
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
-    D3D12_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+    D3D12_VIEWPORT viewport = { -1.f, -1.f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
     D3D12_RECT scissorRect = { 0, 0, m_outputWidth, m_outputHeight };
     m_commandList->RSSetViewports(1, &viewport);
     m_commandList->RSSetScissorRects(1, &scissorRect);

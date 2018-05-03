@@ -1,8 +1,18 @@
 #pragma once
 #include "Physics2D.h"
+#include "ParticleSystem.h"
+#include "Particle.h"
 #include "Item.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
+enum Attack
+{
+	NONE,
+	FIRST,
+	SECOND,
+	THIRD,
+};
+
 class Player2D :
 	public Physics2D
 {
@@ -48,10 +58,11 @@ public:
 	//Collision GetCollState() { return m_coll_state; };
 	void setItem(Item* item);
 
+	void SetParticleSystem(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
+
 	bool GetLedgeJump() { return m_ledge_jump; };
-	bool IsPunching() { return m_execute_punch; };
-	bool IsUpPuching() { return m_execute_up_punch; };
-	void ResetAttacks(bool _attack) { m_execute_punch = _attack; m_execute_up_punch = _attack;};
+	Attack GetAttackType() { return m_execute_attack; };
+	void ResetAttacks() { m_execute_attack = Attack::NONE; };
 	bool IgnoreCollision() { return m_ignore_collision; };
 
 	float GetDamage() { return m_damage; };
@@ -60,7 +71,8 @@ public:
 	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
 	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
 	bool ExectueUpPunch(GameStateData * _GSD, Player2D* other_player);
-	void GotHit(GameStateData * _GSD, int _dir, int y_force);
+	bool ExectueDownPunch(GameStateData * _GSD, Player2D* other_player);
+	void GotHit(GameStateData * _GSD, float _dir, float y_force);
 	void SetImmune(bool _immune) { m_immune = _immune; };
 	void Block(GameStateData * _GSD);
 	bool GetOrientation();
@@ -95,18 +107,17 @@ protected:
 	Item* item = nullptr;
 
 	bool m_grounded = false;
-	bool m_execute_up_punch = false;
 	bool m_jumping = false;
-	bool m_up_punching = false;
-	bool m_down_punching = false;
-	bool m_punching = false;
+	bool m_up_punch_anim = false;
+	bool m_down_punching_anim = false;
+	bool m_punch_anim = false;
+	bool punch_particle = true;
 	bool m_bonus_jump = false;
 	bool m_anim_grounded = false;
 	bool m_grabing_side = false;
 	bool m_ledge_jump = false;
 	bool m_y_coll = false;
 	bool m_x_coll = false;
-	bool m_execute_punch = false;
 	bool m_remove_controll = false;
 	bool m_dead = false;
 	bool m_ignore_collision = false;
@@ -118,14 +129,15 @@ protected:
 	float m_timer_hit = 4;
 	float m_respawn_timer = 3;
 
-	int m_direction = 1;
+	float m_direction = 1;
 
 	//bool m_jumping = false;
  	//float m_speed_limit;
 	float m_new_pos = 0;
 	Collision m_coll_state = COLNONE;
+	Attack m_execute_attack = NONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
-	//AudioManager* audio_manager = nullptr;
+	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };
 
