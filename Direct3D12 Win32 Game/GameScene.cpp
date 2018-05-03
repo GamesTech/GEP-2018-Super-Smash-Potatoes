@@ -130,9 +130,9 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 		for (auto& item : spawner->getItems())
 		{
-			if (OtherCollision(item.get(), i) && !m_anim_grounded[i])
+			if (m_collision_system->ResloveCollision(item.get(), m_players[i].get()))
 			{
-				item->collided(m_player[i].get(), gsd);
+				item->collided(m_players[i].get(), gsd);
 			}
 		}
 		
@@ -140,7 +140,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (spawner->getSize() == 0) {
 		for (int i = 0; i < 2; i++) {
-			spawner->addItem(Vector2(400 + (i * 100), 200), "bomb", Item::Type::HEAL, 1000);
+			spawner->addItem(Vector2(400 + (i * 100), 200), "bomb", Item::Type::BOMB, 1000);
 		}
 	}
 

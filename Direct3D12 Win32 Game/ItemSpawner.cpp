@@ -40,7 +40,7 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 			item->SetPos(position);
 			item->CentreOrigin();
 			item->SetScale(Vector2(1, 1));
-			item->SetLayer(0.1f);
+			item->SetLayer(0.5f);
 			item->SetRect(1, 1, 64, 64); //todo
 			item->setMarked(false);
 			item->setActive(false);
@@ -54,7 +54,7 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 	item->SetPos(position);
 	item->CentreOrigin();
 	item->SetScale(Vector2(1, 1));
-	item->SetLayer(0.1f);
+	item->SetLayer(0.5f);
 	item->SetRect(1, 1, 64, 64); //todo
 	items.emplace_back(item);
 }
