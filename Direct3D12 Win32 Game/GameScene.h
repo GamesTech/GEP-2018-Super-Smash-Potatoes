@@ -31,6 +31,7 @@ private:
 	virtual void ReadInput(GameStateData* gsd) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
+	void calculateCameraPosition();
 
 	int no_players = 0;
 
@@ -61,6 +62,8 @@ private:
 	D3D12_VIEWPORT viewport;
 	float x_zoom_resolution = 0;
 	float y_zoom_resolution = 0;
+
+	D3D12_VIEWPORT UI_viewport;
 	float x_resolution = 0;
 	float y_resolution = 0;
 };

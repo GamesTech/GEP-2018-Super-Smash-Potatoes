@@ -82,87 +82,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
 
 Scene::SceneChange GameScene::update(GameStateData* gsd)
 {
-	float top_left_x = 0;
-	float top_left_y = 0;
-	//bool zoom = false;
-	Vector2 position;
-	int j = 0;
-	for (int i = 0; i < no_players; i++)
-	{
-		if (!m_players[i]->getDead())
-		{
-			position += m_players[i]->GetPos();
-			j++;
-		}
-	}
-	Vector2 centre = Vector2(position.x / j, position.y / j);
-	//top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
-	//top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
-
-	// TEST BROKEN
-	{
-		Rectangle rect = Rectangle(m_players.back()->GetPos().x, m_players.back()->GetPos().y, 0, 0);
-		bool y_zoom_height = false;
-		bool x_zoom_width = false;
-		bool y_zoom = false;
-		bool x_zoom = false;
-		int i = 0;
-		for (auto& player : m_players)
-		{
-			if (!player->getDead())
-			{
-				i++;
-				float x = (int)player->GetPos().x;
-				float y = (int)player->GetPos().y;
-
-				if (x < rect.x) { rect.x = x; rect.width += rect.x - x; }
-				if (x >= (rect.x + rect.width)) { rect.width = x - rect.x;}
-
-				if (y < rect.y) { rect.y = y; rect.height += rect.y - y; }
-				if (y >= (rect.y + rect.height)) { rect.height = y - rect.y; }
-			}
-		}
-		{
-			rect.x -= 100;
-			rect.y -= 100;
-			rect.width += 400;
-			rect.height += 400;
-		}
-		Vector2 cameraPos = Vector2((float)rect.x, (float)rect.y);
-		cameraPos.x += (float)rect.width / 2;
-		cameraPos.y += (float)rect.height / 2;
-		float xZoomReq = (float)rect.width / x_zoom_resolution;
-		float yZoomReq = (float)rect.height / y_zoom_resolution;
-		float zoom = 0;
-		if (xZoomReq > yZoomReq) { zoom = xZoomReq; }
-		else{ zoom = yZoomReq; }
-		if (zoom == 0)
-		{
-			zoom = 1;
-		}
-		y_zoom_resolution *= zoom;
-		x_zoom_resolution *= zoom;
-
-		if (x_zoom_resolution < 960) { x_zoom_resolution = 960; }
-		if (x_zoom_resolution > 1920) { x_zoom_resolution = 1920; }
-		if (y_zoom_resolution > 1080) { y_zoom_resolution = 1080; }
-		if (y_zoom_resolution < 540) { y_zoom_resolution = 540; }
-
-		//top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
-		//top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
-		top_left_x = -(centre.x * (2.f / x_zoom_resolution) - 1);
-		top_left_y = -(centre.y * (2.f / y_zoom_resolution) - 1);
-	}
-
-
-	//if (top_left_y > 0.5){top_left_y = 0.5;}
-	//if (top_left_y < -0.5){top_left_y = -0.5;}
-	//if (top_left_x > 0.5) { top_left_x = 0.5; }
-	//if (top_left_x < -0.3) { top_left_x = -0.3; }
-
-	viewport = { -1 + top_left_x, -1 + top_left_y,
-		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
-		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+	calculateCameraPosition();
 
 	UI->update(gsd, m_players, time_remaining);
 
@@ -349,10 +269,10 @@ void GameScene::render(RenderData* m_RD,
 
 	//Now UI sprite Batch
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
-	viewport = { -1.f, -1.f,
+	UI_viewport = { -1.f, -1.f,
 		static_cast<float>(x_resolution), static_cast<float>(y_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
-	m_RD->m_spriteBatch->SetViewport(viewport);
+	m_RD->m_spriteBatch->SetViewport(UI_viewport);
 	UI->render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
@@ -397,4 +317,89 @@ void GameScene::loadCharactersFile(string _filename)
 		}
 	}
 	character_sprites_loading.close();
+}
+
+void GameScene::calculateCameraPosition()
+{
+	float top_left_x = 0;
+	float top_left_y = 0;
+	//bool zoom = false;
+	Vector2 position;
+	int j = 0;
+	for (int i = 0; i < no_players; i++)
+	{
+		if (!m_players[i]->getDead())
+		{
+			position += m_players[i]->GetPos();
+			j++;
+		}
+	}
+	Vector2 centre = Vector2(position.x / j, position.y / j);
+	//top_left_x = -(centre.x * (2.f / gsd->camera_view_width) - 1);
+	//top_left_y = -(centre.y * (2.f / gsd->camera_view_height) - 1);
+
+	// TEST BROKEN
+	{
+		Rectangle rect = Rectangle(m_players.back()->GetPos().x, m_players.back()->GetPos().y, 0, 0);
+		bool y_zoom_height = false;
+		bool x_zoom_width = false;
+		bool y_zoom = false;
+		bool x_zoom = false;
+		int i = 0;
+		for (auto& player : m_players)
+		{
+			if (!player->getDead())
+			{
+				i++;
+				float x = (int)player->GetPos().x;
+				float y = (int)player->GetPos().y;
+
+				if (x < rect.x) { rect.x = x; rect.width += rect.x - x; }
+				if (x >= (rect.x + rect.width)) { rect.width = x - rect.x; }
+
+				if (y < rect.y) { rect.y = y; rect.height += rect.y - y; }
+				if (y >= (rect.y + rect.height)) { rect.height = y - rect.y; }
+			}
+		}
+		{
+			rect.x -= 100;
+			rect.y -= 100;
+			rect.width += 400;
+			rect.height += 400;
+		}
+		Vector2 cameraPos = Vector2((float)rect.x, (float)rect.y);
+		cameraPos.x += (float)rect.width / 2;
+		cameraPos.y += (float)rect.height / 2;
+		float xZoomReq = (float)rect.width / x_zoom_resolution;
+		float yZoomReq = (float)rect.height / y_zoom_resolution;
+		float zoom = 0;
+		if (xZoomReq > yZoomReq) { zoom = xZoomReq; }
+		else { zoom = yZoomReq; }
+		if (zoom == 0)
+		{
+			zoom = 1;
+		}
+		y_zoom_resolution *= zoom;
+		x_zoom_resolution *= zoom;
+
+		//Cameara Zoom Limits
+		if (x_zoom_resolution < 960) { x_zoom_resolution = 960; }
+		if (x_zoom_resolution > 1920) { x_zoom_resolution = 1920; }
+		if (y_zoom_resolution > 1080) { y_zoom_resolution = 1080; }
+		if (y_zoom_resolution < 540) { y_zoom_resolution = 540; }
+
+		//top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
+		//top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
+		top_left_x = -(centre.x * (2.f / x_zoom_resolution) - 1);
+		top_left_y = -(centre.y * (2.f / y_zoom_resolution) - 1);
+	}
+
+	//if (top_left_y > 0.5){top_left_y = 0.5;}
+	//if (top_left_y < -0.5){top_left_y = -0.5;}
+	//if (top_left_x > 0.5) { top_left_x = 0.5; }
+	//if (top_left_x < -0.3) { top_left_x = -0.3; }
+
+	viewport = { -1 + top_left_x, -1 + top_left_y,
+		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 }
