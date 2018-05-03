@@ -2,7 +2,7 @@
 #include "Player2D.h"
 #include "GameStateData.h"
 
-Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
+Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :Physics2D(_RD, _filename, image_buffer)
 {
 	//SetBoundingBoxes();
 	//BottomOrigin();

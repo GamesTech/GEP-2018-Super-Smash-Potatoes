@@ -13,17 +13,18 @@ GameOverScene::~GameOverScene()
 	game_objects.clear();
 }
 
-bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am)
+bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	m_RD = _RD;
-	winner_number = std::make_unique<ImageGO2D>(m_RD, "numbers");
+	winner_number = std::make_unique<ImageGO2D>(m_RD, "numbers", image_buffer);
 	winner_number->SetLayer(1.0f);
 	winner_number->SetPos(Vector2(700, 330));
 	winner_number->SetRect(number_pos[gsd->winState]);
 	winner_number->CentreOrigin();
 	game_objects.push_back(std::move(winner_number));
 	
-	winner_text = std::make_unique<ImageGO2D>(m_RD, "Player wins");
+	winner_text = std::make_unique<ImageGO2D>(m_RD, "Player wins", image_buffer);
 	winner_text->SetLayer(1.0f);
 	winner_text->SetRect(1,1,924,60);
 	winner_text->SetPos(Vector2(640, 330));

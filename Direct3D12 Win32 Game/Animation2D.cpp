@@ -5,7 +5,7 @@
 #include<iostream>
 #include<fstream>
 
-Animation2D::Animation2D(RenderData* _RD, string _filename) :ImageGO2D(_RD, _filename)
+Animation2D::Animation2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	action_movement = STILL;
 }

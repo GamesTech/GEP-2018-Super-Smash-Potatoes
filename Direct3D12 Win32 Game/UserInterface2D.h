@@ -9,7 +9,7 @@ public:
 	UserInterface() = default;
 	~UserInterface() = default;
 
-	void init(RenderData* m_RD, GameStateData* gsd, std::vector<std::unique_ptr<Player2D>> &players, std::vector<string> sprite_names);
+	void init(RenderData* m_RD, GameStateData* gsd, std::vector<std::unique_ptr<Player2D>> &players, std::vector<string> sprite_names, std::shared_ptr<ImageBuffer> image_buffer);
 	void update(GameStateData* gsd, std::vector<std::unique_ptr<Player2D>> &players, float time_remaining);
 	void render(RenderData* m_RD);
 

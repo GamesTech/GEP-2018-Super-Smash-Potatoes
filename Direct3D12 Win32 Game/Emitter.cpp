@@ -6,7 +6,7 @@
 #include "Emitter.h"
 
 
-Emitter::Emitter(RenderData * _RD, string _filename) :ImageGO2D(_RD, _filename)
+Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	particles.reserve(50);
 }

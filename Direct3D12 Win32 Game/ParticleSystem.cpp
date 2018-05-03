@@ -7,17 +7,17 @@ ParticleSystem::~ParticleSystem()
 	emitter.clear();
 }
 
-bool ParticleSystem::init(RenderData * _m_RD)
+bool ParticleSystem::init(RenderData * _m_RD, std::shared_ptr<ImageBuffer> image_buffer)
 {
 	m_RD = _m_RD;
 
-	std::unique_ptr<Emitter> dust_emitter = std::make_unique<Emitter>(m_RD, "dust"); // Create a new particle 
+	std::unique_ptr<Emitter> dust_emitter = std::make_unique<Emitter>(m_RD, "dust", image_buffer); // Create a new particle 
 	emitter.push_back(std::move(dust_emitter));
 
-	std::unique_ptr<Emitter> attack_emitter = std::make_unique<Emitter>(m_RD, "attack"); // Create a new particle 
+	std::unique_ptr<Emitter> attack_emitter = std::make_unique<Emitter>(m_RD, "attack", image_buffer); // Create a new particle 
 	emitter.push_back(std::move(attack_emitter));
 
-	std::unique_ptr<Emitter> attack_upwards_emitter = std::make_unique<Emitter>(m_RD, "upwards_punch_particle"); // Create a new particle 
+	std::unique_ptr<Emitter> attack_upwards_emitter = std::make_unique<Emitter>(m_RD, "upwards_punch_particle", image_buffer); // Create a new particle 
 	emitter.push_back(std::move(attack_upwards_emitter));
 
 	return true;
