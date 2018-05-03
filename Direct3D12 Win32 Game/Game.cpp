@@ -25,8 +25,6 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    //m_outputWidth(1280),
-    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -61,7 +59,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
 	
-
+	
     CreateDevice();
     CreateResources();
 
@@ -69,6 +67,11 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
+	m_GSD->x_resolution = m_outputWidth;
+	m_GSD->y_resolution = m_outputHeight;
+
+	m_GSD->camera_view_width = m_outputWidth;
+	m_GSD->camera_view_height = m_outputHeight;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -103,6 +106,7 @@ void Game::Initialize(HWND window, int width, int height)
 	D3D12_VIEWPORT viewport = { -1.f, -1.f,
 		static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
 	m_RD->m_spriteBatch->SetViewport(viewport);
 
 	m_RD->m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(m_d3dDevice.Get());
