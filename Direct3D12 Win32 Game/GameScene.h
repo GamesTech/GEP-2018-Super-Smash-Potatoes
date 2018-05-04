@@ -37,6 +37,8 @@ private:
 
 	float time_remaining = 0;
 	int max_lives = 0;
+	double timer = 0;
+	bool gameEnded = false;
 
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 

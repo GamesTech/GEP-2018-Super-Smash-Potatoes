@@ -36,7 +36,7 @@ void Emitter::render(RenderData * m_RD)
 	}
 }
 
-void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale)
+void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, float x_range, float y_range)
 {
 	for (int i = 0; i < amount; ++i)
 	{
@@ -46,7 +46,7 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 		{
 			if (p->isDead()) // Checks for dead particles, if found they are reused.
 			{
-				p->init(pos, lifetime, layer, fade, flipH, colour, scale);
+				p->init(pos, lifetime, layer, fade, flipH, colour, scale, x_range, y_range);
 				made_particle = true;
 				break;
 			}
@@ -54,7 +54,7 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 		if (!made_particle) // If no particles can be reuse , create a new one.
 		{
 			particles.emplace_back(new Particle());
-			particles.back()->init(pos, lifetime, layer, fade, flipH, colour, scale);
+			particles.back()->init(pos, lifetime, layer, fade, flipH, colour, scale, x_range, y_range);
 		}
 	}
 }

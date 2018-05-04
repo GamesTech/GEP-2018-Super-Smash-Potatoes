@@ -195,7 +195,7 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 	if (m_GSD->no_players <= 1)
 	{
-		m_GSD->no_players = 3;
+		m_GSD->no_players = 2;
 	}
 }
 

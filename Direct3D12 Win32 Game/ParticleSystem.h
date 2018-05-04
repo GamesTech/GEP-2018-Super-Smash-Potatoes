@@ -9,7 +9,8 @@ namespace Particle_Type
 	{
 		DUST,
 		ATTACK,
-		ATTACK_UPWARDS
+		ATTACK_UPWARDS,
+		FIREWORK
 	};
 }
 
@@ -30,8 +31,10 @@ public:
 	Particle fade over time,
 	Flip the image horizontal,
 	Colour of the image,
-	Scale of the image*/
-	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale);
+	Scale of the image,
+	X range of particles,
+	Y range of particles*/
+	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, float x_range, float y_range);
 
 	/*  Amount of particles created,
 	Particle type by enum,
