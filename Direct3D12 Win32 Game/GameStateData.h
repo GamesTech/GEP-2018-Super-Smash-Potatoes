@@ -9,6 +9,7 @@ enum Winner
 	PLAYER2,
 	PLAYER3,
 	PLAYER4,
+	DRAW
 };
 
 struct GameStateData

@@ -21,10 +21,9 @@ private:
 	};
 	Action action = Action::NONE;
 
-	RECT number_pos[4] = { {0,0,66,60},{ 72,0,136,60 },{ 186,0,252,60 },{ 300,0,366,60 } };
+	std::string text[5] = { "Player 1 wins","Player 2 wins","Player 3 wins","Player 4 wins","DRAW" };
 
-	std::unique_ptr<ImageGO2D> winner_number = nullptr;
-	std::unique_ptr<ImageGO2D> winner_text = nullptr;
+	std::unique_ptr<Text2D> winner_text;
 
 	RenderData* m_RD;
 
