@@ -207,6 +207,10 @@
   <ItemGroup>
     <ImageContentTask Include="Scenes\platform_wall.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\potato_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\potato_sprite.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

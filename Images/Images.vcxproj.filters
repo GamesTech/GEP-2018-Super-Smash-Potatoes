@@ -97,6 +97,12 @@
     <ImageContentTask Include="Scenes\platform_wall.png">
       <Filter>Game\GameObjects</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\potato_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\potato_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />
