@@ -122,46 +122,8 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 			Attacking(i, gsd);
 		}
 	}
+	endGame(players_dead, gsd);
 
-	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
-	{
-		if (!gameEnded)
-		{
-			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
-			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(1280 - 100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
-			gameEnded = true;
-		}
-		for (int i = 0; i < no_players; i++)
-		{
-			if (m_players[i]->getDead() == false)
-			{
-				switch (i)
-				{
-				case 0:
-					gsd->winState = PLAYER1;
-					break;
-				case 1:
-					gsd->winState = PLAYER2;
-					break;
-				case 2:
-					gsd->winState = PLAYER3;
-					break;
-				case 3:
-					gsd->winState = PLAYER4;
-					break;
-				}
-			}
-		}
-		if (timer >= 5)
-		{
-			action = Action::CONTINUE;
-		}
-		else
-		{
-			timer += gsd->m_dt;
-		}
-
-	}
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
@@ -180,6 +142,57 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	action = Action::NONE;
 	return scene_change;
+}
+
+void GameScene::endGame(int players_dead, GameStateData * gsd)
+{
+	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
+	{
+		if (!gameEnded)
+		{
+			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
+			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(1280 - 100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
+			gameEnded = true;
+		}
+		int player_count = 0;
+		for (int i = 0; i < no_players; i++)
+		{
+			if (m_players[i]->getDead() == false)
+			{
+				player_count++;
+				switch (i)
+				{
+				case 0:
+					gsd->winState = PLAYER1;
+					break;
+				case 1:
+					gsd->winState = PLAYER2;
+					break;
+				case 2:
+					gsd->winState = PLAYER3;
+					break;
+				case 3:
+					gsd->winState = PLAYER4;
+					break;
+				default:
+					gsd->winState = DRAW;
+					break;
+				}
+			}
+			if (player_count >= 2 || player_count == 0)
+			{
+				gsd->winState = DRAW;
+			}
+		}
+		if (timer >= 5)
+		{
+			action = Action::CONTINUE;
+		}
+		else
+		{
+			timer += gsd->m_dt;
+		}
+	}
 }
 
 void GameScene::Attacking(int i, GameStateData * gsd)
