@@ -58,7 +58,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		{
 			if (action_jump != GROUND && action_jump != PUNCH)
 			{
-				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x / 2 - 20, m_size.y - 25 }, 0.5f, 0.0f, true, true, {1,1,1,1}, 1.f);
+				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x / 2 - 20, m_size.y - 25 }, 0.5f, 0.0f, true, true, {1,1,1,1}, 1.f, 100, 0);
 			}
 			action_jump = GROUND;
 			if (m_down_punching_anim)
@@ -107,7 +107,14 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 		}
 	}
-
+	if (m_invincibility)
+	{
+		SetOpacity(0.5f);
+	}
+	else
+	{
+		SetOpacity(1.f);
+	}
 	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
@@ -228,8 +235,7 @@ void Player2D::respawn()
 	{
 		lives_remaining--;
 		action_jump = GROUND;
-		m_pos.x = 600.0f;
-		m_pos.y = 250.0f;
+		m_pos = m_respawn_pos;
 		m_vel.x = 0.0f;
 		m_vel.y = 301.0f;
 		m_damage = 1;
@@ -241,6 +247,7 @@ void Player2D::respawn()
 	}
 	else
 	{
+		m_pos = Vector2(-10000, 0);
 		m_dead = true;
 	}
 	//audio_manager->playSound(EXPLOSION);

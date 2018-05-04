@@ -44,8 +44,9 @@ private:
 private:
 	
 	std::unique_ptr<ImageGO2D> ui = nullptr;
+	std::unique_ptr<ImageGO2D> deathzone = nullptr;
 
-	int object_type = 2;
+	int object_type = 1;
 	D3D12_VIEWPORT viewport;
 
 };

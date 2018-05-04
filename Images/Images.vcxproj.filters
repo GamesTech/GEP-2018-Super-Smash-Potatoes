@@ -85,6 +85,15 @@
     <ImageContentTask Include="Menu\Editor_UI.png">
       <Filter>Menu</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Menu\Deathzone.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_small.png">
+      <Filter>Game\GameObjects</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\firework.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

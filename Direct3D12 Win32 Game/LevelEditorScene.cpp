@@ -22,6 +22,10 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	ui->SetLayer(0.f);
 	ui->SetPos(Vector2{-300, -150});
 	ui->SetRect(0,0,1920,1080);
+	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
+	deathzone->SetLayer(0.1f);
+	deathzone->SetPos(Vector2{ -312, -162 });
+	deathzone->SetRect(0, 0, 1920, 1080);
 
 	return true;
 }
@@ -87,7 +91,7 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		{
 			if (platforms.size() != 0)
 			{
-				if (object_type != 3)
+				if (object_type != 2)
 				{
 					object_type++;
 					platforms.pop_back();
@@ -121,7 +125,13 @@ void LevelEditor::moveLastObject(float x, float y)
 {
 	if (!platforms.size() == 0)
 	{
-		platforms.back()->SetPos(platforms.back()->GetPos() + Vector2{ x, y });
+		if ((platforms.back()->GetPos().x + x) >= -250 && 
+			(platforms.back()->GetPos().y + y) >= -100 &&
+			(platforms.back()->GetPos().x + x) <= 1550 - platforms.back()->Width() &&
+			(platforms.back()->GetPos().y + y) <= 870 - platforms.back()->Height())
+		{
+			platforms.back()->SetPos(platforms.back()->GetPos() + Vector2{ x, y });
+		}
 	}
 }
 
@@ -138,6 +148,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 		object->Render(m_RD);
 	}
 	ui->Render(m_RD);
+	deathzone->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 
@@ -227,5 +238,5 @@ void LevelEditor::saveLevel()
 		obj.sprite_size_max = Vector2{ float(platform->getRect().right), float(platform->getRect().bottom) };
 		level->objectToWrite(obj);
 	}
-	level->write("level3", ".lvl");
+	level->write("level" + std::to_string(3), ".lvl");
 }

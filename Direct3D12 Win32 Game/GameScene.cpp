@@ -51,11 +51,6 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	}
 
 	no_players = gsd->no_players;
-	//if (no_players == 1)
-	//{
-	//	//for playtesting
-	//	no_players = 4;
-	//}
 
 	particle_system = std::make_shared<ParticleSystem>();
 	particle_system->init(m_RD, image_buffer);
@@ -130,7 +125,12 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 	if (time_remaining <= 0 || (no_players) <= players_dead + 1)
 	{
-		action = Action::CONTINUE;
+		if (!gameEnded)
+		{
+			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
+			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(1280 - 100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
+			gameEnded = true;
+		}
 		for (int i = 0; i < no_players; i++)
 		{
 			if (m_players[i]->getDead() == false)
@@ -152,6 +152,15 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				}
 			}
 		}
+		if (timer >= 5)
+		{
+			action = Action::CONTINUE;
+		}
+		else
+		{
+			timer += gsd->m_dt;
+		}
+
 	}
 	Scene::SceneChange scene_change;
 	switch (action)
@@ -274,7 +283,10 @@ void GameScene::render(RenderData* m_RD,
 		static_cast<float>(x_resolution), static_cast<float>(y_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 	m_RD->m_spriteBatch->SetViewport(UI_viewport);
-	UI->render(m_RD);
+	if (!gameEnded)
+	{
+		UI->render(m_RD);
+	}
 	m_RD->m_spriteBatch->End();
 }
 

@@ -44,6 +44,7 @@ public:
 	
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
+	void SetSpawnPosition(Vector2 spawn) { m_respawn_pos = spawn; };
 
 	//void TestCollision() { SetBoundingBoxes(); }
 	//void SetLimit(Vector2 _lim) { m_limit = _lim; }
@@ -134,6 +135,7 @@ protected:
 	Attack m_execute_attack = NONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
+	Vector2 m_respawn_pos = Vector2(600, 250);
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };
 
