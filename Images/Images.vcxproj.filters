@@ -94,6 +94,9 @@
     <ImageContentTask Include="Particle\firework.png">
       <Filter>Particle</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_wall.png">
+      <Filter>Game\GameObjects</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

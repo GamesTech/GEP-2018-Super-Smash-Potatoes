@@ -91,7 +91,7 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		{
 			if (platforms.size() != 0)
 			{
-				if (object_type != 2)
+				if (object_type != 3)
 				{
 					object_type++;
 					platforms.pop_back();
