@@ -47,6 +47,7 @@ private:
 private:
 	
 	std::unique_ptr<ImageGO2D> ui = nullptr;
+	std::unique_ptr<Text2D> ui_text = nullptr;
 	std::unique_ptr<ImageGO2D> deathzone = nullptr;
 
 	int object_type = 1;

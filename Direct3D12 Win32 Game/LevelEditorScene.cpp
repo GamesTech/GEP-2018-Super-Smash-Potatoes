@@ -24,6 +24,10 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	ui->SetLayer(0.f);
 	ui->SetPos(Vector2{-300, -150});
 	ui->SetRect(0,0,1920,1080);
+
+	ui_text = std::make_unique<Text2D>("Y = Background \nA = Create \nB = Remove \nLB RB = Change \nD-pad = Move \n Start = Save");
+	ui_text->SetLayer(0.f);
+	ui_text->SetPos(Vector2(20, 700));
 	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
 	deathzone->SetLayer(0.1f);
 	deathzone->SetPos(Vector2{ -312, -162 });
@@ -159,6 +163,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 	//Renders the background
 	m_RD->m_spriteBatch->SetViewport(UI_viewport);
+	ui_text->Render(m_RD);
 	backgrounds.at(background)->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 
@@ -168,7 +173,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	{
 		object->Render(m_RD);
 	}
-	ui->Render(m_RD);
+	
 	deathzone->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
