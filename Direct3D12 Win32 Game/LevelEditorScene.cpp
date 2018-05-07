@@ -124,15 +124,11 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			{
 				saveLevel();
 			}
-		}
-		case Action::BACK:
-		{
 			scene_change.change_type = ChangeType::REMOVE;
 			viewport = { -1.f, -1.f,
 				static_cast<float>(1280), static_cast<float>(720),
 				D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 			m_RD->m_spriteBatch->SetViewport(viewport);
-			break;
 		}
 	}
 	action = Action::NONE;
@@ -179,49 +175,50 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 
 void LevelEditor::ReadInput(Input * input_manager)
 {
-	if (input_manager->inputs[0] == Inputs::DOWN)
-	{
-		action = Action::BUTTON_DOWN;
-	}
-	if (input_manager->inputs[0] == Inputs::UP)
-	{
-		action = Action::BUTTON_UP;
-	}
-	if (input_manager->inputs[0] == Inputs::LEFT)
-	{
-		action = Action::BUTTON_LEFT;
-	}
-	if (input_manager->inputs[0] == Inputs::RIGHT)
-	{
-		action = Action::BUTTON_RIGHT;
-	}
-
-	if (input_manager->inputs[0] == Inputs::LEFT_TRIGGER)
-	{
-		action = Action::LB;
-	}
-	if (input_manager->inputs[0] == Inputs::RIGHT_TRIGGER)
-	{
-		action = Action::RB;
-	}
-
-	if (input_manager->inputs[0] == Inputs::START)
-	{
-		action = Action::PAUSE;
-	}
-
-	if (input_manager->inputs[0] == Inputs::A)
-	{
-		action = Action::ADD_BLOCK;
-	}
-	if (input_manager->inputs[0] == Inputs::B)
-	{
-		action = Action::B;
-	}
-	if (input_manager->inputs[0] == Inputs::Y)
-	{
-		action = Action::Y;
-	}
+	action = (Action)input_manager->inputs[0];
+	//if (input_manager->inputs[0] == Inputs::DOWN)
+	//{
+	//	action = Action::BUTTON_DOWN;
+	//}
+	//if (input_manager->inputs[0] == Inputs::UP)
+	//{
+	//	action = Action::BUTTON_UP;
+	//}
+	//if (input_manager->inputs[0] == Inputs::LEFT)
+	//{
+	//	action = Action::BUTTON_LEFT;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RIGHT)
+	//{
+	//	action = Action::BUTTON_RIGHT;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::LB)
+	//{
+	//	action = Action::LB;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RB)
+	//{
+	//	action = Action::RB;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::START)
+	//{
+	//	action = Action::PAUSE;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::A)
+	//{
+	//	action = Action::ADD_BLOCK;
+	//}
+	//if (input_manager->inputs[0] == Inputs::B)
+	//{
+	//	action = Action::B;
+	//}
+	//if (input_manager->inputs[0] == Inputs::Y)
+	//{
+	//	action = Action::Y;
+	//}
 }
 
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.

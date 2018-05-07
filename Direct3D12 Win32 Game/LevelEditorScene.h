@@ -17,18 +17,17 @@ private:
 	enum Action
 	{
 		NONE,
-		START,
-		BACK,
-		ADD_BLOCK,
-		BUTTON_UP,
-		BUTTON_DOWN,
-		BUTTON_LEFT,
-		BUTTON_RIGHT,
-		RB,
-		LB,
-		PAUSE,
-		B,
-		Y
+		START = 8,
+		ADD_BLOCK = 4,
+		BUTTON_UP = 0,
+		BUTTON_DOWN = 1,
+		BUTTON_LEFT = 2,
+		BUTTON_RIGHT = 3,
+		RB = 10,
+		LB = 9,
+		PAUSE = 8,
+		B = 6,
+		Y = 7
 
 	};
 	Action action = Action::NONE;
