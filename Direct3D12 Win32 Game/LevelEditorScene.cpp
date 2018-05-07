@@ -177,53 +177,44 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	m_RD->m_spriteBatch->End();
 }
 
-void LevelEditor::ReadInput(GameStateData * gsd)
+void LevelEditor::ReadInput(Input * input_manager)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
+	if (input_manager->inputs[0] == DOWN)
 	{
 		action = Action::BUTTON_DOWN;
 	}
-	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
+	if (input_manager->inputs[0] == UP)
 	{
 		action = Action::BUTTON_UP;
 	}
-	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-		|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
+	if (input_manager->inputs[0] == LEFT)
 	{
 		action = Action::BUTTON_LEFT;
 	}
-	if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-		|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
+	if (input_manager->inputs[0] == RIGHT)
 	{
 		action = Action::BUTTON_RIGHT;
 	}
 
-	if ((gsd->m_keyboardState.Q && !gsd->m_prevKeyboardState.Q)
-		|| (gsd->m_gamePadState[0].IsLeftShoulderPressed() && !gsd->m_prevGamePadState[0].IsLeftShoulderPressed()))
+	if (input_manager->inputs[0] == LEFT_TRIGGER)
 	{
 		action = Action::LB;
 	}
-	if ((gsd->m_keyboardState.E && !gsd->m_prevKeyboardState.E)
-		|| (gsd->m_gamePadState[0].IsRightShoulderPressed() && !gsd->m_prevGamePadState[0].IsRightShoulderPressed()))
+	if (input_manager->inputs[0] == RIGHT_TRIGGER)
 	{
 		action = Action::RB;
 	}
 
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+	if (input_manager->inputs[0] == START)
 	{
 		action = Action::PAUSE;
 	}
 
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
+	if (input_manager->inputs[0] == A)
 	{
 		action = Action::ADD_BLOCK;
 	}
-	if ((gsd->m_keyboardState.Back && !gsd->m_prevKeyboardState.Back)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	if (input_manager->inputs[0] == B)
 	{
 		action = Action::B;
 	}

@@ -238,6 +238,9 @@
     <ClInclude Include="ImageBuffer.h">
       <Filter>GameObjects\2D\Headers\Image</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -342,6 +345,8 @@
     <ClCompile Include="LevelEditorScene.cpp">
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Animation2D.cpp">
       <Filter>GameObjects\2D\Source\Player</Filter>
     </ClCompile>

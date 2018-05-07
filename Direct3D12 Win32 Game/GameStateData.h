@@ -16,13 +16,6 @@ struct GameStateData
 {
 	const static int MAX_PLAYERS = 4;
 
-	Keyboard::State m_keyboardState;
-	Keyboard::State m_prevKeyboardState;
-	Mouse::State m_mouseState;
-
-	GamePad::State m_gamePadState[MAX_PLAYERS];
-	GamePad::State m_prevGamePadState[MAX_PLAYERS];
-
 	int x_resolution;
 	int y_resolution;
 
