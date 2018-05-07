@@ -5,6 +5,7 @@
 #include "UserInterface2D.h"
 #include "ParticleSystem.h"
 #include "CollisionSystem.h"
+#include "GameCamera.h"
 
 class GameScene : public Scene
 {
@@ -32,7 +33,6 @@ private:
 	virtual void ReadInput(Input* input_manager) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
-	void calculateCameraPosition();
 
 	int no_players = 0;
 
@@ -48,6 +48,7 @@ private:
 	std::unique_ptr<PlayerTags> m_player_tag = nullptr;
 	std::unique_ptr <LevelFile> level;
 	std::unique_ptr <UserInterface> UI;
+	std::unique_ptr <GameCamera> m_camera;
 
 	std::vector<string> sprite_names;
 
@@ -62,17 +63,5 @@ private:
 	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
 	Input* input_manager;
-
-	D3D12_VIEWPORT viewport;
-	float x_zoom_resolution = 0;
-	float y_zoom_resolution = 0;
-
-	D3D12_VIEWPORT viewport_background;
-	float x_zoom_bg_resolution = 0;
-	float y_zoom_bg_resolution = 0;
-
-	D3D12_VIEWPORT UI_viewport;
-	float x_resolution = 0;
-	float y_resolution = 0;
 };
 

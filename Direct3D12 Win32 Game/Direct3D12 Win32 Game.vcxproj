@@ -252,6 +252,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameStateData.cpp" />
