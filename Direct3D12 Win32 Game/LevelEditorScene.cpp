@@ -24,6 +24,10 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	ui->SetLayer(0.f);
 	ui->SetPos(Vector2{-300, -150});
 	ui->SetRect(0,0,1920,1080);
+
+	ui_text = std::make_unique<Text2D>("Y = Background \nA = Create \nB = Remove \nLB RB = Change \nD-pad = Move \n Start = Save");
+	ui_text->SetLayer(0.f);
+	ui_text->SetPos(Vector2(20, 700));
 	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
 	deathzone->SetLayer(0.1f);
 	deathzone->SetPos(Vector2{ -312, -162 });
@@ -124,15 +128,11 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			{
 				saveLevel();
 			}
-		}
-		case Action::BACK:
-		{
 			scene_change.change_type = ChangeType::REMOVE;
 			viewport = { -1.f, -1.f,
 				static_cast<float>(1280), static_cast<float>(720),
 				D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 			m_RD->m_spriteBatch->SetViewport(viewport);
-			break;
 		}
 	}
 	action = Action::NONE;
@@ -163,6 +163,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 	//Renders the background
 	m_RD->m_spriteBatch->SetViewport(UI_viewport);
+	ui_text->Render(m_RD);
 	backgrounds.at(background)->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 
@@ -172,56 +173,57 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	{
 		object->Render(m_RD);
 	}
-	ui->Render(m_RD);
+	
 	deathzone->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 
 void LevelEditor::ReadInput(Input * input_manager)
 {
-	if (input_manager->inputs[0] == Inputs::DOWN)
-	{
-		action = Action::BUTTON_DOWN;
-	}
-	if (input_manager->inputs[0] == Inputs::UP)
-	{
-		action = Action::BUTTON_UP;
-	}
-	if (input_manager->inputs[0] == Inputs::LEFT)
-	{
-		action = Action::BUTTON_LEFT;
-	}
-	if (input_manager->inputs[0] == Inputs::RIGHT)
-	{
-		action = Action::BUTTON_RIGHT;
-	}
-
-	if (input_manager->inputs[0] == Inputs::LEFT_TRIGGER)
-	{
-		action = Action::LB;
-	}
-	if (input_manager->inputs[0] == Inputs::RIGHT_TRIGGER)
-	{
-		action = Action::RB;
-	}
-
-	if (input_manager->inputs[0] == Inputs::START)
-	{
-		action = Action::PAUSE;
-	}
-
-	if (input_manager->inputs[0] == Inputs::A)
-	{
-		action = Action::ADD_BLOCK;
-	}
-	if (input_manager->inputs[0] == Inputs::B)
-	{
-		action = Action::B;
-	}
-	if (input_manager->inputs[0] == Inputs::Y)
-	{
-		action = Action::Y;
-	}
+	action = (Action)input_manager->inputs[0];
+	//if (input_manager->inputs[0] == Inputs::DOWN)
+	//{
+	//	action = Action::BUTTON_DOWN;
+	//}
+	//if (input_manager->inputs[0] == Inputs::UP)
+	//{
+	//	action = Action::BUTTON_UP;
+	//}
+	//if (input_manager->inputs[0] == Inputs::LEFT)
+	//{
+	//	action = Action::BUTTON_LEFT;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RIGHT)
+	//{
+	//	action = Action::BUTTON_RIGHT;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::LB)
+	//{
+	//	action = Action::LB;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RB)
+	//{
+	//	action = Action::RB;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::START)
+	//{
+	//	action = Action::PAUSE;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::A)
+	//{
+	//	action = Action::ADD_BLOCK;
+	//}
+	//if (input_manager->inputs[0] == Inputs::B)
+	//{
+	//	action = Action::B;
+	//}
+	//if (input_manager->inputs[0] == Inputs::Y)
+	//{
+	//	action = Action::Y;
+	//}
 }
 
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.

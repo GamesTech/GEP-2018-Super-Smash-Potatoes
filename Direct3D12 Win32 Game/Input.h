@@ -3,18 +3,18 @@ namespace Inputs
 {
 	enum Inputs
 	{
-		CLEAR,
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		A, //jump
-		X, //punch
-		B, //special
-		Y,
-		START, //menu/pause
-		LEFT_TRIGGER,
-		RIGHT_TRIGGER,
+		CLEAR = 20,
+		UP = 0,
+		DOWN = 1,
+		LEFT = 2,
+		RIGHT = 3,
+		A = 4, //jump
+		X = 5, //punch
+		B = 6, //special
+		Y = 7,
+		START = 8, //menu/pause
+		LB = 9,
+		RB = 10,
 		DOWN_A, //drop ledge
 		UP_X, //up punch
 		DOWN_X, //down slam
