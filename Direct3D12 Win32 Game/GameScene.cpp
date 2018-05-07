@@ -50,6 +50,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 		object->SetLayer(1.0f);
 	}
 
+	gsd->position_in_podium = gsd->no_players;
 	no_players = gsd->no_players;
 
 	particle_system = std::make_shared<ParticleSystem>();
@@ -162,31 +163,9 @@ void GameScene::endGame(int players_dead, GameStateData * gsd)
 		int player_count = 0;
 		for (int i = 0; i < no_players; i++)
 		{
-			if (m_players[i]->getDead() == false)
+			if (gsd->player_podium_position[i] == 0)
 			{
-				player_count++;
-				switch (i)
-				{
-				case 0:
-					gsd->winState = PLAYER1;
-					break;
-				case 1:
-					gsd->winState = PLAYER2;
-					break;
-				case 2:
-					gsd->winState = PLAYER3;
-					break;
-				case 3:
-					gsd->winState = PLAYER4;
-					break;
-				default:
-					gsd->winState = DRAW;
-					break;
-				}
-			}
-			if (player_count >= 2 || player_count == 0)
-			{
-				gsd->winState = DRAW;
+				gsd->player_podium_position[i] = 1;
 			}
 		}
 		if (timer >= 5)

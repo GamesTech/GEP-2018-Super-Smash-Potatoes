@@ -42,7 +42,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	}
 
 
-	deathZone();
+	deathZone(_GSD);
 	updateOrientation();
 }
 
@@ -131,7 +131,6 @@ void Player2D::HitTimer(GameStateData * _GSD)
 	if (m_timer_hit >= 0.8)
 	{
 		m_remove_controll = false;
-
 	}
 	m_timer_hit += _GSD->m_dt;
 }
@@ -178,24 +177,24 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 	m_up_timer_punch += _GSD->m_dt;
 }
 
-void Player2D::deathZone()
+void Player2D::deathZone(GameStateData * _GSD)
 {
 	if (m_pos.x < 0.0f - 800)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 	if (m_pos.y < 0.0f - 600)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 
 	if (m_pos.x > m_limit.x + 500)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 	if (m_pos.y > m_limit.y + 500)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 }
 
@@ -229,7 +228,7 @@ void Player2D::Grabbing()
 	}
 }
 
-void Player2D::respawn()
+void Player2D::respawn(GameStateData * _GSD)
 {
 	if (lives_remaining > 1)
 	{
@@ -247,6 +246,11 @@ void Player2D::respawn()
 	}
 	else
 	{
+		if (!m_dead)
+		{
+			_GSD->player_podium_position[player_no] = _GSD->position_in_podium;
+			_GSD->position_in_podium--;
+		}
 		m_pos = Vector2(-10000, 0);
 		m_dead = true;
 	}

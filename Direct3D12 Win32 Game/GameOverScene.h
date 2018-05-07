@@ -21,7 +21,8 @@ private:
 	};
 	Action action = Action::NONE;
 
-	std::string text[5] = { "Player 1 wins","Player 2 wins","Player 3 wins","Player 4 wins","DRAW" };
+	std::string text[4] = { "1st Place","2nd Place","3rd Place","4th Place" };
+
 
 	std::unique_ptr<Text2D> winner_text;
 

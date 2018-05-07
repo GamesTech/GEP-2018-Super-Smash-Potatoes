@@ -91,8 +91,8 @@ protected:
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
 	void UpPunchTimer(GameStateData * _GSD);
-	void deathZone();
-	void respawn();
+	void deathZone(GameStateData * _GSD);
+	void respawn(GameStateData * _GSD);
 	void RespawnTimer(GameStateData * _GSD);
 	void controller(Input * input_manager);
 

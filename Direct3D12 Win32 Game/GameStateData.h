@@ -24,6 +24,9 @@ struct GameStateData
 
 	static Winner winner;
 
+	int player_podium_position[4];
+	int position_in_podium;
+
 	int player_selected[MAX_PLAYERS];
 
 	//length of time since last frame
