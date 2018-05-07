@@ -2,6 +2,7 @@
 
 enum Inputs
 {
+	CLEAR,
 	UP,
 	DOWN,
 	LEFT,
@@ -25,6 +26,7 @@ public:
 
 	void init();
 	void update(GameStateData* gsd);
+	void clearInput();
 
 	void ResumeInput();
 	void SuspendInput();

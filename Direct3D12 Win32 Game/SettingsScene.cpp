@@ -200,6 +200,7 @@ void SettingsScene::ReadInput(Input* input_manager)
 			break;
 		}
 	}
+	input_manager->clearInput();
 }
 
 

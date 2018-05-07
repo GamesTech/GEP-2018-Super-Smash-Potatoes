@@ -264,7 +264,7 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 void Player2D::controller(Input * input_manager)
 {
 	// Walk
-	if (input_manager->inputs[player_no] == DOWN)
+	if (input_manager->inputs[player_no] == LEFT)
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		FlipH(true);
@@ -274,7 +274,7 @@ void Player2D::controller(Input * input_manager)
 		}
 
 	}
-	else if (input_manager->inputs[player_no] == DOWN)
+	else if (input_manager->inputs[player_no] == RIGHT)
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		FlipH(false);
@@ -300,7 +300,7 @@ void Player2D::controller(Input * input_manager)
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if (input_manager->inputs[player_no] == DOWN)
+	else if (input_manager->inputs[player_no] == A)
 	{
 		if (m_grounded)
 		{

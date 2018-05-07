@@ -26,6 +26,7 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 
 	Scene::SceneChange change = scenes.back()->update(gsd);
 	scenes.back()->ReadInput(im);
+	im->clearInput();
 
 	switch (change.change_type)
 	{

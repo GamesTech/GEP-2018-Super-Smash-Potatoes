@@ -157,4 +157,5 @@ void MenuScene::ReadInput(Input* input_manager)
 	{
 		action = Action::BUTTON_PRESSED;
 	}
+	input_manager->clearInput();
 }
