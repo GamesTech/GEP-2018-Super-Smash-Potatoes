@@ -455,7 +455,7 @@ void GameScene::calculateCameraPosition()
 		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
-	viewport_background = { -1.5f + (top_left_x /4), -1.5f + (top_left_y/4),
+	viewport_background = { -2.f + (top_left_x /4), -2.f + (top_left_y/4),
 		static_cast<float>(x_zoom_bg_resolution), static_cast<float>(y_zoom_bg_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 }

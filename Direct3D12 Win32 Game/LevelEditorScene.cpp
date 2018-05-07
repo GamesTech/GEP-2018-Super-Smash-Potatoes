@@ -16,7 +16,9 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	viewport = { -0.675f, -0.7f,
 		static_cast<float>(1920), static_cast<float>(1080),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
-	m_RD->m_spriteBatch->SetViewport(viewport);
+	UI_viewport = { -1.f, -1.f,
+		static_cast<float>(1280), static_cast<float>(720),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
 	ui = std::make_unique<ImageGO2D>(_RD, "Editor_UI", ib);
 	ui->SetLayer(0.f);
@@ -26,6 +28,7 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	deathzone->SetLayer(0.1f);
 	deathzone->SetPos(Vector2{ -312, -162 });
 	deathzone->SetRect(0, 0, 1920, 1080);
+	loadBackgrounds();
 
 	return true;
 }
@@ -51,6 +54,21 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			if (platforms.size() != 0)
 			{
 				platforms.pop_back();
+			}
+			break;
+		}
+		case Action::Y:
+		{
+			if (backgrounds.size() != 0)
+			{
+				if (background >= backgrounds.size() - 1)
+				{
+					background = 0;
+				}
+				else
+				{
+					background++;
+				}
 			}
 			break;
 		}
@@ -141,8 +159,15 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	//finally draw all 2D objects
 	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	//Renders the background
+	m_RD->m_spriteBatch->SetViewport(UI_viewport);
+	backgrounds.at(background)->Render(m_RD);
+	m_RD->m_spriteBatch->End();
+
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	m_RD->m_spriteBatch->SetViewport(viewport);
 	for (auto& object : platforms)
 	{
 		object->Render(m_RD);
@@ -202,6 +227,11 @@ void LevelEditor::ReadInput(GameStateData * gsd)
 	{
 		action = Action::B;
 	}
+	if ((gsd->m_keyboardState.R && !gsd->m_prevKeyboardState.R)
+		|| (gsd->m_gamePadState[0].IsYPressed() && !gsd->m_prevGamePadState[0].IsYPressed()))
+	{
+		action = Action::Y;
+	}
 }
 
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.
@@ -222,8 +252,40 @@ void LevelEditor::createNewObject(int type) //load a new object from the default
 	platforms.emplace_back(platform);
 }
 
+void LevelEditor::loadBackgrounds()
+{
+	level = std::make_unique<LevelFile>();
+	level->read("backgrounds", ".objs");
+	for (int i = 0; i < level->getObjListSize(); i++)
+	{
+		string temp_name = level->getObj(i).image_file;
+		backgrounds.emplace_back(new ImageGO2D(m_RD, temp_name, image_buffer));
+		backgrounds.back()->SetPos(level->getObj(i).position);
+		backgrounds.back()->SetOrigin(level->getObj(i).origin);
+		backgrounds.back()->SetScale(level->getObj(i).scale);
+		backgrounds.back()->SetOri(level->getObj(i).orientation);
+		backgrounds.back()->SetLayer(level->getObj(i).layer);
+		backgrounds.back()->SetType(level->getObj(i).type);
+		backgrounds.back()->SetRect(level->getObj(i).sprite_size_min.x, level->getObj(i).sprite_size_min.y, level->getObj(i).sprite_size_max.x, level->getObj(i).sprite_size_max.y);
+	}
+}
+
 void LevelEditor::saveLevel()
 {
+	if (backgrounds.size() != 0)
+	{
+		GameObjectData obj;
+		obj.image_file = backgrounds.at(background)->getImageName();
+		obj.position = backgrounds.at(background)->GetPos();
+		obj.origin = backgrounds.at(background)->GetOrigin();
+		obj.scale = backgrounds.at(background)->GetScale();
+		obj.orientation = backgrounds.at(background)->GetOri();
+		obj.layer = backgrounds.at(background)->GetLayer();
+		obj.type = backgrounds.at(background)->GetType();
+		obj.sprite_size_min = Vector2{ float(backgrounds.at(background)->getRect().left), float(backgrounds.at(background)->getRect().top) };
+		obj.sprite_size_max = Vector2{ float(backgrounds.at(background)->getRect().right), float(backgrounds.at(background)->getRect().bottom) };
+		level->objectToWrite(obj);
+	}
 	for (auto& platform : platforms)
 	{
 		GameObjectData obj;
