@@ -66,6 +66,10 @@ private:
 	float x_zoom_resolution = 0;
 	float y_zoom_resolution = 0;
 
+	D3D12_VIEWPORT viewport_background;
+	float x_zoom_bg_resolution = 0;
+	float y_zoom_bg_resolution = 0;
+
 	D3D12_VIEWPORT UI_viewport;
 	float x_resolution = 0;
 	float y_resolution = 0;
