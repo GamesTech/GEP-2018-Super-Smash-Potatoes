@@ -225,31 +225,6 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 			}
 		}
 
-		/*
-		don't know if we'll want this back?
-		float red = 0;
-		float green = 0;
-		float blue = 0;
-		switch (i)
-		{
-		case 0:
-			red = 1;
-			break;
-		case 1:
-			blue = 1;
-			break;
-		case 2:
-			green = 1;
-			break;
-		case 3:
-			red = 0.5f;
-			green = 0.5f;
-			break;
-		}
-
-		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
-		*/
-
 		grid_sprites[selection_player[i]]->SetScale(Vector2(2.2f, 2.2f));
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
 		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));

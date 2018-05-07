@@ -24,6 +24,10 @@ void Input::update(GameStateData* gsd)
 
 	gsd->no_players = 2;
 
+	if (m_keyboardState.X && !m_prevKeyboardState.X)
+	{
+		inputs[0] = START;
+	}
 	//player 1
 	if (m_keyboardState.Left /*&& !m_prevKeyboardState.A*/)
 	{
