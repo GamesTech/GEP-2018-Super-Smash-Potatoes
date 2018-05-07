@@ -109,6 +109,9 @@
     <ImageContentTask Include="Background\background_4.png">
       <Filter>Game\GameObjects\Background</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Background\background_5.png">
+      <Filter>Game\GameObjects\Background</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

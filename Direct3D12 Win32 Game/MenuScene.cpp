@@ -159,16 +159,16 @@ void MenuScene::highlight_option_selected()
 
 void MenuScene::ReadInput(Input* input_manager)
 {
-	if (input_manager->inputs[0] == DOWN)
+	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;
 	}
-	if (input_manager->inputs[0] == UP)
+	if (input_manager->inputs[0] == Inputs::UP)
 	{
 		action = Action::BUTTON_UP;
 	}
 
-	if (input_manager->inputs[0] == A)
+	if (input_manager->inputs[0] == Inputs::A)
 	{
 		action = Action::BUTTON_PRESSED;
 	}

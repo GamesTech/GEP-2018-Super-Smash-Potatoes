@@ -271,7 +271,7 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 void Player2D::controller(Input * input_manager)
 {
 	// Walk
-	if (input_manager->inputs[player_no] == LEFT)
+	if (input_manager->inputs[player_no] == Inputs::LEFT)
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		FlipH(true);
@@ -281,7 +281,7 @@ void Player2D::controller(Input * input_manager)
 		}
 
 	}
-	else if (input_manager->inputs[player_no] == RIGHT)
+	else if (input_manager->inputs[player_no] == Inputs::RIGHT)
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		FlipH(false);
@@ -300,14 +300,14 @@ void Player2D::controller(Input * input_manager)
 
 
 	// Jump
-	if (input_manager->inputs[player_no] == DOWN_A)
+	if (input_manager->inputs[player_no] == Inputs::DOWN_A)
 	{
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if (input_manager->inputs[player_no] == A)
+	else if (input_manager->inputs[player_no] == Inputs::A)
 	{
 		if (m_grounded)
 		{
@@ -324,7 +324,7 @@ void Player2D::controller(Input * input_manager)
 	}
 
 	// Bonus Jump
-	if (input_manager->inputs[player_no] == UP_X)
+	if (input_manager->inputs[player_no] == Inputs::UP_X)
 	{
 		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
@@ -341,7 +341,7 @@ void Player2D::controller(Input * input_manager)
 		}
 	}
 	//slam
-	else if (input_manager->inputs[player_no] == DOWN_X)
+	else if (input_manager->inputs[player_no] == Inputs::DOWN_X)
 	{
 		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
@@ -355,7 +355,7 @@ void Player2D::controller(Input * input_manager)
 			//m_up_timer_punch = 0;
 		}
 	}
-	else if (input_manager->inputs[player_no] == X)
+	else if (input_manager->inputs[player_no] == Inputs::X)
 	{
 		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{

@@ -328,7 +328,7 @@ void GameScene::render(RenderData* m_RD,
 void GameScene::ReadInput(Input* im)
 {
 	input_manager = im;
-	if (input_manager->inputs[0] == START)
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}

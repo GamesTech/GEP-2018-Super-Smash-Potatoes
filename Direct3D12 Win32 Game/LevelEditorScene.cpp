@@ -179,47 +179,46 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 
 void LevelEditor::ReadInput(Input * input_manager)
 {
-	if (input_manager->inputs[0] == DOWN)
+	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;
 	}
-	if (input_manager->inputs[0] == UP)
+	if (input_manager->inputs[0] == Inputs::UP)
 	{
 		action = Action::BUTTON_UP;
 	}
-	if (input_manager->inputs[0] == LEFT)
+	if (input_manager->inputs[0] == Inputs::LEFT)
 	{
 		action = Action::BUTTON_LEFT;
 	}
-	if (input_manager->inputs[0] == RIGHT)
+	if (input_manager->inputs[0] == Inputs::RIGHT)
 	{
 		action = Action::BUTTON_RIGHT;
 	}
 
-	if (input_manager->inputs[0] == LEFT_TRIGGER)
+	if (input_manager->inputs[0] == Inputs::LEFT_TRIGGER)
 	{
 		action = Action::LB;
 	}
-	if (input_manager->inputs[0] == RIGHT_TRIGGER)
+	if (input_manager->inputs[0] == Inputs::RIGHT_TRIGGER)
 	{
 		action = Action::RB;
 	}
 
-	if (input_manager->inputs[0] == START)
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::PAUSE;
 	}
 
-	if (input_manager->inputs[0] == A)
+	if (input_manager->inputs[0] == Inputs::A)
 	{
 		action = Action::ADD_BLOCK;
 	}
-	if (input_manager->inputs[0] == B)
+	if (input_manager->inputs[0] == Inputs::B)
 	{
 		action = Action::B;
 	}
-	if ((gsd->m_keyboardState.R && !gsd->m_prevKeyboardState.R)
-		|| (gsd->m_gamePadState[0].IsYPressed() && !gsd->m_prevGamePadState[0].IsYPressed()))
+	if (input_manager->inputs[0] == Inputs::Y)
 	{
 		action = Action::Y;
 	}
