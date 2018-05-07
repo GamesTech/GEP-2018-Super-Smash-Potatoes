@@ -27,7 +27,7 @@ private:
 	};
 
 	Action action = Action::NONE;
-	void virtual  ReadInput(GameStateData* gsd) override;
+	void virtual  ReadInput(Input* input_manager) override;
 	void newResolutionText(int new_resolution_option);
 	void highlight_option_selected();
 	void virtual giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain);

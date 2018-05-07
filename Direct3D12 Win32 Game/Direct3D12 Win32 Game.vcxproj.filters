@@ -229,6 +229,9 @@
     <ClInclude Include="ImageBuffer.h">
       <Filter>GameObjects\2D\Headers\Image</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -352,6 +355,7 @@
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

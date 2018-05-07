@@ -56,10 +56,9 @@ void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 	m_RD->m_spriteBatch->End();
 }
 
-void GameOverScene::ReadInput(GameStateData * gsd)
+void GameOverScene::ReadInput(Input * input_manager)
 {
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	if (input_manager->inputs[0] == START)
 	{
 		action = Action::BACK;
 	}
