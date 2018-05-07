@@ -18,11 +18,12 @@ bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, 
 	image_buffer = ib;
 	m_RD = _RD;
 	
-	winner_text = std::make_unique<Text2D>(text[gsd->winState]);
-	winner_text->SetLayer(1.0f);
-	winner_text->SetPos(Vector2(640, 330));
-	winner_text->CentreOrigin();
-	game_objects.push_back(std::move(winner_text));
+	for (int i = 0; i < gsd->no_players; i++)
+	{
+		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1) + ": " + text[gsd->player_podium_position[i] - 1]));
+		game_objects.back()->SetLayer(1.0f);
+		game_objects.back()->SetPos(Vector2(30, 100 + ((i + 1) * 100)));
+	}
 	return true;
 }
 
@@ -56,10 +57,9 @@ void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 	m_RD->m_spriteBatch->End();
 }
 
-void GameOverScene::ReadInput(GameStateData * gsd)
+void GameOverScene::ReadInput(Input * input_manager)
 {
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}

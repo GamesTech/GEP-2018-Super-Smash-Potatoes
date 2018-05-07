@@ -67,12 +67,6 @@
     <ImageContentTask Include="Particle\dust.png">
       <Filter>Particle</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Background\background_2.jpg">
-      <Filter>Game\GameObjects</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Background\blackground_1.png">
-      <Filter>Game\GameObjects</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Scenes\platform.png">
       <Filter>Game\GameObjects</Filter>
     </ImageContentTask>
@@ -93,6 +87,30 @@
     </ImageContentTask>
     <ImageContentTask Include="Particle\firework.png">
       <Filter>Particle</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Scenes\platform_wall.png">
+      <Filter>Game\GameObjects</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\potato_sprite.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Character Sprites\potato_sprite_batch_0.png">
+      <Filter>Character Sprites</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_2.jpg">
+      <Filter>Game\GameObjects\Background</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\blackground_1.png">
+      <Filter>Game\GameObjects\Background</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_3.png">
+      <Filter>Game\GameObjects\Background</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_4.png">
+      <Filter>Game\GameObjects\Background</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Background\background_5.png">
+      <Filter>Game\GameObjects\Background</Filter>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +134,9 @@
     </Filter>
     <Filter Include="Game\GameObjects">
       <UniqueIdentifier>{eef231de-21ac-4fb8-aea5-ee7f6a0fb157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameObjects\Background">
+      <UniqueIdentifier>{c6096eb7-b883-46db-8a4f-898e5c23c713}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

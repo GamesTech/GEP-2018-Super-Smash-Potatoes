@@ -174,14 +174,13 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 
 
-void CharacterSelectScene::ReadInput(GameStateData * gsd)
+void CharacterSelectScene::ReadInput(Input * input_manager)
 {
 	for (int i = 0; i < no_players; i++)
 	{
 		if (players_locked[i] == false)
 		{
-			if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-				|| (gsd->m_gamePadState[i].IsDPadUpPressed() && !gsd->m_prevGamePadState[i].IsDPadUpPressed()))
+			if (input_manager->inputs[i] == Inputs::UP)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -192,8 +191,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i] = selection_player[i] - sprites_per_row;
 				}
 			}
-			if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-				|| (gsd->m_gamePadState[i].IsDPadDownPressed() && !gsd->m_prevGamePadState[i].IsDPadDownPressed()))
+			if (input_manager->inputs[i] == Inputs::DOWN)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -204,8 +202,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i] = selection_player[i] + sprites_per_row;
 				}
 			}
-			if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-				|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -216,8 +213,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i]--;
 				}
 			}
-			if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-				|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
+			if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -230,45 +226,18 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 			}
 		}
 
-		/*
-		don't know if we'll want this back?
-		float red = 0;
-		float green = 0;
-		float blue = 0;
-		switch (i)
-		{
-		case 0:
-			red = 1;
-			break;
-		case 1:
-			blue = 1;
-			break;
-		case 2:
-			green = 1;
-			break;
-		case 3:
-			red = 0.5f;
-			green = 0.5f;
-			break;
-		}
-
-		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
-		*/
-
 		grid_sprites[selection_player[i]]->SetScale(Vector2(2.2f, 2.2f));
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
 		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
-		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
+		if (input_manager->inputs[i] == Inputs::A)
 		{
 			players_locked[i] = !players_locked[i];
 		}
 	}
 
 	//only player1
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}

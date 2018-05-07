@@ -16,16 +16,23 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	viewport = { -0.675f, -0.7f,
 		static_cast<float>(1920), static_cast<float>(1080),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
-	m_RD->m_spriteBatch->SetViewport(viewport);
+	UI_viewport = { -1.f, -1.f,
+		static_cast<float>(1280), static_cast<float>(720),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
 	ui = std::make_unique<ImageGO2D>(_RD, "Editor_UI", ib);
 	ui->SetLayer(0.f);
 	ui->SetPos(Vector2{-300, -150});
 	ui->SetRect(0,0,1920,1080);
+
+	ui_text = std::make_unique<Text2D>("Y = Background \nA = Create \nB = Remove \nLB RB = Change \nD-pad = Move \n Start = Save");
+	ui_text->SetLayer(0.f);
+	ui_text->SetPos(Vector2(20, 700));
 	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
 	deathzone->SetLayer(0.1f);
 	deathzone->SetPos(Vector2{ -312, -162 });
 	deathzone->SetRect(0, 0, 1920, 1080);
+	loadBackgrounds();
 
 	return true;
 }
@@ -51,6 +58,21 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			if (platforms.size() != 0)
 			{
 				platforms.pop_back();
+			}
+			break;
+		}
+		case Action::Y:
+		{
+			if (backgrounds.size() != 0)
+			{
+				if (background >= backgrounds.size() - 1)
+				{
+					background = 0;
+				}
+				else
+				{
+					background++;
+				}
 			}
 			break;
 		}
@@ -91,7 +113,7 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 		{
 			if (platforms.size() != 0)
 			{
-				if (object_type != 2)
+				if (object_type != 3)
 				{
 					object_type++;
 					platforms.pop_back();
@@ -106,15 +128,11 @@ Scene::SceneChange LevelEditor::update(GameStateData * gsd)
 			{
 				saveLevel();
 			}
-		}
-		case Action::BACK:
-		{
 			scene_change.change_type = ChangeType::REMOVE;
 			viewport = { -1.f, -1.f,
 				static_cast<float>(1280), static_cast<float>(720),
 				D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 			m_RD->m_spriteBatch->SetViewport(viewport);
-			break;
 		}
 	}
 	action = Action::NONE;
@@ -141,67 +159,71 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 	//finally draw all 2D objects
 	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	//Renders the background
+	m_RD->m_spriteBatch->SetViewport(UI_viewport);
+	ui_text->Render(m_RD);
+	backgrounds.at(background)->Render(m_RD);
+	m_RD->m_spriteBatch->End();
+
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	m_RD->m_spriteBatch->SetViewport(viewport);
 	for (auto& object : platforms)
 	{
 		object->Render(m_RD);
 	}
-	ui->Render(m_RD);
+	
 	deathzone->Render(m_RD);
 	m_RD->m_spriteBatch->End();
 }
 
-void LevelEditor::ReadInput(GameStateData * gsd)
+void LevelEditor::ReadInput(Input * input_manager)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
-	{
-		action = Action::BUTTON_DOWN;
-	}
-	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
-	{
-		action = Action::BUTTON_UP;
-	}
-	if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-		|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
-	{
-		action = Action::BUTTON_LEFT;
-	}
-	if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-		|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-	{
-		action = Action::BUTTON_RIGHT;
-	}
-
-	if ((gsd->m_keyboardState.Q && !gsd->m_prevKeyboardState.Q)
-		|| (gsd->m_gamePadState[0].IsLeftShoulderPressed() && !gsd->m_prevGamePadState[0].IsLeftShoulderPressed()))
-	{
-		action = Action::LB;
-	}
-	if ((gsd->m_keyboardState.E && !gsd->m_prevKeyboardState.E)
-		|| (gsd->m_gamePadState[0].IsRightShoulderPressed() && !gsd->m_prevGamePadState[0].IsRightShoulderPressed()))
-	{
-		action = Action::RB;
-	}
-
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
-	{
-		action = Action::PAUSE;
-	}
-
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
-	{
-		action = Action::ADD_BLOCK;
-	}
-	if ((gsd->m_keyboardState.Back && !gsd->m_prevKeyboardState.Back)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
-	{
-		action = Action::B;
-	}
+	action = (Action)input_manager->inputs[0];
+	//if (input_manager->inputs[0] == Inputs::DOWN)
+	//{
+	//	action = Action::BUTTON_DOWN;
+	//}
+	//if (input_manager->inputs[0] == Inputs::UP)
+	//{
+	//	action = Action::BUTTON_UP;
+	//}
+	//if (input_manager->inputs[0] == Inputs::LEFT)
+	//{
+	//	action = Action::BUTTON_LEFT;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RIGHT)
+	//{
+	//	action = Action::BUTTON_RIGHT;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::LB)
+	//{
+	//	action = Action::LB;
+	//}
+	//if (input_manager->inputs[0] == Inputs::RB)
+	//{
+	//	action = Action::RB;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::START)
+	//{
+	//	action = Action::PAUSE;
+	//}
+	//
+	//if (input_manager->inputs[0] == Inputs::A)
+	//{
+	//	action = Action::ADD_BLOCK;
+	//}
+	//if (input_manager->inputs[0] == Inputs::B)
+	//{
+	//	action = Action::B;
+	//}
+	//if (input_manager->inputs[0] == Inputs::Y)
+	//{
+	//	action = Action::Y;
+	//}
 }
 
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.
@@ -222,8 +244,40 @@ void LevelEditor::createNewObject(int type) //load a new object from the default
 	platforms.emplace_back(platform);
 }
 
+void LevelEditor::loadBackgrounds()
+{
+	level = std::make_unique<LevelFile>();
+	level->read("backgrounds", ".objs");
+	for (int i = 0; i < level->getObjListSize(); i++)
+	{
+		string temp_name = level->getObj(i).image_file;
+		backgrounds.emplace_back(new ImageGO2D(m_RD, temp_name, image_buffer));
+		backgrounds.back()->SetPos(level->getObj(i).position);
+		backgrounds.back()->SetOrigin(level->getObj(i).origin);
+		backgrounds.back()->SetScale(level->getObj(i).scale);
+		backgrounds.back()->SetOri(level->getObj(i).orientation);
+		backgrounds.back()->SetLayer(level->getObj(i).layer);
+		backgrounds.back()->SetType(level->getObj(i).type);
+		backgrounds.back()->SetRect(level->getObj(i).sprite_size_min.x, level->getObj(i).sprite_size_min.y, level->getObj(i).sprite_size_max.x, level->getObj(i).sprite_size_max.y);
+	}
+}
+
 void LevelEditor::saveLevel()
 {
+	if (backgrounds.size() != 0)
+	{
+		GameObjectData obj;
+		obj.image_file = backgrounds.at(background)->getImageName();
+		obj.position = backgrounds.at(background)->GetPos();
+		obj.origin = backgrounds.at(background)->GetOrigin();
+		obj.scale = backgrounds.at(background)->GetScale();
+		obj.orientation = backgrounds.at(background)->GetOri();
+		obj.layer = backgrounds.at(background)->GetLayer();
+		obj.type = backgrounds.at(background)->GetType();
+		obj.sprite_size_min = Vector2{ float(backgrounds.at(background)->getRect().left), float(backgrounds.at(background)->getRect().top) };
+		obj.sprite_size_max = Vector2{ float(backgrounds.at(background)->getRect().right), float(backgrounds.at(background)->getRect().bottom) };
+		level->objectToWrite(obj);
+	}
 	for (auto& platform : platforms)
 	{
 		GameObjectData obj;

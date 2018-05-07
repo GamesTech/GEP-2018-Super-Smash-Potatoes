@@ -95,6 +95,15 @@
     <Filter Include="GameObjects\2D\Headers\Player">
       <UniqueIdentifier>{e773e571-7204-4192-ab39-0bf3ab5090c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\2D\Source\Image">
+      <UniqueIdentifier>{2ba2d1cf-d1ff-43dc-aaa3-2e196032f30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Source\Player">
+      <UniqueIdentifier>{27a8f9ad-ba9f-455f-91fc-74ac15be03b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Source\UI">
+      <UniqueIdentifier>{4912e573-9f13-41e4-96c6-a5008b2943be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -229,12 +238,12 @@
     <ClInclude Include="ImageBuffer.h">
       <Filter>GameObjects\2D\Headers\Image</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Game Base\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageGO2D.cpp">
       <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
     <ClCompile Include="Text2D.cpp">
@@ -258,9 +267,6 @@
     <ClCompile Include="SDKMeshGO3D.cpp">
       <Filter>GameObjects\3D\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Player2D.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>GameObjects\Sounds\Source</Filter>
     </ClCompile>
@@ -276,9 +282,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Physics2D.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
-    </ClCompile>
     <ClCompile Include="GameStateData.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
@@ -287,9 +290,6 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Game Base\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation2D.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
     </ClCompile>
     <ClCompile Include="ArenaSelectScene.cpp">
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
@@ -318,9 +318,6 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Game Base\Source\AudioManager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTags.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
@@ -339,9 +336,6 @@
     <ClCompile Include="CollisionSystem.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
-    <ClCompile Include="UserInterface2D.cpp">
-      <Filter>GameObjects\2D\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Emitter.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
@@ -352,6 +346,28 @@
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Animation2D.cpp">
+      <Filter>GameObjects\2D\Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>GameObjects\2D\Source\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageGO2D.cpp">
+      <Filter>GameObjects\2D\Source\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTags.cpp">
+      <Filter>GameObjects\2D\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface2D.cpp">
+      <Filter>GameObjects\2D\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Player2D.cpp">
+      <Filter>GameObjects\2D\Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics2D.cpp">
+      <Filter>GameObjects\2D\Source\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -157,22 +157,20 @@ void MenuScene::highlight_option_selected()
 	}
 }
 
-void MenuScene::ReadInput(GameStateData* gsd)
+void MenuScene::ReadInput(Input* input_manager)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
+	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;
 	}
-	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
+	if (input_manager->inputs[0] == Inputs::UP)
 	{
 		action = Action::BUTTON_UP;
 	}
 
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
+	if (input_manager->inputs[0] == Inputs::A)
 	{
 		action = Action::BUTTON_PRESSED;
 	}
+	input_manager->clearInput();
 }

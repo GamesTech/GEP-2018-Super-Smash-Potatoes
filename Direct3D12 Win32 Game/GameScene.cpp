@@ -50,6 +50,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 		object->SetLayer(1.0f);
 	}
 
+	gsd->position_in_podium = gsd->no_players;
 	no_players = gsd->no_players;
 
 	particle_system = std::make_shared<ParticleSystem>();
@@ -105,7 +106,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 				}
 			}
 			m_players[i]->SetAnimGrounded(m_anim_grounded[i]);
-			m_players[i]->Tick(gsd, i);
+			if (input_manager)
+			{
+				m_players[i]->Tick(gsd, i, input_manager);
+			}
 
 			m_anim_grounded[i] = false;
 		}
@@ -159,31 +163,9 @@ void GameScene::endGame(int players_dead, GameStateData * gsd)
 		int player_count = 0;
 		for (int i = 0; i < no_players; i++)
 		{
-			if (m_players[i]->getDead() == false)
+			if (gsd->player_podium_position[i] == 0)
 			{
-				player_count++;
-				switch (i)
-				{
-				case 0:
-					gsd->winState = PLAYER1;
-					break;
-				case 1:
-					gsd->winState = PLAYER2;
-					break;
-				case 2:
-					gsd->winState = PLAYER3;
-					break;
-				case 3:
-					gsd->winState = PLAYER4;
-					break;
-				default:
-					gsd->winState = DRAW;
-					break;
-				}
-			}
-			if (player_count >= 2 || player_count == 0)
-			{
-				gsd->winState = DRAW;
+				gsd->player_podium_position[i] = 1;
 			}
 		}
 		if (timer >= 5)
@@ -322,12 +304,12 @@ void GameScene::render(RenderData* m_RD,
 	m_RD->m_spriteBatch->End();
 }
 
-void GameScene::ReadInput(GameStateData* gsd)
+void GameScene::ReadInput(Input* im)
 {
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape) 
-		|| (gsd->m_gamePadState[0].IsStartPressed() && !gsd->m_prevGamePadState[0].IsStartPressed()))
+	input_manager = im;
+	if (input_manager->inputs[0] == Inputs::START)
 	{
-		//action = Action::BACK;
+		action = Action::BACK;
 	}
 }
 
@@ -455,7 +437,7 @@ void GameScene::calculateCameraPosition()
 		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 
-	viewport_background = { -1.5f + (top_left_x /4), -1.5f + (top_left_y/4),
+	viewport_background = { -2.f + (top_left_x /4), -2.f + (top_left_y/4),
 		static_cast<float>(x_zoom_bg_resolution), static_cast<float>(y_zoom_bg_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 }
