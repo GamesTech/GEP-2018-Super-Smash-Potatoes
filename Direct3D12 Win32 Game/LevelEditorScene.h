@@ -27,16 +27,20 @@ private:
 		RB,
 		LB,
 		PAUSE,
-		B
+		B,
+		Y
 
 	};
 	Action action = Action::NONE;
 	RenderData * m_RD = nullptr;
 
 	std::unique_ptr <LevelFile> level;
+	std::unique_ptr <LevelFile> background_file;
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
+	std::vector<std::unique_ptr<GameObject2D>> backgrounds;
 
 	void createNewObject(int type);
+	void loadBackgrounds();
 	void moveLastObject(float x, float y);
 	void saveLevel();
 
@@ -47,6 +51,7 @@ private:
 	std::unique_ptr<ImageGO2D> deathzone = nullptr;
 
 	int object_type = 1;
+	int background = 0;
 	D3D12_VIEWPORT viewport;
-
+	D3D12_VIEWPORT UI_viewport;
 };

@@ -94,7 +94,7 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		if (input_manager->inputs[i] == LEFT)
+		if (input_manager->inputs[i] == Inputs::LEFT)
 		{
 			if (level_selected > 0)
 			{
@@ -102,7 +102,7 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 				level_selected--;
 			}
 		}
-		if (input_manager->inputs[i] == RIGHT)
+		if (input_manager->inputs[i] == Inputs::RIGHT)
 		{
 			if (level_selected < total_levels - 1)
 			{
@@ -111,13 +111,13 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 			}
 		}
 
-		if (input_manager->inputs[i] == A)
+		if (input_manager->inputs[i] == Inputs::A)
 		{
 			game_state_data->arena_selected = level_selected;
 			action = Action::CONTINUE;
 		}
 
-		if (input_manager->inputs[i] == START)
+		if (input_manager->inputs[i] == Inputs::START)
 		{
 			action = Action::BACK;
 		}

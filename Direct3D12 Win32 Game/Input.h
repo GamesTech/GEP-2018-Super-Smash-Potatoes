@@ -1,21 +1,24 @@
 #pragma once
-
-enum Inputs
+namespace Inputs
 {
-	CLEAR,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	A, //jump
-	X, //punch
-	B, //special
-	START, //menu/pause
-	LEFT_TRIGGER,
-	RIGHT_TRIGGER,
-	DOWN_A, //drop ledge
-	UP_X, //up punch
-	DOWN_X, //down slam
+	enum Inputs
+	{
+		CLEAR,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		A, //jump
+		X, //punch
+		B, //special
+		Y,
+		START, //menu/pause
+		LEFT_TRIGGER,
+		RIGHT_TRIGGER,
+		DOWN_A, //drop ledge
+		UP_X, //up punch
+		DOWN_X, //down slam
+	};
 };
 
 class Input
@@ -32,7 +35,7 @@ public:
 	void SuspendInput();
 
 	const static int MAX_PLAYERS = 4;
-	Inputs inputs[MAX_PLAYERS];
+	Inputs::Inputs inputs[MAX_PLAYERS];
 
 private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;

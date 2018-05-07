@@ -180,7 +180,7 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 	{
 		if (players_locked[i] == false)
 		{
-			if (input_manager->inputs[i] == UP)
+			if (input_manager->inputs[i] == Inputs::UP)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -191,7 +191,7 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 					selection_player[i] = selection_player[i] - sprites_per_row;
 				}
 			}
-			if (input_manager->inputs[i] == DOWN)
+			if (input_manager->inputs[i] == Inputs::DOWN)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -202,7 +202,7 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 					selection_player[i] = selection_player[i] + sprites_per_row;
 				}
 			}
-			if (input_manager->inputs[i] == LEFT)
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -213,7 +213,7 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 					selection_player[i]--;
 				}
 			}
-			if (input_manager->inputs[i] == RIGHT)
+			if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -230,14 +230,14 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
 		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
-		if (input_manager->inputs[i] == A)
+		if (input_manager->inputs[i] == Inputs::A)
 		{
 			players_locked[i] = !players_locked[i];
 		}
 	}
 
 	//only player1
-	if (input_manager->inputs[0] == START)
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}

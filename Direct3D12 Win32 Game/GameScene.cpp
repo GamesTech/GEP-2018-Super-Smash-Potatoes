@@ -71,6 +71,8 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	gsd->camera_view_height = 720;
 	x_zoom_resolution = 1280;
 	y_zoom_resolution = 720;
+	x_zoom_bg_resolution = 1280;
+	y_zoom_bg_resolution = 720;
 
 	return true;
 
@@ -269,18 +271,35 @@ void GameScene::render(RenderData* m_RD,
 	//finally draw all 2D objects
 	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
 	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+	
+	m_RD->m_spriteBatch->SetViewport(viewport_background);
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+	
+	for (auto& platform : platforms)
+	{
+		if (platform->GetLayer() == 1)
+		{
+			platform->Render(m_RD);
+		}
+	}
+	m_RD->m_spriteBatch->End();
 
+	
+	
 	m_RD->m_spriteBatch->SetViewport(viewport);
-
 	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
 
 	for (auto& object : objects)
 	{
 		object->Render(m_RD);
 	}
+	
 	for (auto& platform : platforms)
 	{
-		platform->Render(m_RD);
+		if (platform->GetLayer() != 1)
+		{
+			platform->Render(m_RD);
+		}
 	}
 
 	for (int i = 0; i < no_players; i++)
@@ -309,7 +328,7 @@ void GameScene::render(RenderData* m_RD,
 void GameScene::ReadInput(Input* im)
 {
 	input_manager = im;
-	if (input_manager->inputs[0] == START)
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}
@@ -410,11 +429,19 @@ void GameScene::calculateCameraPosition()
 		y_zoom_resolution *= zoom;
 		x_zoom_resolution *= zoom;
 
+		x_zoom_bg_resolution *= zoom / 2;
+		y_zoom_bg_resolution *= zoom / 2;
+
 		//Cameara Zoom Limits
 		if (x_zoom_resolution < 960) { x_zoom_resolution = 960; }
 		if (x_zoom_resolution > 1920) { x_zoom_resolution = 1920; }
 		if (y_zoom_resolution > 1080) { y_zoom_resolution = 1080; }
 		if (y_zoom_resolution < 540) { y_zoom_resolution = 540; }
+
+		if (x_zoom_bg_resolution < 640) { x_zoom_bg_resolution = 640; }
+		if (x_zoom_bg_resolution > 1040) { x_zoom_bg_resolution = 1040; }
+		if (y_zoom_bg_resolution > 585) { y_zoom_bg_resolution = 585; }
+		if (y_zoom_bg_resolution < 360) { y_zoom_bg_resolution = 360; }
 
 		//top_left_x = -(cameraPos.x * (2.f / x_zoom_resolution) - 1);
 		//top_left_y = -(cameraPos.y * (2.f / y_zoom_resolution) - 1);
@@ -429,5 +456,9 @@ void GameScene::calculateCameraPosition()
 
 	viewport = { -1 + top_left_x, -1 + top_left_y,
 		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
+	viewport_background = { -2.f + (top_left_x /4), -2.f + (top_left_y/4),
+		static_cast<float>(x_zoom_bg_resolution), static_cast<float>(y_zoom_bg_resolution),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
 }

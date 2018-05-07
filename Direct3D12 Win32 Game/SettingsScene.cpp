@@ -159,12 +159,12 @@ void SettingsScene::ReadInput(Input* input_manager)
 {
 	for (int i = 0; i < no_players; i++)
 	{
-		if (input_manager->inputs[i] == DOWN)
+		if (input_manager->inputs[i] == Inputs::DOWN)
 		{
 			action = Action::BUTTON_DOWN;
 		}
 
-		else if (input_manager->inputs[i] == UP)
+		else if (input_manager->inputs[i] == Inputs::UP)
 		{
 			action = Action::BUTTON_UP;
 		}
@@ -172,29 +172,29 @@ void SettingsScene::ReadInput(Input* input_manager)
 		switch (menu_option_selected)
 		{
 		case 1:
-			if (input_manager->inputs[i] == LEFT)
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				action = Action::SCREEN_RES_LEFT;
 			}
-			else if (input_manager->inputs[i] == RIGHT)
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				action = Action::SCREEN_RES_RIGHT;
 			}
 			break;
 		case 2:
-			if (input_manager->inputs[i] == LEFT)
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				fullscreen = false;
 				action = Action::FULLSCREEN;
 			}
-			else if (input_manager->inputs[i] == RIGHT)
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				fullscreen = true;
 				action = Action::FULLSCREEN;
 			}
 			break;
 		case 3:
-			if (input_manager->inputs[i] == A)
+			if (input_manager->inputs[i] == Inputs::A)
 			{
 				action = Action::EXIT;
 			}
