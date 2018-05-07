@@ -135,6 +135,18 @@ void Input::update(GameStateData* gsd)
 		{
 			inputs[i] = START;
 		}
+
+		if ((m_keyboardState.Q && !m_prevKeyboardState.Q)
+			|| (m_gamePadState[0].IsLeftShoulderPressed() && !m_prevGamePadState[0].IsLeftShoulderPressed()))
+		{
+			inputs[i] = LEFT_TRIGGER;
+		}
+		if ((m_keyboardState.E && !m_prevKeyboardState.E)
+			|| (m_gamePadState[0].IsRightShoulderPressed() && !m_prevGamePadState[0].IsRightShoulderPressed()))
+		{
+			inputs[i] = RIGHT_TRIGGER;
+		}
+
 		//Up Down Left Right
 		if ((m_keyboardState.A /*&& !m_prevKeyboardState.A*/)
 			|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())

@@ -102,10 +102,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 					break;
 				}
 			}
-			m_player[i]->SetAnimGrounded(m_anim_grounded[i]);
+			m_players[i]->SetAnimGrounded(m_anim_grounded[i]);
 			if (input_manager)
 			{
-				m_player[i]->Tick(gsd, i, input_manager);
+				m_players[i]->Tick(gsd, i, input_manager);
 			}
 
 			m_anim_grounded[i] = false;

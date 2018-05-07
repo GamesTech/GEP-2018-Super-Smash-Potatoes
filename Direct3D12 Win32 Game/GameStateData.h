@@ -16,6 +16,12 @@ struct GameStateData
 {
 	const static int MAX_PLAYERS = 4;
 
+	int x_resolution;
+	int y_resolution;
+
+	int camera_view_width;
+	int camera_view_height;
+
 	static Winner winner;
 
 	int player_selected[MAX_PLAYERS];
