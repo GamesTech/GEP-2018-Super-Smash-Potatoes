@@ -3,6 +3,7 @@
 #include "ParticleSystem.h"
 #include "Particle.h"
 #include "Input.h"
+#include "Item.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 enum Attack
@@ -29,7 +30,7 @@ public:
 	//TODO: add a 3d player and modes to switch between different views and basic physics
 	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	virtual ~Player2D();
-
+	
 	//void init(AudioManager* am);
 
 	void Tick(GameStateData* _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/);
@@ -57,6 +58,7 @@ public:
 
 	void SetCollState(Collision _col) { m_coll_state = _col; };
 	//Collision GetCollState() { return m_coll_state; };
+	void setItem(Item* item);
 
 	void SetParticleSystem(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
 
@@ -66,6 +68,7 @@ public:
 	bool IgnoreCollision() { return m_ignore_collision; };
 
 	float GetDamage() { return m_damage; };
+	void SetDamage(float damage) { m_damage = damage; };
 
 	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
 	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
@@ -80,7 +83,7 @@ public:
 
 	//void SetLivesRemaining(int lives) { lives_remaining = lives; };
 	int GetLivesRemaining() { return lives_remaining; };
-
+	Item* getItem() const;
 	bool getDead() { return m_dead; };
 
 protected:
@@ -103,6 +106,7 @@ protected:
 	int player_no = 0;
 	int lives_remaining = 3;
 	Vector2 m_max_speed = Vector2(400, 400);
+	Item* item = nullptr;
 
 	bool m_grounded = false;
 	bool m_jumping = false;

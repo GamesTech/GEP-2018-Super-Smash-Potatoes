@@ -5,6 +5,7 @@
 #include "UserInterface2D.h"
 #include "ParticleSystem.h"
 #include "CollisionSystem.h"
+#include "ItemSpawner.h"
 #include "GameCamera.h"
 
 class GameScene : public Scene
@@ -54,7 +55,7 @@ private:
 
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
 	std::vector<std::unique_ptr<GameObject2D>> objects;
-	//Player2D* m_players;
+	std::unique_ptr<ItemSpawner> spawner;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;
 	Text2D* damage_text[4];

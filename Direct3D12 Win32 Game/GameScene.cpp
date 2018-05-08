@@ -69,6 +69,8 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
 
+	spawner = std::make_unique<ItemSpawner>();
+	spawner->init(m_RD);
 	return true;
 
 }
@@ -114,23 +116,39 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	m_player_tag->Update();
 
-	// attack loop
+	// attack loop and items col
 	for (int i = 0; i < no_players; i++)
 	{
 		if (!m_players[i]->getDead())
 		{
 			Attacking(i, gsd);
 		}
+
+		for (auto& item : spawner->getItems())
+		{
+			if (m_collision_system->ResloveCollision(item.get(), m_players[i].get()))
+			{
+				item->collided(m_players[i].get(), gsd);
+			}
+		}
+		
 	}
 	endGame(players_dead, gsd);
 
+	if (spawner->getSize() == 0) {
+		for (int i = 0; i < 1; i++) {
+			spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+		}
+	}
+
+	spawner->update(gsd);
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
 	case Action::CONTINUE:
 	{
-		scene_change.change_type = ChangeType::ADD;
-		scene_change.scene = SceneEnum::GAMEOVER;
+		//todo: scene_change.change_type = ChangeType::ADD;
+		//scene_change.scene = SceneEnum::GAMEOVER;
 		break;
 	}
 
@@ -274,7 +292,9 @@ void GameScene::render(RenderData* m_RD,
 			platform->Render(m_RD);
 		}
 	}
-
+	
+	spawner->render(m_RD);
+	
 	for (int i = 0; i < no_players; i++)
 	{
 		m_players[i]->Render(m_RD);

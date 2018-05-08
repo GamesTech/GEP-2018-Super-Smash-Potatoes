@@ -258,6 +258,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="LevelEditorScene.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemSpawner.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
     <ClInclude Include="MenuScene.h" />
@@ -306,6 +308,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="LevelEditorScene.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="MenuScene.cpp" />

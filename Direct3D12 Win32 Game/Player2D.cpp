@@ -303,6 +303,17 @@ void Player2D::controller(Input * input_manager)
 	}
 
 
+	//Item Throw
+	if ((_GSD->m_keyboardState.B
+		|| ((_GSD->m_gamePadState[player_no].IsBPressed()))))
+	{
+		if (item != nullptr) {
+			item->throwItem(_GSD, m_vel);
+			item = nullptr;
+		}
+	}
+
+
 	// Jump
 	if (input_manager->inputs[player_no] == Inputs::DOWN_A)
 	{
@@ -370,6 +381,12 @@ void Player2D::controller(Input * input_manager)
 		}
 	}
 }
+
+void Player2D::setItem(Item * item)
+{
+	this->item = item;
+}
+
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
 	float r1 = Width() / 1.5;
@@ -511,6 +528,11 @@ void Player2D::Block(GameStateData * _GSD)
 	m_timer_hit = 0;
 }
 
+
+Item * Player2D::getItem() const
+{
+	return item;
+}
 
 void Player2D::ProcessCollision()
 {
