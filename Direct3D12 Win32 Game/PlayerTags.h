@@ -6,7 +6,7 @@ class PlayerTags
 public:
 	PlayerTags(int players);
 	~PlayerTags() = default;
-	void Init(RenderData* m_RD);
+	void Init(RenderData* m_RD, std::shared_ptr<ImageBuffer> image_buffer);
 	void Update();
 	void Render(RenderData* m_RD);
 

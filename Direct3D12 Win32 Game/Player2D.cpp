@@ -2,7 +2,7 @@
 #include "Player2D.h"
 #include "GameStateData.h"
 
-Player2D::Player2D(RenderData* _RD, string _filename) :Physics2D(_RD, _filename)
+Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :Physics2D(_RD, _filename, image_buffer)
 {
 	//SetBoundingBoxes();
 	//BottomOrigin();
@@ -13,7 +13,7 @@ Player2D::~Player2D()
 {
 }
 
-void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
+void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
 {
 	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
 	{
@@ -22,7 +22,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	//SetBoundingBoxes();
 	if (!m_remove_controll)
 	{
-		controller(_GSD);
+		controller(input_manager);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -42,7 +42,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test/*, GameObject2D* _obj*/)
 	}
 
 
-	deathZone();
+	deathZone(_GSD);
 	updateOrientation();
 }
 
@@ -58,7 +58,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		{
 			if (action_jump != GROUND && action_jump != PUNCH)
 			{
-				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x / 2 - 20, m_size.y - 25 }, 0.5f, 0.0f, true, true, {1,1,1,1}, 1.f);
+				particle_system->addParticlesToEmitter(6, Particle_Type::DUST, m_pos + Vector2{ m_size.x / 2 - 20, m_size.y - 25 }, 0.5f, 0.0f, true, true, {1,1,1,1}, 1.f, 100, 0);
 			}
 			action_jump = GROUND;
 			if (m_down_punching_anim)
@@ -107,7 +107,14 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 		}
 	}
-
+	if (m_invincibility)
+	{
+		SetOpacity(0.5f);
+	}
+	else
+	{
+		SetOpacity(1.f);
+	}
 	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
@@ -124,7 +131,6 @@ void Player2D::HitTimer(GameStateData * _GSD)
 	if (m_timer_hit >= 0.8)
 	{
 		m_remove_controll = false;
-
 	}
 	m_timer_hit += _GSD->m_dt;
 }
@@ -135,7 +141,7 @@ void Player2D::PunchTimer(GameStateData * _GSD)
 	{
 		if (punch_particle)
 		{
-			particle_system->addParticlesToEmitter(5, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{1000,0}, Vector2{ -100,0 });
+			particle_system->addParticlesToEmitter(1, Particle_Type::ATTACK, m_pos + Vector2{ m_size.x / 3, 0 }, 0.1f, 0.6f, true, GetFlipH(), { 1,1,1,1 }, 1.f, Vector2{1000,0}, Vector2{ -100,0 });
 			punch_particle = false;
 		}
 	}
@@ -171,24 +177,24 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 	m_up_timer_punch += _GSD->m_dt;
 }
 
-void Player2D::deathZone()
+void Player2D::deathZone(GameStateData * _GSD)
 {
 	if (m_pos.x < 0.0f - 800)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 	if (m_pos.y < 0.0f - 600)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 
 	if (m_pos.x > m_limit.x + 500)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 	if (m_pos.y > m_limit.y + 500)
 	{
-		respawn();
+		respawn(_GSD);
 	}
 }
 
@@ -222,14 +228,13 @@ void Player2D::Grabbing()
 	}
 }
 
-void Player2D::respawn()
+void Player2D::respawn(GameStateData * _GSD)
 {
 	if (lives_remaining > 1)
 	{
 		lives_remaining--;
 		action_jump = GROUND;
-		m_pos.x = 600.0f;
-		m_pos.y = 250.0f;
+		m_pos = m_respawn_pos;
 		m_vel.x = 0.0f;
 		m_vel.y = 301.0f;
 		m_damage = 1;
@@ -241,6 +246,12 @@ void Player2D::respawn()
 	}
 	else
 	{
+		if (!m_dead)
+		{
+			_GSD->player_podium_position[player_no] = _GSD->position_in_podium;
+			_GSD->position_in_podium--;
+		}
+		m_pos = Vector2(-10000, 0);
 		m_dead = true;
 	}
 	//audio_manager->playSound(EXPLOSION);
@@ -261,12 +272,10 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 	}
 }
 
-void Player2D::controller(GameStateData * _GSD)
+void Player2D::controller(Input * input_manager)
 {
 	// Walk
-	if (_GSD->m_keyboardState.A 
-		|| _GSD->m_gamePadState[player_no].IsDPadLeftPressed() 
-		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickLeft())
+	if (input_manager->inputs[player_no] == Inputs::LEFT)
 	{
 		AddForce(-m_drive * Vector2::UnitX);
 		FlipH(true);
@@ -276,9 +285,7 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 
 	}
-	else if (_GSD->m_keyboardState.D 
-		|| _GSD->m_gamePadState[player_no].IsDPadRightPressed() 
-		|| _GSD->m_gamePadState[player_no].IsLeftThumbStickRight())
+	else if (input_manager->inputs[player_no] == Inputs::RIGHT)
 	{
 		AddForce(m_drive * Vector2::UnitX);
 		FlipH(false);
@@ -308,22 +315,14 @@ void Player2D::controller(GameStateData * _GSD)
 
 
 	// Jump
-	if ((_GSD->m_keyboardState.S
-		&& _GSD->m_keyboardState.Space)
-		|| ((_GSD->m_gamePadState[player_no].IsAPressed()
-			&& !_GSD->m_prevGamePadState[player_no].IsAPressed())
-			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	if (input_manager->inputs[player_no] == Inputs::DOWN_A)
 	{
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if ((_GSD->m_keyboardState.Space 
-		&& !_GSD->m_prevKeyboardState.Space) 
-		|| (_GSD->m_gamePadState[player_no].IsAPressed() 
-			&& !_GSD->m_prevGamePadState[player_no].IsAPressed()))
+	else if (input_manager->inputs[player_no] == Inputs::A)
 	{
 		if (m_grounded)
 		{
@@ -339,14 +338,8 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 
-
 	// Bonus Jump
-	if ((_GSD->m_keyboardState.X 
-		&& _GSD->m_keyboardState.W) 
-		|| ((_GSD->m_gamePadState[player_no].IsXPressed() 
-			&& !_GSD->m_prevGamePadState[player_no].IsXPressed()) 
-			&& (_GSD->m_gamePadState[player_no].IsDPadUpPressed() 
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickUp())))
+	if (input_manager->inputs[player_no] == Inputs::UP_X)
 	{
 		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
@@ -363,12 +356,7 @@ void Player2D::controller(GameStateData * _GSD)
 		}
 	}
 	//slam
-	else if ((_GSD->m_keyboardState.X
-		&& _GSD->m_keyboardState.S)
-		|| ((_GSD->m_gamePadState[player_no].IsXPressed()
-			&& !_GSD->m_prevGamePadState[player_no].IsXPressed())
-			&& (_GSD->m_gamePadState[player_no].IsDPadDownPressed()
-				|| _GSD->m_gamePadState[player_no].IsLeftThumbStickDown())))
+	else if (input_manager->inputs[player_no] == Inputs::DOWN_X)
 	{
 		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
@@ -382,8 +370,7 @@ void Player2D::controller(GameStateData * _GSD)
 			//m_up_timer_punch = 0;
 		}
 	}
-	else if ((_GSD->m_keyboardState.X && !_GSD->m_prevKeyboardState.X) 
-		|| (_GSD->m_gamePadState[player_no].IsXPressed() && !_GSD->m_prevGamePadState[player_no].IsXPressed()))
+	else if (input_manager->inputs[player_no] == Inputs::X)
 	{
 		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{

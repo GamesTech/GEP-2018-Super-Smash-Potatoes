@@ -7,7 +7,7 @@ public:
 	SettingsScene() = default;
 	virtual ~SettingsScene();
 
-	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
 
@@ -27,7 +27,7 @@ private:
 	};
 
 	Action action = Action::NONE;
-	void virtual  ReadInput(GameStateData* gsd) override;
+	void virtual  ReadInput(Input* input_manager) override;
 	void newResolutionText(int new_resolution_option);
 	void highlight_option_selected();
 	void virtual giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain);

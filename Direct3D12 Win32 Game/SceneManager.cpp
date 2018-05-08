@@ -6,18 +6,17 @@
 #include "ArenaSelectScene.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
-
-
-
+#include "LevelEditorScene.h"
 
 void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am)
 {
+	image_buffer = std::make_shared<ImageBuffer>();
 	std::unique_ptr<Scene> scene = std::make_unique<MenuScene>();
-	scene->init(m_RD, gsd, am);
+	scene->init(m_RD, gsd, am, image_buffer);
 	scenes.push_back(std::move(scene));
 }
 
-bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain)
+bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am, Input* im, Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain)
 {
 	if (scenes.size() == 0)
 	{
@@ -25,7 +24,8 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 	}
 
 	Scene::SceneChange change = scenes.back()->update(gsd);
-	scenes.back()->ReadInput(gsd);
+	scenes.back()->ReadInput(im);
+	im->clearInput();
 
 	switch (change.change_type)
 	{
@@ -100,8 +100,13 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 			scene = std::make_unique<GameOverScene>();
 			break;
 		}
+		case SceneEnum::SceneEnum::LEVEL_EDITOR:
+		{
+			scene = std::make_unique<LevelEditor>();
+			break;
+		}
 	}
-	if (!scene->init(m_RD, gsd, am))
+	if (!scene->init(m_RD, gsd, am, image_buffer))
 	{
 		return false;
 	}

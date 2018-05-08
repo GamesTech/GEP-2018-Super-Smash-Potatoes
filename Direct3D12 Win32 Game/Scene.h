@@ -1,5 +1,7 @@
 #pragma once
 #include "AudioManager.h"
+#include "Input.h"
+#include "ImageBuffer.h"
 
 namespace ChangeType
 {
@@ -24,6 +26,7 @@ namespace SceneEnum
 		SETTINGS,
 		GAME,
 		GAMEOVER,
+		LEVEL_EDITOR,
 		NONE
 	};
 }
@@ -41,10 +44,10 @@ public:
 	Scene() = default;
 	virtual ~Scene() = default;
 
-	 virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) = 0;
+	 virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> image_buffer) = 0;
 	 virtual SceneChange update(GameStateData* gsd) = 0;
 	 virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) = 0;
-	 virtual void ReadInput(GameStateData* gsd) {};
+	 virtual void ReadInput(Input* input_manager) {};
 	 virtual void giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain) {};
 
 	GameObject2D& getObjectByIndex(int index) const;
@@ -53,5 +56,6 @@ public:
 protected:
 	std::vector<std::unique_ptr<GameObject2D>> game_objects;
 	AudioManager* audio_manager = nullptr;
+	std::shared_ptr<ImageBuffer> image_buffer = nullptr;
 	int no_players;
 };

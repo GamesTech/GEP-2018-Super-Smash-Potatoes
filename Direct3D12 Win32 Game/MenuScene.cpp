@@ -11,20 +11,20 @@ MenuScene::~MenuScene()
 	game_objects.clear();
 }
 
-bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	//no_players = gsd->no_players;
-	m_RD->m_resourceCount = 1;
 
-	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo");
+	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo", image_buffer);
 	title_text->SetLayer(1.0f);
 	title_text->SetPos({0, 0});
 	title_text->SetRect({ 0, 0, 1280, 720 });
 	game_objects.push_back(std::move(title_text));
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
-		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons");
+		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 		button[i]->SetPos(button_info[i].pos);
 		button[i]->SetRect(button_info[i].m_rect);
 		button[i]->SetLayer(1.0f);
@@ -67,7 +67,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 
 		case Action::BUTTON_DOWN:
 		{
-			if (menu_option_selected < 3)
+			if (menu_option_selected < 4)
 			{
 				menu_option_selected++;
 				highlight_option_selected();
@@ -89,10 +89,16 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 			case 2:
 			{
 				scene_change.change_type = ChangeType::ADD;
-				scene_change.scene = SceneEnum::SETTINGS;
+				scene_change.scene = SceneEnum::LEVEL_EDITOR;
 				break;
 			}
 			case 3:
+			{
+				scene_change.change_type = ChangeType::ADD;
+				scene_change.scene = SceneEnum::SETTINGS;
+				break;
+			}
+			case 4:
 			{
 				scene_change.change_type = ChangeType::REMOVE;
 				break;
@@ -128,36 +134,43 @@ void MenuScene::highlight_option_selected()
 		game_objects[1]->SetColour(Color(1, 0, 0));
 		game_objects[2]->SetColour(Color(1, 1, 1));
 		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 1, 1));
 		break;
 	case 2:
 		game_objects[1]->SetColour(Color(1, 1, 1));
 		game_objects[2]->SetColour(Color(1, 0, 0));
 		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 1, 1));
 		break;
 	case 3:
 		game_objects[1]->SetColour(Color(1, 1, 1));
 		game_objects[2]->SetColour(Color(1, 1, 1));
 		game_objects[3]->SetColour(Color(1, 0, 0));
+		game_objects[4]->SetColour(Color(1, 1, 1));
+		break;
+	case 4:
+		game_objects[1]->SetColour(Color(1, 1, 1));
+		game_objects[2]->SetColour(Color(1, 1, 1));
+		game_objects[3]->SetColour(Color(1, 1, 1));
+		game_objects[4]->SetColour(Color(1, 0, 0));
 		break;
 	}
 }
 
-void MenuScene::ReadInput(GameStateData* gsd)
+void MenuScene::ReadInput(Input* input_manager)
 {
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
+	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;
 	}
-	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
+	if (input_manager->inputs[0] == Inputs::UP)
 	{
 		action = Action::BUTTON_UP;
 	}
 
-	if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-		|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
+	if (input_manager->inputs[0] == Inputs::A)
 	{
 		action = Action::BUTTON_PRESSED;
 	}
+	input_manager->clearInput();
 }

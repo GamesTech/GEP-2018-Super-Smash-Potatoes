@@ -6,6 +6,7 @@
 #include "ParticleSystem.h"
 #include "CollisionSystem.h"
 #include "ItemSpawner.h"
+#include "GameCamera.h"
 
 class GameScene : public Scene
 {
@@ -14,8 +15,9 @@ public:
 	GameScene() = default;
 	virtual ~GameScene();
 
-	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
+	void endGame(int players_dead, GameStateData * gsd);
 	void Attacking(int i, GameStateData * gsd);
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
@@ -29,15 +31,16 @@ private:
 	};
 	Action action = Action::NONE;
 
-	virtual void ReadInput(GameStateData* gsd) override;
+	virtual void ReadInput(Input* input_manager) override;
 	void spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_players);
 	void loadCharactersFile(string _filename);
-	void calculateCameraPosition();
 
 	int no_players = 0;
 
 	float time_remaining = 0;
 	int max_lives = 0;
+	double timer = 0;
+	bool gameEnded = false;
 
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 
@@ -46,6 +49,7 @@ private:
 	std::unique_ptr<PlayerTags> m_player_tag = nullptr;
 	std::unique_ptr <LevelFile> level;
 	std::unique_ptr <UserInterface> UI;
+	std::unique_ptr <GameCamera> m_camera;
 
 	std::vector<string> sprite_names;
 
@@ -59,13 +63,6 @@ private:
 	std::unique_ptr<ImageGO2D> platform_side;
 	std::unique_ptr<CollisionSystem> m_collision_system = nullptr;
 
-
-	D3D12_VIEWPORT viewport;
-	float x_zoom_resolution = 0;
-	float y_zoom_resolution = 0;
-
-	D3D12_VIEWPORT UI_viewport;
-	float x_resolution = 0;
-	float y_resolution = 0;
+	Input* input_manager;
 };
 

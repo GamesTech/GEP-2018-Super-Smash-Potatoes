@@ -9,18 +9,12 @@ enum Winner
 	PLAYER2,
 	PLAYER3,
 	PLAYER4,
+	DRAW
 };
 
 struct GameStateData
 {
 	const static int MAX_PLAYERS = 4;
-
-	Keyboard::State m_keyboardState;
-	Keyboard::State m_prevKeyboardState;
-	Mouse::State m_mouseState;
-
-	GamePad::State m_gamePadState[MAX_PLAYERS];
-	GamePad::State m_prevGamePadState[MAX_PLAYERS];
 
 	int x_resolution;
 	int y_resolution;
@@ -29,6 +23,9 @@ struct GameStateData
 	int camera_view_height;
 
 	static Winner winner;
+
+	int player_podium_position[4] = {0,0,0,0};
+	int position_in_podium;
 
 	int player_selected[MAX_PLAYERS];
 
