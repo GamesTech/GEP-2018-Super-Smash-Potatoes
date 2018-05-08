@@ -30,6 +30,7 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am,
 	game_objects.push_back(std::move(main_menu_button));
 
 	highlight_option_selected();
+	loadBackground(m_RD, ib);
 	return true;
 }
 

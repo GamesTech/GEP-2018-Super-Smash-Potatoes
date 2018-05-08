@@ -15,7 +15,8 @@ private:
 	enum Action
 	{
 		NONE,
-		START
+		START,
+		EXIT
 	};
 
 	Action action = Action::NONE;

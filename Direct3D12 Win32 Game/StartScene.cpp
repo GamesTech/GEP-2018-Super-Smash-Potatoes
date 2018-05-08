@@ -24,6 +24,12 @@ Scene::SceneChange StartScene::update(GameStateData * gsd)
 			scene_change.scene = SceneEnum::MENU;
 			break;
 		}
+
+		case Action::EXIT:
+		{
+			scene_change.change_type = ChangeType::REMOVE;
+			break;
+		}
 	}
 	action = Action::NONE;
 	return scene_change;
@@ -47,7 +53,11 @@ void StartScene::ReadInput(Input * input_manager)
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		if (input_manager->inputs[i] != Inputs::CLEAR)
+		if (input_manager->inputs[i] == Inputs::START)
+		{
+			action = Action::EXIT;
+		}
+		else if (input_manager->inputs[i] != Inputs::CLEAR)
 		{
 			action = Action::START;
 		}
