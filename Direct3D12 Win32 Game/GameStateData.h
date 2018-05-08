@@ -24,7 +24,7 @@ struct GameStateData
 
 	static Winner winner;
 
-	int player_podium_position[4];
+	int player_podium_position[4] = {0,0,0,0};
 	int position_in_podium;
 
 	int player_selected[MAX_PLAYERS];

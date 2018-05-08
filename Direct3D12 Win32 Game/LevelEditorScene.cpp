@@ -181,49 +181,6 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 void LevelEditor::ReadInput(Input * input_manager)
 {
 	action = (Action)input_manager->inputs[0];
-	//if (input_manager->inputs[0] == Inputs::DOWN)
-	//{
-	//	action = Action::BUTTON_DOWN;
-	//}
-	//if (input_manager->inputs[0] == Inputs::UP)
-	//{
-	//	action = Action::BUTTON_UP;
-	//}
-	//if (input_manager->inputs[0] == Inputs::LEFT)
-	//{
-	//	action = Action::BUTTON_LEFT;
-	//}
-	//if (input_manager->inputs[0] == Inputs::RIGHT)
-	//{
-	//	action = Action::BUTTON_RIGHT;
-	//}
-	//
-	//if (input_manager->inputs[0] == Inputs::LB)
-	//{
-	//	action = Action::LB;
-	//}
-	//if (input_manager->inputs[0] == Inputs::RB)
-	//{
-	//	action = Action::RB;
-	//}
-	//
-	//if (input_manager->inputs[0] == Inputs::START)
-	//{
-	//	action = Action::PAUSE;
-	//}
-	//
-	//if (input_manager->inputs[0] == Inputs::A)
-	//{
-	//	action = Action::ADD_BLOCK;
-	//}
-	//if (input_manager->inputs[0] == Inputs::B)
-	//{
-	//	action = Action::B;
-	//}
-	//if (input_manager->inputs[0] == Inputs::Y)
-	//{
-	//	action = Action::Y;
-	//}
 }
 
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.

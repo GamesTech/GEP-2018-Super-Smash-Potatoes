@@ -201,8 +201,10 @@ void Input::update(GameStateData* gsd)
 			inputs[i] = Inputs::UP_X;
 		}
 		//Down Slam
-		else if ((m_keyboardState.X
-			&& m_keyboardState.S)
+		else if ((m_keyboardState.X 
+			&& !m_prevKeyboardState.X
+			&& m_keyboardState.S
+			&& !m_prevKeyboardState.S)
 			|| ((m_gamePadState[i].IsXPressed()
 				&& !m_prevGamePadState[i].IsXPressed())
 				&& (m_gamePadState[i].IsDPadDownPressed()
