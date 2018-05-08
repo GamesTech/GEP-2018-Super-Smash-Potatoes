@@ -9,6 +9,7 @@ namespace ChangeType
 	{
 		REPLACE,
 		REPLACE_ALL,
+		REPLACE_ALL_BUT_ONE,
 		REMOVE,
 		ADD,
 		EXIT,

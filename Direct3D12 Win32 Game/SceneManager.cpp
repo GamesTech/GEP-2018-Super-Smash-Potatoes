@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "GameOverScene.h"
 #include "LevelEditorScene.h"
+#include "GameStateData.h"
 
 void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am)
 {
@@ -25,7 +26,16 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 
 	Scene::SceneChange change = scenes.back()->update(gsd);
 	scenes.back()->ReadInput(im);
-	im->clearInput();
+	if (im->clearInput())
+	{
+		timer = 0;
+	}
+	timer += gsd->m_dt;
+	if (timer > 30)
+	{
+		change.change_type = ChangeType::REPLACE_ALL;
+		change.scene = SceneEnum::MENU;
+	}
 
 	switch (change.change_type)
 	{
@@ -42,6 +52,16 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 		case ChangeType::REPLACE_ALL:
 		{
 			int size = scenes.size();
+
+			for (int i = 0; i < size; ++i)
+			{
+				scenes.pop_back();
+			}
+			break;
+		}
+		case ChangeType::REPLACE_ALL_BUT_ONE:
+		{
+			int size = scenes.size() - 1;
 
 			for (int i = 0; i < size; ++i)
 			{

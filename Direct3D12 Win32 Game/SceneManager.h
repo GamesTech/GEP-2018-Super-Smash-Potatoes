@@ -17,5 +17,6 @@ public:
 private:
 	std::vector<std::unique_ptr<Scene>> scenes;
 	std::shared_ptr<ImageBuffer> image_buffer = nullptr;
+	double timer = 0;
 };
 

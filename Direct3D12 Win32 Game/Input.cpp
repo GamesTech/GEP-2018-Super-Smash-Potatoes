@@ -236,12 +236,29 @@ void Input::update(GameStateData* gsd)
 #endif
 }
 
-void Input::clearInput()
+bool Input::clearInput()
 {
+	bool temp[4] = { false, false, false, false };
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
-		inputs[i] = Inputs::CLEAR;
+		if (inputs[i] != Inputs::CLEAR)
+		{
+			inputs[i] = Inputs::CLEAR;
+			temp[i] = true;
+		}
+		else
+		{
+			temp[i] = false;
+		}
 	}
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		if (temp[i])
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Input::ResumeInput()

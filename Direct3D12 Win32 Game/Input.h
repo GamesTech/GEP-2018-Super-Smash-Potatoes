@@ -29,7 +29,7 @@ public:
 
 	void init();
 	void update(GameStateData* gsd);
-	void clearInput();
+	bool clearInput();
 
 	void ResumeInput();
 	void SuspendInput();

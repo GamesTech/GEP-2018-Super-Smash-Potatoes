@@ -122,7 +122,6 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 			action = Action::BACK;
 		}
 	}
-	input_manager->clearInput();
 }
 
 void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
