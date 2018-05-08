@@ -358,7 +358,6 @@
       <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ImageBuffer.cpp" />
-    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Animation2D.cpp">
       <Filter>GameObjects\2D\Source\Player</Filter>
     </ClCompile>
@@ -383,7 +382,12 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Game Base\Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="StartScene.cpp" />
+    <ClCompile Include="StartScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Game Base\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

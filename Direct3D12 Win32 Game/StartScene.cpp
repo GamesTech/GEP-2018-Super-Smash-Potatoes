@@ -7,7 +7,7 @@ bool StartScene::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am,
 	image_buffer = ib;
 	game_objects.emplace_back(new Text2D("Press any button to start"));
 	game_objects.back()->SetPos(Vector2(300, 300));
-	game_objects.back()->SetLayer(1.f);
+	game_objects.back()->SetLayer(0.f);
 	
 	loadBackground(m_RD, ib);
 	return true;

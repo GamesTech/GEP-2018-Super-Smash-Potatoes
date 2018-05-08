@@ -26,7 +26,7 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 	ui->SetRect(0,0,1920,1080);
 
 	ui_text = std::make_unique<Text2D>("Y = Background \nA = Create \nB = Remove \nLB RB = Change \nD-pad = Move \n Start = Save");
-	ui_text->SetLayer(0.f);
+	ui_text->SetLayer(1.f);
 	ui_text->SetPos(Vector2(20, 700));
 	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
 	deathzone->SetLayer(0.1f);

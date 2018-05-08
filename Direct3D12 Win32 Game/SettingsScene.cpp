@@ -16,13 +16,13 @@ bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am,
 
 	resolution_text = std::make_unique<Text2D>("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
-	resolution_text->SetLayer(1.0f);
+	resolution_text->SetLayer(0.0f);
 	newResolutionText(3);
 	resolution_option_selected = 3;
 
 	fullscreen_text = std::make_unique<Text2D>("Fullscreen: False");
 	fullscreen_text->SetPos(Vector2(300, 300));
-	fullscreen_text->SetLayer(1.0f);
+	fullscreen_text->SetLayer(0.0f);
 
 	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 	main_menu_button->SetPos(Vector2(300, 400));

@@ -6,7 +6,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 {
 	timer_text = new Text2D("Time Remaining: xxxs");
 	timer_text->SetPos(Vector2(750, 10));
-	timer_text->SetLayer(1.0f);
+	timer_text->SetLayer(0.0f);
 
 	//player_UI_Boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
 	//player_UI_Boxes->SetPos(Vector2(640, 640));
@@ -35,7 +35,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 
 		damage_text[i] = new Text2D("xxx%");
 		damage_text[i]->SetPos(Vector2(435 + (i * character_gap), UI_start_y + 10));
-		damage_text[i]->SetLayer(1.0f);
+		damage_text[i]->SetLayer(0.0f);
 		damage_text[i]->CentreOrigin();
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 1));
 		UI.emplace_back(damage_text[i]);
