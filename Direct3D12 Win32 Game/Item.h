@@ -9,7 +9,7 @@ class Item : public Physics2D
 			HEAL,
 		};
 
-		Item(RenderData* _RD, string _filename, Type type, long life_span);
+		Item(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span);
 
 		void collided(class Player2D* player, GameStateData * _GSD);
 		void update(GameStateData * _GSD);

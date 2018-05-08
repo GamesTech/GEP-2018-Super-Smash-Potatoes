@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Item.h"
 
-Item::Item(RenderData * _RD, string _filename, Type type, long life_span)
-	: Physics2D(_RD, _filename)
+Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span)
+	: Physics2D(_RD, _filename, image_buffer)
 {
 	this->life_span = life_span;
 	this->type = type;

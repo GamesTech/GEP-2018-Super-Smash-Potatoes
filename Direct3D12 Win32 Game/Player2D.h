@@ -97,7 +97,7 @@ protected:
 	void deathZone(GameStateData * _GSD);
 	void respawn(GameStateData * _GSD);
 	void RespawnTimer(GameStateData * _GSD);
-	void controller(Input * input_manager);
+	void controller(Input * input_manager, GameStateData * _GSD);
 
 	float m_jumpForce = 60000;
 	float m_drive = 200.0f;

@@ -22,7 +22,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	//SetBoundingBoxes();
 	if (!m_remove_controll)
 	{
-		controller(input_manager);
+		controller(input_manager, _GSD);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -250,9 +250,9 @@ void Player2D::respawn(GameStateData * _GSD)
 		{
 			_GSD->player_podium_position[player_no] = _GSD->position_in_podium;
 			_GSD->position_in_podium--;
+			m_pos = Vector2(-10000, 0);
+			m_dead = true;
 		}
-		m_pos = Vector2(-10000, 0);
-		m_dead = true;
 	}
 	//audio_manager->playSound(EXPLOSION);
 }
@@ -272,7 +272,7 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 	}
 }
 
-void Player2D::controller(Input * input_manager)
+void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 {
 	// Walk
 	if (input_manager->inputs[player_no] == Inputs::LEFT)
@@ -304,8 +304,7 @@ void Player2D::controller(Input * input_manager)
 
 
 	//Item Throw
-	if ((_GSD->m_keyboardState.B
-		|| ((_GSD->m_gamePadState[player_no].IsBPressed()))))
+	if (input_manager->inputs[player_no] == Inputs::B)
 	{
 		if (item != nullptr) {
 			item->throwItem(_GSD, m_vel);

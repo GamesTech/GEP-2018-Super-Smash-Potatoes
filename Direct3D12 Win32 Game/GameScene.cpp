@@ -70,7 +70,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	audio_manager->playSound(QUESTCOMPLETE);
 
 	spawner = std::make_unique<ItemSpawner>();
-	spawner->init(m_RD);
+	spawner->init(m_RD, image_buffer);
 	return true;
 
 }
@@ -147,8 +147,8 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	{
 	case Action::CONTINUE:
 	{
-		//todo: scene_change.change_type = ChangeType::ADD;
-		//scene_change.scene = SceneEnum::GAMEOVER;
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::GAMEOVER;
 		break;
 	}
 

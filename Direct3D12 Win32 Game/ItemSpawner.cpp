@@ -6,9 +6,10 @@ const std::vector<std::unique_ptr<Item>> &ItemSpawner::getItems() const
 	return items;
 }
 
-void ItemSpawner::init(RenderData * _RD)
+void ItemSpawner::init(RenderData * _RD, std::shared_ptr<ImageBuffer> _image_buffer)
 {
 	m_RD = _RD;
+	image_buffer = _image_buffer;
 }
 
 void ItemSpawner::update(GameStateData * _GSD)
@@ -51,7 +52,7 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 	}
 
 	//Otherwise add new spot
-	auto item = new Item(m_RD, _filename, type, life_span);
+	auto item = new Item(m_RD, _filename, image_buffer, type, life_span);
 	item->SetPos(position);
 	item->CentreOrigin();
 	item->SetScale(Vector2(1, 1));

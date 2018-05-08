@@ -9,7 +9,7 @@ class ItemSpawner {
 		~ItemSpawner() = default;
 
 		const std::vector<std::unique_ptr<Item>>& getItems() const;
-		void init(RenderData* _RD);
+		void init(RenderData* _RD, std::shared_ptr<ImageBuffer> image_buffer);
 		void update(GameStateData * _GSD);
 		void render(RenderData* _RD);
 		void addItem(Vector2 position, string _filename, Item::Type type, long life_span);
@@ -17,4 +17,5 @@ class ItemSpawner {
 	private:
 		std::vector<std::unique_ptr<Item>> items;
 		RenderData* m_RD = nullptr;
+		std::shared_ptr<ImageBuffer> image_buffer = nullptr;
 };
