@@ -104,6 +104,12 @@
     <Filter Include="GameObjects\2D\Source\UI">
       <UniqueIdentifier>{4912e573-9f13-41e4-96c6-a5008b2943be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Base\Source\Camera">
+      <UniqueIdentifier>{38f649cd-ba15-4342-a3b1-8b4251298471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\Camera">
+      <UniqueIdentifier>{555ebfdd-6297-4016-8378-010871ff8f1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -241,6 +247,9 @@
     <ClInclude Include="Input.h">
       <Filter>Game Base\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>Game Base\Headers\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -367,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Physics2D.cpp">
       <Filter>GameObjects\2D\Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>Game Base\Source\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
