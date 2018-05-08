@@ -14,6 +14,10 @@ void Input::init()
 {
 	m_keyboard = std::make_unique<Keyboard>();
 	m_gamePad = std::make_unique<GamePad>();
+	for (int i = 0; i < 4; ++i)
+	{
+		inputs[i] = Inputs::CLEAR;
+	}
 }
 
 void Input::update(GameStateData* gsd)

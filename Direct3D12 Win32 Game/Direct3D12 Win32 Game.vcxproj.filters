@@ -250,6 +250,9 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Game Base\Headers\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="StartScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -380,6 +383,7 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Game Base\Source\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

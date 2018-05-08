@@ -17,7 +17,7 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	//no_players = gsd->no_players;
 
 	title_text = std::make_unique<ImageGO2D>(m_RD, "Logo", image_buffer);
-	title_text->SetLayer(1.0f);
+	title_text->SetLayer(0.0f);
 	title_text->SetPos({0, 0});
 	title_text->SetRect({ 0, 0, 1280, 720 });
 	game_objects.push_back(std::move(title_text));
@@ -27,7 +27,7 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 		button[i] = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 		button[i]->SetPos(button_info[i].pos);
 		button[i]->SetRect(button_info[i].m_rect);
-		button[i]->SetLayer(1.0f);
+		button[i]->SetLayer(0.f);
 		button[i]->CentreOrigin();
 		game_objects.push_back(std::move(button[i]));
 	}
@@ -37,7 +37,7 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	audio_manager = am;
 	//audio_manager->changeLoopTrack(NIGHTAMBIENCE);
 
-	
+	loadBackground(m_RD, ib);
 
 	return true;
 }

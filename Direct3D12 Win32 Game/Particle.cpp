@@ -22,7 +22,7 @@ void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool
 	v[1] /= mag;
 
 	velocity.x = v[0] * x_velocity(rd);
-	velocity.y = -abs(v[1] * y_velocity(rd));
+	velocity.y = v[1] * y_velocity(rd);
 
 	accelaration.x = _acc(rd);
 	accelaration.y = _acc(rd);
