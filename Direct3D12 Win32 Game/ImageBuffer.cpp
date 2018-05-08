@@ -5,14 +5,16 @@
 
 ImageBuffer::TextureData ImageBuffer::loadTexture(RenderData* _RD, std::string image_name)
 {
+	//Check if the texture is already been created
 	for (auto& texture : textures)
 	{
 		if (texture.m_image_name == image_name)
 		{
-			return texture;
+			return texture; //If it has, returns the texture to the class that need it
 		}
 	}
 
+	//If not, I will create a new texture and return that
 	TextureData texture_data;
 	texture_data.m_image_name = image_name;
 	
@@ -35,6 +37,6 @@ ImageBuffer::TextureData ImageBuffer::loadTexture(RenderData* _RD, std::string i
 	auto uploadResourcesFinished = resourceUpload.End(_RD->m_commandQueue.Get());
 
 	uploadResourcesFinished.wait();
-	textures.push_back(texture_data);
+	textures.push_back(texture_data); //Pushes the texture into the vector to been used again 
 	return texture_data;
 }

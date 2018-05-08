@@ -211,7 +211,7 @@ void Animation2D::SetHit()
 	SetAnimationSprite(Hit);
 }
 
-void Animation2D::SetAnimationSprite(int action)
+void Animation2D::SetAnimationSprite(int action) //Take in the enum action and set the rect off that
 {
 	SetRect(sprite_batch[action][0], sprite_batch[action][1], sprite_batch[action][2], sprite_batch[action][3]);
 }
@@ -235,7 +235,4 @@ void Animation2D::LoadSprites(string _filename) //load the sprite sheet location
 	}
 	sprite_position_batching.close();
 	SetAnimationSprite(Default); // set the default animation
-
-	//m_width = sprite_batch[CharacterWidth][2] - sprite_batch[CharacterWidth][0];
-	//m_height= sprite_batch[LDefault][3] - sprite_batch[LDefault][1];
 }

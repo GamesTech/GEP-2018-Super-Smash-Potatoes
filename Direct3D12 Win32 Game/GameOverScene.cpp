@@ -20,10 +20,16 @@ bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, 
 	
 	for (int i = 0; i < gsd->no_players; i++)
 	{
-		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1) + ": " + text[gsd->player_podium_position[i] - 1]));
+		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1)));
 		game_objects.back()->SetLayer(1.0f);
-		game_objects.back()->SetPos(Vector2(30, 100 + ((i + 1) * 100)));
+		game_objects.back()->SetPos(podium_pos[gsd->player_podium_position[i] - 1]);
 	}
+	game_objects.emplace_back(new ImageGO2D(m_RD, "podium", ib));
+	game_objects.back()->SetLayer(1.0f);
+	game_objects.back()->SetPos(Vector2(640, 450));
+	game_objects.back()->SetRect(0,0,600,300);
+	game_objects.back()->CentreOrigin();
+
 	return true;
 }
 

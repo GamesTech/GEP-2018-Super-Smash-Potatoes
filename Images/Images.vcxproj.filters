@@ -112,6 +112,9 @@
     <ImageContentTask Include="Background\background_5.png">
       <Filter>Game\GameObjects\Background</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Menu\podium.png">
+      <Filter>Menu</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

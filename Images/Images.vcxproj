@@ -264,6 +264,9 @@
   <ItemGroup>
     <ImageContentTask Include="Background\background_5.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\podium.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
