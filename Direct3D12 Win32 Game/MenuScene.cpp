@@ -188,7 +188,7 @@ void MenuScene::ReadInput(Input* input_manager)
 		action = Action::BUTTON_UP;
 	}
 
-	if (input_manager->inputs[0] == Inputs::A)
+	if (input_manager->inputs[0] == Inputs::A || input_manager->inputs[0] == Inputs::ENTER)
 	{
 		action = Action::BUTTON_PRESSED;
 	}

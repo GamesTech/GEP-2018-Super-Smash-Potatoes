@@ -4,6 +4,9 @@ namespace Inputs
 	enum Inputs
 	{
 		CLEAR = 20,
+		ESCAPE = 21,
+		ENTER = 22,
+
 		UP = 0,
 		DOWN = 1,
 		LEFT = 2,

@@ -231,14 +231,14 @@ void CharacterSelectScene::ReadInput(Input * input_manager)
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
 		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
-		if (input_manager->inputs[i] == Inputs::A)
+		if (input_manager->inputs[i] == Inputs::A || input_manager->inputs[0] == Inputs::ENTER)
 		{
 			players_locked[i] = !players_locked[i];
 		}
 	}
 
 	//only player1
-	if (input_manager->inputs[0] == Inputs::START)
+	if (input_manager->inputs[0] == Inputs::B || input_manager->inputs[0] == Inputs::ESCAPE)
 	{
 		action = Action::BACK;
 	}

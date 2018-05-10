@@ -32,7 +32,9 @@ void Input::update(GameStateData* gsd)
 	{
 		inputs[0] = Inputs::START;
 	}
+
 	//player 1
+	//Left Right
 	if (current_scene == CurrentScene::GAME)
 	{
 		if (m_keyboardState.Left)
@@ -55,6 +57,7 @@ void Input::update(GameStateData* gsd)
 			inputs[0] = Inputs::RIGHT;
 		}
 	}
+	//Up Down
 	if (m_keyboardState.Up && !m_prevKeyboardState.Up)
 	{
 		inputs[0] = Inputs::UP;
@@ -65,27 +68,31 @@ void Input::update(GameStateData* gsd)
 	}
 
 	// Jump variations
+	// Drop Down
 	if (m_keyboardState.Down && m_keyboardState.LeftControl)
 	{
 		inputs[0] = Inputs::DOWN_A;
 	}
+	// Bonus Jump
+	else if (m_keyboardState.Up && m_keyboardState.LeftShift)
+	{
+		inputs[0] = Inputs::UP_X;
+	}
+	//Jump
 	else if (m_keyboardState.LeftControl && !m_prevKeyboardState.LeftControl)
 	{
 		inputs[0] = Inputs::A;
 	}
-	// Bonus Jump
-	if (m_keyboardState.Up && m_keyboardState.LeftShift)
-	{
-		inputs[0] = Inputs::UP_X;
-	}
+
 	//Down Slam
-	else if (m_keyboardState.LeftShift
+	if (m_keyboardState.LeftShift
 		&& !m_prevKeyboardState.LeftShift
 		&& m_keyboardState.Down
 		&& !m_prevKeyboardState.Down)
 	{
 		inputs[0] = Inputs::DOWN_X;
 	}
+	//Punch
 	else if (m_keyboardState.LeftShift && !m_prevKeyboardState.LeftShift)
 	{
 		inputs[0] = Inputs::X;
@@ -93,8 +100,10 @@ void Input::update(GameStateData* gsd)
 
 
 	//player2
+	//Left Right
 	if (current_scene == CurrentScene::GAME)
 	{
+		//In game needs to be smooth
 		if (m_keyboardState.D)
 		{
 			inputs[1] = Inputs::LEFT;
@@ -106,6 +115,7 @@ void Input::update(GameStateData* gsd)
 	}
 	else
 	{
+		//For Menus
 		if (m_keyboardState.D && !m_prevKeyboardState.D)
 		{
 			inputs[1] = Inputs::LEFT;
@@ -115,7 +125,7 @@ void Input::update(GameStateData* gsd)
 			inputs[1] = Inputs::RIGHT;
 		}
 	}
-
+	//Up Down
 	if (m_keyboardState.R && !m_prevKeyboardState.R)
 	{
 		inputs[1] = Inputs::UP;
@@ -124,37 +134,36 @@ void Input::update(GameStateData* gsd)
 	{
 		inputs[1] = Inputs::DOWN;
 	}
+
 	// Jump variations
-	//jump
-	if (m_keyboardState.A && !m_prevKeyboardState.A)
-	{
-		inputs[1] = Inputs::A;
-	}
-	// drop down
+	// Drop Down
 	else if (m_keyboardState.F && m_keyboardState.A)
 	{
 		inputs[1] = Inputs::DOWN_A;
 	}
-	// bonus jump
-	else if (m_keyboardState.W && !m_prevKeyboardState.W)
-	{
-		inputs[1] = Inputs::X;
-	}
-
-	//Punch
-	if (m_keyboardState.R && m_keyboardState.W)
+	// Bonus Jump
+	else if (m_keyboardState.R && m_keyboardState.W)
 	{
 		inputs[1] = Inputs::UP_X;
 	}
+	//Jump
+	else if (m_keyboardState.A && !m_prevKeyboardState.A)
+	{
+		inputs[1] = Inputs::A;
+	}
 	//Down Slam
-	else if (m_keyboardState.F
+	if (m_keyboardState.F
 		&& !m_prevKeyboardState.F
 		&& m_keyboardState.W
 		&& !m_prevKeyboardState.W)
 	{
 		inputs[1] = Inputs::DOWN_X;
 	}
-
+	//Punch
+	else if (m_keyboardState.W && !m_prevKeyboardState.W)
+	{
+		inputs[1] = Inputs::X;
+	}
 
 #else
 	//for computer input(1 player)
@@ -270,6 +279,17 @@ void Input::update(GameStateData* gsd)
 			|| (m_gamePadState[0].IsYPressed() && !m_prevGamePadState[0].IsYPressed()))
 		{
 			inputs[i] = Inputs::Y;
+		}
+		if (current_scene != CurrentScene::GAME)
+		{
+			if (m_keyboardState.Escape && !m_prevKeyboardState.Escape)
+			{
+				inputs[i] = Inputs::ESCAPE;
+			}
+			if (m_keyboardState.Enter && !m_prevKeyboardState.Enter)
+			{
+				inputs[i] = Inputs::ENTER;
+			}
 		}
 
 	}

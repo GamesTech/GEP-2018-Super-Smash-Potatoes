@@ -112,13 +112,13 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 			}
 		}
 
-		if (input_manager->inputs[i] == Inputs::A)
+		if (input_manager->inputs[i] == Inputs::A || input_manager->inputs[0] == Inputs::ENTER)
 		{
 			game_state_data->arena_selected = level_selected;
 			action = Action::CONTINUE;
 		}
 
-		if (input_manager->inputs[i] == Inputs::START)
+		if (input_manager->inputs[i] == Inputs::B || input_manager->inputs[i] == Inputs::ESCAPE)
 		{
 			action = Action::BACK;
 		}
