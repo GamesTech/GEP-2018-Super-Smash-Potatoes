@@ -203,13 +203,13 @@ void Input::update(GameStateData* gsd)
 		//Up Down Left Right
 		if (current_scene == CurrentScene::GAME)
 		{
-			if ((m_keyboardState.A /*&& !m_prevKeyboardState.A*/)
+			if ((m_keyboardState.A)
 				|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
 				|| m_gamePadState[i].IsLeftThumbStickLeft())
 			{
 				inputs[i] = Inputs::LEFT;
 			}
-			else if ((m_keyboardState.D /*&& !m_prevKeyboardState.D*/)
+			else if ((m_keyboardState.D)
 				|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
 				|| m_gamePadState[i].IsLeftThumbStickRight())
 			{
