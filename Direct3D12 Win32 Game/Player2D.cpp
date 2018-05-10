@@ -454,9 +454,9 @@ bool Player2D::ExectueUpPunch(GameStateData * _GSD, Player2D * other_player)
 
 bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width()*2;
+	float r1 = 100;
 	float x1 = GetPos().x + (Width() / 2);
-	float y1 = GetPos().y + Height()*1.2;
+	float y1 = GetPos().y + Height();
 
 	float r2 = other_player->Width();
 	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
