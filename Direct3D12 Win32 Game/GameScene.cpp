@@ -297,6 +297,7 @@ void GameScene::render(RenderData* m_RD,
 
 void GameScene::ReadInput(Input* im)
 {
+	im->current_scene = CurrentScene::GAME;
 	input_manager = im;
 	if (input_manager->inputs[0] == Inputs::START)
 	{

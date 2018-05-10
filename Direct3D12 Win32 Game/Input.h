@@ -21,6 +21,21 @@ namespace Inputs
 	};
 };
 
+namespace CurrentScene
+{
+	enum CurrentScene
+	{
+		START,
+		MENU,
+		LEVELEDITOR,
+		SETTINGS,
+		ARENA,
+		CHARACTER,
+		GAME,
+		GAMEOVER
+	};
+};
+
 class Input
 {
 public:
@@ -33,6 +48,8 @@ public:
 
 	void ResumeInput();
 	void SuspendInput();
+
+	CurrentScene::CurrentScene current_scene = CurrentScene::START;
 
 	const static int MAX_PLAYERS = 4;
 	Inputs::Inputs inputs[MAX_PLAYERS];

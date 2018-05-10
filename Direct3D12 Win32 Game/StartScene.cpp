@@ -51,6 +51,7 @@ void StartScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphics
 
 void StartScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::START;
 	for (int i = 0; i < 4; ++i)
 	{
 		if (input_manager->inputs[i] == Inputs::START)
