@@ -98,6 +98,10 @@ Rectangle GameCamera::CalculateCameraRect(std::vector<std::unique_ptr<Player2D>>
 			rect = Rectangle(players[i]->GetPos().x, players[i]->GetPos().y, 0, 0);
 			break;
 		}
+		else if (i == 0)
+		{
+			return rect = Rectangle(1, 1, 0, 0);
+		}
 	}
 
 	// calculate rectangle from players positions 
@@ -137,6 +141,10 @@ Vector2 GameCamera::CalculateCentre(std::vector<std::unique_ptr<Player2D>> &play
 			position += player->GetPos();
 			j++;
 		}
+	}
+	if (j == 0)
+	{
+		return Vector2(base_res_x / 2, base_res_y / 2);
 	}
 	return Vector2(position.x / j, position.y / j);
 }
