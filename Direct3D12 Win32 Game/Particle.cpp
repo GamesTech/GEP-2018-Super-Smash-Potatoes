@@ -9,57 +9,14 @@ void Particle::init(std::string particle_f, Vector2 pos, bool _flip)
 {
 	particle_file = std::make_unique<ParticleFile>();
 	particle_file->read(particle_f , ".particle");
-	flip = _flip;
-
-}
-
-void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale, float x_range, float y_range)
-{
-	SetVariables(pos, _lifetime, _layer, _fade, _flip, _colour, _scale);
-	std::random_device rd;
-	std::uniform_real_distribution<float> x_velocity(-x_range, x_range);
-	std::uniform_real_distribution<float> y_velocity(-y_range, y_range);
-	std::uniform_real_distribution<float> _acc(-100, 100);
-
-	//Normalises the vectors
-	std::array<float, 2> v = { x_velocity(rd), y_velocity(rd) };
-
-	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
-
-	v[0] /= mag;
-	v[1] /= mag;
-
-	velocity.x = v[0] * x_velocity(rd);
-	velocity.y = v[1] * y_velocity(rd);
-
-	accelaration.x = _acc(rd);
-	accelaration.y = _acc(rd);
-}
-
-void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale, Vector2 vel, Vector2 acc)
-{
-	SetVariables(pos, _lifetime, _layer, _fade, _flip, _colour, _scale);
-
-	if (flip) // flips the direction of the particle
-	{
-		velocity.x = -vel.x;
-		velocity.y = vel.y;
-		accelaration.x = -acc.x;
-		accelaration.y = acc.y;
-	}
-	else
-	{
-		velocity.x = vel.x;
-		velocity.y = vel.y;
-		accelaration.x = acc.x;
-		accelaration.y = acc.y;
-	}
+	SetVariables(pos, _flip);
 }
 
 //set the variables for the particle
-void Particle::SetVariables(Vector2 &pos, float _lifetime, float _layer, bool _fade, bool _flip, Color &_colour, float _scale)
+void Particle::SetVariables(Vector2 pos, bool _flip)
 {
 	dead = false;
+	flip = _flip;
 	position = Vector2{ 0,0 };
 	offset_position = pos;
 	lifetime = particle_file->getObj(0).lifetime;
@@ -74,11 +31,44 @@ void Particle::SetVariables(Vector2 &pos, float _lifetime, float _layer, bool _f
 	}
 	else if (particle_file->getObj(0).type_of_particle == 2)
 	{
-		velocity.x = particle_file->getObj(0).velocity.x;
-		velocity.y = particle_file->getObj(0).velocity.y;
-		accelaration.x = particle_file->getObj(0).accelaration.x;
-		accelaration.y = particle_file->getObj(0).accelaration.y;
+		isFlip();
 	}
+	if (particle_file->getObj(0).random_colour)
+	{
+		randomColours();
+	}
+}
+
+void Particle::randomColours()
+{
+	std::random_device rd;
+	std::uniform_int_distribution<int> ran_colour(0, 1);
+	colour.x = ran_colour(rd);
+	colour.y = ran_colour(rd);
+	colour.z = ran_colour(rd);
+	while ((colour.x == 0 && colour.y == 0 && colour.z == 0) ||
+		(colour.x == 1 && colour.y == 1 && colour.z == 1))
+	{
+		colour.x = ran_colour(rd);
+		colour.y = ran_colour(rd);
+		colour.z = ran_colour(rd);
+	}
+}
+
+void Particle::isFlip()
+{
+	if (flip)
+	{
+		velocity.x = -particle_file->getObj(0).velocity.x;
+		accelaration.x = -particle_file->getObj(0).accelaration.x;
+	}
+	else
+	{
+		velocity.x = particle_file->getObj(0).velocity.x;
+		accelaration.x = particle_file->getObj(0).accelaration.x;
+	}
+	velocity.y = particle_file->getObj(0).velocity.y;
+	accelaration.y = particle_file->getObj(0).accelaration.y;
 }
 
 void Particle::burstParticles()
