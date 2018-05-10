@@ -1,22 +1,22 @@
 {
-platform
-350, 350
-1, 1
-1, 1
-0
-0.5
-1
-1, 1
-600, 49
+image name:blackground_1
+position:1.000000, 1.000000
+origin:1.000000, 1.000000
+scale:1.000000, 1.000000
+orientation:0.000000
+layer:1.000000
+type:0
+sprite min X & Y:1.000000, 1.000000
+sprite max X & Y:1280.000000, 720.000000
 }
 {
-platform_large
-250, 600
-1, 1
-1, 1
-0
-0.5
-0
-1, 1
-800, 72
+image name:platform
+position:490.000000, 100.000000
+origin:1.000000, 1.000000
+scale:1.000000, 1.000000
+orientation:0.000000
+layer:0.500000
+type:1
+sprite min X & Y:1.000000, 1.000000
+sprite max X & Y:600.000000, 48.000000
 }

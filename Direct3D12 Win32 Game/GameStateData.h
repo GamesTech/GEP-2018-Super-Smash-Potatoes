@@ -3,24 +3,9 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
-enum Winner
-{
-	PLAYER1,
-	PLAYER2,
-	PLAYER3,
-	PLAYER4,
-};
-
 struct GameStateData
 {
 	const static int MAX_PLAYERS = 4;
-
-	Keyboard::State m_keyboardState;
-	Keyboard::State m_prevKeyboardState;
-	Mouse::State m_mouseState;
-
-	GamePad::State m_gamePadState[MAX_PLAYERS];
-	GamePad::State m_prevGamePadState[MAX_PLAYERS];
 
 	int x_resolution;
 	int y_resolution;
@@ -28,7 +13,8 @@ struct GameStateData
 	int camera_view_width;
 	int camera_view_height;
 
-	static Winner winner;
+	int player_podium_position[4] = {0,0,0,0};
+	int position_in_podium;
 
 	int player_selected[MAX_PLAYERS];
 
@@ -37,7 +23,5 @@ struct GameStateData
 
 	int no_players;
 	int arena_selected;
-
-	Winner winState;
 };
 

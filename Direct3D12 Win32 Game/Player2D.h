@@ -2,6 +2,7 @@
 #include "Physics2D.h"
 #include "ParticleSystem.h"
 #include "Particle.h"
+#include "Input.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 enum Attack
@@ -26,12 +27,12 @@ public:
 	};
 
 	//TODO: add a 3d player and modes to switch between different views and basic physics
-	Player2D(RenderData* _RD, string _filename);
+	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	virtual ~Player2D();
 
 	//void init(AudioManager* am);
 
-	void Tick(GameStateData* _GSD, int _test/*, GameObject2D* _obj*/);
+	void Tick(GameStateData* _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
 
@@ -44,6 +45,7 @@ public:
 	
 	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
 	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
+	void SetSpawnPosition(Vector2 spawn) { m_respawn_pos = spawn; };
 
 	//void TestCollision() { SetBoundingBoxes(); }
 	//void SetLimit(Vector2 _lim) { m_limit = _lim; }
@@ -89,10 +91,10 @@ protected:
 	void Grabbing();
 	void PunchTimer(GameStateData * _GSD);
 	void UpPunchTimer(GameStateData * _GSD);
-	void deathZone();
-	void respawn();
+	void deathZone(GameStateData * _GSD);
+	void respawn(GameStateData * _GSD);
 	void RespawnTimer(GameStateData * _GSD);
-	void controller(GameStateData * _GSD);
+	void controller(Input * input_manager);
 
 	float m_jumpForce = 60000;
 	float m_drive = 200.0f;
@@ -134,6 +136,7 @@ protected:
 	Attack m_execute_attack = NONE;
 
 	Vector2 m_limit = Vector2(1280, 720);
+	Vector2 m_respawn_pos = Vector2(600, 250);
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };
 

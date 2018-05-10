@@ -6,7 +6,7 @@
 #include "Emitter.h"
 
 
-Emitter::Emitter(RenderData * _RD, string _filename) :ImageGO2D(_RD, _filename)
+Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	particles.reserve(50);
 }
@@ -29,14 +29,14 @@ void Emitter::render(RenderData * m_RD)
 		if (!p->isDead()) // If particle is dead, don't render it.
 		{
 			FlipH(p->getFlip());
-			m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
-				GetTextureSize(m_texture.Get()),
+			m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_texture_data.m_resourceNum),
+				GetTextureSize(m_texture_data.m_texture.Get()),
 				p->getPos(), nullptr, p->getColour(), m_orientation, m_origin, p->getScale(), m_flip, p->getLayer());
 		}
 	}
 }
 
-void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale)
+void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, float x_range, float y_range)
 {
 	for (int i = 0; i < amount; ++i)
 	{
@@ -46,7 +46,7 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 		{
 			if (p->isDead()) // Checks for dead particles, if found they are reused.
 			{
-				p->init(pos, lifetime, layer, fade, flipH, colour, scale);
+				p->init(pos, lifetime, layer, fade, flipH, colour, scale, x_range, y_range);
 				made_particle = true;
 				break;
 			}
@@ -54,7 +54,7 @@ void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float
 		if (!made_particle) // If no particles can be reuse , create a new one.
 		{
 			particles.emplace_back(new Particle());
-			particles.back()->init(pos, lifetime, layer, fade, flipH, colour, scale);
+			particles.back()->init(pos, lifetime, layer, fade, flipH, colour, scale, x_range, y_range);
 		}
 	}
 }

@@ -21,19 +21,20 @@ CharacterSelectScene::~CharacterSelectScene()
 }
 
 
-bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	no_players = gsd->no_players;
 	loadCharactersFile("PlayerSprites.txt");
 
-	title_text = std::make_unique<ImageGO2D>(m_RD, "Character Selection");
+	title_text = std::make_unique<ImageGO2D>(m_RD, "Character Selection", image_buffer);
 	title_text->SetLayer(1.0f);
 	title_text->SetRect(1,1,1280,720);
 	game_objects.push_back(std::move(title_text));
 
 	for (int i = 0; i < gsd->MAX_PLAYERS; i++)
 	{
-		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
+		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags", image_buffer);
 		player_numbers->SetLayer(0.0f);
 		player_numbers->SetRect(number_pos[i]);
 		player_numbers->CentreOrigin();
@@ -46,7 +47,7 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 
 	for (int i = 0; i < sprite_names.size(); i++)
 	{
-		grid_sprite_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
+		grid_sprite_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i], image_buffer);
 		grid_sprite_temp->SetPos(Vector2(sprite_pixel_gap + (current_sprites_on_row * sprite_pixel_gap), sprite_pixel_gap + (row_no * sprite_pixel_gap)));
 		grid_sprite_temp->SetRect(1, 1, grid_sprite_pixel_size, grid_sprite_pixel_size);
 		grid_sprite_temp->SetLayer(1.0f);
@@ -54,7 +55,7 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 		grid_sprite_temp->SetScale(Vector2{ 2,2 });
 		grid_sprites.push_back(std::move(grid_sprite_temp));
 
-		player_preview_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i]);
+		player_preview_temp = std::make_unique<ImageGO2D>(m_RD, sprite_names[i], image_buffer);
 		player_preview_temp->SetRect(1, 1, grid_sprite_pixel_size, grid_sprite_pixel_size);
 		player_preview_temp->SetLayer(0.0f);
 		player_preview_temp->CentreOrigin();
@@ -71,7 +72,7 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 		}
 	}
 
-	player_preview_boxes = std::make_unique<ImageGO2D>(m_RD, "PlayerPreviewBoxes");
+	player_preview_boxes = std::make_unique<ImageGO2D>(m_RD, "PlayerPreviewBoxes", image_buffer);
 	player_preview_boxes->SetPos(Vector2(640, 600));
 	player_preview_boxes->SetRect(1, 1, 723, 180);
 	player_preview_boxes->SetLayer(1.0f);
@@ -173,14 +174,14 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 
 
-void CharacterSelectScene::ReadInput(GameStateData * gsd)
+void CharacterSelectScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::CHARACTER;
 	for (int i = 0; i < no_players; i++)
 	{
 		if (players_locked[i] == false)
 		{
-			if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-				|| (gsd->m_gamePadState[i].IsDPadUpPressed() && !gsd->m_prevGamePadState[i].IsDPadUpPressed()))
+			if (input_manager->inputs[i] == Inputs::UP)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -191,8 +192,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i] = selection_player[i] - sprites_per_row;
 				}
 			}
-			if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-				|| (gsd->m_gamePadState[i].IsDPadDownPressed() && !gsd->m_prevGamePadState[i].IsDPadDownPressed()))
+			if (input_manager->inputs[i] == Inputs::DOWN)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -203,8 +203,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i] = selection_player[i] + sprites_per_row;
 				}
 			}
-			if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-				|| (gsd->m_gamePadState[i].IsDPadLeftPressed() && !gsd->m_prevGamePadState[i].IsDPadLeftPressed()))
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -215,8 +214,7 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 					selection_player[i]--;
 				}
 			}
-			if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-				|| (gsd->m_gamePadState[i].IsDPadRightPressed() && !gsd->m_prevGamePadState[i].IsDPadRightPressed()))
+			if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1));
 				grid_sprites[selection_player[i]]->SetScale(Vector2(2.0f, 2.0f));
@@ -229,45 +227,18 @@ void CharacterSelectScene::ReadInput(GameStateData * gsd)
 			}
 		}
 
-		/*
-		don't know if we'll want this back?
-		float red = 0;
-		float green = 0;
-		float blue = 0;
-		switch (i)
-		{
-		case 0:
-			red = 1;
-			break;
-		case 1:
-			blue = 1;
-			break;
-		case 2:
-			green = 1;
-			break;
-		case 3:
-			red = 0.5f;
-			green = 0.5f;
-			break;
-		}
-
-		grid_sprites[selection_player[i]]->SetColour(DirectX::SimpleMath::Color::Color(red, green, blue));
-		*/
-
 		grid_sprites[selection_player[i]]->SetScale(Vector2(2.2f, 2.2f));
 		grid_sprites[selection_player[i]]->SetLayer(0.9f);
 		//player_previews[selection_player[i]]->SetPos(Vector2(370 + (i * 180), 620));
 
-		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[i].IsAPressed() && !gsd->m_prevGamePadState[i].IsAPressed()))
+		if (input_manager->inputs[i] == Inputs::A || input_manager->inputs[0] == Inputs::ENTER)
 		{
 			players_locked[i] = !players_locked[i];
 		}
 	}
 
 	//only player1
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	if (input_manager->inputs[0] == Inputs::B || input_manager->inputs[0] == Inputs::ESCAPE)
 	{
 		action = Action::BACK;
 	}

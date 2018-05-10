@@ -55,10 +55,16 @@ Game::~Game()
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+#ifdef ARCADE
+	m_window = window;
+	m_outputWidth = 1200;
+	m_outputHeight = 720;
+#else
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
-	
+#endif
+
 	
     CreateDevice();
     CreateResources();
@@ -95,7 +101,7 @@ void Game::Initialize(HWND window, int width, int height)
 	pd.blendDesc = m_RD->m_states->NonPremultiplied;
 	m_RD->m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dDevice.Get(), resourceUpload, pd);
 	m_RD->m_font = std::make_unique<SpriteFont>(m_d3dDevice.Get(), resourceUpload,
-		L"courier.spritefont",
+		L"upheaval.spritefont",
 		m_RD->m_resourceDescriptors->GetCpuHandle(m_RD->m_resourceCount),
 		m_RD->m_resourceDescriptors->GetGpuHandle(m_RD->m_resourceCount));
 	m_RD->m_resourceCount++;
@@ -135,23 +141,18 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     
-
-//GEP::This is where I am creating the test objects
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
 	
+	input_manager = std::make_unique<Input>();
+	input_manager->init();
+
 	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
 	Debug::output("hello", "world");
 
 	scene_manager = std::make_unique<SceneManager>();
 	scene_manager->init(m_RD, m_GSD, audio_manager);
-
-	m_keyboard = std::make_unique<Keyboard>();
-	m_gamePad = std::make_unique<GamePad>();
-	//m_mouse = std::make_unique<Mouse>();
-	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
-	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
 }
 
 //GEP:: Executes the basic game loop.
@@ -168,35 +169,17 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-
-	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState = m_keyboard->GetState();
 	//scene->ReadInput(m_GSD);
-
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	if (!scene_manager->update(m_RD, m_GSD, audio_manager, m_swapChain))
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, input_manager.get(), m_swapChain))
 	{
 		PostQuitMessage(0);
 	}
 
-	//// TODO: Gamepad
-	m_GSD->no_players = 0;
-	for (int i = 0; i < m_GSD->MAX_PLAYERS; i++)
-	{
-		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
-		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
-		if (m_GSD->m_gamePadState[i].IsConnected())
-		{
-			m_GSD->no_players++;
-		}
-	}
-	if (m_GSD->no_players <= 1)
-	{
-		m_GSD->no_players = 3;
-	}
+	input_manager->update(m_GSD);
 }
 
 //GEP:: Draws the scene.
@@ -234,7 +217,7 @@ void Game::Clear()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::HotPink, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::Black, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
@@ -278,21 +261,20 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	audio_manager->suspendAudioManager();
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnResuming()
@@ -301,8 +283,7 @@ void Game::OnResuming()
 	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)

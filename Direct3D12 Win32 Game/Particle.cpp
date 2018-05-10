@@ -5,23 +5,24 @@
 #include <array>
 
 
-void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale)
+void Particle::init(Vector2 pos, float _lifetime, float _layer, bool _fade, bool _flip, Color _colour, float _scale, float x_range, float y_range)
 {
 	SetVariables(pos, _lifetime, _layer, _fade, _flip, _colour, _scale);
 	std::random_device rd;
-	std::uniform_real_distribution<float> _velocity(-100, 100);
+	std::uniform_real_distribution<float> x_velocity(-x_range, x_range);
+	std::uniform_real_distribution<float> y_velocity(-y_range, y_range);
 	std::uniform_real_distribution<float> _acc(-100, 100);
 
 	//Normalises the vectors
-	std::array<float, 2> v = { _velocity(rd), 0 };
+	std::array<float, 2> v = { x_velocity(rd), y_velocity(rd) };
 
 	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
 
 	v[0] /= mag;
 	v[1] /= mag;
 
-	velocity.x = v[0] * _velocity(rd);
-	velocity.y = -abs(v[1] * _velocity(rd));
+	velocity.x = v[0] * x_velocity(rd);
+	velocity.y = v[1] * y_velocity(rd);
 
 	accelaration.x = _acc(rd);
 	accelaration.y = _acc(rd);

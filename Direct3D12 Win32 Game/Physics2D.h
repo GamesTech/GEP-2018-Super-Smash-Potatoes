@@ -6,7 +6,7 @@ class Physics2D :
 	public Animation2D
 {
 public:
-	Physics2D(RenderData* _RD, string _filename);
+	Physics2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
 	~Physics2D();
 
 	void AddForce(Vector2 _push) { m_acc += (_push / m_mass); }

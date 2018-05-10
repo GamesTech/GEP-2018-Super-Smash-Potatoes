@@ -36,6 +36,8 @@ public:
 	float GetLayer() { return m_layer;  }
 	int GetType() { return m_type; }
 	std::string GetTag() { return tag; }
+	std::string getImageName() { return image_name; };
+	RECT getRect() { return m_rect; };
 	void SetPos(Vector2 _pos) { m_pos = _pos; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
 	void SetOri(float _ori) { m_orientation = _ori; }
@@ -70,6 +72,7 @@ protected:
 	float m_height = 0;
 
 	std::string tag;
+	std::string image_name = "";
 	//bool m_grounded = false;
 
 };

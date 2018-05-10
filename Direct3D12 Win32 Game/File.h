@@ -21,6 +21,7 @@ public:
 
 
 	static Vector2 parseVector2(std::string s);
+	static bool parseBoolean(std::string s);
 private:
 	std::ifstream inFile;
 	std::ofstream outFile;

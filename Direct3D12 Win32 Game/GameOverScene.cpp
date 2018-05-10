@@ -13,22 +13,26 @@ GameOverScene::~GameOverScene()
 	game_objects.clear();
 }
 
-bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am)
+bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	m_RD = _RD;
-	winner_number = std::make_unique<ImageGO2D>(m_RD, "numbers");
-	winner_number->SetLayer(1.0f);
-	winner_number->SetPos(Vector2(700, 330));
-	winner_number->SetRect(number_pos[gsd->winState]);
-	winner_number->CentreOrigin();
-	game_objects.push_back(std::move(winner_number));
 	
-	winner_text = std::make_unique<ImageGO2D>(m_RD, "Player wins");
-	winner_text->SetLayer(1.0f);
-	winner_text->SetRect(1,1,924,60);
-	winner_text->SetPos(Vector2(640, 330));
-	winner_text->CentreOrigin();
-	game_objects.push_back(std::move(winner_text));
+	for (int i = 0; i < gsd->no_players; i++)
+	{
+		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1)));
+		game_objects.back()->SetLayer(0.f);
+		game_objects.back()->SetPos(podium_pos[gsd->player_podium_position[i] - 1]);
+		gsd->player_podium_position[i] = 0;
+	}
+	game_objects.emplace_back(new ImageGO2D(m_RD, "podium", ib));
+	game_objects.back()->SetLayer(0.5f);
+	game_objects.back()->SetPos(Vector2(640, 450));
+	game_objects.back()->SetRect(0,0,600,300);
+	game_objects.back()->CentreOrigin();
+
+	loadBackground(m_RD, ib);
+
 	return true;
 }
 
@@ -40,7 +44,6 @@ Scene::SceneChange GameOverScene::update(GameStateData * gsd)
 	case Action::BACK:
 	{
 		scene_change.change_type = ChangeType::REPLACE_ALL;
-		m_RD->m_resourceCount = 1;
 		scene_change.scene = SceneEnum::MENU;
 		break;
 	}
@@ -63,11 +66,27 @@ void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 	m_RD->m_spriteBatch->End();
 }
 
-void GameOverScene::ReadInput(GameStateData * gsd)
+void GameOverScene::ReadInput(Input * input_manager)
 {
-	if ((gsd->m_keyboardState.Escape && !gsd->m_prevKeyboardState.Escape)
-		|| (gsd->m_gamePadState[0].IsBPressed() && !gsd->m_prevGamePadState[0].IsBPressed()))
+	input_manager->current_scene = CurrentScene::GAMEOVER;
+	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;
 	}
+}
+
+void GameOverScene::loadCharactersFile(string _filename)
+{
+	std::ifstream character_sprites_loading;
+	character_sprites_loading.open(_filename);
+	if (character_sprites_loading.is_open())
+	{
+		while (!character_sprites_loading.eof())
+		{
+			std::string temp_string;
+			character_sprites_loading >> temp_string;
+			sprite_names.push_back(temp_string);
+		}
+	}
+	character_sprites_loading.close();
 }

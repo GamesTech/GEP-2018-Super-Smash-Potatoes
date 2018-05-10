@@ -1,0 +1,44 @@
+{
+image name:platform_small
+position:340, 500
+origin:1, 1
+scale:1, 1
+orientation:0
+layer:0.5
+type:1
+sprite min X & Y:1, 1
+sprite max X & Y:150, 48
+}
+{
+image name:platform
+position:340, 500
+origin:1, 1
+scale:1, 1
+orientation:0
+layer:0.5
+type:1
+sprite min X & Y:1, 1
+sprite max X & Y:600, 48
+}
+{
+image name:platform_large
+position:240, 520
+origin:1, 1
+scale:1, 1
+orientation:0
+layer:0.5
+type:0
+sprite min X & Y:1, 1
+sprite max X & Y:800, 64
+}
+{
+image name:platform_wall
+position:340, 350
+origin:1, 1
+scale:1, 1
+orientation:0
+layer:0.5
+type:0
+sprite min X & Y:1, 1
+sprite max X & Y:48, 150
+}
