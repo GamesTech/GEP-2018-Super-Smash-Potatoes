@@ -8,6 +8,11 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 	timer_text->SetPos(Vector2(750, 10));
 	timer_text->SetLayer(0.0f);
 
+#ifdef ARCADE
+	character_gap = 400;
+#endif
+
+
 	//player_UI_Boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
 	//player_UI_Boxes->SetPos(Vector2(640, 640));
 	//player_UI_Boxes->SetRect(1, 1, 723, 180);

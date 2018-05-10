@@ -92,6 +92,7 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 
 void ArenaSelectScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::ARENA;
 	for (int i = 0; i < no_players; i++)
 	{
 		if (input_manager->inputs[i] == Inputs::LEFT)

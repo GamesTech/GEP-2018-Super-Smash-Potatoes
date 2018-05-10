@@ -180,6 +180,7 @@ void LevelEditor::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphic
 
 void LevelEditor::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::LEVELEDITOR;
 	action = (Action)input_manager->inputs[0];
 }
 

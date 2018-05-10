@@ -176,6 +176,7 @@ void CharacterSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D
 
 void CharacterSelectScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::CHARACTER;
 	for (int i = 0; i < no_players; i++)
 	{
 		if (players_locked[i] == false)

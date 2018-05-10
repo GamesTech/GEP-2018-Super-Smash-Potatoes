@@ -44,8 +44,6 @@ bool MenuScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 
 Scene::SceneChange MenuScene::update(GameStateData* gsd)
 {
-	//Add your game logic here.
-	
 	for (auto& it : game_objects)
 	{
 		it->Tick(gsd);
@@ -59,6 +57,14 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 			if (menu_option_selected > 1)
 			{
 				menu_option_selected--;
+#ifdef ARCADE
+				{
+					if (menu_option_selected == 3)
+					{
+						menu_option_selected = 2;
+					}
+				}
+#endif
 				highlight_option_selected();
 				audio_manager->playSound(TOBYMENUCLICK1);
 			}
@@ -70,6 +76,14 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 			if (menu_option_selected < 4)
 			{
 				menu_option_selected++;
+#ifdef ARCADE
+				{
+					if (menu_option_selected == 3)
+					{
+						menu_option_selected = 4;
+					}
+				}
+#endif
 				highlight_option_selected();
 				audio_manager->playSound(TOBYMENUCLICK1);
 			}
@@ -155,10 +169,16 @@ void MenuScene::highlight_option_selected()
 		game_objects[4]->SetColour(Color(1, 0, 0));
 		break;
 	}
+#ifdef ARCADE
+	{
+		game_objects[3]->SetColour(Color(0.1f, 0.1f, 0.1f));
+	}
+#endif
 }
 
 void MenuScene::ReadInput(Input* input_manager)
 {
+	input_manager->current_scene = CurrentScene::MENU;
 	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;
