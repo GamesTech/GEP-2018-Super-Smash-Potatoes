@@ -62,15 +62,16 @@ void LevelFile::write(std::string file, std::string ext)
 	{
 		auto obj = object_data_write.at(i);
 		
-		std::vector<std::string> to_file = { obj.image_file , 
-			std::to_string(obj.position.x) + ", " + std::to_string(obj.position.y),
-			std::to_string(obj.origin.x) + ", " + std::to_string(obj.origin.y), 
-			std::to_string(obj.scale.x) + ", " + std::to_string(obj.scale.y), 
-			std::to_string(obj.orientation),
-			std::to_string(obj.layer), 
-			std::to_string(obj.type), 
-			std::to_string(obj.sprite_size_min.x) + ", " + std::to_string(obj.sprite_size_min.y),
-			std::to_string(obj.sprite_size_max.x) + ", " + std::to_string(obj.sprite_size_max.y)};
+		std::vector<std::string> to_file = { 
+			("image name:" + obj.image_file) , 
+			("position:" + std::to_string(obj.position.x) + ", " + std::to_string(obj.position.y)),
+			("origin:" + std::to_string(obj.origin.x) + ", " + std::to_string(obj.origin.y)),
+			("scale:" + std::to_string(obj.scale.x) + ", " + std::to_string(obj.scale.y)),
+			("orientation:" + std::to_string(obj.orientation)),
+			("layer:" + std::to_string(obj.layer)),
+			("type:" + std::to_string(obj.type)),
+			("sprite min X & Y:" + std::to_string(obj.sprite_size_min.x) + ", " + std::to_string(obj.sprite_size_min.y)),
+			("sprite max X & Y:" + std::to_string(obj.sprite_size_max.x) + ", " + std::to_string(obj.sprite_size_max.y))};
 
 		level_file_write->addBlock(to_file);
 	}

@@ -5,12 +5,17 @@
 struct ParticleObjectData 
 {
 	string image_file;
+	float lifetime = 0;
+	int type_of_particle = 0;
 	Vector2 velocity = { 0, 0 };
 	Vector2 accelaration = { 0, 0 };
-	float lifetime = 0;
+	Vector2 burst_particle_range = { 0, 0 };
 	float layer = 0;
-	Vector2 x_min_max;
-	Vector2 y_min_max;
+	bool fade = false;
+	float opacity = 1.0f;
+	bool increase_in_size = false;
+	float scale = 1.0f;
+	bool random_colour = false;
 };
 
 class ParticleFile

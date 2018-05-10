@@ -71,3 +71,19 @@ void GameOverScene::ReadInput(Input * input_manager)
 		action = Action::BACK;
 	}
 }
+
+void GameOverScene::loadCharactersFile(string _filename)
+{
+	std::ifstream character_sprites_loading;
+	character_sprites_loading.open(_filename);
+	if (character_sprites_loading.is_open())
+	{
+		while (!character_sprites_loading.eof())
+		{
+			std::string temp_string;
+			character_sprites_loading >> temp_string;
+			sprite_names.push_back(temp_string);
+		}
+	}
+	character_sprites_loading.close();
+}
