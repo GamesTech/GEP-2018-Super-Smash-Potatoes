@@ -307,7 +307,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 	if (input_manager->inputs[player_no] == Inputs::B)
 	{
 		if (item != nullptr) {
-			item->throwItem(_GSD, m_vel);
+			item->throwItem(_GSD, m_direction);
 			item = nullptr;
 		}
 	}

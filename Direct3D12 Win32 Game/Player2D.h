@@ -36,6 +36,7 @@ public:
 	void Tick(GameStateData* _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/);
 
 	void setPlayerNo(int player_number);
+	int getPlayerNo() { return player_no; };
 
 	void SetDrive(float _drive) { m_drive = _drive; }
 	//float GetDrive() { return m_drive; }
