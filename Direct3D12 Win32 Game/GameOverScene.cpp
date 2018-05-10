@@ -23,6 +23,7 @@ bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, 
 		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1)));
 		game_objects.back()->SetLayer(0.f);
 		game_objects.back()->SetPos(podium_pos[gsd->player_podium_position[i] - 1]);
+		gsd->player_podium_position[i] = 0;
 	}
 	game_objects.emplace_back(new ImageGO2D(m_RD, "podium", ib));
 	game_objects.back()->SetLayer(0.5f);
@@ -31,6 +32,7 @@ bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, 
 	game_objects.back()->CentreOrigin();
 
 	loadBackground(m_RD, ib);
+
 	return true;
 }
 

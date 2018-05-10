@@ -114,7 +114,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 			}
 			case 4:
 			{
-				scene_change.change_type = ChangeType::REMOVE;
+				scene_change.change_type = ChangeType::EXIT;
 				break;
 			}
 			}

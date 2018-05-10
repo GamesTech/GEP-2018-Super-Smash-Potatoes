@@ -53,8 +53,8 @@ void GameCamera::UpdateCamera(std::vector<std::unique_ptr<Player2D>> &players)
 	//Camera Zoom Limits
 	{
 		//min
-		if (x_zoom_resolution < base_res_x*0.75f) { x_zoom_resolution = base_res_x * 0.75f; }
-		if (y_zoom_resolution < base_res_y*0.75f) { y_zoom_resolution = base_res_y * 0.75f; }
+		if (x_zoom_resolution < base_res_x*1.f) { x_zoom_resolution = base_res_x * 1.f; }
+		if (y_zoom_resolution < base_res_y*1.f) { y_zoom_resolution = base_res_y * 1.f; }
 		//max
 		if (x_zoom_resolution > base_res_x*1.5f) { x_zoom_resolution = base_res_x * 1.5f; }
 		if (y_zoom_resolution > base_res_y*1.5f) { y_zoom_resolution = base_res_y * 1.5f; }
