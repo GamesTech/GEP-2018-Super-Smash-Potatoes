@@ -140,7 +140,7 @@ protected:
 	Collision m_coll_state = COLNONE;
 	Attack m_execute_attack = NONE;
 
-	Vector2 m_limit = Vector2(1280, 720);
+	Vector2 m_limit = Vector2(1780, 1220);
 	Vector2 m_respawn_pos = Vector2(600, 250);
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };

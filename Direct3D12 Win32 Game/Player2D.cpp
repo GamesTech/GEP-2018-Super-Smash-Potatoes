@@ -179,20 +179,10 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 
 void Player2D::deathZone(GameStateData * _GSD)
 {
-	if (m_pos.x < 0.0f - 800)
-	{
-		respawn(_GSD);
-	}
-	if (m_pos.y < 0.0f - 600)
-	{
-		respawn(_GSD);
-	}
-
-	if (m_pos.x > m_limit.x + 500)
-	{
-		respawn(_GSD);
-	}
-	if (m_pos.y > m_limit.y + 500)
+	if ((m_pos.x < -800) 
+		|| (m_pos.y < -600)
+		|| (m_pos.x > m_limit.x)
+		|| (m_pos.y > m_limit.y))
 	{
 		respawn(_GSD);
 	}
