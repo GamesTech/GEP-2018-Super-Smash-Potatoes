@@ -125,15 +125,23 @@ void Input::update(GameStateData* gsd)
 		inputs[1] = Inputs::DOWN;
 	}
 	// Jump variations
-	if (m_keyboardState.F && m_keyboardState.A)
-	{
-		inputs[1] = Inputs::DOWN_A;
-	}
-	else if (m_keyboardState.A && !m_prevKeyboardState.A)
+	//jump
+	if (m_keyboardState.A && !m_prevKeyboardState.A)
 	{
 		inputs[1] = Inputs::A;
 	}
-	// Bonus Jump
+	// drop down
+	else if (m_keyboardState.F && m_keyboardState.A)
+	{
+		inputs[1] = Inputs::DOWN_A;
+	}
+	// bonus jump
+	else if (m_keyboardState.W && !m_prevKeyboardState.W)
+	{
+		inputs[1] = Inputs::X;
+	}
+
+	//Punch
 	if (m_keyboardState.R && m_keyboardState.W)
 	{
 		inputs[1] = Inputs::UP_X;
@@ -146,10 +154,7 @@ void Input::update(GameStateData* gsd)
 	{
 		inputs[1] = Inputs::DOWN_X;
 	}
-	else if (m_keyboardState.W && !m_prevKeyboardState.W)
-	{
-		inputs[1] = Inputs::X;
-	}
+
 
 #else
 	//for computer input(1 player)
