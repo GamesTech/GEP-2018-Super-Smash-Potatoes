@@ -7,9 +7,9 @@ namespace Particle_Type
 {
 	enum Type
 	{
-		DUST,
 		ATTACK,
 		ATTACK_UPWARDS,
+		DUST,
 		FIREWORK
 	};
 }
@@ -52,4 +52,6 @@ public:
 private:
 	RenderData * m_RD = nullptr;
 	std::vector<std::unique_ptr<Emitter>> emitter;
+	std::vector<std::string> emitter_names;
+	void loadEmitterFile(string _filename);
 };

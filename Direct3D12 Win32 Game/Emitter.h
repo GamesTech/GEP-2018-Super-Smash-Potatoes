@@ -6,7 +6,7 @@ class Emitter :
 	public ImageGO2D
 {
 public:
-	Emitter(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
+	Emitter(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, std::string particle);
 	~Emitter() = default;
 
 	void update(GameStateData* gsd);
@@ -18,4 +18,5 @@ public:
 
 private:
 	std::vector<std::unique_ptr<Particle>> particles;
+	std::string particle_file_name;
 };

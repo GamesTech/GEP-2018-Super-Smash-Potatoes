@@ -1,14 +1,14 @@
 {
 string image_file:upwards_punch_particle
-float lifetime:
-int type_of_particle:
-Vector2 velocity:
-Vector2 accelaration: 
-Vector2 burst_particle_range:
-float layer:
-bool fade:
-float opacity:
-bool increase_in_size:
-float scale:
-bool random_colour: 
+float lifetime:0.3
+int type_of_particle:2
+Vector2 velocity:0,-850
+Vector2 accelaration: 0,-100
+Vector2 burst_particle_range:0,0
+float layer:0.0
+bool fade:true
+float opacity:1.0
+bool increase_in_size:true
+float scale:1.0
+bool random_colour:false
 }

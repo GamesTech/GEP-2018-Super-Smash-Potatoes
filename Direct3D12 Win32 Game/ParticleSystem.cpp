@@ -11,17 +11,13 @@ bool ParticleSystem::init(RenderData * _m_RD, std::shared_ptr<ImageBuffer> image
 {
 	m_RD = _m_RD;
 
-	std::unique_ptr<Emitter> dust_emitter = std::make_unique<Emitter>(m_RD, "dust", image_buffer); // Create a new particle 
-	emitter.push_back(std::move(dust_emitter));
+	loadEmitterFile("emitter.txt");
 
-	std::unique_ptr<Emitter> attack_emitter = std::make_unique<Emitter>(m_RD, "attack", image_buffer); // Create a new particle 
-	emitter.push_back(std::move(attack_emitter));
-
-	std::unique_ptr<Emitter> attack_upwards_emitter = std::make_unique<Emitter>(m_RD, "upwards_punch_particle", image_buffer); // Create a new particle 
-	emitter.push_back(std::move(attack_upwards_emitter));
-
-	std::unique_ptr<Emitter> firework_emitter = std::make_unique<Emitter>(m_RD, "firework", image_buffer); // Create a new particle 
-	emitter.push_back(std::move(firework_emitter));
+	for (int i = 0; i < emitter_names.size(); ++i)
+	{
+		std::unique_ptr<Emitter> emitter_temp = std::make_unique<Emitter>(m_RD, emitter_names.at(i), image_buffer); // Create a new particle 
+		emitter.push_back(std::move(emitter_temp));
+	}
 
 	return true;
 }
@@ -99,3 +95,18 @@ void ParticleSystem::addParticlesToEmitter(int amount, Particle_Type::Type type,
 	}
 }
 
+void ParticleSystem::loadEmitterFile(string _filename)
+{
+	std::ifstream emitter;
+	emitter.open(_filename);
+	if (emitter.is_open())
+	{
+		while (!emitter.eof())
+		{
+			std::string temp_string;
+			emitter >> temp_string;
+			emitter_names.push_back(temp_string);
+		}
+	}
+	emitter.close();
+}

@@ -6,9 +6,10 @@
 #include "Emitter.h"
 
 
-Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :ImageGO2D(_RD, _filename, image_buffer)
+Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, std::string particle) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	particles.reserve(50);
+	particle_file_name = particle;
 }
 
 void Emitter::update(GameStateData * gsd)
