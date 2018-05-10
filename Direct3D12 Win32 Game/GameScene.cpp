@@ -150,8 +150,8 @@ void GameScene::endGame(int players_dead, GameStateData * gsd)
 	{
 		if (!gameEnded)
 		{
-			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
-			particle_system->addParticlesToEmitter(300, Particle_Type::FIREWORK, Vector2(1280 - 100, 100), 5.f, 0.0f, true, true, { 1,1,1,1 }, 1.f, 200, 200);
+			particle_system->addParticles(300, Particle_Type::FIREWORK, Vector2(100, 100), true);
+			particle_system->addParticles(300, Particle_Type::FIREWORK, Vector2(1180, 100), true);
 			gameEnded = true;
 		}
 		int player_count = 0;

@@ -12,44 +12,44 @@ sprite max X & Y:1280, 720
 {
 image name:background_2
 position:1, 1
-origin:1, 1
-scale:1, 1
-orientation:0
-layer:1
-type:0
-sprite min X & Y:1, 1
-sprite max X & Y:1280, 720
+1, 1
+1, 1
+0
+1
+0
+1, 1
+1280, 720
 }
 {
-image name:background_3
-position:-300, -150
-origin:1, 1
-scale:1, 1
-orientation:0
-layer:1
-type:0
-sprite min X & Y:1, 1
-sprite max X & Y:1920, 1080
+background_3
+-300, -150
+1, 1
+1, 1
+0
+1
+0
+1, 1
+1920, 1080
 }
 {
-image name:background_4
-position:-300, -150
-origin:1, 1
-scale:1, 1
-orientation:0
-layer:1
-type:0
-sprite min X & Y:1, 1
-sprite max X & Y:1920, 1080
+background_4
+-300, -150
+1, 1
+1, 1
+0
+1
+0
+1, 1
+1920, 1080
 }
 {
-image name:background_5
-position:-300, -150
-origin:1, 1
-scale:1, 1
-orientation:0
-layer:1
-type:0
-sprite min X & Y:1, 1
-sprite max X & Y:1920, 1080
+background_5
+-300, -150
+1, 1
+1, 1
+0
+1
+0
+1, 1
+1920, 1080
 }

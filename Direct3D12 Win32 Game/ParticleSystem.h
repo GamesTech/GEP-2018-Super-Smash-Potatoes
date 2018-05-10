@@ -7,9 +7,9 @@ namespace Particle_Type
 {
 	enum Type
 	{
-		DUST,
 		ATTACK,
 		ATTACK_UPWARDS,
+		DUST,
 		FIREWORK
 	};
 }
@@ -23,6 +23,8 @@ public:
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 
+	void addParticles(int amount, Particle_Type::Type type, Vector2 pos, bool flipH);
+
 	/*  Amount of particles created,
 	Particle type by enum,
 	Position of where they spawn,
@@ -34,7 +36,7 @@ public:
 	Scale of the image,
 	X range of particles,
 	Y range of particles*/
-	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, float x_range, float y_range);
+	//void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, float x_range, float y_range);
 
 	/*  Amount of particles created,
 	Particle type by enum,
@@ -47,9 +49,11 @@ public:
 	Scale of the image,
 	Velocity of the particles,
 	Accelaration of the particles*/
-	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, Vector2 velocity, Vector2 accelaration);
+	//void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Color colour, float scale, Vector2 velocity, Vector2 accelaration);
 
 private:
 	RenderData * m_RD = nullptr;
 	std::vector<std::unique_ptr<Emitter>> emitter;
+	std::vector<std::string> emitter_names;
+	void loadEmitterFile(string _filename);
 };

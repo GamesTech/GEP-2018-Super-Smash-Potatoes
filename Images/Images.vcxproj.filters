@@ -58,9 +58,6 @@
     <ImageContentTask Include="Particle\hit_particle.png">
       <Filter>Particle</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Particle\upwards_punch_particle.png">
-      <Filter>Particle</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Particle\attack.png">
       <Filter>Particle</Filter>
     </ImageContentTask>
@@ -114,6 +111,9 @@
     </ImageContentTask>
     <ImageContentTask Include="Menu\podium.png">
       <Filter>Menu</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Particle\upwards_punch.png">
+      <Filter>Particle</Filter>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
