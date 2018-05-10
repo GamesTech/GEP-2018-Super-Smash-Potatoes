@@ -86,28 +86,28 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	particle_system->update(gsd);
 
 	// movement loop
-	for (int i = 0; i < no_players; i++)
+	for (auto& player : m_players)
 	{
-		Vector2 temp = m_players[i]->GetPos();
-		m_player_tag->SetPlayerPos(i, temp, m_players[i]->GetSize().x);
-		if (!m_players[i]->getDead())
+		Vector2 temp = player->GetPos();
+		m_player_tag->SetPlayerPos(player->getPlayerNo(), temp, player->GetSize().x);
+		if (!player->getDead())
 		{
 			for (auto& platform : platforms)
 			{
-				if (m_collision_system->ResloveCollision(platform.get(), m_players[i].get())
-					&& !m_anim_grounded[i])
+				if (m_collision_system->ResloveCollision(platform.get(), player.get())
+					&& !m_anim_grounded[player->getPlayerNo()])
 				{
-					m_anim_grounded[i] = true;
+					m_anim_grounded[player->getPlayerNo()] = true;
 					break;
 				}
 			}
-			m_players[i]->SetAnimGrounded(m_anim_grounded[i]);
+			player->SetAnimGrounded(m_anim_grounded[player->getPlayerNo()]);
 			if (input_manager)
 			{
-				m_players[i]->Tick(gsd, i, input_manager);
+				player->Tick(gsd, player->getPlayerNo(), input_manager);
 			}
 
-			m_anim_grounded[i] = false;
+			m_anim_grounded[player->getPlayerNo()] = false;
 		}
 		else
 		{
