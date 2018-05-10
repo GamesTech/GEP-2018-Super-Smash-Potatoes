@@ -58,7 +58,11 @@ void Game::Initialize(HWND window, int width, int height)
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
-	
+
+#ifdef ARCADE
+	m_outputWidth = 1024;
+	m_outputHeight = 768;
+#endif
 	
     CreateDevice();
     CreateResources();

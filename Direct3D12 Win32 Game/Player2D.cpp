@@ -253,6 +253,7 @@ void Player2D::respawn(GameStateData * _GSD)
 		}
 		m_pos = Vector2(-10000, 0);
 		m_dead = true;
+		lives_remaining = 0;
 	}
 	//audio_manager->playSound(EXPLOSION);
 }

@@ -34,7 +34,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std
 		UI.push_back(std::move(player_numbers));
 
 		damage_text[i] = new Text2D("xxx%");
-		damage_text[i]->SetPos(Vector2(435 + (i * character_gap), UI_start_y + 10));
+		damage_text[i]->SetPos(Vector2(500 + (i * character_gap), UI_start_y + 30));
 		damage_text[i]->SetLayer(0.0f);
 		damage_text[i]->CentreOrigin();
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 1));
