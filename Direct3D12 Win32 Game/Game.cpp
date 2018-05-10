@@ -55,14 +55,16 @@ Game::~Game()
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+#ifdef ARCADE
+	m_window = window;
+	m_outputWidth = 1200;
+	m_outputHeight = 720;
+#else
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
-
-#ifdef ARCADE
-	m_outputWidth = 1024;
-	m_outputHeight = 768;
 #endif
+
 	
     CreateDevice();
     CreateResources();

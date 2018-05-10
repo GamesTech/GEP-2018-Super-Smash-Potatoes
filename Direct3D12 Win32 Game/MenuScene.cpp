@@ -159,6 +159,7 @@ void MenuScene::highlight_option_selected()
 
 void MenuScene::ReadInput(Input* input_manager)
 {
+	input_manager->current_scene = CurrentScene::MENU;
 	if (input_manager->inputs[0] == Inputs::DOWN)
 	{
 		action = Action::BUTTON_DOWN;

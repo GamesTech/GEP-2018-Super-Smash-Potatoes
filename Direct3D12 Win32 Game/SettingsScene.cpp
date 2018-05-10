@@ -158,6 +158,7 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 
 void SettingsScene::ReadInput(Input* input_manager)
 {
+	input_manager->current_scene = CurrentScene::SETTINGS;
 	for (int i = 0; i < no_players; i++)
 	{
 		if (input_manager->inputs[i] == Inputs::DOWN)

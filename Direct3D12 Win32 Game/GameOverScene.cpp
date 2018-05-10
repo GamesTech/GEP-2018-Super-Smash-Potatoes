@@ -66,6 +66,7 @@ void GameOverScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 
 void GameOverScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::GAMEOVER;
 	if (input_manager->inputs[0] == Inputs::START)
 	{
 		action = Action::BACK;

@@ -33,15 +33,29 @@ void Input::update(GameStateData* gsd)
 		inputs[0] = Inputs::START;
 	}
 	//player 1
-	if (m_keyboardState.Left /*&& !m_prevKeyboardState.A*/)
+	if (current_scene == CurrentScene::GAME)
 	{
-		inputs[0] = Inputs::LEFT;
+		if (m_keyboardState.Left)
+		{
+			inputs[0] = Inputs::LEFT;
+		}
+		else if (m_keyboardState.Right)
+		{
+			inputs[0] = Inputs::RIGHT;
+		}
 	}
-	else if (m_keyboardState.Right /*&& !m_prevKeyboardState.A*/)
+	else
 	{
-		inputs[0] = Inputs::RIGHT;
+		if (m_keyboardState.Left && !m_prevKeyboardState.Left)
+		{
+			inputs[0] = Inputs::LEFT;
+		}
+		else if (m_keyboardState.Right && !m_prevKeyboardState.Right)
+		{
+			inputs[0] = Inputs::RIGHT;
+		}
 	}
-	else if (m_keyboardState.Up && !m_prevKeyboardState.Up)
+	if (m_keyboardState.Up && !m_prevKeyboardState.Up)
 	{
 		inputs[0] = Inputs::UP;
 	}
@@ -65,7 +79,10 @@ void Input::update(GameStateData* gsd)
 		inputs[0] = Inputs::UP_X;
 	}
 	//Down Slam
-	else if (m_keyboardState.LeftShift && m_keyboardState.Down)
+	else if (m_keyboardState.LeftShift
+		&& !m_prevKeyboardState.LeftShift
+		&& m_keyboardState.Down
+		&& !m_prevKeyboardState.Down)
 	{
 		inputs[0] = Inputs::DOWN_X;
 	}
@@ -76,15 +93,30 @@ void Input::update(GameStateData* gsd)
 
 
 	//player2
-	if (m_keyboardState.D /*&& !m_prevKeyboardState.A*/)
+	if (current_scene == CurrentScene::GAME)
 	{
-		inputs[1] = Inputs::LEFT;
+		if (m_keyboardState.D)
+		{
+			inputs[1] = Inputs::LEFT;
+		}
+		else if (m_keyboardState.G)
+		{
+			inputs[1] = Inputs::RIGHT;
+		}
 	}
-	else if (m_keyboardState.G /*&& !m_prevKeyboardState.A*/)
+	else
 	{
-		inputs[1] = Inputs::RIGHT;
+		if (m_keyboardState.D && !m_prevKeyboardState.D)
+		{
+			inputs[1] = Inputs::LEFT;
+		}
+		else if (m_keyboardState.G && !m_prevKeyboardState.G)
+		{
+			inputs[1] = Inputs::RIGHT;
+		}
 	}
-	else if (m_keyboardState.R && !m_prevKeyboardState.R)
+
+	if (m_keyboardState.R && !m_prevKeyboardState.R)
 	{
 		inputs[1] = Inputs::UP;
 	}
@@ -107,7 +139,10 @@ void Input::update(GameStateData* gsd)
 		inputs[1] = Inputs::UP_X;
 	}
 	//Down Slam
-	else if (m_keyboardState.F && m_keyboardState.W)
+	else if (m_keyboardState.F
+		&& !m_prevKeyboardState.F
+		&& m_keyboardState.W
+		&& !m_prevKeyboardState.W)
 	{
 		inputs[1] = Inputs::DOWN_X;
 	}
