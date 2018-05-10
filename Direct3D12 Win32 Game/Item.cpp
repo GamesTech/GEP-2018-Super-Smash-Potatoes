@@ -86,7 +86,7 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 				float x2 = _player->GetPos().x + (_player->Width() / 2);
 				float y2 = _player->GetPos().y + (_player->Height() / 2);
 
-				if (!_player->GetImmune())
+				if (!_player->GetInvincibility())
 				{
 					Vector2 direction = Vector2(x2 - x1, y2 - y1);
 					direction.Normalize();
@@ -99,10 +99,10 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 		{
 			if (_player->getItem() == nullptr) 
 			{
-				prev_holder_id = _player->getPlayerNo();
 				this->player = _player;
-				_player->setItem(this);
-				m_pos = Vector2(_player->GetPos().x + _player->Width() / 2, _player->GetPos().y - _player->Height() / 4);
+				prev_holder_id = player->getPlayerNo();
+				player->setItem(this);
+				m_pos = Vector2(player->GetPos().x + player->Width() / 2, player->GetPos().y - player->Height() / 4);
 			}
 		}
 	}

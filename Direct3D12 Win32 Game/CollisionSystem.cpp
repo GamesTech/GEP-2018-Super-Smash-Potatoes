@@ -155,7 +155,7 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 
 bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player)
 {
-	float r1 = _obj->Width();
+	float r1 = _obj->Width() * 1.2;
 	float x1 = _obj->GetPos().x + (_obj->Width() / 2);
 	float y1 = _obj->GetPos().y + (_obj->Height() / 2);
 
