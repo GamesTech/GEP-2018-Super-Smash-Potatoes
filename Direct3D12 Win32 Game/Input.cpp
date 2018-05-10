@@ -201,19 +201,37 @@ void Input::update(GameStateData* gsd)
 		}
 
 		//Up Down Left Right
-		if ((m_keyboardState.A /*&& !m_prevKeyboardState.A*/)
-			|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
-			|| m_gamePadState[i].IsLeftThumbStickLeft())
+		if (current_scene == CurrentScene::GAME)
 		{
-			inputs[i] = Inputs::LEFT;
+			if ((m_keyboardState.A /*&& !m_prevKeyboardState.A*/)
+				|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
+				|| m_gamePadState[i].IsLeftThumbStickLeft())
+			{
+				inputs[i] = Inputs::LEFT;
+			}
+			else if ((m_keyboardState.D /*&& !m_prevKeyboardState.D*/)
+				|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
+				|| m_gamePadState[i].IsLeftThumbStickRight())
+			{
+				inputs[i] = Inputs::RIGHT;
+			}
 		}
-		else if ((m_keyboardState.D /*&& !m_prevKeyboardState.D*/)
-			|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
-			|| m_gamePadState[i].IsLeftThumbStickRight())
+		else
 		{
-			inputs[i] = Inputs::RIGHT;
+			if ((m_keyboardState.A && !m_prevKeyboardState.A)
+				|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
+				|| m_gamePadState[i].IsLeftThumbStickLeft())
+			{
+				inputs[i] = Inputs::LEFT;
+			}
+			else if ((m_keyboardState.D && !m_prevKeyboardState.D)
+				|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
+				|| m_gamePadState[i].IsLeftThumbStickRight())
+			{
+				inputs[i] = Inputs::RIGHT;
+			}
 		}
-		else if ((m_keyboardState.W && !m_prevKeyboardState.W)
+		if ((m_keyboardState.W && !m_prevKeyboardState.W)
 			|| (m_gamePadState[i].IsDPadUpPressed() && !m_prevGamePadState[i].IsDPadUpPressed())
 			|| m_gamePadState[i].IsLeftThumbStickUp())
 		{
