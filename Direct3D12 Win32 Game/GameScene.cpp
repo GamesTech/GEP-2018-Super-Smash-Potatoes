@@ -135,9 +135,19 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	endGame(players_dead, gsd);
 
-	if (spawner->getSize() == 0) {
-		for (int i = 0; i < 1; i++) {
-			spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+	if (spawner->getSize() == 0) 
+	{
+		if (item_spawn_timer >= 3)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+				item_spawn_timer = 0;
+			}
+		}
+		else
+		{
+			item_spawn_timer += gsd->m_dt;
 		}
 	}
 

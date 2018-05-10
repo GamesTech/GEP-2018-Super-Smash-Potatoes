@@ -28,4 +28,5 @@ class Item : public Physics2D
 		bool marked_for_deletion = false;
 		long life_span;
 		long time = 0;
+		Vector2 m_limit = Vector2(1780, 1220);
 };

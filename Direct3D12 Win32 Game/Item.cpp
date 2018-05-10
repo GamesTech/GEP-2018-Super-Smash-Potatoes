@@ -11,14 +11,12 @@ Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> imag
 
 void Item::update(GameStateData * _GSD)
 {
-	if (time >= life_span)
+	if ((m_pos.x < -800)
+		|| (m_pos.y <  -600)
+		|| (m_pos.x > m_limit.x)
+		|| (m_pos.y > m_limit.y))
 	{
 		marked_for_deletion = true;
-		time = 0;
-	}
-	else 
-	{
-		time++;
 	}
 
 	if (type == BOMB) 
@@ -115,3 +113,4 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 		marked_for_deletion = true;
 	}
 }
+

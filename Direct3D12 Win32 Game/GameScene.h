@@ -38,6 +38,7 @@ private:
 	int no_players = 0;
 
 	float time_remaining = 0;
+	float item_spawn_timer = 0;
 	int max_lives = 0;
 	double timer = 0;
 	bool gameEnded = false;

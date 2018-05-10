@@ -18,7 +18,7 @@ void ItemSpawner::update(GameStateData * _GSD)
 	//Update items loop
 	for (auto& item : items)
 	{
-		if(item->getMarked())item->SetPos(Vector2(-100000, 0));		//set offscreen
+		if(item->getMarked()) item->SetPos(Vector2(-100000, 0));		//set offscreen
 		item->update(_GSD);
 	}
 }
@@ -52,13 +52,12 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 	}
 
 	//Otherwise add new spot
-	auto item = new Item(m_RD, _filename, image_buffer, type, life_span);
-	item->SetPos(position);
-	item->CentreOrigin();
-	item->SetScale(Vector2(1, 1));
-	item->SetLayer(0.5f);
-	item->SetRect(1, 1, 64, 64); //todo
-	items.emplace_back(item);
+	items.emplace_back(new Item(m_RD, _filename, image_buffer, type, life_span));
+	items.back()->SetPos(position);
+	items.back()->CentreOrigin();
+	items.back()->SetScale(Vector2(1, 1));
+	items.back()->SetLayer(0.5f);
+	items.back()->SetRect(1, 1, 64, 64); //todo
 }
 
 int ItemSpawner::getSize() const
