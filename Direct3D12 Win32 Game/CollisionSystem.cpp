@@ -7,7 +7,11 @@ bool CollisionSystem::ResloveCollision(GameObject2D * _obj, Player2D * _player)
 	{
 		if (_obj->GetType() == 0)
 		{
-			return MainPlatformCollision(_obj, _player);
+			return AllSideCollision(_obj, _player);
+		}
+		else if (_obj->GetType() == 3)
+		{
+			return CheckIntersect(_obj, _player);
 		}
 		else
 		{
@@ -15,13 +19,13 @@ bool CollisionSystem::ResloveCollision(GameObject2D * _obj, Player2D * _player)
 			{
 				return false;
 			}
-			return SmallPlatformCollision(_obj, _player);
+			return TopSideCollision(_obj, _player);
 		}
 	}
 	return false;
 }
 
-bool CollisionSystem::MainPlatformCollision(GameObject2D * _obj, Player2D* _player)
+bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 {
 	Player2D* player = _player;
 	GameObject2D* object = _obj;
@@ -113,7 +117,7 @@ bool CollisionSystem::MainPlatformCollision(GameObject2D * _obj, Player2D* _play
 	}
 }
 
-bool CollisionSystem::SmallPlatformCollision(GameObject2D * _obj, Player2D* _player)
+bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 {
 	Player2D* player = _player;
 	GameObject2D* object = _obj;
@@ -146,5 +150,22 @@ bool CollisionSystem::SmallPlatformCollision(GameObject2D * _obj, Player2D* _pla
 	}
 	
 	player->SetCollState(player->COLNONE);
+	return false;
+}
+
+bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player)
+{
+	float r1 = _obj->Width() * 1.2;
+	float x1 = _obj->GetPos().x + (_obj->Width() / 2);
+	float y1 = _obj->GetPos().y + (_obj->Height() / 2);
+
+	float r2 = _player->Width();
+	float x2 = _player->GetPos().x + (_player->Width() / 2);
+	float y2 = _player->GetPos().y + (_player->Height() / 2);
+
+	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+	{
+		return  true;
+	}
 	return false;
 }

@@ -69,6 +69,8 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
 
+	spawner = std::make_unique<ItemSpawner>();
+	spawner->init(m_RD, image_buffer);
 	return true;
 
 }
@@ -84,28 +86,28 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	particle_system->update(gsd);
 
 	// movement loop
-	for (int i = 0; i < no_players; i++)
+	for (auto& player : m_players)
 	{
-		Vector2 temp = m_players[i]->GetPos();
-		m_player_tag->SetPlayerPos(i, temp, m_players[i]->GetSize().x);
-		if (!m_players[i]->getDead())
+		Vector2 temp = player->GetPos();
+		m_player_tag->SetPlayerPos(player->getPlayerNo(), temp, player->GetSize().x);
+		if (!player->getDead())
 		{
 			for (auto& platform : platforms)
 			{
-				if (m_collision_system->ResloveCollision(platform.get(), m_players[i].get())
-					&& !m_anim_grounded[i])
+				if (m_collision_system->ResloveCollision(platform.get(), player.get())
+					&& !m_anim_grounded[player->getPlayerNo()])
 				{
-					m_anim_grounded[i] = true;
+					m_anim_grounded[player->getPlayerNo()] = true;
 					break;
 				}
 			}
-			m_players[i]->SetAnimGrounded(m_anim_grounded[i]);
+			player->SetAnimGrounded(m_anim_grounded[player->getPlayerNo()]);
 			if (input_manager)
 			{
-				m_players[i]->Tick(gsd, i, input_manager);
+				player->Tick(gsd, player->getPlayerNo(), input_manager);
 			}
 
-			m_anim_grounded[i] = false;
+			m_anim_grounded[player->getPlayerNo()] = false;
 		}
 		else
 		{
@@ -114,16 +116,42 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	}
 	m_player_tag->Update();
 
-	// attack loop
-	for (int i = 0; i < no_players; i++)
+	// attack loop and items col
+	for (auto& player : m_players)
 	{
-		if (!m_players[i]->getDead())
+		if (!player->getDead())
 		{
-			Attacking(i, gsd);
+			Attacking(player.get(), gsd);
 		}
+
+		for (auto& item : spawner->getItems())
+		{
+			if (m_collision_system->ResloveCollision(item.get(), player.get()))
+			{
+				item->collided(player.get(), gsd);
+			}
+		}
+		
 	}
 	endGame(players_dead, gsd);
 
+	if (spawner->getSize() == 0) 
+	{
+		if (item_spawn_timer >= 3)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+				item_spawn_timer = 0;
+			}
+		}
+		else
+		{
+			item_spawn_timer += gsd->m_dt;
+		}
+	}
+
+	spawner->update(gsd);
 	Scene::SceneChange scene_change;
 	switch (action)
 	{
@@ -173,17 +201,17 @@ void GameScene::endGame(int players_dead, GameStateData * gsd)
 	}
 }
 
-void GameScene::Attacking(int i, GameStateData * gsd)
+void GameScene::Attacking(Player2D * _player, GameStateData * gsd)
 {
 	bool block = false;
-	switch (m_players[i]->GetAttackType())
+	switch (_player->GetAttackType())
 	{
 	case Attack::FIRST:
-		for (int j = 0; j < no_players; j++)
+		for (auto& player : m_players)
 		{
-			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
+			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
 			{
-				if (m_players[i]->CheckBlocking(gsd, m_players[j].get()))
+				if (_player->CheckBlocking(gsd, player.get()))
 				{
 					block = true;
 				}
@@ -191,29 +219,29 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 		}
 		if (block)
 		{
-			m_players[i]->Block(gsd);
+			_player->Block(gsd);
 		}
 		else
 		{
-			for (int j = 0; j < no_players; j++)
+			for (auto& player : m_players)
 			{
-				if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
+				if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
 				{
-					if (m_players[i]->ExectuePunch(gsd, m_players[j].get()))
+					if (_player->ExectuePunch(gsd, player.get()))
 					{
 						audio_manager->playSound(SLAPSOUND);
 					}
 				}
 			}
 		}
-		m_players[i]->ResetAttacks();
+		_player->ResetAttacks();
 		break;
 	case Attack::SECOND:
-		for (int j = 0; j < no_players; j++)
+		for (auto& player : m_players)
 		{
-			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
+			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
 			{
-				if (m_players[i]->ExectueUpPunch(gsd, m_players[j].get()))
+				if (_player->ExectueUpPunch(gsd, player.get()))
 				{
 					audio_manager->playSound(SLAPSOUND);
 				}
@@ -221,17 +249,17 @@ void GameScene::Attacking(int i, GameStateData * gsd)
 		}
 		break;
 	case Attack::THIRD:
-		for (int j = 0; j < no_players; j++)
+		for (auto& player : m_players)
 		{
-			if (i != j && !m_players[j]->getDead() && !m_players[j]->GetInvincibility())
+			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
 			{
-				if (m_players[i]->ExectueDownPunch(gsd, m_players[j].get()))
+				if (_player->ExectueDownPunch(gsd, player.get()))
 				{
 					audio_manager->playSound(SLAPSOUND);
 				}
 			}
 		}
-		m_players[i]->ResetAttacks();
+		_player->ResetAttacks();
 		break;
 	default:
 		break;
@@ -274,7 +302,9 @@ void GameScene::render(RenderData* m_RD,
 			platform->Render(m_RD);
 		}
 	}
-
+	
+	spawner->render(m_RD);
+	
 	for (int i = 0; i < no_players; i++)
 	{
 		m_players[i]->Render(m_RD);

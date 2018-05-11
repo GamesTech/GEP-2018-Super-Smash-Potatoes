@@ -5,6 +5,7 @@
 #include "UserInterface2D.h"
 #include "ParticleSystem.h"
 #include "CollisionSystem.h"
+#include "ItemSpawner.h"
 #include "GameCamera.h"
 
 class GameScene : public Scene
@@ -17,7 +18,7 @@ public:
 	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	void endGame(int players_dead, GameStateData * gsd);
-	void Attacking(int i, GameStateData * gsd);
+	void Attacking(Player2D* _player, GameStateData * gsd);
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
 
@@ -37,6 +38,7 @@ private:
 	int no_players = 0;
 
 	float time_remaining = 0;
+	float item_spawn_timer = 0;
 	int max_lives = 0;
 	double timer = 0;
 	bool gameEnded = false;
@@ -54,7 +56,7 @@ private:
 
 	std::vector<std::unique_ptr<GameObject2D>> platforms;
 	std::vector<std::unique_ptr<GameObject2D>> objects;
-	//Player2D* m_players;
+	std::unique_ptr<ItemSpawner> spawner;
 	bool m_anim_grounded[4] = { false,false,false,false };
 	Text2D* timer_text;
 	Text2D* damage_text[4];

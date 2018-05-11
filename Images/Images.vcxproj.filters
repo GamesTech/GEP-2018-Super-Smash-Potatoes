@@ -135,6 +135,9 @@
     <Filter Include="Particle">
       <UniqueIdentifier>{d2b60a95-8837-4603-8f84-0213cc7246d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{6df49d46-4731-4bf7-bcb2-0a2ec6e96bd2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Game\GameObjects">
       <UniqueIdentifier>{eef231de-21ac-4fb8-aea5-ee7f6a0fb157}</UniqueIdentifier>
     </Filter>

@@ -330,6 +330,9 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Game Base\Source\AudioManager</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTags.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>

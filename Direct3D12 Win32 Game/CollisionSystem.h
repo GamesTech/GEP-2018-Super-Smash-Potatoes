@@ -10,6 +10,7 @@ public:
 
 private:
 
-	bool MainPlatformCollision(GameObject2D * _obj, Player2D* _player);
-	bool SmallPlatformCollision(GameObject2D * _obj, Player2D* _player);
+	bool AllSideCollision(GameObject2D * _obj, Player2D* _player);
+	bool TopSideCollision(GameObject2D * _obj, Player2D* _player);
+	bool CheckIntersect(GameObject2D * _obj, Player2D* _player);
 };

@@ -289,12 +289,12 @@ void Input::update(GameStateData* gsd)
 			inputs[i] = Inputs::X;
 		}
 		else if ((m_keyboardState.Back && !m_prevKeyboardState.Back)
-			|| (m_gamePadState[0].IsBPressed() && !m_prevGamePadState[0].IsBPressed()))
+			|| (m_gamePadState[i].IsBPressed() && !m_prevGamePadState[i].IsBPressed()))
 		{
 			inputs[i] = Inputs::B;
 		}
 		else if ((m_keyboardState.R && !m_prevKeyboardState.R)
-			|| (m_gamePadState[0].IsYPressed() && !m_prevGamePadState[0].IsYPressed()))
+			|| (m_gamePadState[i].IsYPressed() && !m_prevGamePadState[i].IsYPressed()))
 		{
 			inputs[i] = Inputs::Y;
 		}

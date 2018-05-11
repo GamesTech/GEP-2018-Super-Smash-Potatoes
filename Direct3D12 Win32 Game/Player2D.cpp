@@ -22,7 +22,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	//SetBoundingBoxes();
 	if (!m_remove_controll)
 	{
-		controller(input_manager);
+		controller(input_manager, _GSD);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -179,20 +179,10 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 
 void Player2D::deathZone(GameStateData * _GSD)
 {
-	if (m_pos.x < 0.0f - 800)
-	{
-		respawn(_GSD);
-	}
-	if (m_pos.y < 0.0f - 600)
-	{
-		respawn(_GSD);
-	}
-
-	if (m_pos.x > m_limit.x + 500)
-	{
-		respawn(_GSD);
-	}
-	if (m_pos.y > m_limit.y + 500)
+	if ((m_pos.x < -800) 
+		|| (m_pos.y < -600)
+		|| (m_pos.x > m_limit.x)
+		|| (m_pos.y > m_limit.y))
 	{
 		respawn(_GSD);
 	}
@@ -273,7 +263,7 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 	}
 }
 
-void Player2D::controller(Input * input_manager)
+void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 {
 	// Walk
 	if (input_manager->inputs[player_no] == Inputs::LEFT)
@@ -300,6 +290,16 @@ void Player2D::controller(Input * input_manager)
 		if (!m_grabing_side)
 		{
 			action_movement = STILL;
+		}
+	}
+
+
+	//Item Throw
+	if (input_manager->inputs[player_no] == Inputs::B)
+	{
+		if (item != nullptr) {
+			item->throwItem(_GSD, m_direction);
+			item = nullptr;
 		}
 	}
 
@@ -370,6 +370,12 @@ void Player2D::controller(Input * input_manager)
 		}
 	}
 }
+
+void Player2D::setItem(Item * item)
+{
+	this->item = item;
+}
+
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
 	float r1 = Width() / 1.5;
@@ -511,6 +517,11 @@ void Player2D::Block(GameStateData * _GSD)
 	m_timer_hit = 0;
 }
 
+
+Item * Player2D::getItem() const
+{
+	return item;
+}
 
 void Player2D::ProcessCollision()
 {
