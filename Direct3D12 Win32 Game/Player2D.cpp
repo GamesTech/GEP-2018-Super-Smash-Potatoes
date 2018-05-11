@@ -107,6 +107,10 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 		}
 	}
+	if (!m_invincibility)
+	{
+		SetOpacity(1.f);
+	}
 	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
@@ -237,6 +241,11 @@ void Player2D::respawn(GameStateData * _GSD)
 		m_dead = true;
 		lives_remaining = 0;
 	}
+	if (item != nullptr) 
+	{
+		item->throwItem(_GSD, m_direction);
+		item = nullptr;
+	}
 	//audio_manager->playSound(EXPLOSION);
 }
 
@@ -247,7 +256,6 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 		if (m_invincibility)
 		{
 			m_invincibility = false;
-			SetOpacity(1.f);
 		}
 	}
 	else
