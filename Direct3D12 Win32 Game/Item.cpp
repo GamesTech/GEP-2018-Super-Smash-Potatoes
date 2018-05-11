@@ -76,11 +76,9 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 		{
 			if (_player->getPlayerNo() != prev_holder_id)
 			{
-				//float r1 = Width() * 1.5;
 				float x1 = GetPos().x + (Width() / 2);
 				float y1 = GetPos().y + (Height()/ 2);
 
-				//float r2 = _player->Width();
 				float x2 = _player->GetPos().x + (_player->Width() / 2);
 				float y2 = _player->GetPos().y + (_player->Height() / 2);
 
@@ -88,6 +86,10 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 				{
 					Vector2 direction = Vector2(x2 - x1, y2 - y1);
 					direction.Normalize();
+					if (direction.y > 0)
+					{
+						direction.y *= -1;
+					}
 					_player->GotHit(_GSD, direction.x, direction.y);
 				}
 				marked_for_deletion = true;

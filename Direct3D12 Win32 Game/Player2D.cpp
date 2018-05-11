@@ -120,7 +120,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 void Player2D::HitTimer(GameStateData * _GSD)
 {
-	if (m_timer_hit >= 0.2)
+	if (m_timer_hit >= 0.4)
 	{
 		m_immune = false;
 	}
@@ -387,120 +387,46 @@ void Player2D::setItem(Item * item)
 
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = m_pos.x + (Width() / 2);
-	float y1 = m_pos.y + (Height() / 2);
-
-	if (GetOrientation())
+	if (other_player->GetAttackType() != Attack::NONE
+		&& GetOrientation() != other_player->GetOrientation())
 	{
-		x1 += 40;
-	}
-	else
-	{
-		x1 -= 40;
-	}
-
-	float r2 = other_player->Width();
-	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-
-	if (other_player->GetAttackType() != Attack::NONE && GetOrientation() != other_player->GetOrientation())
-	{
-		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-		{
-			other_player->Block(_GSD);
-			other_player->ResetAttacks();
-			return true;
-		}
+		other_player->Block(_GSD);
+		other_player->ResetAttacks();
+		return true;
 	}
 	return false;
 }
 
 bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = m_pos.x + (Width() / 2);
-	float y1 = m_pos.y + (Height() / 2);
-
-	if (GetOrientation())
-	{
-		x1 += 40;
-	}
-	else
-	{
-		x1 -= 40;
-	}
-	if (!other_player->GetInvincibility())
-	{
-		float r2 = other_player->Width();
-		float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-		float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-
-		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-		{
-			other_player->GotHit(_GSD, (m_direction/2), -1);
-			return true;
-		}
-	}
-	return false;
+	other_player->GotHit(_GSD, (m_direction/2), -1);
+	return true;
 }
 
 bool Player2D::ExectueUpPunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = GetPos().x + (Width() / 2);
-	float y1 = GetPos().y + (Height() / 2) - 30;
-
-	float r2 = other_player->Width();
-	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-	
-	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+	if (!other_player->GetImmune())
 	{
-		if (!other_player->GetImmune())
-		{				
-			other_player->SetImmune(true);
-			other_player->GotHit(_GSD, 0, -1);
-			return true;
-		}
+		other_player->SetImmune(true);
+		other_player->GotHit(_GSD, 0, -1);
+		return true;
 	}
 	return false;
 }
 
 bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = 100;
 	float x1 = GetPos().x + (Width() / 2);
 	float y1 = GetPos().y + Height();
 
-	float r2 = other_player->Width();
 	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
 	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
 
+	Vector2 direction = Vector2(x2 - x1, y2 - y1);
+	direction.Normalize();
 
-
-	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-	{
-		if (!other_player->GetImmune())
-		{
-			Vector2 direction = Vector2(x2 - x1, y2 - y1);
-			direction.Normalize();
-			//if (direction.x < 0.5 && direction.x >= 0)
-			//{
-			//	direction.x = 0.5;
-			//}
-			//else if (direction.x < 0 && direction.x > -0.5)
-			//{
-			//	direction.x = -0.5;
-			//}
-
-			//direction.y = -1;
-			//other_player->SetImmune(true);
-			other_player->GotHit(_GSD, direction.x, direction.y);
-			return true;
-		}
-	}
-	return false;
+	other_player->GotHit(_GSD, direction.x, direction.y);
+	return true;
 }
 
 void Player2D::GotHit(GameStateData * _GSD, float _dir, float y_force)

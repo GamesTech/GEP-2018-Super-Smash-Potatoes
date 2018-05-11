@@ -126,7 +126,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 
 		for (auto& item : spawner->getItems())
 		{
-			if (m_collision_system->ResloveCollision(item.get(), player.get()))
+			if (m_collision_system->CheckIntersect(item.get(), player.get(), 100.f))
 			{
 				item->collided(player.get(), gsd);
 			}
@@ -209,8 +209,11 @@ void GameScene::Attacking(Player2D * _player, GameStateData * gsd)
 	case Attack::FIRST:
 		for (auto& player : m_players)
 		{
-			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
-			{
+			if (_player != player.get() 
+				&& !player->getDead() 
+				&& !player->GetInvincibility()
+				&& m_collision_system->CheckIntersect(_player, player.get(), 0.f, .66f, 40.f, 0, _player->GetDirection()))
+			{			
 				if (_player->CheckBlocking(gsd, player.get()))
 				{
 					block = true;
@@ -225,7 +228,10 @@ void GameScene::Attacking(Player2D * _player, GameStateData * gsd)
 		{
 			for (auto& player : m_players)
 			{
-				if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
+				if (_player != player.get() 
+					&& !player->getDead() 
+					&& !player->GetInvincibility()
+					&& m_collision_system->CheckIntersect(_player, player.get(), 0.f, .66f, 40.f, 0, _player->GetDirection()))
 				{
 					if (_player->ExectuePunch(gsd, player.get()))
 					{
@@ -239,7 +245,10 @@ void GameScene::Attacking(Player2D * _player, GameStateData * gsd)
 	case Attack::SECOND:
 		for (auto& player : m_players)
 		{
-			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
+			if (_player != player.get() 
+				&& !player->getDead() 
+				&& !player->GetInvincibility()
+				&& m_collision_system->CheckIntersect(_player, player.get(), 0.f, .66f, 0.f, -30.f, 0))
 			{
 				if (_player->ExectueUpPunch(gsd, player.get()))
 				{
@@ -251,7 +260,10 @@ void GameScene::Attacking(Player2D * _player, GameStateData * gsd)
 	case Attack::THIRD:
 		for (auto& player : m_players)
 		{
-			if (_player != player.get() && !player->getDead() && !player->GetInvincibility())
+			if (_player != player.get() 
+				&& !player->getDead() 
+				&& !player->GetInvincibility()
+				&& m_collision_system->CheckIntersect(_player, player.get(), 100.f, 1.f, 0.f, _player->Width()/2, 0))
 			{
 				if (_player->ExectueDownPunch(gsd, player.get()))
 				{

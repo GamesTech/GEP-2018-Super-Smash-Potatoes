@@ -79,6 +79,7 @@ public:
 	void SetImmune(bool _immune) { m_immune = _immune; };
 	void Block(GameStateData * _GSD);
 	bool GetOrientation();
+	int GetDirection() { return m_direction; };
 	bool GetImmune() { return m_immune; }
 	bool GetInvincibility() { return m_invincibility; };
 

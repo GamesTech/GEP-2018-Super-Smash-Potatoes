@@ -153,11 +153,37 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 	return false;
 }
 
-bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player)
+bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player, float _r1, float _r1_multiplier, float _x_offset, float _y_offset, int _direction)
 {
-	float r1 = _obj->Width() * 1.2;
+	float r1 = 0;
+
+	if (_r1 == 0)
+	{
+		r1 = _obj->Width() * _r1_multiplier;
+	}
+	else
+	{
+		r1 = _r1 * _r1_multiplier;
+	}
+
 	float x1 = _obj->GetPos().x + (_obj->Width() / 2);
 	float y1 = _obj->GetPos().y + (_obj->Height() / 2);
+	
+	switch (_direction)
+	{
+	case 0:
+		x1 += _x_offset;
+		y1 += _y_offset;
+		break;
+	case -1:
+		x1 -= _x_offset;
+		break;
+	case 1:
+		x1 += _x_offset;
+		break;
+	default:
+		break;
+	}
 
 	float r2 = _player->Width();
 	float x2 = _player->GetPos().x + (_player->Width() / 2);
