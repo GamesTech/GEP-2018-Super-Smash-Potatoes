@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CollisionSystem.h"
 
+// automatically execute the right collision code based by the object type 
 bool CollisionSystem::ResloveCollision(GameObject2D * _obj, Player2D * _player)
 {
 	if (_obj->GetLayer() == 0.5)
@@ -25,6 +26,7 @@ bool CollisionSystem::ResloveCollision(GameObject2D * _obj, Player2D * _player)
 	return false;
 }
 
+// check collision with side detection
 bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 {
 	Player2D* player = _player;
@@ -38,7 +40,6 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{
 		// collision occured
-
 		float collision_width = width * distance_y;
 		float collision_height = height * distance_x;
 
@@ -46,6 +47,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 		{
 			if (collision_width < -collision_height)
 			{
+				// if player is falling or stationary - collision at the top
 				if (player->GetCurrVel().y >= 0)
 				{
 					player->SetNewPos(object->GetPos().y - player->Height());
@@ -80,6 +82,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 		{
 			if (collision_width > -collision_height)
 			{
+				// if player is jumping up
 				if (player->GetCurrVel().y < 0)
 				{
 					player->SetNewPos(object->GetPos().y + object->Height());
@@ -117,6 +120,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Player2D* _player)
 	}
 }
 
+// check collision just at the top
 bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 {
 	Player2D* player = _player;
@@ -130,7 +134,6 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 	if (abs(distance_x) <= width && abs(distance_y) <= height)
 	{
 		// collision occured
-
 		float collision_width = width * distance_y;
 		float collision_height = height * distance_x;
 
@@ -153,10 +156,12 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Player2D* _player)
 	return false;
 }
 
-bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player, float _r1, float _r1_multiplier, float _x_offset, float _y_offset, int _direction)
+// check intersect with an object
+bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Player2D * _player, 
+									float _r1, float _r1_multiplier, 
+									float _x_offset, float _y_offset, int _direction)
 {
 	float r1 = 0;
-
 	if (_r1 == 0)
 	{
 		r1 = _obj->Width() * _r1_multiplier;

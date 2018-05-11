@@ -77,7 +77,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 			{
 				if (m_vel.y < 300)
 				{
-					if (m_jumping)
+					if (m_jumping_anim)
 					{
 						action_jump = JUMP;
 					}
@@ -182,11 +182,6 @@ void Player2D::deathZone(GameStateData * _GSD)
 	{
 		respawn(_GSD);
 	}
-}
-
-void Player2D::setPlayerNo(int player_number)
-{
-	player_no = player_number;
 }
 
 void Player2D::Grabbing()
@@ -329,7 +324,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
 			m_up_punch_anim = false;
-			m_jumping = true;
+			m_jumping_anim = true;
 			if (m_grabing_side)
 			{
 				m_ledge_jump = true;
@@ -347,7 +342,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 			AddForce(-100000 * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
-			m_jumping = false;
+			m_jumping_anim = false;
 			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
 			particle_system->addParticles(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, GetFlipH());
@@ -363,7 +358,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 			AddForce(m_jumpForce * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
-			m_jumping = false;
+			m_jumping_anim = false;
 			m_down_punching_anim = true;
 			//m_up_timer_punch = 0;
 		}
@@ -378,17 +373,12 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 			m_timer_punch = 0;
 		}
 	}
-}
-
-void Player2D::setItem(Item * item)
-{
-	this->item = item;
-}
+}		
 
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
 	if (other_player->GetAttackType() != Attack::NONE
-		&& GetOrientation() != other_player->GetOrientation())
+		&& GetDirection() != other_player->GetDirection())
 	{
 		other_player->Block(_GSD);
 		other_player->ResetAttacks();
@@ -452,12 +442,6 @@ void Player2D::Block(GameStateData * _GSD)
 	m_timer_hit = 0;
 }
 
-
-Item * Player2D::getItem() const
-{
-	return item;
-}
-
 void Player2D::ProcessCollision()
 {
 	switch (m_coll_state)
@@ -512,9 +496,4 @@ void Player2D::updateOrientation()
 	{
 		m_direction = -1;
 	}
-}
-
-bool Player2D::GetOrientation()
-{
-	return !GetFlipH();
 }
