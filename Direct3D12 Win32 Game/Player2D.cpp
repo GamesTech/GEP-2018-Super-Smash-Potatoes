@@ -107,14 +107,6 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 		}
 	}
-	if (m_invincibility)
-	{
-		SetOpacity(0.5f);
-	}
-	else
-	{
-		SetOpacity(1.f);
-	}
 	HitTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
@@ -255,10 +247,19 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 		if (m_invincibility)
 		{
 			m_invincibility = false;
+			SetOpacity(1.f);
 		}
 	}
 	else
 	{
+		if ((int)(m_respawn_timer*m_respawn_timer * 2) % 2 == 0)
+		{
+				SetOpacity(0.3f);
+		}
+		else
+		{
+			SetOpacity(0.6f);
+		}
 		m_respawn_timer += _GSD->m_dt;
 	}
 }
