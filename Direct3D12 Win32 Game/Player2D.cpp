@@ -2,15 +2,24 @@
 #include "Player2D.h"
 #include "GameStateData.h"
 
-Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :Physics2D(_RD, _filename, image_buffer)
+Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, string _file) :Physics2D(_RD, _filename, image_buffer)
 {
-	//SetBoundingBoxes();
-	//BottomOrigin();
-	//SetMass(100);
+	player_file = std::make_unique<PlayerFile>();
+	player_file->read("Player\\" + _file + "_stats", ".txt");
+	SetStatsFromFile();
 }
 
 Player2D::~Player2D()
 {
+}
+
+void Player2D::SetStatsFromFile() //Load the stats of the player from a file
+{
+	m_jumpForce = player_file->getObj(0).jump_power * 1000;
+	m_jumpUpwardsForce = player_file->getObj(0).upwards_punch_jump_power * 1000;
+	LoadSprites("Player\\" + player_file->getObj(0).animation_sheet);
+	m_drive = player_file->getObj(0).drive;
+	m_drag = player_file->getObj(0).drag;
 }
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
@@ -22,7 +31,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	//SetBoundingBoxes();
 	if (!m_remove_controll)
 	{
-		controller(input_manager);
+		controller(input_manager, _GSD);
 	}
 	ProcessCollision();
 	AnimationChecks(_GSD);
@@ -77,7 +86,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 			{
 				if (m_vel.y < 300)
 				{
-					if (m_jumping)
+					if (m_jumping_anim)
 					{
 						action_jump = JUMP;
 					}
@@ -107,11 +116,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 		}
 	}
-	if (m_invincibility)
-	{
-		SetOpacity(0.5f);
-	}
-	else
+	if (!m_invincibility)
 	{
 		SetOpacity(1.f);
 	}
@@ -124,7 +129,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 
 void Player2D::HitTimer(GameStateData * _GSD)
 {
-	if (m_timer_hit >= 0.2)
+	if (m_timer_hit >= 0.4)
 	{
 		m_immune = false;
 	}
@@ -179,28 +184,13 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 
 void Player2D::deathZone(GameStateData * _GSD)
 {
-	if (m_pos.x < 0.0f - 800)
+	if ((m_pos.x < -800) 
+		|| (m_pos.y < -600)
+		|| (m_pos.x > m_limit.x)
+		|| (m_pos.y > m_limit.y))
 	{
 		respawn(_GSD);
 	}
-	if (m_pos.y < 0.0f - 600)
-	{
-		respawn(_GSD);
-	}
-
-	if (m_pos.x > m_limit.x + 500)
-	{
-		respawn(_GSD);
-	}
-	if (m_pos.y > m_limit.y + 500)
-	{
-		respawn(_GSD);
-	}
-}
-
-void Player2D::setPlayerNo(int player_number)
-{
-	player_no = player_number;
 }
 
 void Player2D::Grabbing()
@@ -255,6 +245,11 @@ void Player2D::respawn(GameStateData * _GSD)
 		m_dead = true;
 		lives_remaining = 0;
 	}
+	if (item != nullptr) 
+	{
+		item->throwItem(_GSD, m_direction);
+		item = nullptr;
+	}
 	//audio_manager->playSound(EXPLOSION);
 }
 
@@ -269,11 +264,19 @@ void Player2D::RespawnTimer(GameStateData * _GSD)
 	}
 	else
 	{
+		if ((int)(m_respawn_timer*m_respawn_timer * 2) % 2 == 0)
+		{
+				SetOpacity(0.3f);
+		}
+		else
+		{
+			SetOpacity(0.6f);
+		}
 		m_respawn_timer += _GSD->m_dt;
 	}
 }
 
-void Player2D::controller(Input * input_manager)
+void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 {
 	// Walk
 	if (input_manager->inputs[player_no] == Inputs::LEFT)
@@ -304,15 +307,25 @@ void Player2D::controller(Input * input_manager)
 	}
 
 
+	//Item Throw
+	if (input_manager->inputs[player_no] == player_file->getObj(0).item_throw_control)
+	{
+		if (item != nullptr) {
+			item->throwItem(_GSD, m_direction);
+			item = nullptr;
+		}
+	}
+
+
 	// Jump
-	if (input_manager->inputs[player_no] == Inputs::DOWN_A)
+	if (input_manager->inputs[player_no] == player_file->getObj(0).jump_down_control)
 	{
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if (input_manager->inputs[player_no] == Inputs::A)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).jump_control)
 	{
 		if (m_grounded)
 		{
@@ -320,7 +333,7 @@ void Player2D::controller(Input * input_manager)
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
 			m_up_punch_anim = false;
-			m_jumping = true;
+			m_jumping_anim = true;
 			if (m_grabing_side)
 			{
 				m_ledge_jump = true;
@@ -329,23 +342,23 @@ void Player2D::controller(Input * input_manager)
 	}
 
 	// Bonus Jump
-	if (input_manager->inputs[player_no] == Inputs::UP_X)
+	if (input_manager->inputs[player_no] == player_file->getObj(0).Upwards_attack_control)
 	{
 		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(-100000 * Vector2::UnitY);
+			AddForce(-m_jumpUpwardsForce * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
-			m_jumping = false;
+			m_jumping_anim = false;
 			m_up_punch_anim = true;
 			m_up_timer_punch = 0;
 			particle_system->addParticles(1, Particle_Type::ATTACK_UPWARDS, m_pos + Vector2{ 0, 0 }, GetFlipH());
 		}
 	}
 	//slam
-	else if (input_manager->inputs[player_no] == Inputs::DOWN_X)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).slam_control)
 	{
 		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
@@ -354,12 +367,12 @@ void Player2D::controller(Input * input_manager)
 			AddForce(m_jumpForce * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
-			m_jumping = false;
+			m_jumping_anim = false;
 			m_down_punching_anim = true;
 			//m_up_timer_punch = 0;
 		}
 	}
-	else if (input_manager->inputs[player_no] == Inputs::X)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).attack_control)
 	{
 		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{
@@ -369,123 +382,50 @@ void Player2D::controller(Input * input_manager)
 			m_timer_punch = 0;
 		}
 	}
-}
+}		
+
 bool Player2D::CheckBlocking(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = m_pos.x + (Width() / 2);
-	float y1 = m_pos.y + (Height() / 2);
-
-	if (GetOrientation())
+	if (other_player->GetAttackType() != Attack::NONE
+		&& GetDirection() != other_player->GetDirection())
 	{
-		x1 += 40;
-	}
-	else
-	{
-		x1 -= 40;
-	}
-
-	float r2 = other_player->Width();
-	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-
-	if (other_player->GetAttackType() != Attack::NONE && GetOrientation() != other_player->GetOrientation())
-	{
-		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-		{
-			other_player->Block(_GSD);
-			other_player->ResetAttacks();
-			return true;
-		}
+		other_player->Block(_GSD);
+		other_player->ResetAttacks();
+		return true;
 	}
 	return false;
 }
 
 bool Player2D::ExectuePunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = m_pos.x + (Width() / 2);
-	float y1 = m_pos.y + (Height() / 2);
-
-	if (GetOrientation())
-	{
-		x1 += 40;
-	}
-	else
-	{
-		x1 -= 40;
-	}
-	if (!other_player->GetInvincibility())
-	{
-		float r2 = other_player->Width();
-		float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-		float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-
-		if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-		{
-			other_player->GotHit(_GSD, (m_direction/2), -1);
-			return true;
-		}
-	}
-	return false;
+	other_player->GotHit(_GSD, (m_direction/2), -1);
+	return true;
 }
 
 bool Player2D::ExectueUpPunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = Width() / 1.5;
-	float x1 = GetPos().x + (Width() / 2);
-	float y1 = GetPos().y + (Height() / 2) - 30;
-
-	float r2 = other_player->Width();
-	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
-	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
-	
-	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
+	if (!other_player->GetImmune())
 	{
-		if (!other_player->GetImmune())
-		{				
-			other_player->SetImmune(true);
-			other_player->GotHit(_GSD, 0, -1);
-			return true;
-		}
+		other_player->SetImmune(true);
+		other_player->GotHit(_GSD, 0, -1);
+		return true;
 	}
 	return false;
 }
 
 bool Player2D::ExectueDownPunch(GameStateData * _GSD, Player2D * other_player)
 {
-	float r1 = 100;
 	float x1 = GetPos().x + (Width() / 2);
 	float y1 = GetPos().y + Height();
 
-	float r2 = other_player->Width();
 	float x2 = other_player->GetPos().x + (other_player->Width() / 2);
 	float y2 = other_player->GetPos().y + (other_player->Height() / 2);
 
+	Vector2 direction = Vector2(x2 - x1, y2 - y1);
+	direction.Normalize();
 
-
-	if (r1 > sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1))))
-	{
-		if (!other_player->GetImmune())
-		{
-			Vector2 direction = Vector2(x2 - x1, y2 - y1);
-			direction.Normalize();
-			//if (direction.x < 0.5 && direction.x >= 0)
-			//{
-			//	direction.x = 0.5;
-			//}
-			//else if (direction.x < 0 && direction.x > -0.5)
-			//{
-			//	direction.x = -0.5;
-			//}
-
-			//direction.y = -1;
-			//other_player->SetImmune(true);
-			other_player->GotHit(_GSD, direction.x, direction.y);
-			return true;
-		}
-	}
-	return false;
+	other_player->GotHit(_GSD, direction.x, direction.y);
+	return true;
 }
 
 void Player2D::GotHit(GameStateData * _GSD, float _dir, float y_force)
@@ -510,7 +450,6 @@ void Player2D::Block(GameStateData * _GSD)
 	m_remove_controll = true;
 	m_timer_hit = 0;
 }
-
 
 void Player2D::ProcessCollision()
 {
@@ -566,9 +505,4 @@ void Player2D::updateOrientation()
 	{
 		m_direction = -1;
 	}
-}
-
-bool Player2D::GetOrientation()
-{
-	return !GetFlipH();
 }

@@ -110,6 +110,18 @@
     <Filter Include="Game Base\Headers\Camera">
       <UniqueIdentifier>{555ebfdd-6297-4016-8378-010871ff8f1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\2D\Headers\Item">
+      <UniqueIdentifier>{aa408889-679e-4c8d-9fce-9856ba047383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Headers\ItemSpawner">
+      <UniqueIdentifier>{5da2bf2d-6908-40d8-b40d-850bfe46f3fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Base\Source\ItemSpawner">
+      <UniqueIdentifier>{f9f3ea6c-5416-4066-8715-10711602e5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\2D\Source\Item">
+      <UniqueIdentifier>{60b6edec-1f6d-4858-ae44-11d57c6b7719}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -253,6 +265,15 @@
     <ClInclude Include="StartScene.h">
       <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObjects\2D\Headers\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSpawner.h">
+      <Filter>Game Base\Headers\ItemSpawner</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFile.h">
+      <Filter>Game Base\Headers\File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -330,6 +351,9 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Game Base\Source\AudioManager</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTags.cpp">
+      <Filter>GameObjects\2D\Source</Filter>
+    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Game Base\Source\ParticleSystem</Filter>
     </ClCompile>
@@ -388,6 +412,15 @@
     <ClCompile Include="Input.cpp">
       <Filter>Game Base\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObjects\2D\Source\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSpawner.cpp">
+      <Filter>Game Base\Source\ItemSpawner</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFile.cpp">
+      <Filter>Game Base\Source\File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -418,10 +451,5 @@
     <None Include="attack.particle">
       <Filter>Game Base\Headers\ParticleSystem\Particle Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Levels.txt">
-      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
-    </Text>
   </ItemGroup>
 </Project>

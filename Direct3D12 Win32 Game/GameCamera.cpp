@@ -72,11 +72,6 @@ void GameCamera::UpdateCamera(std::vector<std::unique_ptr<Player2D>> &players)
 	top_left_x = -(centre.x * (2.f / x_zoom_resolution) - 1);
 	top_left_y = -(centre.y * (2.f / y_zoom_resolution) - 1);
 
-	//if (top_left_y > 0.5){top_left_y = 0.5;}
-	//if (top_left_y < -0.5){top_left_y = -0.5;}
-	//if (top_left_x > 0.5) { top_left_x = 0.5; }
-	//if (top_left_x < -0.3) { top_left_x = -0.3; }
-
 	// update viewports
 	viewport = { -1 + top_left_x, -1 + top_left_y,
 		static_cast<float>(x_zoom_resolution), static_cast<float>(y_zoom_resolution),
@@ -126,7 +121,6 @@ Rectangle GameCamera::CalculateCameraRect(std::vector<std::unique_ptr<Player2D>>
 	rect.width += 400;
 	rect.height += 400;
 
-	
 	return rect;
 }
 

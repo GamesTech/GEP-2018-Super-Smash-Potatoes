@@ -11,11 +11,11 @@ bool ParticleSystem::init(RenderData * _m_RD, std::shared_ptr<ImageBuffer> image
 {
 	m_RD = _m_RD;
 
-	loadEmitterFile("emitter.txt");
+	loadEmitterFile("Particles\\emitter.txt");
 
 	for (int i = 0; i < emitter_names.size(); ++i)
 	{
-		std::unique_ptr<Emitter> emitter_temp = std::make_unique<Emitter>(m_RD, emitter_names.at(i), image_buffer, emitter_names.at(i)); // Create a new particle 
+		std::unique_ptr<Emitter> emitter_temp = std::make_unique<Emitter>(m_RD, emitter_names.at(i), image_buffer, "Particles\\" + emitter_names.at(i)); // Create a new particle 
 		emitter.push_back(std::move(emitter_temp));
 	}
 

@@ -64,15 +64,15 @@ void UserInterface::update(GameStateData* gsd, std::vector<std::unique_ptr<Playe
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
 
-	for (int i = 0; i < gsd->no_players; i++)
+	for (auto& player : players)
 	{
-		int player_damage = (players[i]->GetDamage() * 100) - 100;
+		int player_damage = (player->GetDamage() * 100) - 100;
 
-		damage_text[i]->SetText(std::to_string(player_damage) + "%");
+		damage_text[player->getPlayerNo()]->SetText(std::to_string(player_damage) + "%");
 
-		for (int j = 0; j < max_lives - (players[i]->GetLivesRemaining()); j++)
+		for (int j = 0; j < max_lives - (player->GetLivesRemaining()); j++)
 		{
-			lives_button_sprite[(i * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
+			lives_button_sprite[(player->getPlayerNo() * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
 		}
 	}
 }

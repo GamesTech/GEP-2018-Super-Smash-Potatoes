@@ -18,9 +18,9 @@ namespace Inputs
 		START = 8, //menu/pause
 		LB = 9,
 		RB = 10,
-		DOWN_A, //drop ledge
-		UP_X, //up punch
-		DOWN_X, //down slam
+		DOWN_A = 11, //drop ledge
+		UP_X = 12, //up punch
+		DOWN_X = 13, //down slam
 	};
 };
 

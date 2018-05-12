@@ -30,7 +30,7 @@
     <RootNamespace>Direct3D12_Win32_Game</RootNamespace>
     <ProjectGuid>{48d1b087-0658-4dcc-a845-655543ce48a4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -258,6 +258,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="LevelEditorScene.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemSpawner.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
     <ClInclude Include="MenuScene.h" />
@@ -266,6 +268,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player2D.h" />
+    <ClInclude Include="PlayerFile.h" />
     <ClInclude Include="PlayerTags.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -307,6 +310,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="LevelEditorScene.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="MenuScene.cpp" />
@@ -315,6 +320,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player2D.cpp" />
+    <ClCompile Include="PlayerFile.cpp" />
     <ClCompile Include="PlayerTags.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -357,9 +363,6 @@
     <ProjectReference Include="..\DirectXTK12-master\DirectXTK_Desktop_2017_Win10.vcxproj">
       <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Levels.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="attack.particle" />

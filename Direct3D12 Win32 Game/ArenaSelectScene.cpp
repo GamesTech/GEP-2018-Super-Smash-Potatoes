@@ -39,7 +39,7 @@ bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* 
 	right_arrow->SetOrientation(3.14f);
 	game_objects.push_back(std::move(right_arrow));
 
-	loadLevelsFile("Levels.txt");
+	loadLevelsFile("level\\Levels.txt");
 	loadLevel(m_RD, level_names[0]);
 	return true;
 }
@@ -130,7 +130,7 @@ void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 	platforms.clear();
 
 	level = std::make_unique<LevelFile>();
-	level->read(lvlname, ".lvl");
+	level->read("level\\" + lvlname, ".lvl");
 
 	//level_name_text->SetText(lvlname);
 
