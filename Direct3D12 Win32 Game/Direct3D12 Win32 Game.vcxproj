@@ -266,6 +266,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleFile.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PauseScene.h" />
     <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player2D.h" />
     <ClInclude Include="PlayerFile.h" />
@@ -318,6 +319,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleFile.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PauseScene.cpp" />
     <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player2D.cpp" />
     <ClCompile Include="PlayerFile.cpp" />

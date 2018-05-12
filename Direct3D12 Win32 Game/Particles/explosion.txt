@@ -1,6 +1,6 @@
 {
 string image_file:explosion
-float lifetime:0.1
+float lifetime:0.2
 int type_of_particle:2
 Vector2 velocity:0,0
 Vector2 accelaration: 0,0

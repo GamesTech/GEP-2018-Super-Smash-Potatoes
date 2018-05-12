@@ -161,7 +161,12 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		scene_change.scene = SceneEnum::GAMEOVER;
 		break;
 	}
-
+	case Action::PAUSE:
+	{
+		scene_change.change_type = ChangeType::ADD;
+		scene_change.scene = SceneEnum::PAUSE;
+		break;
+	}
 	case Action::BACK:
 	{
 		scene_change.change_type = ChangeType::REMOVE;
@@ -341,9 +346,16 @@ void GameScene::ReadInput(Input* im)
 {
 	im->current_scene = CurrentScene::GAME;
 	input_manager = im;
-	if (input_manager->inputs[0] == Inputs::START)
+	for (int i = 0; i < no_players; i++)
 	{
-		action = Action::BACK;
+		if (input_manager->inputs[i] == Inputs::START)
+		{
+			action = Action::PAUSE;
+		}
+		if (input_manager->inputs[i] == Inputs::ESCAPE)
+		{
+			action = Action::BACK;
+		}
 	}
 }
 

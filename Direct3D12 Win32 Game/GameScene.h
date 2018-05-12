@@ -27,7 +27,8 @@ private:
 	{
 		NONE,
 		BACK,
-		CONTINUE
+		CONTINUE,
+		PAUSE
 	};
 	Action action = Action::NONE;
 

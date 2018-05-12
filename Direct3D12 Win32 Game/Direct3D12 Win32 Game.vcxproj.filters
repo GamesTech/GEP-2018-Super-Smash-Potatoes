@@ -274,6 +274,9 @@
     <ClInclude Include="PlayerFile.h">
       <Filter>Game Base\Headers\File</Filter>
     </ClInclude>
+    <ClInclude Include="PauseScene.h">
+      <Filter>Game Base\Headers\SceneManager\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject2D.cpp">
@@ -420,6 +423,9 @@
     </ClCompile>
     <ClCompile Include="PlayerFile.cpp">
       <Filter>Game Base\Source\File</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseScene.cpp">
+      <Filter>Game Base\Source\SceneManager\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

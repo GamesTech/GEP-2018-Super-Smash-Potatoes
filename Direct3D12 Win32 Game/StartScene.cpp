@@ -54,7 +54,7 @@ void StartScene::ReadInput(Input * input_manager)
 	input_manager->current_scene = CurrentScene::START;
 	for (int i = 0; i < 4; ++i)
 	{
-		if (input_manager->inputs[i] == Inputs::START)
+		if (input_manager->inputs[i] == Inputs::B)
 		{
 			action = Action::EXIT;
 		}

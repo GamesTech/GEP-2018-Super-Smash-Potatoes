@@ -32,6 +32,7 @@ namespace SceneEnum
 		GAME,
 		GAMEOVER,
 		LEVEL_EDITOR,
+		PAUSE,
 		NONE
 	};
 }
@@ -52,6 +53,7 @@ public:
 	 virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> image_buffer) = 0;
 	 virtual SceneChange update(GameStateData* gsd) = 0;
 	 virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) = 0;
+	 virtual bool renderSceneBelow() { return false; };
 	 virtual void ReadInput(Input* input_manager) = 0;
 	 virtual void giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain) {};
 

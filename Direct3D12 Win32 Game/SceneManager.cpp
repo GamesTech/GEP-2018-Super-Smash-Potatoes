@@ -9,6 +9,7 @@
 #include "GameOverScene.h"
 #include "LevelEditorScene.h"
 #include "GameStateData.h"
+#include "PauseScene.h"
 
 void SceneManager::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am)
 {
@@ -133,6 +134,11 @@ bool SceneManager::update(RenderData* m_RD, GameStateData* gsd, AudioManager* am
 			scene = std::make_unique<LevelEditor>();
 			break;
 		}
+		case SceneEnum::SceneEnum::PAUSE:
+		{
+			scene = std::make_unique<PauseScene>();
+			break;
+		}
 	}
 	if (!scene->init(m_RD, gsd, am, image_buffer))
 	{
@@ -148,6 +154,10 @@ void SceneManager::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graphi
 {
 	if (scenes.size() > 0)
 	{
+		if (scenes.back()->renderSceneBelow())
+		{
+			scenes.at(scenes.size() - 2)->render(m_RD, m_commandList);
+		}
 		scenes.back()->render(m_RD, m_commandList);
 	}
 }
