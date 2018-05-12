@@ -5,10 +5,9 @@
 #include <array>
 
 
-void Particle::init(std::string particle_f, Vector2 pos, bool _flip)
+void Particle::init(std::shared_ptr<ParticleFile> particle_f , Vector2 pos, bool _flip)
 {
-	particle_file = std::make_unique<ParticleFile>();
-	particle_file->read(particle_f , ".particle");
+	particle_file = particle_f;
 	SetVariables(pos, _flip);
 }
 

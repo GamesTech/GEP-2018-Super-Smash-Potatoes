@@ -9,7 +9,8 @@
 Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, std::string particle) :ImageGO2D(_RD, _filename, image_buffer)
 {
 	particles.reserve(50);
-	particle_file_name = particle;
+	particle_file = std::make_shared<ParticleFile>();
+	particle_file->read(particle, ".particle");
 }
 
 void Emitter::update(GameStateData * gsd)
@@ -55,7 +56,7 @@ void Emitter::addParticles(int amount, Vector2 pos, bool flipH)
 		if (!made_particle) // If no particles can be reuse , create a new one.
 		{
 			particles.emplace_back(new Particle());
-			particles.back()->init(particle_file_name, pos, flipH);
+			particles.back()->init(particle_file, pos, flipH);
 		}
 	}
 }
