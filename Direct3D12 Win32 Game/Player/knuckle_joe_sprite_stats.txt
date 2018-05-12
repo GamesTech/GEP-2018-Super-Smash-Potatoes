@@ -1,0 +1,13 @@
+{
+Jump: 60
+Upwards Punch: 100
+Animation Sheet:knuckle_joe_sprite_batch.txt
+Drive: 900.0
+Drag: 3.0
+Throw Item(CAPS):Y
+Jump:A
+Jump down platform:DOWN_A
+Upwards Attack:UP_X
+Slam:B
+Attack:X
+}

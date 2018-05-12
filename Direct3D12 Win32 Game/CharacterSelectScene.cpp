@@ -25,7 +25,7 @@ bool CharacterSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManag
 {
 	image_buffer = ib;
 	no_players = gsd->no_players;
-	loadCharactersFile("PlayerSprites.txt");
+	loadCharactersFile("Player\\PlayerSprites.txt");
 
 	title_text = std::make_unique<ImageGO2D>(m_RD, "Character Selection", image_buffer);
 	title_text->SetLayer(1.0f);

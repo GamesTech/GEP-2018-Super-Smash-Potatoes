@@ -2,6 +2,7 @@
 #include "Physics2D.h"
 #include "ParticleSystem.h"
 #include "Particle.h"
+#include "PlayerFile.h"
 #include "Input.h"
 #include "Item.h"
 
@@ -27,7 +28,7 @@ public:
 		COLRIGHT,
 	};
 
-	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer);
+	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, string _file);
 	virtual ~Player2D();
 	void Tick(GameStateData* _GSD, int _test, Input* input_manager);
 
@@ -35,9 +36,7 @@ public:
 	void setPlayerNo(int player_number) { player_no = player_number; };
 	void	SetSpawnPosition(Vector2 spawn) { m_respawn_pos = spawn; };
 	void				  SetDrive(float _drive) { m_drive = _drive; };
-	// ??
-	void			SetLayer(float _new_pos) { m_new_pos = _new_pos; };
-	// ??
+	// ?? It's Adam code, called in GameScene
 	void		   SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
 	void				SetDamage(float damage) { m_damage = damage; };
 
@@ -76,6 +75,7 @@ public:
 
 protected:
 	
+	void	 SetStatsFromFile();
 	void	 ProcessCollision();
 	void			 Grabbing();
 	void	updateOrientation();
@@ -118,6 +118,7 @@ protected:
 	float		   m_respawn_timer = 3;
 
 	float		   m_jumpForce = 60000;
+	float		   m_jumpUpwardsForce = 100000;
 	float			  m_drive = 200.0f;
 	float				  m_damage = 1;
 	float			   m_direction = 1;
@@ -138,5 +139,6 @@ protected:
 	Item*					item = nullptr;
 
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
+	std::unique_ptr<PlayerFile> player_file = nullptr;
 };
 

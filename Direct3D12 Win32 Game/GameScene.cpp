@@ -21,13 +21,13 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	time_remaining = 180.0f;
 
 	level = std::make_unique<LevelFile>();
-	level->read("level" + std::to_string(gsd->arena_selected), ".lvl");
+	level->read("level\\level" + std::to_string(gsd->arena_selected), ".lvl");
 
 	m_collision_system = std::make_unique<CollisionSystem>();
 	m_camera = std::make_unique<GameCamera>();
 	m_camera->init(gsd);
 
-	loadCharactersFile("PlayerSprites.txt");
+	loadCharactersFile("player\\PlayerSprites.txt");
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
@@ -352,12 +352,9 @@ void GameScene::spawnPlayers(GameStateData* gsd, RenderData* m_RD, int no_player
 	for (int i = 0; i < no_players; i++)
 	{
 		std::string str_player_no = sprite_names[gsd->player_selected[i]] + "_batch_" + "0";
-		m_players.emplace_back(new Player2D(m_RD, str_player_no, image_buffer));
+		m_players.emplace_back(new Player2D(m_RD, str_player_no, image_buffer, sprite_names[gsd->player_selected[i]]));
 		m_players.back()->SetPos(m_spawn_pos[i]);
 		m_players.back()->SetLayer(0.5f);
-		m_players.back()->SetDrive(900.0f);
-		m_players.back()->SetDrag(3.0f);
-		m_players.back()->LoadSprites(sprite_names[gsd->player_selected[i]] + "_batch.txt");
 		m_players.back()->setPlayerNo(i);
 		m_players.back()->SetParticleSystem(particle_system);
 	}	

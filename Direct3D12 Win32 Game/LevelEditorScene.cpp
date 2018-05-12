@@ -188,7 +188,7 @@ void LevelEditor::ReadInput(Input * input_manager)
 void LevelEditor::createNewObject(int type) //load a new object from the default objects .objs file.
 {
 	level = std::make_unique<LevelFile>();
-	level->read("default_objects", ".objs");
+	level->read("level\\default_objects", ".objs");
 
 	string temp_name = level->getObj(type).image_file;
 	auto platform = new ImageGO2D(m_RD, temp_name, image_buffer);
@@ -206,7 +206,7 @@ void LevelEditor::createNewObject(int type) //load a new object from the default
 void LevelEditor::loadBackgrounds()
 {
 	level = std::make_unique<LevelFile>();
-	level->read("backgrounds", ".objs");
+	level->read("level\\backgrounds", ".objs");
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
 		string temp_name = level->getObj(i).image_file;
@@ -251,5 +251,5 @@ void LevelEditor::saveLevel()
 		obj.sprite_size_max = Vector2{ float(platform->getRect().right), float(platform->getRect().bottom) };
 		level->objectToWrite(obj);
 	}
-	level->write("level" + std::to_string(3), ".lvl");
+	level->write("level\\level" + std::to_string(3), ".lvl");
 }

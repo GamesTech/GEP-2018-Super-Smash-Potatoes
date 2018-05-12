@@ -2,15 +2,24 @@
 #include "Player2D.h"
 #include "GameStateData.h"
 
-Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer) :Physics2D(_RD, _filename, image_buffer)
+Player2D::Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, string _file) :Physics2D(_RD, _filename, image_buffer)
 {
-	//SetBoundingBoxes();
-	//BottomOrigin();
-	//SetMass(100);
+	player_file = std::make_unique<PlayerFile>();
+	player_file->read("Player\\" + _file + "_stats", ".txt");
+	SetStatsFromFile();
 }
 
 Player2D::~Player2D()
 {
+}
+
+void Player2D::SetStatsFromFile() //Load the stats of the player from a file
+{
+	m_jumpForce = player_file->getObj(0).jump_power * 1000;
+	m_jumpUpwardsForce = player_file->getObj(0).upwards_punch_jump_power * 1000;
+	LoadSprites("Player\\" + player_file->getObj(0).animation_sheet);
+	m_drive = player_file->getObj(0).drive;
+	m_drag = player_file->getObj(0).drag;
 }
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
@@ -299,7 +308,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 
 
 	//Item Throw
-	if (input_manager->inputs[player_no] == Inputs::B)
+	if (input_manager->inputs[player_no] == player_file->getObj(0).item_throw_control)
 	{
 		if (item != nullptr) {
 			item->throwItem(_GSD, m_direction);
@@ -309,14 +318,14 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 
 
 	// Jump
-	if (input_manager->inputs[player_no] == Inputs::DOWN_A)
+	if (input_manager->inputs[player_no] == player_file->getObj(0).jump_down_control)
 	{
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
 		m_coll_state = Collision::COLNONE;
 	}
-	else if (input_manager->inputs[player_no] == Inputs::A)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).jump_control)
 	{
 		if (m_grounded)
 		{
@@ -333,13 +342,13 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 	}
 
 	// Bonus Jump
-	if (input_manager->inputs[player_no] == Inputs::UP_X)
+	if (input_manager->inputs[player_no] == player_file->getObj(0).Upwards_attack_control)
 	{
 		if (m_bonus_jump && !m_punch_anim && !m_up_punch_anim)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(-100000 * Vector2::UnitY);
+			AddForce(-m_jumpUpwardsForce * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping_anim = false;
@@ -349,7 +358,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 		}
 	}
 	//slam
-	else if (input_manager->inputs[player_no] == Inputs::DOWN_X)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).slam_control)
 	{
 		if ( !m_punch_anim && !m_up_punch_anim && !m_grounded)
 		{
@@ -363,7 +372,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 			//m_up_timer_punch = 0;
 		}
 	}
-	else if (input_manager->inputs[player_no] == Inputs::X)
+	else if (input_manager->inputs[player_no] == player_file->getObj(0).attack_control)
 	{
 		if (!m_punch_anim && !m_up_punch_anim && !m_grabing_side)
 		{
