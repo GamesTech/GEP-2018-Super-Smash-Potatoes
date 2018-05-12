@@ -8,7 +8,7 @@ class Particle
 public:
 	Particle() = default;
 	~Particle() = default;
-	void init(std::string particle_file, Vector2 pos, bool flip);
+	void init(std::shared_ptr<ParticleFile> particle_file , Vector2 pos, bool flip);
 	void update(GameStateData* gsd);
 
 	void SetVariables(Vector2 pos, bool _flip);
@@ -26,7 +26,7 @@ private:
 	void isFlip();
 	void burstParticles();
 
-	std::unique_ptr<ParticleFile> particle_file;
+	std::shared_ptr<ParticleFile> particle_file;
 
 	float lifetime = 0.0f;
 	float max_lifetime = 0.0f;

@@ -16,5 +16,5 @@ public:
 
 private:
 	std::vector<std::unique_ptr<Particle>> particles;
-	std::string particle_file_name;
+	std::shared_ptr<ParticleFile> particle_file;
 };
