@@ -2,3 +2,4 @@ attack
 upwards_punch
 dust
 firework
+explosion

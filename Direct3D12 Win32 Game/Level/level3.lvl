@@ -29,7 +29,7 @@ orientation:0.000000
 layer:0.500000
 type:1
 sprite min X & Y:1.000000, 1.000000
-sprite max X & Y:600.000000, 48.000000
+sprite max X & Y:600.000000, 33.000000
 }
 {
 image name:platform_small
@@ -40,7 +40,7 @@ orientation:0.000000
 layer:0.500000
 type:1
 sprite min X & Y:1.000000, 1.000000
-sprite max X & Y:150.000000, 48.000000
+sprite max X & Y:150.000000, 33.000000
 }
 {
 image name:platform_wall

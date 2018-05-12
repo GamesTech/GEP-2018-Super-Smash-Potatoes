@@ -10,7 +10,7 @@ Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer
 {
 	particles.reserve(50);
 	particle_file = std::make_shared<ParticleFile>();
-	particle_file->read(particle, ".particle");
+	particle_file->read(particle, ".txt");
 }
 
 void Emitter::update(GameStateData * gsd)

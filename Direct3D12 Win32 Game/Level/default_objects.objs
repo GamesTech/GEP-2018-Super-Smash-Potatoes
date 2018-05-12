@@ -18,7 +18,7 @@ orientation:0
 layer:0.5
 type:1
 sprite min X & Y:1, 1
-sprite max X & Y:600, 48
+sprite max X & Y:600, 33
 }
 {
 image name:platform_large
@@ -40,5 +40,5 @@ orientation:0
 layer:0.5
 type:0
 sprite min X & Y:1, 1
-sprite max X & Y:48, 150
+sprite max X & Y:33, 150
 }

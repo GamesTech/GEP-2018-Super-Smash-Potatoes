@@ -9,7 +9,7 @@ class Item : public Physics2D
 			HEAL,
 		};
 
-		Item(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span);
+		Item(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span, std::shared_ptr<ParticleSystem> particle_system);
 
 		void collided(class Player2D* player, GameStateData * _GSD);
 		void update(GameStateData * _GSD);
@@ -29,4 +29,6 @@ class Item : public Physics2D
 		long life_span;
 		long time = 0;
 		Vector2 m_limit = Vector2(1780, 1220);
+
+		std::shared_ptr<ParticleSystem> particle_system = nullptr;
 };

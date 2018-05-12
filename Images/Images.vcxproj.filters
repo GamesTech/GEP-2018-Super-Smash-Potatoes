@@ -118,6 +118,9 @@
     <ImageContentTask Include="Items\bomb.png">
       <Filter>Items</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Particle\explosion.png">
+      <Filter>Particle</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Text Include="READ_ME.txt" />

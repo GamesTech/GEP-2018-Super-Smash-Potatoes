@@ -10,7 +10,8 @@ namespace Particle_Type
 		ATTACK,
 		ATTACK_UPWARDS,
 		DUST,
-		FIREWORK
+		FIREWORK,
+		EXPLOSION,
 	};
 }
 
@@ -23,6 +24,11 @@ public:
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 
+	/* addParticles( 
+	amount of particles,
+	Type of particle emitter,
+	position of particles,
+	flip horizontal)*/
 	void addParticles(int amount, Particle_Type::Type type, Vector2 pos, bool flipH);
 
 private:

@@ -70,7 +70,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	audio_manager->playSound(QUESTCOMPLETE);
 
 	spawner = std::make_unique<ItemSpawner>();
-	spawner->init(m_RD, image_buffer);
+	spawner->init(m_RD, image_buffer, particle_system);
 	return true;
 
 }

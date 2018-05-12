@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "Item.h"
 
-Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span)
+Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, Type type, long life_span, std::shared_ptr<ParticleSystem> _particle_system)
 	: Physics2D(_RD, _filename, image_buffer)
 {
 	this->life_span = life_span;
 	this->type = type;
 	SetType(3);
+	particle_system = _particle_system;
 }
 
 void Item::update(GameStateData * _GSD)
@@ -91,6 +92,7 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 						direction.y *= -1;
 					}
 					_player->GotHit(_GSD, direction.x, direction.y);
+					particle_system->addParticles(1, Particle_Type::EXPLOSION, Vector2(x1, y1), false);
 				}
 				marked_for_deletion = true;
 			}
