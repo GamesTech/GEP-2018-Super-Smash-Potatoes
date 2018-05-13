@@ -17,11 +17,19 @@ bool GameOverScene::init(RenderData* _RD, GameStateData* gsd, AudioManager* am, 
 {
 	image_buffer = ib;
 	m_RD = _RD;
+	loadCharactersFile("Player\\PlayerSprites.txt");
 	
 	for (int i = 0; i < gsd->no_players; i++)
 	{
 		game_objects.emplace_back(new Text2D("Player " + std::to_string(i + 1)));
 		game_objects.back()->SetLayer(0.f);
+		game_objects.back()->SetScale(Vector2(0.5, 0.5));
+		game_objects.back()->SetPos(podium_pos[gsd->player_podium_position[i] - 1] + Vector2(5, -20));
+
+		game_objects.emplace_back(new ImageGO2D(_RD, sprite_names[gsd->player_selected[i]], ib));
+		game_objects.back()->SetLayer(0.2f);
+		game_objects.back()->SetRect(0,0,64,64);
+		game_objects.back()->SetScale(Vector2(2, 2));
 		game_objects.back()->SetPos(podium_pos[gsd->player_podium_position[i] - 1]);
 		gsd->player_podium_position[i] = 0;
 	}

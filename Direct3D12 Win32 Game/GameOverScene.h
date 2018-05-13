@@ -21,8 +21,8 @@ private:
 	};
 	Action action = Action::NONE;
 
-	std::string text[4] = { "1st Place","2nd Place","3rd Place","4th Place" };
-	Vector2 podium_pos[4] = { {540,250},{ 740,350 },{ 340,450 },{ 940,550 } };
+	std::string text[4] = { "Player 1","Player 2","Player 3","Player 4" };
+	Vector2 podium_pos[4] = { { 570,150 },{ 770,250 },{ 370,350 },{ 970,450 } };
 
 	void loadCharactersFile(string _filename);
 
