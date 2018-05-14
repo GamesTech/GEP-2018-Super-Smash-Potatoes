@@ -41,10 +41,10 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 
 	if (m_vel.x > m_max_speed.x && !m_remove_controll) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x && !m_remove_controll) { m_vel.x = -m_max_speed.x; }
-	if (m_vel.y > 700 || m_vel.y < 0)
-	{
-		m_ignore_collision = false;
-	}
+	//if (m_vel.y > 700 || m_vel.y < -10000)
+	//{
+	//	m_ignore_collision = false;
+	//}
 	if (m_invincibility)
 	{
 		RespawnTimer(_GSD);
@@ -121,6 +121,7 @@ void Player2D::AnimationChecks(GameStateData * _GSD)
 		SetOpacity(1.f);
 	}
 	HitTimer(_GSD);
+	CollTimer(_GSD);
 	Grabbing();
 	PunchTimer(_GSD);
 	UpPunchTimer(_GSD);
@@ -138,6 +139,19 @@ void Player2D::HitTimer(GameStateData * _GSD)
 		m_remove_controll = false;
 	}
 	m_timer_hit += _GSD->m_dt;
+}
+
+void Player2D::CollTimer(GameStateData * _GSD)
+{
+	if (m_ignore_coll_timer >= 0.5)
+	{
+		if (m_ignore_collision)
+		{
+			m_ignore_collision = false;
+
+		}
+	}
+	m_ignore_coll_timer += _GSD->m_dt;
 }
 
 void Player2D::PunchTimer(GameStateData * _GSD)
@@ -323,6 +337,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 		//m_vel.y = 0;
 		AddForce(100 * Vector2::UnitY);
 		m_ignore_collision = true;
+		m_ignore_coll_timer = 0;
 		m_coll_state = Collision::COLNONE;
 	}
 	else if (input_manager->inputs[player_no] == player_file->getObj(0).jump_control)

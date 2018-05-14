@@ -83,6 +83,7 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 				float x2 = _player->GetPos().x + (_player->Width() / 2);
 				float y2 = _player->GetPos().y + (_player->Height() / 2);
 
+				particle_system->addParticles(1, Particle_Type::EXPLOSION, Vector2(x1, y1), false);
 				if (!_player->GetInvincibility())
 				{
 					Vector2 direction = Vector2(x2 - x1, y2 - y1);
@@ -92,7 +93,6 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 						direction.y *= -1;
 					}
 					_player->GotHit(_GSD, direction.x, direction.y);
-					particle_system->addParticles(1, Particle_Type::EXPLOSION, Vector2(x1, y1), false);
 				}
 				marked_for_deletion = true;
 			}
