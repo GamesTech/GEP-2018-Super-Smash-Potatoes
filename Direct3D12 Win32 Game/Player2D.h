@@ -109,6 +109,7 @@ protected:
 	float	m_direction = 1;
 	
 	int		player_no = 0;
+	int		m_max_jumps = 3;
 	int		lives_remaining = 3;
 
 	Vector2	m_limit = Vector2(1780, 1220);

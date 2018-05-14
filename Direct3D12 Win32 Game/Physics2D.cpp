@@ -69,6 +69,7 @@ void Physics2D::ProcessCollision()
 	{
 	case COLTOP:
 		m_grounded = true;
+		m_jump_count = 0;
 		m_bonus_jump = true;
 		m_y_coll = true;
 		m_x_coll = false;

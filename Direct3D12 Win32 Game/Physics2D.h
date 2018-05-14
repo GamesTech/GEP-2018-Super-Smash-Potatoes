@@ -48,6 +48,8 @@ protected:
 	float m_speed_limit = 1;
 	float m_new_pos = 1.f;
 	
+	int	m_jump_count = 0;
+
 	// collison bools
 	bool m_bonus_jump = false;
 	bool m_grabing_side = false;

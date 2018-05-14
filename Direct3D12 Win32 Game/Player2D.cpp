@@ -339,8 +339,9 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 	}
 	else if (input_manager->inputs[player_no] == player_file->getObj(0).jump_control)
 	{
-		if (m_grounded)
+		if (m_grounded || m_jump_count < m_max_jumps)
 		{
+			m_jump_count++;
 			AddForce(-m_jumpForce * Vector2::UnitY);
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
