@@ -7,6 +7,7 @@
 
 LevelEditor::~LevelEditor()
 {
+	m_RD->m_spriteBatch->SetViewport(UI_viewport);
 }
 
 bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am, std::shared_ptr<ImageBuffer> ib)
@@ -27,7 +28,7 @@ bool LevelEditor::init(RenderData * _RD, GameStateData * gsd, AudioManager * am,
 
 	ui_text = std::make_unique<Text2D>("Y = Background \nA = Create \nB = Remove \nLB RB = Change \nD-pad = Move \nStart = Save");
 	ui_text->SetLayer(0.f);
-	ui_text->SetPos(Vector2(20, 300));
+	ui_text->SetPos(Vector2(40, 400));
 
 	deathzone = std::make_unique<ImageGO2D>(_RD, "Deathzone", ib);
 	deathzone->SetLayer(0.2f);

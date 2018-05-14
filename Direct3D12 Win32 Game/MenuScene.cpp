@@ -61,7 +61,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 				{
 					if (menu_option_selected == 3)
 					{
-						menu_option_selected = 2;
+						menu_option_selected = 1;
 					}
 				}
 #endif
@@ -78,7 +78,7 @@ Scene::SceneChange MenuScene::update(GameStateData* gsd)
 				menu_option_selected++;
 #ifdef ARCADE
 				{
-					if (menu_option_selected == 3)
+					if (menu_option_selected == 2)
 					{
 						menu_option_selected = 4;
 					}
@@ -171,6 +171,7 @@ void MenuScene::highlight_option_selected()
 	}
 #ifdef ARCADE
 	{
+		game_objects[2]->SetColour(Color(0.1f, 0.1f, 0.1f));
 		game_objects[3]->SetColour(Color(0.1f, 0.1f, 0.1f));
 	}
 #endif
