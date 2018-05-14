@@ -6,7 +6,7 @@ Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> imag
 {
 	this->life_span = life_span;
 	this->type = type;
-	SetType(3);
+	SetType(2);
 	particle_system = _particle_system;
 }
 
@@ -31,7 +31,7 @@ void Item::update(GameStateData * _GSD)
 	if (active)
 	{
 		AddGravity(false);
-		Tick(_GSD, false, false, 1.0f, false);
+		Tick(_GSD);
 	} 
 	else 
 	{
@@ -61,7 +61,7 @@ void Item::throwItem(GameStateData* _GSD, float player_orientation)
 	active = true;
 	player = nullptr;
 	AddForce(Vector2(player_orientation * power, -30000));
-	Tick(_GSD, false, false, 1.0f, false);
+	Tick(_GSD);
 }
 
 bool Item::getMarked() const
