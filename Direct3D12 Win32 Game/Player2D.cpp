@@ -20,6 +20,7 @@ void Player2D::SetStatsFromFile() //Load the stats of the player from a file
 	LoadSprites("Player\\" + player_file->getObj(0).animation_sheet);
 	m_drive = player_file->getObj(0).drive;
 	m_drag = player_file->getObj(0).drag;
+	//m_mass = 1.2;
 }
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
