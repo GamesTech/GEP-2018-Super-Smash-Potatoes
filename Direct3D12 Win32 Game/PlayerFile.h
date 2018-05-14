@@ -7,10 +7,12 @@
 struct PlayerObjectData
 {
 	float jump_power;
+	int amount_of_jumps;
 	float upwards_punch_jump_power;
 	std::string animation_sheet;
 	float drive;
 	float drag;
+	float mass;
 	Inputs::Inputs item_throw_control;
 	Inputs::Inputs jump_control;
 	Inputs::Inputs jump_down_control;

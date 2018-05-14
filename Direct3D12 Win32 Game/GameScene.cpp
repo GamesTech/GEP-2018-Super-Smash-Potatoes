@@ -66,7 +66,7 @@ bool GameScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std
 	UI->init(m_RD, gsd, m_players, sprite_names, image_buffer);
 
 	audio_manager = am;
-	//audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
+	audio_manager->changeLoopTrack(TOBYSOUNDTRACK);
 	audio_manager->playSound(QUESTCOMPLETE);
 
 	spawner = std::make_unique<ItemSpawner>();
@@ -348,13 +348,13 @@ void GameScene::ReadInput(Input* im)
 	input_manager = im;
 	for (int i = 0; i < no_players; i++)
 	{
-		if (input_manager->inputs[i] == Inputs::START)
-		{
-			action = Action::PAUSE;
-		}
 		if (input_manager->inputs[i] == Inputs::ESCAPE)
 		{
 			action = Action::BACK;
+		}
+		else if (input_manager->inputs[i] == Inputs::START)
+		{
+			action = Action::PAUSE;
 		}
 	}
 }

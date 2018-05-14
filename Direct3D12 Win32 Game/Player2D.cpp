@@ -15,12 +15,13 @@ Player2D::~Player2D()
 
 void Player2D::SetStatsFromFile() //Load the stats of the player from a file
 {
-	m_jumpForce = player_file->getObj(0).jump_power * 1000;
-	m_jumpUpwardsForce = player_file->getObj(0).upwards_punch_jump_power * 1000;
+	m_jump_force = player_file->getObj(0).jump_power * 1000;
+	m_jump_upwards_force = player_file->getObj(0).upwards_punch_jump_power * 1000;
 	LoadSprites("Player\\" + player_file->getObj(0).animation_sheet);
 	m_drive = player_file->getObj(0).drive;
 	m_drag = player_file->getObj(0).drag;
-	//m_mass = 1.2;
+	m_mass = player_file->getObj(0).mass;
+	m_max_jumps = player_file->getObj(0).amount_of_jumps;
 }
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
@@ -196,7 +197,7 @@ void Player2D::UpPunchTimer(GameStateData * _GSD)
 void Player2D::deathZone(GameStateData * _GSD)
 {
 	if ((m_pos.x < -800) 
-		|| (m_pos.y < -600)
+		|| (m_pos.y < -800)
 		|| (m_pos.x > m_limit.x)
 		|| (m_pos.y > m_limit.y))
 	{
@@ -231,6 +232,7 @@ void Player2D::Grabbing()
 
 void Player2D::respawn(GameStateData * _GSD)
 {
+	particle_system->addParticles(100, Particle_Type::FIREWORK, m_pos, false);
 	if (lives_remaining > 1)
 	{
 		lives_remaining--;
@@ -342,7 +344,8 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 		if (m_grounded || m_jump_count < m_max_jumps)
 		{
 			m_jump_count++;
-			AddForce(-m_jumpForce * Vector2::UnitY);
+			m_vel.y = 0;
+			AddForce(-m_jump_force * Vector2::UnitY);
 			m_grounded = false;
 			m_coll_state = Collision::COLNONE;
 			m_up_punch_anim = false;
@@ -361,7 +364,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(-m_jumpUpwardsForce * Vector2::UnitY);
+			AddForce(-m_jump_upwards_force * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping_anim = false;
@@ -377,7 +380,7 @@ void Player2D::controller(Input * input_manager, GameStateData * _GSD)
 		{
 			m_invincibility = false;
 			m_vel.y = 0;
-			AddForce(m_jumpForce * Vector2::UnitY);
+			AddForce(m_slam_force * Vector2::UnitY);
 			m_bonus_jump = false;
 			m_coll_state = Collision::COLNONE;
 			m_jumping_anim = false;
@@ -446,7 +449,7 @@ void Player2D::GotHit(GameStateData * _GSD, float _dir, float y_force)
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
 	m_vel = Vector2::Zero;
-	Vector2 impact(m_jumpForce * m_damage * _dir, m_jumpForce * m_damage * y_force);
+	Vector2 impact(m_hit_force * m_damage * _dir, m_hit_force * m_damage * y_force);
 	AddForce(impact);
 	m_damage *= 1.1;
 	Physics2D::Tick(_GSD);

@@ -102,8 +102,10 @@ protected:
 	float	m_ignore_coll_timer	= 3;
 
 	// player stats
-	float	m_jumpForce = 60000.f;
-	float	m_jumpUpwardsForce = 100000.f;
+	float	m_jump_force = 60000.f;
+	float	m_jump_upwards_force = 100000.f;
+	float   m_slam_force = 60000.f;
+	float   m_hit_force = 60000.f;
 	float	m_drive = 200.0f;
 	float	m_damage = 1;
 	float	m_direction = 1;
