@@ -1,17 +1,17 @@
 {
-image name:background_5
-position:-300.000000, -150.000000
+image name:blackground_1
+position:1.000000, 1.000000
 origin:1.000000, 1.000000
 scale:1.000000, 1.000000
 orientation:0.000000
 layer:1.000000
 type:0
 sprite min X & Y:1.000000, 1.000000
-sprite max X & Y:1920.000000, 1080.000000
+sprite max X & Y:1280.000000, 720.000000
 }
 {
 image name:platform_large
-position:240.000000, 770.000000
+position:240.000000, 720.000000
 origin:1.000000, 1.000000
 scale:1.000000, 1.000000
 orientation:0.000000
@@ -21,30 +21,8 @@ sprite min X & Y:1.000000, 1.000000
 sprite max X & Y:800.000000, 64.000000
 }
 {
-image name:platform
-position:340.000000, 500.000000
-origin:1.000000, 1.000000
-scale:1.000000, 1.000000
-orientation:0.000000
-layer:0.500000
-type:1
-sprite min X & Y:1.000000, 1.000000
-sprite max X & Y:600.000000, 33.000000
-}
-{
-image name:platform_small
-position:340.000000, 350.000000
-origin:1.000000, 1.000000
-scale:1.000000, 1.000000
-orientation:0.000000
-layer:0.500000
-type:1
-sprite min X & Y:1.000000, 1.000000
-sprite max X & Y:150.000000, 33.000000
-}
-{
 image name:platform_wall
-position:940.000000, 250.000000
+position:990.000000, 450.000000
 origin:1.000000, 1.000000
 scale:1.000000, 1.000000
 orientation:0.000000
@@ -55,7 +33,40 @@ sprite max X & Y:48.000000, 150.000000
 }
 {
 image name:platform_wall
-position:340.000000, 0.000000
+position:240.000000, 450.000000
+origin:1.000000, 1.000000
+scale:1.000000, 1.000000
+orientation:0.000000
+layer:0.500000
+type:0
+sprite min X & Y:1.000000, 1.000000
+sprite max X & Y:48.000000, 150.000000
+}
+{
+image name:platform_wall
+position:240.000000, 150.000000
+origin:1.000000, 1.000000
+scale:1.000000, 1.000000
+orientation:0.000000
+layer:0.500000
+type:0
+sprite min X & Y:1.000000, 1.000000
+sprite max X & Y:48.000000, 150.000000
+}
+{
+image name:platform_wall
+position:990.000000, 150.000000
+origin:1.000000, 1.000000
+scale:1.000000, 1.000000
+orientation:0.000000
+layer:0.500000
+type:0
+sprite min X & Y:1.000000, 1.000000
+sprite max X & Y:48.000000, 150.000000
+}
+{
+image name:platform_wall
+position:640.000000, 300.000000
 origin:1.000000, 1.000000
 scale:1.000000, 1.000000
 orientation:0.000000

@@ -23,7 +23,7 @@ void Scene::loadBackground(RenderData* m_RD, std::shared_ptr<ImageBuffer> image_
 	std::uniform_real_distribution<float> background(0, 4);
 	int i = background(rd);
 	background_file = std::make_unique<LevelFile>();
-	background_file->read("Level\\backgrounds", ".objs");
+	background_file->read("Level\\backgrounds", ".txt");
 
 	string temp_name = background_file->getObj(i).image_file;
 	game_objects.emplace_back(new ImageGO2D(m_RD, temp_name, image_buffer));
