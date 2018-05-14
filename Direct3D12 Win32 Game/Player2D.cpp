@@ -20,6 +20,7 @@ void Player2D::SetStatsFromFile() //Load the stats of the player from a file
 	LoadSprites("Player\\" + player_file->getObj(0).animation_sheet);
 	m_drive = player_file->getObj(0).drive;
 	m_drag = player_file->getObj(0).drag;
+	//m_mass = 1.2;
 }
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
@@ -28,28 +29,24 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	{
 		m_ledge_jump = false;
 	}
-	//SetBoundingBoxes();
+
 	if (!m_remove_controll)
 	{
 		controller(input_manager, _GSD);
 	}
-	ProcessCollision();
+
 	AnimationChecks(_GSD);
 	AddGravity(m_grounded);
 
-	Physics2D::Tick(_GSD, m_y_coll, m_x_coll, m_new_pos, m_grabing_side);
+	Physics2D::Tick(_GSD);
 
 	if (m_vel.x > m_max_speed.x && !m_remove_controll) { m_vel.x = m_max_speed.x; }
 	if (m_vel.x < -m_max_speed.x && !m_remove_controll) { m_vel.x = -m_max_speed.x; }
-	//if (m_vel.y > 700 || m_vel.y < -10000)
-	//{
-	//	m_ignore_collision = false;
-	//}
+
 	if (m_invincibility)
 	{
 		RespawnTimer(_GSD);
 	}
-
 
 	deathZone(_GSD);
 	updateOrientation();
@@ -451,7 +448,7 @@ void Player2D::GotHit(GameStateData * _GSD, float _dir, float y_force)
 	Vector2 impact(m_jumpForce * m_damage * _dir, m_jumpForce * m_damage * y_force);
 	AddForce(impact);
 	m_damage *= 1.1;
-	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	Physics2D::Tick(_GSD);
 	m_remove_controll = true;
 	m_timer_hit = 0;
 }
@@ -461,54 +458,54 @@ void Player2D::Block(GameStateData * _GSD)
 	m_grounded = false;
 	m_coll_state = Collision::COLNONE;
 	AddForce(25000 * Vector2::UnitX * -m_direction);
-	Physics2D::Tick(_GSD, false, false, m_new_pos, m_grabing_side);
+	Physics2D::Tick(_GSD);
 	m_remove_controll = true;
 	m_timer_hit = 0;
 }
 
-void Player2D::ProcessCollision()
-{
-	switch (m_coll_state)
-	{
-	case COLTOP:
-		m_grounded = true;
-		m_bonus_jump = true;
-		m_y_coll = true;
-		m_x_coll = false;
-		//m_pos.y = m_new_pos;
-		//m_vel.y = 0;
-		break;
-	case COLBOTTOM:
-		m_y_coll = true;
-		m_x_coll = false;
-		//m_grounded = true;
-		//m_pos.y = m_new_pos;
-		//m_vel.y = 0;
-		break;
-	case COLRIGHT:
-		m_grounded = true;
-		m_x_coll = true;
-		m_y_coll = false;
-		//m_bonus_jump = true;
-		//m_pos.x = m_new_pos;
-		//m_vel.x = 0;
-		break;
-	case COLLEFT:
-		m_grounded = true;
-		m_x_coll = true;
-		m_y_coll = false;
-		//m_bonus_jump = true;
-		//m_pos.x = m_new_pos;
-		//m_vel.x = 0;
-		break;
-	case COLNONE:
-		m_x_coll = false;
-		m_y_coll = false;
-		m_grounded = false;
-		//m_ledge_jump = false;
-		break;
-	}
-}
+//void Player2D::ProcessCollision()
+//{
+//	switch (m_coll_state)
+//	{
+//	case COLTOP:
+//		m_grounded = true;
+//		m_bonus_jump = true;
+//		m_y_coll = true;
+//		m_x_coll = false;
+//		//m_pos.y = m_new_pos;
+//		//m_vel.y = 0;
+//		break;
+//	case COLBOTTOM:
+//		m_y_coll = true;
+//		m_x_coll = false;
+//		//m_grounded = true;
+//		//m_pos.y = m_new_pos;
+//		//m_vel.y = 0;
+//		break;
+//	case COLRIGHT:
+//		m_grounded = true;
+//		m_x_coll = true;
+//		m_y_coll = false;
+//		//m_bonus_jump = true;
+//		//m_pos.x = m_new_pos;
+//		//m_vel.x = 0;
+//		break;
+//	case COLLEFT:
+//		m_grounded = true;
+//		m_x_coll = true;
+//		m_y_coll = false;
+//		//m_bonus_jump = true;
+//		//m_pos.x = m_new_pos;
+//		//m_vel.x = 0;
+//		break;
+//	case COLNONE:
+//		m_x_coll = false;
+//		m_y_coll = false;
+//		m_grounded = false;
+//		//m_ledge_jump = false;
+//		break;
+//	}
+//}
 
 void Player2D::updateOrientation()
 {

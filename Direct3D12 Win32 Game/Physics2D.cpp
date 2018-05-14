@@ -23,9 +23,10 @@ void Physics2D::AddGravity(bool _grounded)
 }
 
 //GEP:: Basic Euler Solver for point mass 
-void Physics2D::Tick(GameStateData * _GSD, bool _coll_y, bool _coll_x, float _new_pos, bool _grabbing)
+void Physics2D::Tick(GameStateData * _GSD)
 {
-	//VERY Basic idea of drag i.e. the faster I go the more I get pulled back
+	ProcessCollision();
+
 	if (m_grounded)
 	{
 		m_acc -= (m_drag * m_vel);
@@ -38,19 +39,17 @@ void Physics2D::Tick(GameStateData * _GSD, bool _coll_y, bool _coll_x, float _ne
 	Vector2 newPos = m_pos + _GSD->m_dt * m_vel;
 	Vector2 newVel = m_vel + _GSD->m_dt * m_acc;
 
-	if (_coll_y)
+	if (m_y_coll)
 	{
-		//newPos.y += (m_pos.y + _GSD->m_dt * m_vel.y)*-1;
 		newVel.y += (m_vel.y + _GSD->m_dt * m_acc.y)*-1;
-		newPos.y = _new_pos;
+		newPos.y = m_new_pos;
 	}
-	else if(_coll_x)
+	else if(m_x_coll)
 	{
-		//newPos.y += (m_pos.y + _GSD->m_dt * m_vel.y)*-1;
 		newVel.x += (m_vel.x + _GSD->m_dt * m_acc.x)*-1;
-		newPos.x = _new_pos;
+		newPos.x = m_new_pos;
 	}
-	if (_grabbing)
+	if (m_grabing_side)
 	{
 		if (newVel.y > 200)
 		{
@@ -62,4 +61,36 @@ void Physics2D::Tick(GameStateData * _GSD, bool _coll_y, bool _coll_x, float _ne
 	m_pos = newPos;
 	m_vel = newVel;
 	m_acc = Vector2::Zero;
+}
+
+void Physics2D::ProcessCollision()
+{
+	switch (m_coll_state)
+	{
+	case COLTOP:
+		m_grounded = true;
+		m_bonus_jump = true;
+		m_y_coll = true;
+		m_x_coll = false;
+		break;
+	case COLBOTTOM:
+		m_y_coll = true;
+		m_x_coll = false;
+		break;
+	case COLRIGHT:
+		m_grounded = true;
+		m_x_coll = true;
+		m_y_coll = false;
+		break;
+	case COLLEFT:
+		m_grounded = true;
+		m_x_coll = true;
+		m_y_coll = false;
+		break;
+	case COLNONE:
+		m_x_coll = false;
+		m_y_coll = false;
+		m_grounded = false;
+		break;
+	}
 }

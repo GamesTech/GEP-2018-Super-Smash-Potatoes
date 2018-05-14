@@ -31,7 +31,7 @@ void Item::update(GameStateData * _GSD)
 	if (active)
 	{
 		AddGravity(false);
-		Tick(_GSD, false, false, 1.0f, false);
+		Tick(_GSD);
 	} 
 	else 
 	{
@@ -61,7 +61,7 @@ void Item::throwItem(GameStateData* _GSD, float player_orientation)
 	active = true;
 	player = nullptr;
 	AddForce(Vector2(player_orientation * power, -30000));
-	Tick(_GSD, false, false, 1.0f, false);
+	Tick(_GSD);
 }
 
 bool Item::getMarked() const
