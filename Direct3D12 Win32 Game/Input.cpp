@@ -261,7 +261,7 @@ void Input::update(GameStateData* gsd)
 			inputs[i] = Inputs::UP_X;
 		}
 		//Down Slam
-		else if ((pressed[X] && pressed[S])
+		else if ((keyboard_state.X && keyboard_state.S)
 			|| ((GP_state[i].IsXPressed() && !prev_GP_state[i].IsXPressed())
 				&& (GP_state[i].IsDPadDownPressed() || GP_state[i].IsLeftThumbStickDown())))
 		{
