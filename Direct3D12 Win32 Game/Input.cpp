@@ -92,7 +92,7 @@ void Input::update(GameStateData* gsd)
 	}
 
 	//Down Slam
-	if (pressed[LEFT_CTRL] && pressed[DOWN])
+	if (pressed[LEFT_SHIFT] && pressed[DOWN])
 	{
 		inputs[0] = Inputs::DOWN_X;
 	}
