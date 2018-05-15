@@ -467,50 +467,6 @@ void Player2D::Block(GameStateData * _GSD)
 	m_timer_hit = 0;
 }
 
-//void Player2D::ProcessCollision()
-//{
-//	switch (m_coll_state)
-//	{
-//	case COLTOP:
-//		m_grounded = true;
-//		m_bonus_jump = true;
-//		m_y_coll = true;
-//		m_x_coll = false;
-//		//m_pos.y = m_new_pos;
-//		//m_vel.y = 0;
-//		break;
-//	case COLBOTTOM:
-//		m_y_coll = true;
-//		m_x_coll = false;
-//		//m_grounded = true;
-//		//m_pos.y = m_new_pos;
-//		//m_vel.y = 0;
-//		break;
-//	case COLRIGHT:
-//		m_grounded = true;
-//		m_x_coll = true;
-//		m_y_coll = false;
-//		//m_bonus_jump = true;
-//		//m_pos.x = m_new_pos;
-//		//m_vel.x = 0;
-//		break;
-//	case COLLEFT:
-//		m_grounded = true;
-//		m_x_coll = true;
-//		m_y_coll = false;
-//		//m_bonus_jump = true;
-//		//m_pos.x = m_new_pos;
-//		//m_vel.x = 0;
-//		break;
-//	case COLNONE:
-//		m_x_coll = false;
-//		m_y_coll = false;
-//		m_grounded = false;
-//		//m_ledge_jump = false;
-//		break;
-//	}
-//}
-
 void Player2D::updateOrientation()
 {
 	if (!GetFlipH())

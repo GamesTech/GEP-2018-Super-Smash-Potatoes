@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "ItemSpawner.h"
 
+ItemSpawner::ItemSpawner()
+{
+	items.reserve(5);
+}
+
 const std::vector<std::unique_ptr<Item>> &ItemSpawner::getItems() const
 {
 	return items;
@@ -67,7 +72,7 @@ int ItemSpawner::getSize() const
 
 	for (auto& item : items)
 	{
-		if (!item->getMarked())counter++;
+		if (!item->getMarked()) counter++;
 	}
 
 	return counter;

@@ -5,7 +5,7 @@
 
 class ItemSpawner {
 	public:
-		ItemSpawner() = default;
+		ItemSpawner();
 		~ItemSpawner() = default;
 
 		const std::vector<std::unique_ptr<Item>>& getItems() const;

@@ -20,7 +20,7 @@ public:
 
 	void			AddForce	(Vector2 _push) { m_acc += (_push / m_mass); }
 	void			AddGravity	(bool _grounded);
-	virtual void	Tick(		GameStateData* _GSD);
+	virtual void	Tick		(GameStateData* _GSD);
 	void			ProcessCollision();
 
 	Vector2		GetVel()	{ return m_vel; };

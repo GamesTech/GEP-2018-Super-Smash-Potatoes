@@ -6,7 +6,7 @@ Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> imag
 {
 	this->life_span = life_span;
 	this->type = type;
-	SetType(3);
+	SetType(2);
 	particle_system = _particle_system;
 }
 

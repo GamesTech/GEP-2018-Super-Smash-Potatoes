@@ -106,7 +106,13 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 			{
 				player->Tick(gsd, player->getPlayerNo(), input_manager);
 			}
-
+			for (auto& item : spawner->getItems())
+			{
+				if (m_collision_system->CheckIntersect(item.get(), player.get(), 100.f))
+				{
+					item->collided(player.get(), gsd);
+				}
+			}
 			m_anim_grounded[player->getPlayerNo()] = false;
 		}
 		else
@@ -119,19 +125,10 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 	// attack loop and items col
 	for (auto& player : m_players)
 	{
-		if (!player->getDead())
+		if (!player->getDead() && player->GetAttackType() != Attack::NONE)
 		{
 			Attacking(player.get(), gsd);
 		}
-
-		for (auto& item : spawner->getItems())
-		{
-			if (m_collision_system->CheckIntersect(item.get(), player.get(), 100.f))
-			{
-				item->collided(player.get(), gsd);
-			}
-		}
-		
 	}
 	endGame(players_dead, gsd);
 
@@ -148,6 +145,22 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		else
 		{
 			item_spawn_timer += gsd->m_dt;
+		}
+	}
+	else
+	{
+		for (auto& item : spawner->getItems())
+		{
+			if (item->getActive())
+			{
+				for (auto& platform : platforms)
+				{
+					if (m_collision_system->ResloveCollision(platform.get(), item.get()))
+					{
+						break;
+					}
+				}
+			}
 		}
 	}
 

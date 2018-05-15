@@ -18,6 +18,7 @@ class Item : public Physics2D
 		void setLife(long life);
 		void throwItem(GameStateData* _GSD, float player_orientation);
 		bool getMarked() const;
+		bool getActive() { return active; };
 	private:
 		static const int yOffset = 100;
 
