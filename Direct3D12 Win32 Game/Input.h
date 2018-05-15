@@ -63,9 +63,44 @@ private:
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
 	DirectX::GamePad::ButtonStateTracker m_buttons;
 
-	Keyboard::State m_keyboardState;
-	Keyboard::State m_prevKeyboardState;
+	Keyboard::State keyboard_state;
+	Keyboard::State prev_keyboard_state;
 
-	GamePad::State m_gamePadState[MAX_PLAYERS];
-	GamePad::State m_prevGamePadState[MAX_PLAYERS];
+	GamePad::State GP_state[MAX_PLAYERS];
+	GamePad::State prev_GP_state[MAX_PLAYERS];
+
+	std::vector<bool> pressed;
+
+	void getPressed();
+
+	enum Pressed
+	{
+		W,
+		A,
+		S,
+		D,
+
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+
+		LEFT_CTRL,
+		LEFT_SHIFT,
+
+		Q,
+		E,
+
+		X,
+		R,
+		F,
+		G,
+
+		SPACE,
+		ENTER,
+		ESCAPE,
+		BACK,
+
+		PRESSED_MAX = BACK
+	};
 };

@@ -18,17 +18,23 @@ void Input::init()
 	{
 		inputs[i] = Inputs::CLEAR;
 	}
+	for(int i = 0; i <= PRESSED_MAX ; i++)
+	{
+		pressed.push_back(false);
+	}
 }
 
 void Input::update(GameStateData* gsd)
 {
-#ifdef ARCADE
-	m_prevKeyboardState = m_keyboardState;
-	m_keyboardState = m_keyboard->GetState();
+	prev_keyboard_state = keyboard_state;
+	keyboard_state = m_keyboard->GetState();
 
+	getPressed();
+
+#ifdef ARCADE
 	gsd->no_players = 2;
 
-	if (m_keyboardState.X && !m_prevKeyboardState.X)
+	if (pressed[X])
 	{
 		inputs[0] = Inputs::START;
 	}
@@ -37,63 +43,61 @@ void Input::update(GameStateData* gsd)
 	//Left Right
 	if (current_scene == CurrentScene::GAME)
 	{
-		if (m_keyboardState.Left)
+		//held check not a pressed check
+		if (keyboard_state.Left)
 		{
 			inputs[0] = Inputs::LEFT;
 		}
-		else if (m_keyboardState.Right)
+		else if (keyboard_state.Right)
 		{
 			inputs[0] = Inputs::RIGHT;
 		}
 	}
 	else
 	{
-		if (m_keyboardState.Left && !m_prevKeyboardState.Left)
+		if (pressed[LEFT])
 		{
 			inputs[0] = Inputs::LEFT;
 		}
-		else if (m_keyboardState.Right && !m_prevKeyboardState.Right)
+		else if (pressed[RIGHT])
 		{
 			inputs[0] = Inputs::RIGHT;
 		}
 	}
 	//Up Down
-	if (m_keyboardState.Up && !m_prevKeyboardState.Up)
+	if (pressed[UP])
 	{
 		inputs[0] = Inputs::UP;
 	}
-	else if (m_keyboardState.Down && !m_prevKeyboardState.Down)
+	else if (pressed[DOWN])
 	{
 		inputs[0] = Inputs::DOWN;
 	}
 
 	// Jump variations
 	// Drop Down
-	if (m_keyboardState.Down && m_keyboardState.LeftControl)
+	if (keyboard_state.Down && keyboard_state.LeftControl)
 	{
 		inputs[0] = Inputs::DOWN_A;
 	}
 	// Bonus Jump
-	else if (m_keyboardState.Up && m_keyboardState.LeftShift)
+	else if (keyboard_state.Up && keyboard_state.LeftShift)
 	{
 		inputs[0] = Inputs::UP_X;
 	}
 	//Jump
-	else if (m_keyboardState.LeftControl && !m_prevKeyboardState.LeftControl)
+	else if (pressed[LEFT_CTRL])
 	{
 		inputs[0] = Inputs::A;
 	}
 
 	//Down Slam
-	if (m_keyboardState.LeftShift
-		&& !m_prevKeyboardState.LeftShift
-		&& m_keyboardState.Down
-		&& !m_prevKeyboardState.Down)
+	if (pressed[LEFT_CTRL] && pressed[DOWN])
 	{
 		inputs[0] = Inputs::DOWN_X;
 	}
 	//Punch
-	else if (m_keyboardState.LeftShift && !m_prevKeyboardState.LeftShift)
+	else if (pressed[LEFT_SHIFT])
 	{
 		inputs[0] = Inputs::X;
 	}
@@ -104,11 +108,11 @@ void Input::update(GameStateData* gsd)
 	if (current_scene == CurrentScene::GAME)
 	{
 		//In game needs to be smooth
-		if (m_keyboardState.D)
+		if (keyboard_state.D)
 		{
 			inputs[1] = Inputs::LEFT;
 		}
-		else if (m_keyboardState.G)
+		else if (keyboard_state.G)
 		{
 			inputs[1] = Inputs::RIGHT;
 		}
@@ -116,86 +120,79 @@ void Input::update(GameStateData* gsd)
 	else
 	{
 		//For Menus
-		if (m_keyboardState.D && !m_prevKeyboardState.D)
+		if (pressed[D])
 		{
 			inputs[1] = Inputs::LEFT;
 		}
-		else if (m_keyboardState.G && !m_prevKeyboardState.G)
+		else if (pressed[G])
 		{
 			inputs[1] = Inputs::RIGHT;
 		}
 	}
 	//Up Down
-	if (m_keyboardState.R && !m_prevKeyboardState.R)
+	if (pressed[R])
 	{
 		inputs[1] = Inputs::UP;
 	}
-	else if (m_keyboardState.F && !m_prevKeyboardState.F)
+	else if (pressed[F])
 	{
 		inputs[1] = Inputs::DOWN;
 	}
 
 	// Jump variations
 	// Drop Down
-	else if (m_keyboardState.F && m_keyboardState.A)
+	else if (keyboard_state.F && keyboard_state.A)
 	{
 		inputs[1] = Inputs::DOWN_A;
 	}
 	// Bonus Jump
-	else if (m_keyboardState.R && m_keyboardState.W)
+	else if (keyboard_state.R && keyboard_state.W)
 	{
 		inputs[1] = Inputs::UP_X;
 	}
 	//Jump
-	else if (m_keyboardState.A && !m_prevKeyboardState.A)
+	else if (pressed[A])
 	{
 		inputs[1] = Inputs::A;
 	}
 	//Down Slam
-	if (m_keyboardState.F
-		&& !m_prevKeyboardState.F
-		&& m_keyboardState.W
-		&& !m_prevKeyboardState.W)
+	if (pressed[F] && pressed[W])
 	{
 		inputs[1] = Inputs::DOWN_X;
 	}
 	//Punch
-	else if (m_keyboardState.W && !m_prevKeyboardState.W)
+	else if (pressed[W])
 	{
 		inputs[1] = Inputs::X;
 	}
 
 #else
-	//for computer input(1 player)
-	m_prevKeyboardState = m_keyboardState;
-	m_keyboardState = m_keyboard->GetState();
-
 	//for controller input
 	gsd->no_players = 0;
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
-		m_prevGamePadState[i] = m_gamePadState[i];
-		m_gamePadState[i] = m_gamePad->GetState(i);
+		prev_GP_state[i] = GP_state[i];
+		GP_state[i] = m_gamePad->GetState(i);
 
-		if (m_gamePadState[i].IsConnected())
+		if (GP_state[i].IsConnected())
 		{
 			gsd->no_players++;
 		}
 
 		//INPUTS!
-		if ((m_keyboardState.Escape && !m_prevKeyboardState.Escape)
-			|| (m_gamePadState[i].IsStartPressed() && !m_prevGamePadState[i].IsStartPressed()))
+		if ((pressed[ESCAPE])
+			|| (GP_state[i].IsStartPressed() && !prev_GP_state[i].IsStartPressed()))
 		{
 			inputs[i] = Inputs::START;
 		}
 
-		if ((m_keyboardState.Q && !m_prevKeyboardState.Q)
-			|| (m_gamePadState[0].IsLeftShoulderPressed() && !m_prevGamePadState[0].IsLeftShoulderPressed()))
+		if ((pressed[Q])
+			|| (GP_state[0].IsLeftShoulderPressed() && !prev_GP_state[0].IsLeftShoulderPressed()))
 		{
 			inputs[i] = Inputs::LB;
 		}
-		if ((m_keyboardState.E && !m_prevKeyboardState.E)
-			|| (m_gamePadState[0].IsRightShoulderPressed() && !m_prevGamePadState[0].IsRightShoulderPressed()))
+		if ((pressed[E])
+			|| (GP_state[0].IsRightShoulderPressed() && !prev_GP_state[0].IsRightShoulderPressed()))
 		{
 			inputs[i] = Inputs::RB;
 		}
@@ -203,113 +200,100 @@ void Input::update(GameStateData* gsd)
 		//Up Down Left Right
 		if (current_scene == CurrentScene::GAME)
 		{
-			if ((m_keyboardState.A)
-				|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
-				|| m_gamePadState[i].IsLeftThumbStickLeft())
+			if ((keyboard_state.A)
+				|| (GP_state[i].IsDPadLeftPressed() && !prev_GP_state[i].IsDPadLeftPressed())
+				|| GP_state[i].IsLeftThumbStickLeft())
 			{
 				inputs[i] = Inputs::LEFT;
 			}
-			else if ((m_keyboardState.D)
-				|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
-				|| m_gamePadState[i].IsLeftThumbStickRight())
+			else if ((keyboard_state.D)
+				|| (GP_state[i].IsDPadRightPressed() && !prev_GP_state[i].IsDPadRightPressed())
+				|| GP_state[i].IsLeftThumbStickRight())
 			{
 				inputs[i] = Inputs::RIGHT;
 			}
 		}
 		else
 		{
-			if ((m_keyboardState.A && !m_prevKeyboardState.A)
-				|| (m_gamePadState[i].IsDPadLeftPressed() && !m_prevGamePadState[i].IsDPadLeftPressed())
-				|| m_gamePadState[i].IsLeftThumbStickLeft())
+			if ((pressed[A])
+				|| (GP_state[i].IsDPadLeftPressed() && !prev_GP_state[i].IsDPadLeftPressed())
+				|| GP_state[i].IsLeftThumbStickLeft())
 			{
 				inputs[i] = Inputs::LEFT;
 			}
-			else if ((m_keyboardState.D && !m_prevKeyboardState.D)
-				|| (m_gamePadState[i].IsDPadRightPressed() && !m_prevGamePadState[i].IsDPadRightPressed())
-				|| m_gamePadState[i].IsLeftThumbStickRight())
+			else if ((pressed[D])
+				|| (GP_state[i].IsDPadRightPressed() && !prev_GP_state[i].IsDPadRightPressed())
+				|| GP_state[i].IsLeftThumbStickRight())
 			{
 				inputs[i] = Inputs::RIGHT;
 			}
 		}
-		if ((m_keyboardState.W && !m_prevKeyboardState.W)
-			|| (m_gamePadState[i].IsDPadUpPressed() && !m_prevGamePadState[i].IsDPadUpPressed())
-			|| m_gamePadState[i].IsLeftThumbStickUp())
+		if ((pressed[W])
+			|| (GP_state[i].IsDPadUpPressed() && !prev_GP_state[i].IsDPadUpPressed())
+			|| GP_state[i].IsLeftThumbStickUp())
 		{
 			inputs[i] = Inputs::UP;
 		}
-		else if ((m_keyboardState.S && !m_prevKeyboardState.S)
-			|| (m_gamePadState[i].IsDPadDownPressed() && !m_prevGamePadState[i].IsDPadDownPressed())
-			|| m_gamePadState[i].IsLeftThumbStickDown())
+		else if ((pressed[S])
+			|| (GP_state[i].IsDPadDownPressed() && !prev_GP_state[i].IsDPadDownPressed())
+			|| GP_state[i].IsLeftThumbStickDown())
 		{
 			inputs[i] = Inputs::DOWN;
 		}
 
 		// Jump variations
-		if ((m_keyboardState.S
-			&& m_keyboardState.Space)
-			|| ((m_gamePadState[i].IsAPressed()
-				&& !m_prevGamePadState[i].IsAPressed())
-				&& (m_gamePadState[i].IsDPadDownPressed()
-					|| m_gamePadState[i].IsLeftThumbStickDown())))
+		if ((keyboard_state.S && keyboard_state.Space)
+			|| ((GP_state[i].IsAPressed() && !prev_GP_state[i].IsAPressed())
+				&& (GP_state[i].IsDPadDownPressed() || GP_state[i].IsLeftThumbStickDown())))
 		{
 			inputs[i] = Inputs::DOWN_A;
 		}
-		else if ((m_keyboardState.Space
-			&& !m_prevKeyboardState.Space)
-			|| (m_gamePadState[i].IsAPressed()
-				&& !m_prevGamePadState[i].IsAPressed()))
+		else if ((pressed[SPACE])
+			|| (GP_state[i].IsAPressed() && !prev_GP_state[i].IsAPressed()))
 		{
 			inputs[i] = Inputs::A;
 		}
 		// Bonus Jump
-		if ((m_keyboardState.X
-			&& m_keyboardState.W)
-			|| ((m_gamePadState[i].IsXPressed()
-				&& !m_prevGamePadState[i].IsXPressed())
-				&& (m_gamePadState[i].IsDPadUpPressed()
-					|| m_gamePadState[i].IsLeftThumbStickUp())))
+		if ((keyboard_state.X && keyboard_state.W)
+			|| ((GP_state[i].IsXPressed() && !prev_GP_state[i].IsXPressed())
+				&& (GP_state[i].IsDPadUpPressed() || GP_state[i].IsLeftThumbStickUp())))
 		{
 			inputs[i] = Inputs::UP_X;
 		}
 		//Down Slam
-		else if ((m_keyboardState.X 
-			&& !m_prevKeyboardState.X
-			&& m_keyboardState.S
-			&& !m_prevKeyboardState.S)
-			|| ((m_gamePadState[i].IsXPressed()
-				&& !m_prevGamePadState[i].IsXPressed())
-				&& (m_gamePadState[i].IsDPadDownPressed()
-					|| m_gamePadState[i].IsLeftThumbStickDown())))
+		else if ((pressed[X] && pressed[S])
+			|| ((GP_state[i].IsXPressed() && !prev_GP_state[i].IsXPressed())
+				&& (GP_state[i].IsDPadDownPressed() || GP_state[i].IsLeftThumbStickDown())))
 		{
 			inputs[i] = Inputs::DOWN_X;
 		}
-		else if ((m_keyboardState.X && !m_prevKeyboardState.X)
-			|| (m_gamePadState[i].IsXPressed() && !m_prevGamePadState[i].IsXPressed()))
+		else if ((pressed[X])
+			|| (GP_state[i].IsXPressed() && !prev_GP_state[i].IsXPressed()))
 		{
 			inputs[i] = Inputs::X;
 		}
-		else if ((m_keyboardState.Back && !m_prevKeyboardState.Back)
-			|| (m_gamePadState[i].IsBPressed() && !m_prevGamePadState[i].IsBPressed()))
+		else if ((pressed[BACK])
+			|| (GP_state[i].IsBPressed() && !prev_GP_state[i].IsBPressed()))
 		{
 			inputs[i] = Inputs::B;
 		}
-		else if ((m_keyboardState.R && !m_prevKeyboardState.R)
-			|| (m_gamePadState[i].IsYPressed() && !m_prevGamePadState[i].IsYPressed()))
+		else if ((pressed[R])
+			|| (GP_state[i].IsYPressed() && !prev_GP_state[i].IsYPressed()))
 		{
 			inputs[i] = Inputs::Y;
 		}
 		if (current_scene != CurrentScene::GAME)
 		{
-			if (m_keyboardState.Escape && !m_prevKeyboardState.Escape)
+			//keyboard only (for debug)
+			if (pressed[ESCAPE])
 			{
 				inputs[i] = Inputs::ESCAPE;
 			}
-			if (m_keyboardState.Enter && !m_prevKeyboardState.Enter)
+			if (pressed[ENTER])
 			{
 				inputs[i] = Inputs::ENTER;
 			}
 		}
-
 	}
 	if (gsd->no_players <= 1)
 	{
@@ -320,6 +304,12 @@ void Input::update(GameStateData* gsd)
 
 bool Input::clearInput()
 {
+	std::fill(pressed.begin(), pressed.end(), false);
+	//for (int i = 0; i <= PRESSED_MAX; i++)
+	//{
+	//	pressed[i] = false;
+	//}
+
 	bool temp[4] = { false, false, false, false };
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
@@ -352,4 +342,93 @@ void Input::ResumeInput()
 void Input::SuspendInput()
 {
 	m_gamePad->Suspend();
+}
+
+void Input::getPressed()
+{
+	if (keyboard_state.W && !prev_keyboard_state.W)
+	{
+		pressed[W] = true;
+	}
+	if (keyboard_state.A && !prev_keyboard_state.A)
+	{
+		pressed[A] = true;
+	}
+	if (keyboard_state.S && !prev_keyboard_state.S)
+	{
+		pressed[S] = true;
+	}
+	if (keyboard_state.D && !prev_keyboard_state.D)
+	{
+		pressed[D] = true;
+	}
+
+	if (keyboard_state.Up && !prev_keyboard_state.Up)
+	{
+		pressed[UP] = true;
+	}
+	if (keyboard_state.Down && !prev_keyboard_state.Down)
+	{
+		pressed[DOWN] = true;
+	}
+	if (keyboard_state.Left && !prev_keyboard_state.Left)
+	{
+		pressed[LEFT] = true;
+	}
+	if (keyboard_state.Right && !prev_keyboard_state.Right)
+	{
+		pressed[RIGHT] = true;
+	}
+
+	if (keyboard_state.LeftControl && !prev_keyboard_state.LeftControl)
+	{
+		pressed[LEFT_CTRL] = true;
+	}
+	if (keyboard_state.LeftShift && !prev_keyboard_state.LeftShift)
+	{
+		pressed[LEFT_SHIFT] = true;
+	}
+
+	if (keyboard_state.Q && !prev_keyboard_state.Q)
+	{
+		pressed[Q] = true;
+	}
+	if (keyboard_state.E && !prev_keyboard_state.E)
+	{
+		pressed[E] = true;
+	}
+
+	if (keyboard_state.X && !prev_keyboard_state.X)
+	{
+		pressed[X] = true;
+	}
+	if (keyboard_state.R && !prev_keyboard_state.R)
+	{
+		pressed[R] = true;
+	}
+	if (keyboard_state.F && !prev_keyboard_state.F)
+	{
+		pressed[F] = true;
+	}
+	if (keyboard_state.G && !prev_keyboard_state.G)
+	{
+		pressed[G] = true;
+	}
+
+	if (keyboard_state.Space && !prev_keyboard_state.Space)
+	{
+		pressed[SPACE] = true;
+	}
+	if (keyboard_state.Enter && !prev_keyboard_state.Enter)
+	{
+		pressed[ENTER] = true;
+	}
+	if (keyboard_state.Escape && !prev_keyboard_state.Escape)
+	{
+		pressed[ESCAPE] = true;
+	}
+	if (keyboard_state.Back && !prev_keyboard_state.Back)
+	{
+		pressed[BACK] = true;
+	}
 }
