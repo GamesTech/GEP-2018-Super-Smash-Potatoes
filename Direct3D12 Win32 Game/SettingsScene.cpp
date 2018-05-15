@@ -9,26 +9,28 @@ SettingsScene::~SettingsScene()
 
 }
 
-bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
+	image_buffer = ib;
 	no_players = gsd->no_players;
 
 	resolution_text = std::make_unique<Text2D>("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
-	resolution_text->SetLayer(1.0f);
+	resolution_text->SetLayer(0.0f);
 	newResolutionText(3);
 	resolution_option_selected = 3;
 
 	fullscreen_text = std::make_unique<Text2D>("Fullscreen: False");
 	fullscreen_text->SetPos(Vector2(300, 300));
-	fullscreen_text->SetLayer(1.0f);
+	fullscreen_text->SetLayer(0.0f);
 
-	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons");
+	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 	main_menu_button->SetPos(Vector2(300, 400));
 	main_menu_button->SetRect(1, 241, 240, 320);
 	game_objects.push_back(std::move(main_menu_button));
 
 	highlight_option_selected();
+	loadBackground(m_RD, ib);
 	return true;
 }
 
@@ -156,14 +158,15 @@ void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Graph
 
 void SettingsScene::ReadInput(Input* input_manager)
 {
+	input_manager->current_scene = CurrentScene::SETTINGS;
 	for (int i = 0; i < no_players; i++)
 	{
-		if (input_manager->inputs[i] == DOWN)
+		if (input_manager->inputs[i] == Inputs::DOWN)
 		{
 			action = Action::BUTTON_DOWN;
 		}
 
-		else if (input_manager->inputs[i] == UP)
+		else if (input_manager->inputs[i] == Inputs::UP)
 		{
 			action = Action::BUTTON_UP;
 		}
@@ -171,29 +174,29 @@ void SettingsScene::ReadInput(Input* input_manager)
 		switch (menu_option_selected)
 		{
 		case 1:
-			if (input_manager->inputs[i] == LEFT)
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				action = Action::SCREEN_RES_LEFT;
 			}
-			else if (input_manager->inputs[i] == RIGHT)
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				action = Action::SCREEN_RES_RIGHT;
 			}
 			break;
 		case 2:
-			if (input_manager->inputs[i] == LEFT)
+			if (input_manager->inputs[i] == Inputs::LEFT)
 			{
 				fullscreen = false;
 				action = Action::FULLSCREEN;
 			}
-			else if (input_manager->inputs[i] == RIGHT)
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
 			{
 				fullscreen = true;
 				action = Action::FULLSCREEN;
 			}
 			break;
 		case 3:
-			if (input_manager->inputs[i] == A)
+			if (input_manager->inputs[i] == Inputs::A)
 			{
 				action = Action::EXIT;
 			}

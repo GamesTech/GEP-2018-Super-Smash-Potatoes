@@ -67,11 +67,17 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
+//#ifdef ARCADE
+//		HWND hwnd = CreateWindowEx(0, L"Direct3D12_Win32_GameWindowClass", L"Super Trash Potatoes", WS_OVERLAPPEDWINDOW,
+//			CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768, nullptr, nullptr, hInstance,
+//			nullptr);
+//#else
         HWND hwnd = CreateWindowEx(0, L"Direct3D12_Win32_GameWindowClass", L"Super Trash Potatoes", WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
         // TODO: Change to CreateWindowEx(WS_EX_TOPMOST, L"Direct3D12_Win32_GameWindowClass", L"Direct3D12 Win32 Game", WS_POPUP,
         // to default to fullscreen.
+//#endif
 
         if (!hwnd)
             return 1;

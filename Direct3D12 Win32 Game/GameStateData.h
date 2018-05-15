@@ -3,19 +3,18 @@
 
 //GEP:: Basic data of current GameState to communicate to all Game Objects
 
-enum Winner
-{
-	PLAYER1,
-	PLAYER2,
-	PLAYER3,
-	PLAYER4,
-};
-
 struct GameStateData
 {
 	const static int MAX_PLAYERS = 4;
 
-	static Winner winner;
+	int x_resolution;
+	int y_resolution;
+
+	int camera_view_width;
+	int camera_view_height;
+
+	int player_podium_position[4] = {0,0,0,0};
+	int position_in_podium;
 
 	int player_selected[MAX_PLAYERS];
 
@@ -24,7 +23,5 @@ struct GameStateData
 
 	int no_players;
 	int arena_selected;
-
-	Winner winState;
 };
 

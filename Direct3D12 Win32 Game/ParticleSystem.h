@@ -7,9 +7,11 @@ namespace Particle_Type
 {
 	enum Type
 	{
-		DUST,
 		ATTACK,
-		ATTACK_UPWARDS
+		ATTACK_UPWARDS,
+		DUST,
+		FIREWORK,
+		EXPLOSION,
 	};
 }
 
@@ -18,18 +20,20 @@ class ParticleSystem
 public:
 	ParticleSystem() = default;
 	~ParticleSystem();
-	bool init(RenderData* m_RD);
+	bool init(RenderData* m_RD, std::shared_ptr<ImageBuffer> image_buffer);
 	void update(GameStateData* gsd);
 	void render(RenderData* m_RD);
 
-	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH);
-	void spawnParticle(int amount, Type::Type type, Vector2 pos, bool flipH, Vector2 player_vel);
-
-	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH);
-	void addParticlesToEmitter(int amount, Particle_Type::Type type, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Vector2 velocity, Vector2 accelaration);
+	/* addParticles( 
+	amount of particles,
+	Type of particle emitter,
+	position of particles,
+	flip horizontal)*/
+	void addParticles(int amount, Particle_Type::Type type, Vector2 pos, bool flipH);
 
 private:
 	RenderData * m_RD = nullptr;
-	std::vector<std::unique_ptr<Particle>> particles;
 	std::vector<std::unique_ptr<Emitter>> emitter;
+	std::vector<std::string> emitter_names;
+	void loadEmitterFile(string _filename);
 };

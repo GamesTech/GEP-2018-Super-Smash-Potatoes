@@ -230,13 +230,48 @@
     <ImageContentTask Include="Particle\hit_particle.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Particle\upwards_punch_particle.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageContentTask Include="Particle\attack.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Particle\dust.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Editor_UI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\Deathzone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Scenes\platform_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\firework.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Scenes\platform_wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Character Sprites\potato_sprite_batch_0.png" />
+    <ImageContentTask Include="Character Sprites\UI_Character_Sprites\potato_sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Background\background_3.png" />
+    <ImageContentTask Include="Background\background_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Background\background_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Menu\podium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\upwards_punch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Items\bomb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Particle\explosion.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

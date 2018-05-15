@@ -25,8 +25,6 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    //m_outputWidth(1280),
-    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -57,11 +55,17 @@ Game::~Game()
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+#ifdef ARCADE
+	m_window = window;
+	m_outputWidth = 1200;
+	m_outputHeight = 720;
+#else
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
-	
+#endif
 
+	
     CreateDevice();
     CreateResources();
 
@@ -69,6 +73,11 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
+	m_GSD->x_resolution = m_outputWidth;
+	m_GSD->y_resolution = m_outputHeight;
+
+	m_GSD->camera_view_width = m_outputWidth;
+	m_GSD->camera_view_height = m_outputHeight;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -92,7 +101,7 @@ void Game::Initialize(HWND window, int width, int height)
 	pd.blendDesc = m_RD->m_states->NonPremultiplied;
 	m_RD->m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dDevice.Get(), resourceUpload, pd);
 	m_RD->m_font = std::make_unique<SpriteFont>(m_d3dDevice.Get(), resourceUpload,
-		L"courier.spritefont",
+		L"upheaval.spritefont",
 		m_RD->m_resourceDescriptors->GetCpuHandle(m_RD->m_resourceCount),
 		m_RD->m_resourceDescriptors->GetGpuHandle(m_RD->m_resourceCount));
 	m_RD->m_resourceCount++;
@@ -103,6 +112,7 @@ void Game::Initialize(HWND window, int width, int height)
 	D3D12_VIEWPORT viewport = { -1.f, -1.f,
 		static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
 	m_RD->m_spriteBatch->SetViewport(viewport);
 
 	m_RD->m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(m_d3dDevice.Get());
@@ -207,7 +217,7 @@ void Game::Clear()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::HotPink, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::Black, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.

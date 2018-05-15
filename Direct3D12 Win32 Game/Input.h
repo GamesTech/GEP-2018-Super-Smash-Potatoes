@@ -1,21 +1,42 @@
 #pragma once
-
-enum Inputs
+namespace Inputs
 {
-	CLEAR,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	A, //jump
-	X, //punch
-	B, //special
-	START, //menu/pause
-	LEFT_TRIGGER,
-	RIGHT_TRIGGER,
-	DOWN_A, //drop ledge
-	UP_X, //up punch
-	DOWN_X, //down slam
+	enum Inputs
+	{
+		CLEAR = 20,
+		ESCAPE = 21,
+		ENTER = 22,
+
+		UP = 0,
+		DOWN = 1,
+		LEFT = 2,
+		RIGHT = 3,
+		A = 4, //jump
+		X = 5, //punch
+		B = 6, //special
+		Y = 7,
+		START = 8, //menu/pause
+		LB = 9,
+		RB = 10,
+		DOWN_A = 11, //drop ledge
+		UP_X = 12, //up punch
+		DOWN_X = 13, //down slam
+	};
+};
+
+namespace CurrentScene
+{
+	enum CurrentScene
+	{
+		START,
+		MENU,
+		LEVELEDITOR,
+		SETTINGS,
+		ARENA,
+		CHARACTER,
+		GAME,
+		GAMEOVER
+	};
 };
 
 class Input
@@ -26,13 +47,15 @@ public:
 
 	void init();
 	void update(GameStateData* gsd);
-	void clearInput();
+	bool clearInput();
 
 	void ResumeInput();
 	void SuspendInput();
 
+	CurrentScene::CurrentScene current_scene = CurrentScene::START;
+
 	const static int MAX_PLAYERS = 4;
-	Inputs inputs[MAX_PLAYERS];
+	Inputs::Inputs inputs[MAX_PLAYERS];
 
 private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;

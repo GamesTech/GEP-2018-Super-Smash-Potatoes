@@ -14,24 +14,24 @@ ArenaSelectScene::~ArenaSelectScene()
 	game_objects.clear();
 }
 
-bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am)
+bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
 	game_state_data = gsd;
-
+	image_buffer = ib;
 	no_players = gsd->no_players;
-	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection");
+	title_boarder = std::make_unique<ImageGO2D>(m_RD, "Arena Selection", image_buffer);
 	title_boarder->SetLayer(0.0f);
 	title_boarder->SetRect(1, 1, 1280, 720);
 	game_objects.push_back(std::move(title_boarder));
 
-	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
+	left_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow", image_buffer);
 	left_arrow->SetLayer(0.1f);
 	left_arrow->SetRect(1, 1, 260, 200);
 	left_arrow->SetPos(Vector2(180, 360));
 	left_arrow->CentreOrigin();
 	game_objects.push_back(std::move(left_arrow));
 
-	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow");
+	right_arrow = std::make_unique<ImageGO2D>(m_RD, "Arrow", image_buffer);
 	right_arrow->SetLayer(0.1f);
 	right_arrow->SetRect(1, 1, 260, 200);
 	right_arrow->SetPos(Vector2(1100, 360));
@@ -39,7 +39,7 @@ bool ArenaSelectScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* 
 	right_arrow->SetOrientation(3.14f);
 	game_objects.push_back(std::move(right_arrow));
 
-	loadLevelsFile("Levels.txt");
+	loadLevelsFile("level\\Levels.txt");
 	loadLevel(m_RD, level_names[0]);
 	return true;
 }
@@ -92,9 +92,10 @@ void ArenaSelectScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12Gr
 
 void ArenaSelectScene::ReadInput(Input * input_manager)
 {
+	input_manager->current_scene = CurrentScene::ARENA;
 	for (int i = 0; i < no_players; i++)
 	{
-		if (input_manager->inputs[i] == LEFT)
+		if (input_manager->inputs[i] == Inputs::LEFT)
 		{
 			if (level_selected > 0)
 			{
@@ -102,7 +103,7 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 				level_selected--;
 			}
 		}
-		if (input_manager->inputs[i] == RIGHT)
+		if (input_manager->inputs[i] == Inputs::RIGHT)
 		{
 			if (level_selected < total_levels - 1)
 			{
@@ -111,34 +112,32 @@ void ArenaSelectScene::ReadInput(Input * input_manager)
 			}
 		}
 
-		if (input_manager->inputs[i] == A)
+		if (input_manager->inputs[i] == Inputs::A || input_manager->inputs[0] == Inputs::ENTER)
 		{
 			game_state_data->arena_selected = level_selected;
 			action = Action::CONTINUE;
 		}
 
-		if (input_manager->inputs[i] == START)
+		if (input_manager->inputs[i] == Inputs::B || input_manager->inputs[i] == Inputs::ESCAPE)
 		{
 			action = Action::BACK;
 		}
 	}
-	input_manager->clearInput();
 }
 
 void ArenaSelectScene::loadLevel(RenderData* m_RD, string lvlname)
 {
-	m_RD->m_resourceCount = m_RD->m_resourceCount - platforms.size();
 	platforms.clear();
 
 	level = std::make_unique<LevelFile>();
-	level->read(lvlname, ".lvl");
+	level->read("level\\" + lvlname, ".lvl");
 
 	//level_name_text->SetText(lvlname);
 
 	for (int i = 0; i < level->getObjListSize(); i++)
 	{
 		string temp_name = level->getObj(i).image_file;
-		auto platform = new ImageGO2D(m_RD, temp_name);
+		auto platform = new ImageGO2D(m_RD, temp_name, image_buffer);
 
 		platform->SetPos(level->getObj(i).position);
 		platform->SetOrigin(level->getObj(i).origin);

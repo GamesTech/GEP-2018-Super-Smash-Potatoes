@@ -252,17 +252,24 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ImageBuffer.h" />
+    <ClInclude Include="LevelEditorScene.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemSpawner.h" />
     <ClInclude Include="LevelFile.h" />
     <ClInclude Include="Loop.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleFile.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PauseScene.h" />
     <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player2D.h" />
+    <ClInclude Include="PlayerFile.h" />
     <ClInclude Include="PlayerTags.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -279,6 +286,7 @@
     <ClInclude Include="RenderData.h" />
     <ClInclude Include="SettingsScene.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="StartScene.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TestPBGO3D.h" />
     <ClInclude Include="SoundEffects.h" />
@@ -296,18 +304,25 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameStateData.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="LevelEditorScene.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="LevelFile.cpp" />
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleFile.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PauseScene.cpp" />
     <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player2D.cpp" />
+    <ClCompile Include="PlayerFile.cpp" />
     <ClCompile Include="PlayerTags.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -329,6 +344,7 @@
     </ClCompile>
     <ClCompile Include="SettingsScene.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="TestPBGO3D.cpp" />
     <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="Text2D.cpp" />
@@ -349,9 +365,6 @@
     <ProjectReference Include="..\DirectXTK12-master\DirectXTK_Desktop_2017_Win10.vcxproj">
       <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Levels.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="attack.particle" />

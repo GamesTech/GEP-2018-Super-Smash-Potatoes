@@ -2,7 +2,9 @@
 #include "Physics2D.h"
 #include "ParticleSystem.h"
 #include "Particle.h"
+#include "PlayerFile.h"
 #include "Input.h"
+#include "Item.h"
 
 //GEP:: Based on the ImageGO2D a basic keyboard controlled sprite
 enum Attack
@@ -17,124 +19,109 @@ class Player2D :
 	public Physics2D
 {
 public:
-	enum Collision 
-	{
-		COLNONE,
-		COLTOP,
-		COLBOTTOM,
-		COLLEFT,
-		COLRIGHT,
-	};
 
-	//TODO: add a 3d player and modes to switch between different views and basic physics
-	Player2D(RenderData* _RD, string _filename);
+	Player2D(RenderData* _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, string _file);
 	virtual ~Player2D();
+	void	Tick(GameStateData* _GSD, int _test, Input* input_manager);
 
-	//void init(AudioManager* am);
+	// setters
+	void	setPlayerNo		(int player_number) { player_no = player_number; };
+	void	SetSpawnPosition(Vector2 spawn)		{ m_respawn_pos = spawn; };
+	void	SetDamage		(float damage)		{ m_damage = damage; };
+	// ?? My bad, I was probably drunk
 
-	void Tick(GameStateData* _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/);
-
-	void setPlayerNo(int player_number);
-
-	void SetDrive(float _drive) { m_drive = _drive; }
-	//float GetDrive() { return m_drive; }
-	//bool GetGrounded() { return m_grounded; };
+	void	SetImmune		(bool _immune)			{ m_immune = _immune; };
+	void	SetAnimGrounded	(bool _anim_grounded)	{ m_anim_grounded = _anim_grounded; };
 	
-	//void SetVelY(float _vel_y) { m_vel.y = _vel_y; }
-	//void SetVelX(float _vel_x) { m_vel.x = _vel_x; }
+	void	SetParticleSystem	(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
+	void	SetCollState		(Collision _col)					 { m_coll_state = _col; };
+	void	setItem				(Item* item)                         { this->item = item; };
+	void	ResetAttacks()											 { m_execute_attack = Attack::NONE; };
+
+	// getters
+	float	GetDamage()			{ return m_damage; };
 	
-	void SetAnimGrounded(bool _anim_grounded) { m_anim_grounded = _anim_grounded; };
-	void SetNewPos(float _new_pos) { m_new_pos = _new_pos; };
+	int		GetDirection()		{ return m_direction; };
+	int		GetLivesRemaining() { return lives_remaining; };
+	int		getPlayerNo()		{ return player_no; };
 
-	//void TestCollision() { SetBoundingBoxes(); }
-	//void SetLimit(Vector2 _lim) { m_limit = _lim; }
-	//void SetSpeedLimit(float _speed_limit) { m_speed_limit = _speed_limit; };
-	void SetLayer(float _new_pos) { m_new_pos = _new_pos; }
+	bool	GetImmune()			{ return m_immune; };
+	bool	GetInvincibility()	{ return m_invincibility; };
+	bool	getDead()			{ return m_dead; };
 
-	//Vector2 GetLimit() { return m_limit; };
-	Vector2 GetCurrVel() { return m_vel; };
+	Attack	GetAttackType() { return m_execute_attack; };
+	Item*	getItem()const	{ return item; };
 
-	void SetCollState(Collision _col) { m_coll_state = _col; };
-	//Collision GetCollState() { return m_coll_state; };
-
-	void SetParticleSystem(std::shared_ptr<ParticleSystem> ps) { particle_system = ps; };
-
-	bool GetLedgeJump() { return m_ledge_jump; };
-	Attack GetAttackType() { return m_execute_attack; };
-	void ResetAttacks() { m_execute_attack = Attack::NONE; };
-	bool IgnoreCollision() { return m_ignore_collision; };
-
-	float GetDamage() { return m_damage; };
-
-	bool CheckBlocking(GameStateData * _GSD, Player2D* other_player);
-	bool ExectuePunch(GameStateData * _GSD, Player2D* other_player);
-	bool ExectueUpPunch(GameStateData * _GSD, Player2D* other_player);
-	bool ExectueDownPunch(GameStateData * _GSD, Player2D* other_player);
-	void GotHit(GameStateData * _GSD, float _dir, float y_force);
-	void SetImmune(bool _immune) { m_immune = _immune; };
-	void Block(GameStateData * _GSD);
-	bool GetOrientation();
-	bool GetImmune() { return m_immune; }
-	bool GetInvincibility() { return m_invincibility; };
-
-	//void SetLivesRemaining(int lives) { lives_remaining = lives; };
-	int GetLivesRemaining() { return lives_remaining; };
-
-	bool getDead() { return m_dead; };
+	// attack functions
+	bool	CheckBlocking	(GameStateData * _GSD, Player2D* other_player);
+	bool	ExectuePunch	(GameStateData * _GSD, Player2D* other_player);
+	bool	ExectueUpPunch	(GameStateData * _GSD, Player2D* other_player);
+	bool	ExectueDownPunch(GameStateData * _GSD, Player2D* other_player);	
+	
+	void	GotHit			(GameStateData * _GSD, float _dir, float y_force);
+	void	Block			(GameStateData * _GSD);
 
 protected:
-	void ProcessCollision();
-	void updateOrientation();
-	void AnimationChecks(GameStateData * _GSD);
-	void HitTimer(GameStateData * _GSD);
-	void Grabbing();
-	void PunchTimer(GameStateData * _GSD);
-	void UpPunchTimer(GameStateData * _GSD);
-	void deathZone();
-	void respawn();
-	void RespawnTimer(GameStateData * _GSD);
-	void controller(Input * input_manager);
+	
+	void	SetStatsFromFile();
+	void	Grabbing();
+	void	updateOrientation();
+	
+	void	AnimationChecks(GameStateData * _GSD);
+	void	deathZone      (GameStateData * _GSD);
+	void	respawn        (GameStateData * _GSD);
+	void    controller     (Input * input_manager, GameStateData * _GSD);
 
-	float m_jumpForce = 60000;
-	float m_drive = 200.0f;
-	float m_damage = 1;
-	//float m_gravity = 980;
-	int player_no = 0;
-	int lives_remaining = 3;
-	Vector2 m_max_speed = Vector2(400, 400);
+	// timers
+	void	HitTimer	(GameStateData * _GSD);
+	void	CollTimer	(GameStateData * _GSD);
+	void    PunchTimer	(GameStateData * _GSD);
+	void	UpPunchTimer(GameStateData * _GSD);
+	void	RespawnTimer(GameStateData * _GSD);
 
-	bool m_grounded = false;
-	bool m_jumping = false;
-	bool m_up_punch_anim = false;
-	bool m_down_punching_anim = false;
-	bool m_punch_anim = false;
-	bool punch_particle = true;
-	bool m_bonus_jump = false;
-	bool m_anim_grounded = false;
-	bool m_grabing_side = false;
-	bool m_ledge_jump = false;
-	bool m_y_coll = false;
-	bool m_x_coll = false;
-	bool m_remove_controll = false;
-	bool m_dead = false;
-	bool m_ignore_collision = false;
-	bool m_immune = false;
-	bool m_invincibility = false;
+	// animation bools
+	bool	m_jumping_anim = false;
+	bool	m_up_punch_anim	= false;
+	bool	m_down_punching_anim = false;
+	bool	m_punch_anim = false;
+	bool	m_anim_grounded = false;
+	
+	// player state bools
+	bool	m_remove_controll = false;
+	bool	m_dead = false;
+	bool	m_immune = false;
+	bool	m_invincibility = false;
 
-	float m_timer_punch = 4;
-	float m_up_timer_punch = 4;
-	float m_timer_hit = 4;
-	float m_respawn_timer = 3;
+	bool	punch_particle = true;
 
-	float m_direction = 1;
+	// timer floats
+	float	m_timer_punch = 4;
+	float	m_up_timer_punch = 4;
+	float	m_timer_hit	= 4;
+	float	m_respawn_timer = 3;
+	float	m_ignore_coll_timer	= 3;
 
-	//bool m_jumping = false;
- 	//float m_speed_limit;
-	float m_new_pos = 0;
-	Collision m_coll_state = COLNONE;
-	Attack m_execute_attack = NONE;
+	// player stats
+	float	m_jump_force = 60000.f;
+	float	m_jump_upwards_force = 100000.f;
+	float   m_slam_force = 60000.f;
+	float   m_hit_force = 60000.f;
+	float	m_drive = 200.0f;
+	float	m_damage = 1;
+	float	m_direction = 1;
+	
+	int		player_no = 0;
+	int		m_max_jumps = 3;
+	int		lives_remaining = 3;
 
-	Vector2 m_limit = Vector2(1280, 720);
+	Vector2	m_limit = Vector2(1780, 1220);
+	Vector2 m_respawn_pos = Vector2(600, 250);
+	Vector2	m_max_speed	= Vector2(400, 400);
+	
+	Attack  m_execute_attack = NONE;
+	
+	Item*	item = nullptr;
+
 	std::shared_ptr<ParticleSystem> particle_system = nullptr;
+	std::unique_ptr<PlayerFile>		player_file	= nullptr;
 };
-

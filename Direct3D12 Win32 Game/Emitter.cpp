@@ -4,38 +4,22 @@
 #include "Particle.h"
 #include <codecvt>
 #include "Emitter.h"
-#include <random>
-#include <array>
 
-Emitter::Emitter(RenderData * _RD, string _filename) :ImageGO2D(_RD, _filename)
-{
-}
 
-void Emitter::init(RenderData * m_RD)
+Emitter::Emitter(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> image_buffer, std::string particle) :ImageGO2D(_RD, _filename, image_buffer)
 {
+	particles.reserve(50);
+	particle_file = std::make_shared<ParticleFile>();
+	particle_file->read(particle, ".txt");
 }
 
 void Emitter::update(GameStateData * gsd)
 {
-	for (int i = 0; i < particles.size(); ++i)
+	for (auto& p : particles) // Updates all the particles that aren't dead
 	{
-		particles[i].lifetime -= gsd->m_dt; //reduces lifetime by deltatime, if hit zero it equals dead
-		//Velocity and accelaration maths
-		particles[i].velocity.x = (particles[i].velocity.x + particles[i].accelaration.x * gsd->m_dt);
-		particles[i].velocity.y = (particles[i].velocity.y + particles[i].accelaration.y * gsd->m_dt);
-		particles[i].position.x = (particles[i].position.x + particles[i].velocity.x * gsd->m_dt);
-		particles[i].position.y = (particles[i].position.y + particles[i].velocity.y * gsd->m_dt);
-
-		if (particles[i].fade)
+		if (!p->isDead())
 		{
-			float lifetime_percentage = (particles[i].max_lifetime - particles[i].lifetime) / particles[i].max_lifetime;
-
-			particles[i].opacity = 0.0 * lifetime_percentage + 1 * (1 - lifetime_percentage);
-		}
-
-		if (particles[i].lifetime <= 0.0f) // When the particle are dead they are deleted 
-		{
-			particles.erase(particles.begin() + i);
+			p->update(gsd);
 		}
 	}
 }
@@ -44,76 +28,35 @@ void Emitter::render(RenderData * m_RD)
 {
 	for (auto& p : particles) //For each particle in the it will be rendered as same texture just in a new position
 	{
-		m_colour.w = p.opacity;
-		FlipH(p.flip);
-		m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_resourceNum),
-			GetTextureSize(m_texture.Get()),
-			p.offset_position + p.position, nullptr, m_colour, m_orientation, m_origin, m_scale, m_flip, p.layer);
+		if (!p->isDead()) // If particle is dead, don't render it.
+		{
+			FlipH(p->getFlip());
+			m_RD->m_spriteBatch->Draw(m_RD->m_resourceDescriptors->GetGpuHandle(m_texture_data.m_resourceNum),
+				GetTextureSize(m_texture_data.m_texture.Get()),
+				p->getPos(), nullptr, p->getColour(), m_orientation, m_origin, p->getScale(), m_flip, p->getLayer());
+		}
 	}
 }
 
-void Emitter::addBurstOfParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH)
+void Emitter::addParticles(int amount, Vector2 pos, bool flipH)
 {
 	for (int i = 0; i < amount; ++i)
 	{
-		Particles temp_p;
-		temp_p.offset_position = pos;
-		normalization(temp_p);
-		temp_p.lifetime = lifetime;
-		temp_p.max_lifetime = lifetime;
-		temp_p.fade = fade;
-		temp_p.flip = flipH;
-		temp_p.layer = layer;
-		particles.push_back(temp_p);
-	}
-}
-
-void Emitter::normalization(Particles& temp_p)
-{
-	std::random_device rd;
-	std::uniform_real_distribution<float> _velocity(-100, 100);
-	std::uniform_real_distribution<float> _acc(-100, 100);
-
-	std::array<float, 2> v = { _velocity(rd), 0 };
-
-	float mag = sqrt(v[0] * v[0] + v[1] * v[1]);
-
-	v[0] /= mag;
-	v[1] /= mag;
-
-	temp_p.velocity.x = v[0] * _velocity(rd);
-	temp_p.velocity.y = -abs(v[1] * _velocity(rd));
-
-	temp_p.accelaration.x = _acc(rd);
-	temp_p.accelaration.y = _acc(rd);
-}
-
-void Emitter::addShootSideParticles(int amount, Vector2 pos, float lifetime, float layer, bool fade, bool flipH, Vector2 vel, Vector2 acc)
-{
-	for (int i = 0; i < amount; ++i)
-	{
-		Particles temp_p;
-		temp_p.offset_position = pos;
-		temp_p.lifetime = lifetime;
-		temp_p.max_lifetime = lifetime;
-		temp_p.fade = fade;
-		temp_p.flip = flipH;
-		temp_p.layer = layer;
-
-		if (flipH)
+		// Reusing old particles 
+		bool made_particle = false;
+		for (auto& p : particles)
 		{
-			temp_p.velocity.x = -vel.x;
-			temp_p.velocity.y = vel.y;
-			temp_p.accelaration.x = -acc.x;
-			temp_p.accelaration.y = acc.y;
+			if (p->isDead()) // Checks for dead particles, if found they are reused.
+			{
+				p->SetVariables(pos, flipH);
+				made_particle = true;
+				break;
+			}
 		}
-		else
+		if (!made_particle) // If no particles can be reuse , create a new one.
 		{
-			temp_p.velocity.x = vel.x;
-			temp_p.velocity.y = vel.y;
-			temp_p.accelaration.x = acc.x;
-			temp_p.accelaration.y = acc.y;
+			particles.emplace_back(new Particle());
+			particles.back()->init(particle_file, pos, flipH);
 		}
-		particles.push_back(temp_p);
 	}
 }

@@ -989,10 +989,10 @@ XMMATRIX SpriteBatch::Impl::GetViewportTransform(_In_ DXGI_MODE_ROTATION rotatio
     default:
         return XMMATRIX
             (
-                xScale, 0, 0, 0,
-                0, -yScale, 0, 0,
-                0, 0, 1, 0,
-				topLeftX, -topLeftY, 0, 1
+                xScale,		0,			0,		0,
+                0,		  -yScale,		0,		0,
+                0,			0,			1,		0,
+				topLeftX, -topLeftY,	0,		1
                 );
     }
 }

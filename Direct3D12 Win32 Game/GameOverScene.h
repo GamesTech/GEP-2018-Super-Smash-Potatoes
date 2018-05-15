@@ -7,7 +7,7 @@ public:
 	GameOverScene();
 	~GameOverScene();
 
-	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
 	virtual SceneChange update(GameStateData* gsd) override;
 	virtual void render(RenderData* m_RD,
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
@@ -21,10 +21,14 @@ private:
 	};
 	Action action = Action::NONE;
 
-	RECT number_pos[4] = { {0,0,66,60},{ 72,0,136,60 },{ 186,0,252,60 },{ 300,0,366,60 } };
+	std::string text[4] = { "Player 1","Player 2","Player 3","Player 4" };
+	Vector2 podium_pos[4] = { { 570,150 },{ 770,250 },{ 370,350 },{ 970,450 } };
 
-	std::unique_ptr<ImageGO2D> winner_number = nullptr;
-	std::unique_ptr<ImageGO2D> winner_text = nullptr;
+	void loadCharactersFile(string _filename);
+
+	std::vector<string> sprite_names;
+
+	std::unique_ptr<Text2D> winner_text;
 
 	RenderData* m_RD;
 

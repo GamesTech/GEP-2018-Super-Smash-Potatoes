@@ -2,11 +2,16 @@
 #include "UserInterface2D.h"
 #include "GameStateData.h"
 
-void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr<Player2D> players[], std::vector<string> sprite_names)
+void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::vector<std::unique_ptr<Player2D>>& players, std::vector<string> sprite_names, std::shared_ptr<ImageBuffer> image_buffer)
 {
 	timer_text = new Text2D("Time Remaining: xxxs");
 	timer_text->SetPos(Vector2(750, 10));
-	timer_text->SetLayer(1.0f);
+	timer_text->SetLayer(0.0f);
+
+#ifdef ARCADE
+	character_gap = 400;
+#endif
+
 
 	//player_UI_Boxes = new ImageGO2D(m_RD, "PlayerPreviewBoxes");
 	//player_UI_Boxes->SetPos(Vector2(640, 640));
@@ -19,14 +24,14 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr
 
 	for (int i = 0; i < gsd->no_players; i++)
 	{
-		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]]);
+		ImageGO2D* temp_player_UI = new ImageGO2D(m_RD, sprite_names[gsd->player_selected[i]], image_buffer);
 		temp_player_UI->SetPos(Vector2(410 + (i * character_gap), UI_start_y + 35));
 		temp_player_UI->SetRect(1, 1, 64, 64);
 		temp_player_UI->SetLayer(0.0f);
 		temp_player_UI->CentreOrigin();
 		UI.emplace_back(temp_player_UI);
 
-		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags");
+		player_numbers = std::make_unique<ImageGO2D>(m_RD, "PlayerTags", image_buffer);
 		player_numbers->SetPos(Vector2(400 + (i * character_gap), UI_start_y));
 		player_numbers->SetLayer(0.0f);
 		player_numbers->SetRect(number_pos[i]);
@@ -34,8 +39,8 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr
 		UI.push_back(std::move(player_numbers));
 
 		damage_text[i] = new Text2D("xxx%");
-		damage_text[i]->SetPos(Vector2(435 + (i * character_gap), UI_start_y + 10));
-		damage_text[i]->SetLayer(1.0f);
+		damage_text[i]->SetPos(Vector2(500 + (i * character_gap), UI_start_y + 30));
+		damage_text[i]->SetLayer(0.0f);
 		damage_text[i]->CentreOrigin();
 		damage_text[i]->SetColour(DirectX::SimpleMath::Color::Color(1, 1, 1, 1));
 		UI.emplace_back(damage_text[i]);
@@ -44,7 +49,7 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr
 		for (int j = 0; j < max_lives; j++)
 		{
 			int lives_no = (i * max_lives) + j;
-			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives");
+			lives_button_sprite[lives_no] = new ImageGO2D(m_RD, "lives", image_buffer);
 			lives_button_sprite[lives_no]->SetPos(Vector2(390 + (i * character_gap) + (j * 30), UI_start_y + 80));
 			lives_button_sprite[lives_no]->SetRect(1, 1, 20, 20);
 			lives_button_sprite[lives_no]->SetLayer(0.0f);
@@ -54,20 +59,20 @@ void UserInterface::init(RenderData * m_RD, GameStateData * gsd, std::unique_ptr
 	}
 }
 
-void UserInterface::update(GameStateData* gsd, std::unique_ptr<Player2D> players[], float time_remaining)
+void UserInterface::update(GameStateData* gsd, std::vector<std::unique_ptr<Player2D>> &players, float time_remaining)
 {
 	time_remaining = time_remaining - gsd->m_dt;
 	timer_text->SetText("Time Remaining: " + std::to_string(time_remaining) + "s");
 
-	for (int i = 0; i < gsd->no_players; i++)
+	for (auto& player : players)
 	{
-		int player_damage = (players[i]->GetDamage() * 100) - 100;
+		int player_damage = (player->GetDamage() * 100) - 100;
 
-		damage_text[i]->SetText(std::to_string(player_damage) + "%");
+		damage_text[player->getPlayerNo()]->SetText(std::to_string(player_damage) + "%");
 
-		for (int j = 0; j < max_lives - (players[i]->GetLivesRemaining()); j++)
+		for (int j = 0; j < max_lives - (player->GetLivesRemaining()); j++)
 		{
-			lives_button_sprite[(i * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
+			lives_button_sprite[(player->getPlayerNo() * 3) + j]->SetColour(DirectX::SimpleMath::Color(1, 0, 0));
 		}
 	}
 }
