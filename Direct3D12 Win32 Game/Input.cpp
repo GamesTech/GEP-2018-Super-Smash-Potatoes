@@ -92,16 +92,19 @@ void Input::update(GameStateData* gsd)
 	}
 
 	//Down Slam
-	if (pressed[LEFT_SHIFT] && pressed[DOWN])
+	else if (pressed[Z])
 	{
-		inputs[0] = Inputs::DOWN_X;
+		inputs[0] = Inputs::B;
 	}
 	//Punch
 	else if (pressed[LEFT_SHIFT])
 	{
 		inputs[0] = Inputs::X;
 	}
-
+	if (pressed[LEFT_ALT])
+	{
+		inputs[0] = Inputs::Y;
+	}
 
 	//player2
 	//Left Right
@@ -156,14 +159,19 @@ void Input::update(GameStateData* gsd)
 		inputs[1] = Inputs::A;
 	}
 	//Down Slam
-	if (pressed[F] && pressed[W])
+	else if (pressed[I])
 	{
-		inputs[1] = Inputs::DOWN_X;
+		inputs[1] = Inputs::B;
 	}
 	//Punch
 	else if (pressed[W])
 	{
 		inputs[1] = Inputs::X;
+	}
+	//Throw
+	if (pressed[S])
+	{
+		inputs[1] = Inputs::Y;
 	}
 
 #else
@@ -388,6 +396,10 @@ void Input::getPressed()
 	{
 		pressed[LEFT_SHIFT] = true;
 	}
+	if (keyboard_state.LeftAlt && !prev_keyboard_state.LeftAlt)
+	{
+		pressed[LEFT_ALT] = true;
+	}
 
 	if (keyboard_state.Q && !prev_keyboard_state.Q)
 	{
@@ -402,6 +414,10 @@ void Input::getPressed()
 	{
 		pressed[X] = true;
 	}
+	if (keyboard_state.Z && !prev_keyboard_state.Z)
+	{
+		pressed[Z] = true;
+	}
 	if (keyboard_state.R && !prev_keyboard_state.R)
 	{
 		pressed[R] = true;
@@ -413,6 +429,10 @@ void Input::getPressed()
 	if (keyboard_state.G && !prev_keyboard_state.G)
 	{
 		pressed[G] = true;
+	}
+	if (keyboard_state.I && !prev_keyboard_state.I)
+	{
+		pressed[I] = true;
 	}
 
 	if (keyboard_state.Space && !prev_keyboard_state.Space)

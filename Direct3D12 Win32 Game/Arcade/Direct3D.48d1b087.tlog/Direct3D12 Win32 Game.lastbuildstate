@@ -1,2 +1,2 @@
-#TargetFrameworkVersion=v4.0:PlatformToolSet=v141:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native64Bit:WindowsTargetPlatformVersion=10.0.16299.0
-Arcade|Win32|C:\Users\Huwti\Desktop\GEP-2018-Super-Smash-Potatoes\DirectXTK12-master\|
+#TargetFrameworkVersion=v4.0:PlatformToolSet=v141:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=10.0.16299.0
+Arcade|Win32|C:\Users\arcade\Documents\GEP-2018-Super-Smash-Potatoes\DirectXTK12-master\|

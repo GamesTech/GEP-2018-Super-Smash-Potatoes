@@ -87,14 +87,17 @@ private:
 
 		LEFT_CTRL,
 		LEFT_SHIFT,
+		LEFT_ALT,
 
 		Q,
 		E,
 
 		X,
+		Z,
 		R,
 		F,
 		G,
+		I,
 
 		SPACE,
 		ENTER,
