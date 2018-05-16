@@ -57,7 +57,7 @@ void Game::Initialize(HWND window, int width, int height)
 {
 #ifdef ARCADE
 	m_window = window;
-	m_outputWidth = 1200;
+	m_outputWidth = 1280;
 	m_outputHeight = 720;
 #else
     m_window = window;
