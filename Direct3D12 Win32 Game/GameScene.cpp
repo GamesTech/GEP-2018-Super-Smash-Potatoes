@@ -108,7 +108,7 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 			}
 			for (auto& item : spawner->getItems())
 			{
-				if (m_collision_system->CheckIntersect(item.get(), player.get(), 100.f))
+				if (m_collision_system->CheckIntersect(item.get(), player.get(), 80.f))
 				{
 					item->collided(player.get(), gsd);
 				}
@@ -138,7 +138,16 @@ Scene::SceneChange GameScene::update(GameStateData* gsd)
 		{
 			for (int i = 0; i < 1; i++)
 			{
-				spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+				std::random_device rd;
+				std::uniform_int_distribution<int> dist(0, 1);
+				if(dist(rd) == 1)
+				{
+					spawner->addItem(Vector2(400 + (i * 1), 300), "heal", Item::Type::HEAL, 500);
+				}
+				else
+				{
+					spawner->addItem(Vector2(400 + (i * 1), 300), "bomb", Item::Type::BOMB, 500);
+				}
 				item_spawn_timer = 0;
 			}
 		}

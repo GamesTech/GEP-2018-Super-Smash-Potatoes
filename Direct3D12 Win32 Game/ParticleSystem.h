@@ -12,6 +12,7 @@ namespace Particle_Type
 		DUST,
 		FIREWORK,
 		EXPLOSION,
+		HEAL,
 	};
 }
 

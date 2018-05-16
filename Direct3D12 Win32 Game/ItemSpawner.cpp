@@ -42,10 +42,10 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 	//Find a spot in the list if there is one
 	for (auto& item : items)
 	{
-		if (item->getMarked())
+		if (item->getMarked() && item->GetType() == type)
 		{
 			item->SetPos(position);
-			item->CentreOrigin();
+			//item->CentreOrigin();
 			item->SetScale(Vector2(1, 1));
 			item->SetLayer(0.5f);
 			item->SetRect(1, 1, 53, 69); //todo
@@ -60,10 +60,10 @@ void ItemSpawner::addItem(Vector2 position, string _filename, Item::Type type, l
 	//Otherwise add new spot
 	items.emplace_back(new Item(m_RD, _filename, image_buffer, type, life_span, particle_system));
 	items.back()->SetPos(position);
-	items.back()->CentreOrigin();
+	//items.back()->CentreOrigin();
 	items.back()->SetScale(Vector2(1, 1));
 	items.back()->SetLayer(0.5f);
-	items.back()->SetRect(1, 1, 54, 69); //todo
+	items.back()->SetRect(1, 1, 69, 69); //todo
 }
 
 int ItemSpawner::getSize() const

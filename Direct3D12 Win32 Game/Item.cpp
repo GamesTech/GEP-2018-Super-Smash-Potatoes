@@ -110,9 +110,11 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 	}
 	else if (type == HEAL) 
 	{
+		particle_system->addParticles(10, Particle_Type::HEAL, _player->GetPos(), false);
 		if (_player->GetDamage() > 1.0f) 
 		{
-			_player->SetDamage(_player->GetDamage() - 1.0f);
+			_player->SetDamage(_player->GetDamage() - .25f);
+			if (_player->GetDamage() < 1) { _player->SetDamage(1.f); };
 		}
 		marked_for_deletion = true;
 	}
