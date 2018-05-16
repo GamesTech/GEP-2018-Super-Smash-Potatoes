@@ -1,5 +1,7 @@
+#pragma once
 #include "pch.h"
 #include "File.h"
+#include <sstream>
 
 File::File(std::string path, bool read_only) : File(path, ".ssp", read_only)
 {
@@ -35,7 +37,9 @@ bool File::read()
 		}
 		else
 		{
-			block.push_back(line);
+			int index = line.find(':');
+			string new_line = line.substr(index + 1, line.size());
+			block.push_back(new_line);
 		}
 	}
 
@@ -93,4 +97,16 @@ Vector2 File::parseVector2(std::string s)
 	float a = std::stof(s.substr(0, index));
 	float b = std::stof(s.substr(index + 1, s.size()));
 	return Vector2(a, b);
+}
+
+bool File::parseBoolean(std::string s)
+{
+	if (s == "true")
+	{
+		return true;
+	}
+	else if (s == "false")
+	{
+		return false;
+	}
 }

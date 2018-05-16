@@ -10,8 +10,11 @@
 #include "File.h"
 #include "Debug.h"
 #include "MenuScene.h"
+#include "CharacterSelectScene.h"
+#include "ArenaSelectScene.h"
 #include "SettingsScene.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 
 extern void ExitGame();
 
@@ -22,8 +25,6 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() :
     m_window(nullptr),
-    //m_outputWidth(1280),
-    //m_outputHeight(960),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
     m_fenceValues{}
@@ -54,11 +55,17 @@ Game::~Game()
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+#ifdef ARCADE
+	m_window = window;
+	m_outputWidth = 1280;
+	m_outputHeight = 720;
+#else
     m_window = window;
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
-	
+#endif
 
+	
     CreateDevice();
     CreateResources();
 
@@ -66,7 +73,11 @@ void Game::Initialize(HWND window, int width, int height)
 	audio_manager->initAudioManager();
 
 	m_GSD = new GameStateData;
-	m_GSD->gameState = MENU;
+	m_GSD->x_resolution = m_outputWidth;
+	m_GSD->y_resolution = m_outputHeight;
+
+	m_GSD->camera_view_width = m_outputWidth;
+	m_GSD->camera_view_height = m_outputHeight;
 
 	m_RD = new RenderData;
 	m_RD->m_d3dDevice = m_d3dDevice;
@@ -90,16 +101,18 @@ void Game::Initialize(HWND window, int width, int height)
 	pd.blendDesc = m_RD->m_states->NonPremultiplied;
 	m_RD->m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dDevice.Get(), resourceUpload, pd);
 	m_RD->m_font = std::make_unique<SpriteFont>(m_d3dDevice.Get(), resourceUpload,
-		L"courier.spritefont",
+		L"upheaval.spritefont",
 		m_RD->m_resourceDescriptors->GetCpuHandle(m_RD->m_resourceCount),
 		m_RD->m_resourceDescriptors->GetGpuHandle(m_RD->m_resourceCount));
 	m_RD->m_resourceCount++;
 
 	auto uploadResourcesFinished = resourceUpload.End(m_commandQueue.Get());
 
-	D3D12_VIEWPORT viewport = { 0.0f, 0.0f,
+	//viewport coordinates -1,-1 = top left corner, 1,1 = bottom right corner
+	D3D12_VIEWPORT viewport = { -1.f, -1.f,
 		static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight),
 		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
 	m_RD->m_spriteBatch->SetViewport(viewport);
 
 	m_RD->m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(m_d3dDevice.Get());
@@ -124,27 +137,22 @@ void Game::Initialize(HWND window, int width, int height)
 
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
+    
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
-
-//GEP::This is where I am creating the test objects
+    
 	m_cam = new Camera(static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), 1.0f, 1000.0f);
 	m_RD->m_cam = m_cam;
 	
+	input_manager = std::make_unique<Input>();
+	input_manager->init();
+
 	//Init of debug file use the Debug::output to save stuff to the file
 	Debug::init();
 	Debug::output("hello", "world");
 
-	scene = std::make_unique<MenuScene>();
-	scene->init(m_RD, m_GSD);
-
-	m_keyboard = std::make_unique<Keyboard>();
-	m_gamePad = std::make_unique<GamePad>();
-	//m_mouse = std::make_unique<Mouse>();
-	//m_mouse->SetWindow(window); // mouse device needs to linked to this program's window
-	//m_mouse->SetMode(Mouse::Mode::MODE_RELATIVE); // gives a delta postion as opposed to a MODE_ABSOLUTE position in 2-D space
+	scene_manager = std::make_unique<SceneManager>();
+	scene_manager->init(m_RD, m_GSD, audio_manager);
 }
 
 //GEP:: Executes the basic game loop.
@@ -161,24 +169,17 @@ void Game::Tick()
 //GEP:: Updates all the Game Object Structures
 void Game::Update(DX::StepTimer const& timer)
 {
-	checkIfNewScene();
-
-	m_GSD->m_prevKeyboardState = m_GSD->m_keyboardState;
-	m_GSD->m_keyboardState = m_keyboard->GetState();
-	scene->ReadInput(m_GSD);
-
+	//scene->ReadInput(m_GSD);
      m_GSD->m_dt = float(timer.GetElapsedSeconds());
 
 	audio_manager->updateAudioManager(m_GSD);
 
-	scene->update(m_GSD);
-
-	//// TODO: Gamepad
-	for (int i = 0; i < MAX_PLAYERS; i++)
+	if (!scene_manager->update(m_RD, m_GSD, audio_manager, input_manager.get(), m_swapChain))
 	{
-		m_GSD->m_prevGamePadState[i] = m_GSD->m_gamePadState[i];
-		m_GSD->m_gamePadState[i] = m_gamePad->GetState(i);
+		PostQuitMessage(0);
 	}
+
+	input_manager->update(m_GSD);
 }
 
 //GEP:: Draws the scene.
@@ -193,7 +194,7 @@ void Game::Render()
 	// Prepare the command list to render a new frame.
 	Clear();
 
-	scene->render(m_RD, m_commandList);
+	scene_manager->render(m_RD, m_commandList);
 
 
 	// Show the new frame.
@@ -216,11 +217,11 @@ void Game::Clear()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
-    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::Black, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
-    D3D12_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+    D3D12_VIEWPORT viewport = { -1.f, -1.f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
     D3D12_RECT scissorRect = { 0, 0, m_outputWidth, m_outputHeight };
     m_commandList->RSSetViewports(1, &viewport);
     m_commandList->RSSetScissorRects(1, &scissorRect);
@@ -260,21 +261,20 @@ void Game::Present()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnDeactivated()
 {
     // TODO: Game is becoming background window.
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
 	audio_manager->suspendAudioManager();
-	m_gamePad->Suspend();
+	input_manager->SuspendInput();
 }
 
 void Game::OnResuming()
@@ -283,8 +283,7 @@ void Game::OnResuming()
 	audio_manager->resumeAudioManager();
 
     // TODO: Game is being power-resumed (or returning from minimize).
-	m_gamePad->Resume();
-	m_buttons.Reset();
+	input_manager->ResumeInput();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
@@ -665,39 +664,4 @@ void Game::OnDeviceLost()
     CreateResources();
 }
 
-void Game::checkIfNewScene()
-{
-	if (m_GSD->gameState != prevScene)
-	{
-		switch (m_GSD->gameState)
-		{
-		case MENU:
-			scene.reset();
-			scene = std::make_unique<MenuScene>();
-			break;
-		case SETTINGS:
-			scene.reset();
-			scene = std::make_unique<SettingsScene>();
-			scene->giveSwapChain(m_swapChain);
-			break;
-		case INGAME:
-			m_GSD->no_players = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (m_GSD->m_gamePadState[i].IsConnected())
-				{
-					m_GSD->no_players++;
-				}
-			}
-			scene.reset();
-			scene = std::make_unique<GameScene>();
-			break;
-		case GAMEOVER:
-			//scene.release();
-			//gameover man, GAMEOVER
-			break;
-		}
-		scene->init(m_RD, m_GSD);
-		prevScene = m_GSD->gameState;
-	}
-}
+

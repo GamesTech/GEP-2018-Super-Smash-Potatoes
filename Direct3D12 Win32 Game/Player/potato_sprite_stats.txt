@@ -1,0 +1,15 @@
+{
+Jump: 60
+Amount of jumps: 2
+Upwards Punch: 100
+Animation Sheet:potato_sprite_batch.txt
+Drive: 900.0
+Drag: 3.0
+Mass: 1.0
+Throw Item(CAPS):X
+Jump:A
+Jump down platform:DOWN_A
+Upwards Attack:UP_X
+Slam:B
+Attack:X
+}

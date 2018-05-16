@@ -11,8 +11,9 @@
 #include "Audio.h"
 #include "Text2D.h"
 #include <vector>
-#include "Scene.h"
+#include "SceneManager.h"
 #include "AudioManager.h"
+#include "Input.h"
 
 using std::vector;
 
@@ -62,7 +63,6 @@ private:
     void GetAdapter(IDXGIAdapter1** ppAdapter);
 
     void OnDeviceLost();
-	void checkIfNewScene();
 
     // Application state
     HWND                                                m_window;
@@ -103,24 +103,17 @@ private:
 	AudioManager* audio_manager;
 	GameStateData* m_GSD;
 
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	//std::unique_ptr<DirectX::Mouse> m_mouse;
-	std::unique_ptr<DirectX::GamePad> m_gamePad;
-
 	int menu_option_selected = 1;
 	int resolution_option_selected = 1;
 	bool settings_menu_open = false;
 	int prevScene = 0;
 
-	const int MAX_PLAYERS = 4;
-
 	//audio system
 	std::unique_ptr<DirectX::AudioEngine> m_audEngine;
 
-	std::unique_ptr<Scene> scene;
+	std::unique_ptr<SceneManager> scene_manager;
+	std::unique_ptr<Input> input_manager;
 
 	//Debug
 	Text2D * stateText;
-
-	DirectX::GamePad::ButtonStateTracker m_buttons;
 };

@@ -40,5 +40,5 @@ void Text2D::Render(RenderData * _RD)
 		m_origin = _RD->m_font->MeasureString(m_wText.c_str()) / 2.f;
 	}
 
-	_RD->m_font->DrawString(_RD->m_spriteBatch.get(), m_wText.c_str(), m_pos, m_colour, m_orientation, m_scale, m_layer);
+	_RD->m_font->DrawString(_RD->m_spriteBatch.get(), m_wText.c_str(), m_pos, m_colour, m_orientation, m_origin, m_scale, SpriteEffects_None, m_layer);
 }

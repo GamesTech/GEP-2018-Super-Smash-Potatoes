@@ -7,15 +7,27 @@ public:
 	SettingsScene() = default;
 	virtual ~SettingsScene();
 
-	void virtual init(RenderData* m_RD, GameStateData* gsd) override;
-	void virtual update(GameStateData* gsd) override;
-	void virtual render(RenderData* m_RD,
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
+	virtual bool init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib) override;
+	virtual SceneChange update(GameStateData* gsd) override;
+	virtual void render(RenderData* m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList) override;
 
 	bool new_resolution = false;
 
 private:
-	void virtual  ReadInput(GameStateData* gsd) override;
+	enum Action
+	{
+		NONE,
+		FULLSCREEN,
+		SCREEN_RES_LEFT,
+		SCREEN_RES_RIGHT,
+		BUTTON_UP,
+		BUTTON_DOWN,
+		BUTTON_PRESSED,
+		EXIT
+	};
+
+	Action action = Action::NONE;
+	void virtual  ReadInput(Input* input_manager) override;
 	void newResolutionText(int new_resolution_option);
 	void highlight_option_selected();
 	void virtual giveSwapChain(Microsoft::WRL::ComPtr<IDXGISwapChain3> swapChain);
@@ -26,9 +38,9 @@ private:
 	int new_outputHeight = 0;
 	bool fullscreen = false;
 
-	Text2D* resolution_text;
-	Text2D* fullscreen_text;
-	ImageGO2D* main_menu_button;
+	std::unique_ptr<Text2D> resolution_text = nullptr;
+	std::unique_ptr<Text2D> fullscreen_text = nullptr;
+	std::unique_ptr<ImageGO2D> main_menu_button = nullptr;
 
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain;
 };

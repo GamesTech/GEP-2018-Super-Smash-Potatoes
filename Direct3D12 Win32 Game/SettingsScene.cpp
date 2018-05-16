@@ -6,128 +6,41 @@
 
 SettingsScene::~SettingsScene()
 {
-	if (resolution_text)
-	{
-		delete(resolution_text);
-		resolution_text = nullptr;
-	}
-	if (main_menu_button)
-	{
-		delete main_menu_button;
-		main_menu_button = nullptr;
-	}
+
 }
 
-void SettingsScene::init(RenderData * m_RD, GameStateData* gsd)
+bool SettingsScene::init(RenderData* m_RD, GameStateData* gsd, AudioManager* am, std::shared_ptr<ImageBuffer> ib)
 {
-	resolution_text = new Text2D("Resolution Text");
+	image_buffer = ib;
+	no_players = gsd->no_players;
+
+	resolution_text = std::make_unique<Text2D>("Resolution Text");
 	resolution_text->SetPos(Vector2(300, 200));
-	resolution_text->SetLayer(1.0f);
-	game_objects.push_back(resolution_text);
+	resolution_text->SetLayer(0.0f);
 	newResolutionText(3);
 	resolution_option_selected = 3;
 
-	fullscreen_text = new Text2D("Fullscreen: False");
+	fullscreen_text = std::make_unique<Text2D>("Fullscreen: False");
 	fullscreen_text->SetPos(Vector2(300, 300));
-	fullscreen_text->SetLayer(1.0f);
-	game_objects.push_back(fullscreen_text);
+	fullscreen_text->SetLayer(0.0f);
 
-	main_menu_button = new ImageGO2D(m_RD, "Main_Menu_Button");
+	main_menu_button = std::make_unique<ImageGO2D>(m_RD, "Buttons", image_buffer);
 	main_menu_button->SetPos(Vector2(300, 400));
-	main_menu_button->SetRect(1, 1, 240, 80);
-	game_objects.push_back(main_menu_button);
+	main_menu_button->SetRect(1, 241, 240, 320);
+	game_objects.push_back(std::move(main_menu_button));
 
 	highlight_option_selected();
+	loadBackground(m_RD, ib);
+	return true;
 }
 
-void SettingsScene::update(GameStateData * gsd)
+Scene::SceneChange SettingsScene::update(GameStateData * gsd)
 {
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+	for (auto& it : game_objects)
 	{
-		(*it)->Tick(gsd);
-	}
-}
-
-void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
-{
-	//finally draw all 2D objects
-	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
-	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
-	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
-
-	for (std::vector<GameObject2D *>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
-	{
-		(*it)->Render(m_RD);
+		it->Tick(gsd);
 	}
 
-	m_RD->m_spriteBatch->End();
-}
-
-void SettingsScene::ReadInput(GameStateData* gsd)
-{
-	if ((gsd->m_keyboardState.Down && !gsd->m_prevKeyboardState.Down)
-		|| (gsd->m_gamePadState[0].IsDPadDownPressed() && !gsd->m_prevGamePadState[0].IsDPadDownPressed()))
-	{
-		if (menu_option_selected < 3)
-		{
-			menu_option_selected++;
-			highlight_option_selected();
-		}
-	}
-	if ((gsd->m_keyboardState.Up && !gsd->m_prevKeyboardState.Up)
-		|| (gsd->m_gamePadState[0].IsDPadUpPressed() && !gsd->m_prevGamePadState[0].IsDPadUpPressed()))
-	{
-		if (menu_option_selected > 1)
-		{
-			menu_option_selected--;
-			highlight_option_selected();
-		}
-	}
-
-	switch (menu_option_selected)
-	{
-	case 1:
-		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left)
-			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
-		{
-			if (resolution_option_selected > 1)
-			{
-				resolution_option_selected--;
-				newResolutionText(resolution_option_selected);
-			}
-		}
-		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right)
-			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-		{
-			if (resolution_option_selected < 4)
-			{
-				resolution_option_selected++;
-				newResolutionText(resolution_option_selected);
-			}
-		}
-		break;
-	case 2:
-		if ((gsd->m_keyboardState.Left && !gsd->m_prevKeyboardState.Left && fullscreen == true)
-			|| (gsd->m_gamePadState[0].IsDPadLeftPressed() && !gsd->m_prevGamePadState[0].IsDPadLeftPressed()))
-		{
-			fullscreen = false;
-			fullscreen_text->SetText("Fullscreen: False");
-			m_swapChain->SetFullscreenState(false, NULL);
-		}
-		if ((gsd->m_keyboardState.Right && !gsd->m_prevKeyboardState.Right && fullscreen == false)
-			|| (gsd->m_gamePadState[0].IsDPadRightPressed() && !gsd->m_prevGamePadState[0].IsDPadRightPressed()))
-		{
-			fullscreen = true;
-			fullscreen_text->SetText("Fullscreen: True");
-			m_swapChain->SetFullscreenState(true, NULL);
-		}
-	case 3:
-		if ((gsd->m_keyboardState.Enter && !gsd->m_prevKeyboardState.Enter)
-			|| (gsd->m_gamePadState[0].IsAPressed() && !gsd->m_prevGamePadState[0].IsAPressed()))
-		{
-			gsd->gameState = MENU;
-		}
-	}
 	switch (resolution_option_selected)
 	{
 	case 1:
@@ -143,14 +56,154 @@ void SettingsScene::ReadInput(GameStateData* gsd)
 		new_outputHeight = 720;
 		break;
 	case 4:
-		new_outputWidth = 1440;
+		new_outputWidth = 1920;
 		new_outputHeight = 1080;
 		break;
 	}
 
-	DXGI_MODE_DESC newTargetParams = {new_outputWidth, new_outputHeight, 60, 1,
+	DXGI_MODE_DESC newTargetParams = { new_outputWidth, new_outputHeight, 60, 1,
 		DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED, DXGI_MODE_SCALING_UNSPECIFIED };
 	m_swapChain->ResizeTarget(&newTargetParams);
+
+	Scene::SceneChange scene_change;
+	switch (action)
+	{
+		case Action::FULLSCREEN:
+		{
+			if (fullscreen)
+			{
+				fullscreen_text->SetText("Fullscreen: True");
+				m_swapChain->SetFullscreenState(true, NULL);
+			}
+			else
+			{
+				fullscreen_text->SetText("Fullscreen: False");
+				m_swapChain->SetFullscreenState(false, NULL);
+			}
+			break;
+		}
+
+		case Action::SCREEN_RES_LEFT:
+		{
+			if (resolution_option_selected > 1)
+			{
+				resolution_option_selected--;
+				newResolutionText(resolution_option_selected);
+			}
+			break;
+		}
+
+		case Action::SCREEN_RES_RIGHT:
+		{
+			if (resolution_option_selected < 4)
+			{
+				resolution_option_selected++;
+				newResolutionText(resolution_option_selected);
+			}
+			break;
+		}
+
+		case Action::BUTTON_UP:
+		{
+			if (menu_option_selected > 1)
+			{
+				menu_option_selected--;
+				highlight_option_selected();
+			}
+			break;
+		}
+
+		case Action::BUTTON_DOWN:
+		{
+			if (menu_option_selected < 3)
+			{
+				menu_option_selected++;
+				highlight_option_selected();
+			}
+			break;
+		}
+
+		case Action::BUTTON_PRESSED:
+		{
+			scene_change.change_type = ChangeType::REMOVE;
+			break;
+		}
+
+		case Action::EXIT:
+		{
+			scene_change.change_type = ChangeType::REMOVE;
+			break;
+		}
+	}
+	action = Action::NONE;
+	return scene_change;
+}
+
+void SettingsScene::render(RenderData * m_RD, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList)
+{
+	//finally draw all 2D objects
+	ID3D12DescriptorHeap* heaps[] = { m_RD->m_resourceDescriptors->Heap() };
+	m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+	m_RD->m_spriteBatch->Begin(m_commandList.Get(), SpriteSortMode_BackToFront);
+
+	for (auto& it : game_objects)
+	{
+		it->Render(m_RD);
+	}
+	resolution_text->Render(m_RD);
+	fullscreen_text->Render(m_RD);
+
+	m_RD->m_spriteBatch->End();
+}
+
+void SettingsScene::ReadInput(Input* input_manager)
+{
+	input_manager->current_scene = CurrentScene::SETTINGS;
+	for (int i = 0; i < no_players; i++)
+	{
+		if (input_manager->inputs[i] == Inputs::DOWN)
+		{
+			action = Action::BUTTON_DOWN;
+		}
+
+		else if (input_manager->inputs[i] == Inputs::UP)
+		{
+			action = Action::BUTTON_UP;
+		}
+
+		switch (menu_option_selected)
+		{
+		case 1:
+			if (input_manager->inputs[i] == Inputs::LEFT)
+			{
+				action = Action::SCREEN_RES_LEFT;
+			}
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
+			{
+				action = Action::SCREEN_RES_RIGHT;
+			}
+			break;
+		case 2:
+			if (input_manager->inputs[i] == Inputs::LEFT)
+			{
+				fullscreen = false;
+				action = Action::FULLSCREEN;
+			}
+			else if (input_manager->inputs[i] == Inputs::RIGHT)
+			{
+				fullscreen = true;
+				action = Action::FULLSCREEN;
+			}
+			break;
+		case 3:
+			if (input_manager->inputs[i] == Inputs::A)
+			{
+				action = Action::EXIT;
+			}
+			break;
+		}
+	}
+	input_manager->clearInput();
 }
 
 
@@ -168,7 +221,7 @@ void SettingsScene::newResolutionText(int new_resolution_option)
 		resolution_text->SetText("Resolution: <- 1280 x 720 ->");
 		break;
 	case 4:
-		resolution_text->SetText("Resolution: <- 1440 x 1080");
+		resolution_text->SetText("Resolution: <- 1920 x 1080");
 		break;
 	}
 }
@@ -180,17 +233,17 @@ void SettingsScene::highlight_option_selected()
 	case 1:
 		resolution_text->SetColour(Color(1, 0, 0));
 		fullscreen_text->SetColour(Color(1, 1, 1));
-		main_menu_button->SetColour(Color(1, 1, 1));
+		game_objects[0]->SetColour(Color(1, 1, 1));
 		break;
 	case 2:
 		resolution_text->SetColour(Color(1, 1, 1));
 		fullscreen_text->SetColour(Color(1, 0, 0));
-		main_menu_button->SetColour(Color(1, 1, 1));
+		game_objects[0]->SetColour(Color(1, 1, 1));
 		break;
 	case 3:
 		resolution_text->SetColour(Color(1, 1, 1));
 		fullscreen_text->SetColour(Color(1, 1, 1));
-		main_menu_button->SetColour(Color(1, 0, 0));
+		game_objects[0]->SetColour(Color(1, 0, 0));
 		break;
 	}
 }
