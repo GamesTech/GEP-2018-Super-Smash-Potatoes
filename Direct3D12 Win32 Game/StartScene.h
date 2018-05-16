@@ -20,4 +20,5 @@ private:
 	};
 
 	Action action = Action::NONE;
+	D3D12_VIEWPORT viewport;
 };

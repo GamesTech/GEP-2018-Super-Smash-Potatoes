@@ -4,6 +4,11 @@
 
 bool StartScene::init(RenderData * m_RD, GameStateData * gsd, AudioManager * am, std::shared_ptr<ImageBuffer> ib)
 {
+	viewport = { -1.f, -1.f,
+		static_cast<float>(1280), static_cast<float>(720),
+		D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+
+	m_RD->m_spriteBatch->SetViewport(viewport);
 	image_buffer = ib;
 	game_objects.emplace_back(new Text2D("Press any button to start"));
 	game_objects.back()->SetPos(Vector2(300, 300));
