@@ -76,7 +76,7 @@ void Item::explodeTimer(GameStateData* _GSD)
 {
 	if (m_explosion_timer >= 5)
 	{
-		particle_system->addParticles(1, Particle_Type::EXPLOSION, m_pos, false);
+		particle_system->addParticles(1, Particle_Type::EXPLOSION, m_pos - Vector2(40, 30), false);
 		marked_for_deletion = true;
 		m_explosion_timer = 0;
 	}
@@ -100,7 +100,7 @@ void Item::collided(Player2D* _player, GameStateData *  _GSD)
 				float x2 = _player->GetPos().x + (_player->Width() / 2);
 				float y2 = _player->GetPos().y + (_player->Height() / 2);
 
-				particle_system->addParticles(1, Particle_Type::EXPLOSION, Vector2(x1, y1), false);
+				particle_system->addParticles(1, Particle_Type::EXPLOSION, m_pos - Vector2(40, 30), false);
 				if (!_player->GetInvincibility())
 				{
 					Vector2 direction = Vector2(x2 - x1, y2 - y1);
