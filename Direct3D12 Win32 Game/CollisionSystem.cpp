@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CollisionSystem.h"
 
-// automatically execute the right collision code based by the object type 
+// automatically execute the right collision code based on the object type 
 bool CollisionSystem::ResloveCollision(GameObject2D * _obj, Physics2D * _physics_obj)
 {
 	if (_obj->GetLayer() == 0.5)
@@ -31,21 +31,25 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 {
 	Physics2D* physics_obj = _physics_obj;
 	GameObject2D* object = _obj;
-	
-	float width = 0.5 * (physics_obj->Width() + object->Width());
-	float height = 0.5 * (physics_obj->Height() + object->Height());
+
+	// Calculate "radius" of the new rectangle 
+	float r_width = 0.5 * (physics_obj->Width() + object->Width());
+	float r_height = 0.5 * (physics_obj->Height() + object->Height());
+
+	// get the distance of the two objects
 	float distance_x = physics_obj->CenterX() - object->CenterX();
 	float distance_y = physics_obj->CenterY() - object->CenterY();
 
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
+	// check if the distances are less than the height and width of the new rectangle
+	if (abs(distance_x) <= r_width && abs(distance_y) <= r_height)
 	{
 		// collision occured
-		float collision_width = width * distance_y;
-		float collision_height = height * distance_x;
+		float coll_y = r_width * distance_y;
+		float coll_x = r_height * distance_x;
 
-		if (collision_width < collision_height)
+		if (coll_y < coll_x)
 		{
-			if (collision_width < -collision_height)
+			if (coll_y < -coll_x)
 			{
 				// if player is falling or stationary - collision at the top
 				if (physics_obj->GetVel().y >= 0)
@@ -61,7 +65,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 					return false;
 				}
 			}
-			else if (collision_width > -collision_height)
+			else
 			{
 				if (!physics_obj->GetLedgeJump())
 				{
@@ -78,9 +82,9 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 			}
 
 		}
-		else if (collision_width > collision_height)
+		else
 		{
-			if (collision_width > -collision_height)
+			if (coll_y > -coll_x)
 			{
 				// if player is jumping up
 				if (physics_obj->GetVel().y < 0)
@@ -96,7 +100,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 					return false;
 				}
 			}
-			else if (collision_width < -collision_height)
+			else
 			{
 				if (!physics_obj->GetLedgeJump())
 				{
@@ -126,20 +130,20 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Physics2D * _physics
 	Physics2D* physics_obj = _physics_obj;
 	GameObject2D* object = _obj;
 
-	float width = 0.5 * (physics_obj->Width() + object->Width());
-	float height = 0.5 * (physics_obj->Height() + object->Height());
+	float r_width = 0.5 * (physics_obj->Width() + object->Width());
+	float r_height = 0.5 * (physics_obj->Height() + object->Height());
 	float distance_x = physics_obj->CenterX() - object->CenterX();
 	float distance_y = physics_obj->CenterY() - object->CenterY();
 
-	if (abs(distance_x) <= width && abs(distance_y) <= height)
+	if (abs(distance_x) <= r_width && abs(distance_y) <= r_height)
 	{
 		// collision occured
-		float collision_width = width * distance_y;
-		float collision_height = height * distance_x;
+		float coll_y = r_width * distance_y;
+		float coll_x = r_height * distance_x;
 
-		if (collision_width < collision_height)
+		if (coll_y < coll_x)
 		{
-			if (collision_width < -collision_height)
+			if (coll_y < -coll_x)
 			{
 				if (physics_obj->GetVel().y >= 0)
 				{
@@ -151,15 +155,15 @@ bool CollisionSystem::TopSideCollision(GameObject2D * _obj, Physics2D * _physics
 			}
 		}
 	}
-	
+
 	physics_obj->SetCollState(physics_obj->COLNONE);
 	return false;
 }
 
 // check intersect with an object
 bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Physics2D * _physics_obj,
-									float _r1, float _r1_multiplier, 
-									float _x_offset, float _y_offset, int _direction)
+	float _r1, float _r1_multiplier,
+	float _x_offset, float _y_offset, int _direction)
 {
 	float r1 = 0;
 	if (_r1 == 0)
@@ -173,7 +177,7 @@ bool CollisionSystem::CheckIntersect(GameObject2D * _obj, Physics2D * _physics_o
 
 	float x1 = _obj->GetPos().x + (_obj->Width() / 2);
 	float y1 = _obj->GetPos().y + (_obj->Height() / 2);
-	
+
 	switch (_direction)
 	{
 	case 0:
