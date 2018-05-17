@@ -8,6 +8,8 @@ Item::Item(RenderData * _RD, string _filename, std::shared_ptr<ImageBuffer> imag
 	this->type = type;
 	SetType(2);
 	particle_system = _particle_system;
+	//m_drag = -1.0;
+	m_bounciness = 1.f;
 }
 
 void Item::update(GameStateData * _GSD)
@@ -32,6 +34,7 @@ void Item::update(GameStateData * _GSD)
 	{
 		AddGravity(false);
 		Tick(_GSD);
+		explodeTimer(_GSD);
 	} 
 	else 
 	{
@@ -67,6 +70,20 @@ void Item::throwItem(GameStateData* _GSD, float player_orientation)
 bool Item::getMarked() const
 {
 	return marked_for_deletion;
+}
+
+void Item::explodeTimer(GameStateData* _GSD)
+{
+	if (m_explosion_timer >= 5)
+	{
+		particle_system->addParticles(1, Particle_Type::EXPLOSION, m_pos, false);
+		marked_for_deletion = true;
+		m_explosion_timer = 0;
+	}
+	else
+	{
+		m_explosion_timer += _GSD->m_dt;
+	}
 }
 
 void Item::collided(Player2D* _player, GameStateData *  _GSD)

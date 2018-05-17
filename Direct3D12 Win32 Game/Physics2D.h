@@ -34,6 +34,7 @@ public:
 	void		SetMass		(float _mass)			{ m_mass = _mass; };
 	void		SetDrag		(float _drag)			{ m_drag = _drag; };
 	void		SetSpeedLimit(float _speed_limit)	{ m_speed_limit = _speed_limit; };
+	void		SetBounciness(float _bounciness)	{ m_bounciness = _bounciness; };
 	void		SetCollState(Collision _col)		{ m_coll_state = _col; };
 
 
@@ -45,7 +46,8 @@ protected:
 
 	float m_mass = 1.0f;
 	float m_drag = 0.0f;
-	float m_speed_limit = 1;
+	float m_bounciness = 0.0f;
+	float m_speed_limit = 1.0f;
 	float m_new_pos = 1.f;
 	
 	int	m_jump_count = 0;

@@ -1,5 +1,6 @@
 #pragma once
 #include "ImageGO2D.h"
+#include "GameStateData.h"
 
 class Item : public Physics2D
 {
@@ -19,12 +20,17 @@ class Item : public Physics2D
 		void throwItem(GameStateData* _GSD, float player_orientation);
 		bool getMarked() const;
 		bool getActive() { return active; };
+
 	private:
+
+		void explodeTimer(GameStateData* _GSD);
+
 		static const int yOffset = 100;
 
 		Type type;
 		class Player2D * player = nullptr;
 		int prev_holder_id = -1;
+		float m_explosion_timer = 0.f;
 		bool active = false;
 		bool marked_for_deletion = false;
 		long life_span;

@@ -41,12 +41,12 @@ void Physics2D::Tick(GameStateData * _GSD)
 
 	if (m_y_coll)
 	{
-		newVel.y = 0;
+		newVel.y = -newVel.y * m_bounciness;
 		newPos.y = m_new_pos;
 	}
 	else if(m_x_coll)
 	{
-		newVel.x = 0;
+		newVel.x = -newVel.x * m_bounciness;
 		newPos.x = m_new_pos;
 	}
 	if (m_grabing_side)
