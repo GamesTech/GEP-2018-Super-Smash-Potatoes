@@ -12,9 +12,9 @@ Physics2D::~Physics2D()
 }
 
 // basic gravity 
-void Physics2D::AddGravity(bool _grounded)
+void Physics2D::AddGravity(/*bool _grounded*/)
 {
-	m_grounded = _grounded;
+	/*m_grounded = _grounded;*/
 	if (!m_grounded)
 	{
 		m_acc += (m_gravity * m_mass);

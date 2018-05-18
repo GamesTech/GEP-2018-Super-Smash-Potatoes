@@ -26,7 +26,7 @@ void Player2D::SetStatsFromFile() //Load the stats of the player from a file
 
 void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, GameObject2D* _obj*/)
 {
-	if (m_vel.x > 30 || m_vel.x < -30 || m_vel.y > 500 || m_vel.y < -500)
+	if (m_vel.x > 100 || m_vel.x < -100 || m_vel.y > 1000 || m_vel.y < -1000)
 	{
 		m_ledge_jump = false;
 	}
@@ -37,7 +37,7 @@ void Player2D::Tick(GameStateData * _GSD, int _test, Input* input_manager/*, Gam
 	}
 
 	AnimationChecks(_GSD);
-	AddGravity(m_grounded);
+	AddGravity(/*m_grounded*/);
 
 	Physics2D::Tick(_GSD);
 

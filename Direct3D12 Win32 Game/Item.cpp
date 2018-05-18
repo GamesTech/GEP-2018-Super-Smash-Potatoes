@@ -32,7 +32,7 @@ void Item::update(GameStateData * _GSD)
 
 	if (active)
 	{
-		AddGravity(false);
+		AddGravity(/*false*/);
 		Tick(_GSD);
 		explodeTimer(_GSD);
 	} 

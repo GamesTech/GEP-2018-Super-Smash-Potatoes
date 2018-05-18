@@ -67,7 +67,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 			}
 			else
 			{
-				if (!physics_obj->GetLedgeJump() && (physics_obj->GetVel().x <= 0 || physics_obj->GetVel().y > 0))
+				if (!physics_obj->GetLedgeJump() && (physics_obj->GetVel().x <= 0 || physics_obj->GetBounciness() == 0))
 				{
 					physics_obj->SetNewPos(object->GetPos().x + object->Width());
 					physics_obj->SetCollState(physics_obj->COLRIGHT);
@@ -102,7 +102,7 @@ bool CollisionSystem::AllSideCollision(GameObject2D * _obj, Physics2D * _physics
 			}
 			else
 			{
-				if (!physics_obj->GetLedgeJump() && (physics_obj->GetVel().x >= 0 || physics_obj->GetVel().y > 0))
+				if (!physics_obj->GetLedgeJump() && (physics_obj->GetVel().x >= 0 || physics_obj->GetBounciness() == 0))
 				{
 					physics_obj->SetNewPos(object->GetPos().x - physics_obj->Width());
 					physics_obj->SetCollState(physics_obj->COLLEFT);

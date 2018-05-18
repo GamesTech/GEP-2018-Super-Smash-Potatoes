@@ -19,13 +19,14 @@ public:
 	~Physics2D();
 
 	void			AddForce	(Vector2 _push) { m_acc += (_push / m_mass); }
-	void			AddGravity	(bool _grounded);
+	void			AddGravity	(/*bool _grounded*/);
 	virtual void	Tick		(GameStateData* _GSD);
 	void			ProcessCollision();
 
 	Vector2		GetVel()	{ return m_vel; };
 	float		GetMass()	{ return m_mass; };
 	float		GetDrag()	{ return m_drag; };
+	float		GetBounciness() { return m_bounciness; };
 	
 	bool		IgnoreCollision()	{ return m_ignore_collision; };
 	bool		GetLedgeJump()		{ return m_ledge_jump; };
